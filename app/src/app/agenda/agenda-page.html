@@ -1,0 +1,140 @@
+<header class="head">
+  <div class="eyebrow">{{ monthLabel() }}</div>
+  <h1 class="t-display">Agenda.</h1>
+</header>
+
+<div class="card strip">
+  @switch (view()) {
+    @case ('week') {
+      <div class="week" (pointerdown)="swipeStartAt($event)" (pointerup)="swipeEnd($event)">
+        @for (date of week(); track date; let index = $index) {
+          <button
+            type="button"
+            class="day"
+            [class.on]="date === selected()"
+            [class.today]="date === today"
+            [attr.aria-current]="date === today ? 'date' : null"
+            [attr.aria-pressed]="date === selected()"
+            [attr.aria-label]="date"
+            (click)="pick(date)"
+          >
+            <span class="wd">{{ weekdays[index] }}</span>
+            <span class="n tabular">{{ dayNumber(date) }}</span>
+            <span class="dot" [class.shown]="hasItems(date)"></span>
+          </button>
+        }
+      </div>
+    }
+    @case ('month') {
+      <div class="month-head">
+        <button type="button" class="arrow" aria-label="Previous month" (click)="shiftMonth(-1)">
+          <app-icon name="chevron-left" [size]="16" />
+        </button>
+        <button type="button" class="month-name" (click)="openYear()">
+          {{ shownMonthLabel() }}<app-icon name="chevron-down" [size]="14" [stroke]="2.2" />
+        </button>
+        <button type="button" class="arrow" aria-label="Next month" (click)="shiftMonth(1)">
+          <app-icon name="chevron-right" [size]="16" />
+        </button>
+      </div>
+      <div class="grid">
+        @for (name of weekdays; track name) {
+          <span class="grid-wd">{{ name[0] }}</span>
+        }
+        @for (date of monthGrid(); track $index) {
+          @if (date) {
+            <button
+              type="button"
+              class="cell tabular"
+              [class.on]="date === selected()"
+              [class.past]="date < today"
+              [class.has]="hasItems(date)"
+              [attr.aria-label]="date"
+              (click)="pick(date)"
+            >
+              {{ dayNumber(date) }}<span class="dot" [class.shown]="hasItems(date)"></span>
+            </button>
+          } @else {
+            <span></span>
+          }
+        }
+      </div>
+    }
+    @case ('year') {
+      <div class="month-head">
+        <button
+          type="button"
+          class="arrow"
+          aria-label="Previous year"
+          (click)="shownYear.set(shownYear() - 1)"
+        >
+          <app-icon name="chevron-left" [size]="16" />
+        </button>
+        <span class="month-name">{{ shownYear() }}</span>
+        <button
+          type="button"
+          class="arrow"
+          aria-label="Next year"
+          (click)="shownYear.set(shownYear() + 1)"
+        >
+          <app-icon name="chevron-right" [size]="16" />
+        </button>
+      </div>
+      <div class="months">
+        @for (month of months; track month) {
+          <button
+            type="button"
+            class="month"
+            [class.on]="
+              shownMonth() === shownYear() + '-' + (month + 1 < 10 ? '0' : '') + (month + 1)
+            "
+            (click)="pickMonth(month)"
+          >
+            {{ monthName(month) }}
+          </button>
+        }
+      </div>
+    }
+  }
+  <button
+    type="button"
+    class="handle"
+    [attr.aria-label]="view() === 'week' ? 'Show month' : 'Show week'"
+    (click)="toggleMonth()"
+  ></button>
+</div>
+
+<main class="content">
+  @for (day of days(); track day.date) {
+    <section>
+      <h2 class="eyebrow day-head">
+        {{ dayHeader(day.date, day.endDate) }}
+        @if (!day.items.length) {
+          <span class="free">Nothing planned</span>
+        }
+      </h2>
+      @if (day.items.length) {
+        <div class="stack">
+          @for (item of day.items; track item.key) {
+            <a class="row" [class.quiet]="item.repeating" [routerLink]="item.link">
+              @if (item.time) {
+                <span class="time tabular">
+                  {{ item.time }}
+                  @if (item.timeEnd) {
+                    <span class="end">{{ item.timeEnd }}</span>
+                  }
+                </span>
+              }
+              <span class="title">{{ item.title }}</span>
+              @if (item.event) {
+                <app-list-label [event]="true" />
+              } @else if (item.list) {
+                <app-list-label [list]="item.list" />
+              }
+            </a>
+          }
+        </div>
+      }
+    </section>
+  }
+</main>
