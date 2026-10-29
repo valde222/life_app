@@ -15,7 +15,7 @@ All collections: client-made 15-character id, `created` / `updated` autodates, `
 | `todos` | title, list → lists, inbox, date, time, time_end, is_event, repeat_mode (none, rough, schedule), repeat_every_days, repeat_every_weeks, repeat_weekdays (json), reminder, done_at, archived_at |
 | `steps` | todo → todos, text, done, order |
 | `completions` | todo → todos, done_on |
-| `notes` | title, body, list → lists, inbox, photos (file, many, thumbs 200x200 and 800x0), todos → todos (many), archived_at |
+| `notes` | title, body (markdown text), list → lists, inbox, photos (file, many, thumbs 200x200 and 800x0), todos → todos (many), archived_at |
 | `calendar_events` | calendar, external_id, title, start, end, all_day, synced_at |
 | `settings` | calendars (json) |
 
@@ -29,11 +29,11 @@ Dates (`date`) are `YYYY-MM-DD` text and times `HH:MM` text: they are local days
 
 ## Steps
 
-- [ ] Dockerfile pinning v0.40.4 (amd64 and arm64)
-- [ ] Migration creating the collections
-- [ ] Hooks: account bootstrap, newest-change-wins
-- [ ] Seed script (dev only) with the canvas data
-- [ ] `pocketbase/README.md`
+- [x] Dockerfile pinning v0.40.4 (amd64 and arm64)
+- [x] Migration creating the collections
+- [x] Hooks: account bootstrap, newest-change-wins
+- [x] Seed script (dev only) with the canvas data
+- [x] `pocketbase/README.md`
 
 ## Done when
 
