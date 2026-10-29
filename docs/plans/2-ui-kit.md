@@ -21,13 +21,13 @@
 
 ## Steps
 
-- [ ] Icons collected from the screens
-- [ ] ListLabel, TodoRow, EventRow, NextCard
-- [ ] Sheet and Toast services
+- [x] Icons collected from the screens
+- [x] ListLabel, TodoRow, EventRow, NextCard
+- [x] Sheet and Toast services
 - [ ] BottomNav and main layout with routes for Today, Agenda, Inbox, Lists, Search
-- [ ] SegmentedControl, DetailRow, Switch, EmptyState, button styles
-- [ ] SwipeRow
-- [ ] Unit tests for the parts with logic (NextCard timing, toast lifetime, swipe thresholds)
+- [x] SegmentedControl, DetailRow, Switch, EmptyState, button styles
+- [x] SwipeRow
+- [x] Unit tests for the parts with logic (NextCard timing, toast lifetime, swipe thresholds)
 
 ## Done when
 
