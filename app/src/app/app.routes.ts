@@ -53,6 +53,16 @@ export const routes: Routes = [
     loadComponent: () => import('./todo/todo-editor').then((m) => m.TodoEditor),
   },
   {
+    path: 'lists/edit',
+    canActivate: [signedIn],
+    loadComponent: () => import('./lists/manage-lists').then((m) => m.ManageLists),
+  },
+  {
+    path: 'lists/:id/settings',
+    canActivate: [signedIn],
+    loadComponent: () => import('./lists/list-settings').then((m) => m.ListSettings),
+  },
+  {
     path: 'note/:id',
     canActivate: [signedIn],
     loadComponent: () => import('./note/note-editor').then((m) => m.NoteEditor),
@@ -69,7 +79,11 @@ export const routes: Routes = [
         loadComponent: () => import('./today/today').then((m) => m.Today),
       },
       { path: 'inbox', loadComponent: () => import('./inbox/inbox').then((m) => m.Inbox) },
-      placeholder('lists', 'Lists.'),
+      { path: 'lists', loadComponent: () => import('./lists/lists-page').then((m) => m.ListsPage) },
+      {
+        path: 'lists/:id',
+        loadComponent: () => import('./lists/list-page').then((m) => m.ListPage),
+      },
       placeholder('agenda', 'Agenda.'),
       placeholder('search', 'Search.'),
       placeholder('week', 'This week.'),

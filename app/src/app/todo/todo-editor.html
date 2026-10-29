@@ -109,7 +109,7 @@
     }
 
     @if (!isNew()) {
-      <h2 class="eyebrow section">Notes</h2>
+      <h2 class="eyebrow section">Notes and links</h2>
       <div class="stack">
         @for (note of linkedNotes(); track note.id) {
           <a
@@ -123,7 +123,10 @@
             }
           </a>
         }
-        <button type="button" class="btn-add" (click)="writeNote()">+ Write a note</button>
+        <div class="note-actions">
+          <button type="button" class="btn-add" (click)="link()">+ Link…</button>
+          <button type="button" class="btn-add" (click)="writeNote()">+ Write a note</button>
+        </div>
       </div>
       <button type="button" class="delete" (click)="delete()">Delete</button>
     }

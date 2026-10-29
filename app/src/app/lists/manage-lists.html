@@ -1,0 +1,87 @@
+<header class="head">
+  <h1 class="t-display">Edit lists.</h1>
+  <a class="done" routerLink="/lists">Done</a>
+</header>
+
+<main class="content" cdkDropListGroup>
+  @for (entry of groups(); track entry.group.id) {
+    <section>
+      <div class="group-head">
+        @if (renaming() === entry.group.id) {
+          <input
+            class="rename"
+            aria-label="Group name"
+            [ngModel]="newName()"
+            (ngModelChange)="newName.set($event)"
+            (blur)="rename(entry.group)"
+            (keydown.enter)="rename(entry.group)"
+          />
+        } @else {
+          <h2 class="eyebrow">{{ entry.group.name }}</h2>
+          <span class="group-actions">
+            <button
+              type="button"
+              class="icon-button"
+              [attr.aria-label]="'Rename ' + entry.group.name"
+              (click)="startRename(entry.group)"
+            >
+              <app-icon name="edit" [size]="16" />
+            </button>
+            @if (confirming() === entry.group.id) {
+              <button type="button" class="confirm" (click)="deleteGroup(entry.group, entry.lists)">
+                Delete {{ entry.group.name }} and its lists
+              </button>
+            } @else {
+              <button
+                type="button"
+                class="icon-button danger"
+                [attr.aria-label]="'Delete ' + entry.group.name"
+                (click)="deleteGroup(entry.group, entry.lists)"
+              >
+                <app-icon name="trash" [size]="16" />
+              </button>
+            }
+          </span>
+        }
+      </div>
+      <div
+        class="rows"
+        cdkDropList
+        [cdkDropListData]="entry.group.id"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (list of entry.lists; track list.id) {
+          <div class="row" cdkDrag [cdkDragData]="list">
+            <span class="handle" cdkDragHandle [attr.aria-label]="'Move ' + list.name">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <circle cx="9" cy="6" r="1.6" />
+                <circle cx="15" cy="6" r="1.6" />
+                <circle cx="9" cy="12" r="1.6" />
+                <circle cx="15" cy="12" r="1.6" />
+                <circle cx="9" cy="18" r="1.6" />
+                <circle cx="15" cy="18" r="1.6" />
+              </svg>
+            </span>
+            <app-list-label class="label" [list]="list" />
+            <span class="count tabular">{{ count(list) }}</span>
+            <a
+              class="open"
+              [routerLink]="['/lists', list.id, 'settings']"
+              [attr.aria-label]="list.name + ' settings'"
+            >
+              <app-icon name="chevron-right" [size]="16" [stroke]="2.2" />
+            </a>
+          </div>
+        }
+      </div>
+      <button type="button" class="btn-add" (click)="newList(entry.group)">+ New list</button>
+    </section>
+  }
+  <button type="button" class="new-group" (click)="newGroup()">+ New group</button>
+</main>

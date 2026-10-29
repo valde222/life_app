@@ -76,6 +76,7 @@ Each app keeps its own copy and talks to PocketBase over HTTPS; how the Pi gets 
 | 14 | An overall todo list and a plan per feature live in the repo, written before the code and ticked off as work lands | Well-planned features; any new session resumes from the first unticked step with no help | Planning in the chat only, which is lost when a session ends |
 | 15 | The repo lives on the Windows drive. Git, Docker, Node and the Angular build run in WSL; Rust/Tauri and the Android SDK run on Windows, called from WSL through cmd.exe. GitHub Actions also builds the Windows app and the APK on every phase tag for a release. Valdemar deploys to the Pi | Uses each tool where it's already installed; a repo on the Windows drive is reachable from both sides. Windows needs no Node: WSL builds the web files, and Tauri and Gradle only package them | Cross-compiling Windows builds from WSL; building on the Windows side by hand |
 | 16 | The local copy is IndexedDB (Dexie) on every platform, behind a `LocalStore` interface | One code path for Android, desktop and tests; Capacitor's WebView storage isn't evicted | SQLite on Android only (two implementations to keep in step) |
+| 17 | Notes link to other notes through a `links` field (relation to notes, many), shown on both ends | The Link picker and Note screens link notes to notes; the data model only had note-to-todo links | A separate links collection (more sync and more code for one user) |
 
 ## Data model
 

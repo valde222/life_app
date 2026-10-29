@@ -19,6 +19,7 @@ import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-pi
 import { MoveTo, MoveToData } from '../pickers/move-to';
 import { reminderLabel, ReminderPicker, ReminderPickerData } from '../pickers/reminder-picker';
 import { TimePicker, TimePickerData, TimePickerResult } from '../pickers/time-picker';
+import { LinkPicker, LinkPickerData, LinkPickerResult } from '../note/link-picker';
 import { Clock } from '../time/clock';
 import { relativeDay } from '../time/local-date';
 import { Checkbox } from '../ui/checkbox';
@@ -223,6 +224,28 @@ export class TodoEditor {
       inbox: false,
     });
     await this.router.navigate(['/note', note.id], { state: { back: `/todo/${this.id()}` } });
+  }
+
+  protected async link() {
+    const linked = this.linkedNotes().map((note) => note.id);
+    const result = await this.sheets.open<LinkPickerResult, LinkPickerData>(
+      LinkPicker,
+      { onlyNotes: true, list: this.todo()?.list ?? '', notes: linked },
+      { panelClass: ['sheet-panel', 'sheet-tall'] },
+    ).closed;
+    if (!result) {
+      return;
+    }
+    const chosen = new Set(result.notes);
+    for (const note of this.store.notes()) {
+      const has = note.todos?.includes(this.id());
+      if (chosen.has(note.id) !== !!has) {
+        const todos = has
+          ? note.todos.filter((todo) => todo !== this.id())
+          : [...(note.todos ?? []), this.id()];
+        await this.repository.save('notes', { id: note.id, todos });
+      }
+    }
   }
 
   protected async save() {

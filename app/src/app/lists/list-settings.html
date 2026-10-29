@@ -1,0 +1,38 @@
+@if (list(); as list) {
+  <header class="bar">
+    <a class="back" [routerLink]="['/lists', list.id]"
+      ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />{{ list.name }}</a
+    >
+    <button type="button" class="done" (click)="done()">Done</button>
+  </header>
+  <main class="body">
+    <label class="card name">
+      <span>Name</span>
+      <input name="name" [ngModel]="name()" (ngModelChange)="name.set($event)" />
+    </label>
+
+    <h2 class="eyebrow">Group</h2>
+    <div class="groups" role="radiogroup" aria-label="Group">
+      @for (each of groups(); track each.id) {
+        <button
+          type="button"
+          role="radio"
+          class="chip"
+          [class.on]="each.id === group()"
+          [attr.aria-checked]="each.id === group()"
+          (click)="group.set(each.id)"
+        >
+          {{ each.name }}
+        </button>
+      }
+    </div>
+
+    <h2 class="eyebrow">Colour</h2>
+    <app-colour-picker [(value)]="colour" />
+
+    <button type="button" class="card action" (click)="archive()">Archive list</button>
+    <button type="button" class="card action danger" (click)="delete()">
+      {{ confirmingDelete() ? 'Delete the list and everything in it' : 'Delete list' }}
+    </button>
+  </main>
+}

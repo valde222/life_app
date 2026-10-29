@@ -10,6 +10,19 @@ export interface OutboxEntry {
   changed_at: number;
 }
 
+export interface PendingPhoto {
+  id: string;
+  note: string;
+  file: Blob;
+  name: string;
+}
+
+export interface PhotoRemoval {
+  id: string;
+  note: string;
+  filename: string;
+}
+
 export interface MetaEntry {
   key: string;
   value: string;
@@ -19,6 +32,8 @@ export interface MetaEntry {
 export class LocalStore extends Dexie {
   outbox!: Table<OutboxEntry, number>;
   meta!: Table<MetaEntry, string>;
+  pendingPhotos!: Table<PendingPhoto, string>;
+  photoRemovals!: Table<PhotoRemoval, string>;
 
   constructor() {
     super('life');
@@ -33,6 +48,10 @@ export class LocalStore extends Dexie {
       settings: 'id',
       outbox: '++seq, &key',
       meta: 'key',
+    });
+    this.version(2).stores({
+      pendingPhotos: 'id, note',
+      photoRemovals: 'id, note',
     });
   }
 
