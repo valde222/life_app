@@ -13,8 +13,8 @@ The repo has no GitHub remote yet, so these run once Valdemar adds one.
 
 ## Steps
 
-- [ ] `ci.yml`
-- [ ] `release.yml`
+- [x] `ci.yml`
+- [x] `release.yml`
 
 ## Done when
 

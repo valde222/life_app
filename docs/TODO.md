@@ -15,7 +15,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 - [x] "Offline, N waiting" status (`1-sync`; Offline and sync 7)
 - [x] Capacitor Android shell running the app (`1-shells`)
 - [x] Tauri desktop shell running the app (`1-shells`)
-- [ ] CI: unit and end-to-end tests on every push; Windows app and APK built on phase tags (`1-ci`)
+- [x] CI: unit and end-to-end tests on every push; Windows app and APK built on phase tags (`1-ci`)
 - [ ] Service READMEs: app, Android, desktop, PocketBase, deployment (`1-repo-layout` and each service's plan)
 - [x] T9 passes: a todo made offline appears on the other device after reconnecting
 
