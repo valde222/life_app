@@ -8,14 +8,14 @@
 
 - `app/scripts/tokens.mjs` reads `docs/design-system/tokens.json` and writes `app/src/styles/_tokens.scss` with `:root { --bg: …; --space-4: …; --radius-row: …; }`, plus one class per type style (`.t-display`, `.t-row`, …).
 - `npm run tokens` regenerates it; a unit test fails when the generated file is stale.
-- Space Grotesk and Inter come from Google Fonts in `index.html`. Tabular figures on numbers.
+- Space Grotesk and Inter are bundled from `@fontsource` packages, so they load offline inside the shells. Tabular figures on numbers.
 - `styles.scss`: `bg` ground, `ink` text, `--font-ui` for the interface.
 
 ## Steps
 
-- [ ] Token generator and generated SCSS
-- [ ] Global styles and fonts
-- [ ] Staleness test
+- [x] Token generator and generated SCSS
+- [x] Global styles and fonts
+- [x] Staleness test
 
 ## Done when
 

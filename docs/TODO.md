@@ -6,7 +6,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 - [x] Phase 1 plans written and committed (`docs/plans/1-*.md`)
 - [ ] Repo layout: one Angular app, a Capacitor shell, a Tauri shell; top-level README (`1-repo-layout`)
-- [ ] Design tokens as a code file, fonts, base styles (`1-design-tokens`)
+- [x] Design tokens as a code file, fonts, base styles (`1-design-tokens`)
 - [ ] PocketBase schema and migrations for the eight collections, version pinned (`1-pocketbase`)
 - [ ] Single account with email and password sign-in, no sign-up (`1-pocketbase`; decision 8, open question Sign-in)
 - [ ] Docker Compose for development with seed data matching the screens, plus a reset command (`1-docker`)

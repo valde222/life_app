@@ -22,10 +22,10 @@ Angular 22.2.2, PocketBase v0.40.4, Capacitor 8, Tauri 2.
 
 ## Steps
 
-- [ ] Scaffold the Angular app in `app/` (Vitest unit tests, SCSS, no SSR, routing)
+- [x] Scaffold the Angular app in `app/` (Vitest unit tests, SCSS, no SSR, routing)
 - [ ] Top-level README: how the pieces fit, how to start the dev environment
-- [ ] `app/README.md`
-- [ ] `.gitignore` covers every tool added
+- [x] `app/README.md`
+- [x] `.gitignore` covers every tool added
 
 ## Done when
 
