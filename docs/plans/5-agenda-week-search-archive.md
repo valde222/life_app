@@ -16,7 +16,7 @@
 
 ## Steps
 
-- [ ] Hard delete in the outbox and pruning on pull
+- [x] Hard delete in the outbox and pruning on pull
 - [ ] Agenda with week strip, month view and month picker
 - [ ] This week
 - [ ] Search

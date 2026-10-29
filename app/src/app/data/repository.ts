@@ -34,6 +34,20 @@ export class Repository {
     return this.save(collection, { id, deleted_at: pocketBaseTimestamp() } as Draft<C>);
   }
 
+  async purge(collection: CollectionName, id: string) {
+    const table = this.store.records(collection);
+    await this.store.transaction('rw', table, this.store.outbox, async () => {
+      await table.delete(id);
+      await enqueue(this.store, collection, id, Date.now(), 'purge');
+    });
+  }
+
+  watchAll<C extends CollectionName>(collection: C): Signal<Collections[C][]> {
+    return toSignal(from(liveQuery(() => this.store.records(collection).toArray())), {
+      initialValue: [],
+    });
+  }
+
   watch<C extends CollectionName>(
     collection: C,
     keep: (record: Collections[C]) => boolean = () => true,

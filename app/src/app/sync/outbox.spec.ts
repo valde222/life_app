@@ -15,6 +15,12 @@ class FakeRemote implements RemoteWriter {
     this.sent.push({ collection, record });
     return record;
   }
+
+  purged: string[] = [];
+
+  async purge(_collection: CollectionName, id: string) {
+    this.purged.push(id);
+  }
 }
 
 describe('outbox', () => {
@@ -80,6 +86,17 @@ describe('outbox', () => {
     await drainOutbox(store, remote, noop);
 
     expect(await store.outbox.count()).toBe(0);
+  });
+
+  it('removing for good drops the local copy and sends a hard delete', async () => {
+    const todo = await repository.save('todos', { title: 'gone for good' });
+    await repository.purge('todos', todo.id);
+
+    expect(await store.records('todos').get(todo.id)).toBeUndefined();
+    await drainOutbox(store, remote, noop);
+
+    expect(remote.sent).toHaveLength(0);
+    expect(remote.purged).toEqual([todo.id]);
   });
 
   it('a delete is a change with deleted_at set', async () => {
