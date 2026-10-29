@@ -1,0 +1,29 @@
+@if (viewport.desktop()) {
+  <app-sidebar (capture)="capture()" (shortcuts)="shortcuts()" />
+  <div class="content"><router-outlet /></div>
+  @if (pane.current(); as detail) {
+    <aside class="pane" aria-label="Details">
+      <button type="button" class="pane-close" aria-label="Close details" (click)="pane.close()">
+        <app-icon name="close" [size]="16" [stroke]="2.2" />
+      </button>
+      @switch (detail.kind) {
+        @case ('todo') {
+          <app-todo-editor [id]="detail.id" />
+        }
+        @case ('note') {
+          <app-note-editor [id]="detail.id" />
+        }
+        @case ('event') {
+          <app-event-page [id]="detail.id" />
+        }
+      }
+    </aside>
+  }
+  <app-toast />
+} @else {
+  <div class="page"><router-outlet /></div>
+  <app-toast />
+  @if (showNav()) {
+    <app-bottom-nav [showSearch]="showSearch()" (capture)="capture()" />
+  }
+}

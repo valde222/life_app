@@ -31,6 +31,11 @@ const setUp: CanActivateFn = async () => {
 export const routes: Routes = [
   { path: 'sign-in', loadComponent: () => import('./sign-in/sign-in').then((m) => m.SignIn) },
   {
+    path: 'capture',
+    canActivate: [signedIn],
+    loadComponent: () => import('./capture/capture-page').then((m) => m.CapturePage),
+  },
+  {
     path: 'setup',
     canActivate: [signedIn],
     children: [
@@ -45,50 +50,42 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'todo/:id',
-    canActivate: [signedIn],
-    loadComponent: () => import('./todo/todo-editor').then((m) => m.TodoEditor),
-  },
-  {
-    path: 'lists/edit',
-    canActivate: [signedIn],
-    loadComponent: () => import('./lists/manage-lists').then((m) => m.ManageLists),
-  },
-  {
-    path: 'lists/:id/settings',
-    canActivate: [signedIn],
-    loadComponent: () => import('./lists/list-settings').then((m) => m.ListSettings),
-  },
-  {
-    path: 'repeat/:id',
-    canActivate: [signedIn],
-    loadComponent: () => import('./repeating/repeat-editor').then((m) => m.RepeatEditor),
-  },
-  {
-    path: 'event/:id',
-    canActivate: [signedIn],
-    loadComponent: () => import('./calendar/event-page').then((m) => m.EventPage),
-  },
-  {
-    path: 'settings',
-    canActivate: [signedIn],
-    loadComponent: () => import('./settings/settings-page').then((m) => m.SettingsPage),
-  },
-  {
-    path: 'settings/calendars',
-    canActivate: [signedIn],
-    loadComponent: () => import('./calendar/calendars-page').then((m) => m.CalendarsPage),
-  },
-  {
-    path: 'note/:id',
-    canActivate: [signedIn],
-    loadComponent: () => import('./note/note-editor').then((m) => m.NoteEditor),
-  },
-  {
     path: '',
     component: MainLayout,
     canActivate: [signedIn],
     children: [
+      {
+        path: 'lists/edit',
+        loadComponent: () => import('./lists/manage-lists').then((m) => m.ManageLists),
+      },
+      {
+        path: 'lists/:id/settings',
+        loadComponent: () => import('./lists/list-settings').then((m) => m.ListSettings),
+      },
+      {
+        path: 'repeat/:id',
+        loadComponent: () => import('./repeating/repeat-editor').then((m) => m.RepeatEditor),
+      },
+      {
+        path: 'event/:id',
+        loadComponent: () => import('./calendar/event-page').then((m) => m.EventPage),
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./settings/settings-page').then((m) => m.SettingsPage),
+      },
+      {
+        path: 'settings/calendars',
+        loadComponent: () => import('./calendar/calendars-page').then((m) => m.CalendarsPage),
+      },
+      {
+        path: 'note/:id',
+        loadComponent: () => import('./note/note-editor').then((m) => m.NoteEditor),
+      },
+      {
+        path: 'todo/:id',
+        loadComponent: () => import('./todo/todo-editor').then((m) => m.TodoEditor),
+      },
       {
         path: '',
         pathMatch: 'full',

@@ -22,6 +22,14 @@ export class Sheets {
     return { ref, closed: firstValueFrom(ref.closed) };
   }
 
+  isOpen(component: ComponentType<unknown>) {
+    return this.dialog.openDialogs.some((ref) => ref.componentInstance instanceof component);
+  }
+
+  anyOpen() {
+    return this.dialog.openDialogs.length > 0;
+  }
+
   openFull<R, D = unknown, C = unknown>(component: ComponentType<C>, data?: D) {
     return this.open<R, D, C>(component, data, { panelClass: ['sheet-panel', 'sheet-full'] });
   }

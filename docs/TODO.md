@@ -72,8 +72,8 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Phase 6: Desktop (`v0.6-desktop`, done when T16 passes)
 
-- [ ] Phase 6 plans written and committed
-- [ ] Sidebar layout and desktop versions of every screen
-- [ ] Ctrl+Space global capture window, tray icon (R1, R2; T16)
-- [ ] Desktop keyboard shortcuts screen
-- [ ] T16 passes
+- [x] Phase 6 plans written and committed (`docs/plans/6-desktop.md`)
+- [x] Sidebar layout and desktop versions of every screen
+- [x] Ctrl+Space global capture window, tray icon (R1, R2; T16)
+- [x] Desktop keyboard shortcuts screen
+- [x] T16 passes

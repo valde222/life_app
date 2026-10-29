@@ -350,3 +350,34 @@ a {
     cursor: pointer;
   }
 }
+
+@media (min-width: 900px) {
+  .cdk-overlay-pane.sheet-panel:not(.sheet-full) {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+
+  .sheet-panel:not(.sheet-full) .cdk-dialog-container {
+    border-radius: var(--radius-modal);
+    box-shadow: var(--shadow-nav);
+  }
+
+  .cdk-overlay-pane.sheet-tall {
+    top: 50%;
+    height: min(720px, 90dvh);
+  }
+
+  .pane .page-bar .back {
+    visibility: hidden;
+  }
+
+  .pane .page-bar,
+  .pane .bar {
+    padding-top: 16px !important;
+  }
+}
+
+.dialog-panel .cdk-dialog-container {
+  outline: none;
+}

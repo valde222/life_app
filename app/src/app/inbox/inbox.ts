@@ -13,6 +13,7 @@ import { Sheets } from '../ui/sheet';
 import { SwipeRow } from '../ui/swipe-row';
 import { Toasts } from '../ui/toast';
 import { inboxSections, InboxItem } from './inbox-items';
+import { isTyping } from '../ui/keyboard';
 
 const QUICK_LISTS = 4;
 
@@ -21,6 +22,7 @@ const QUICK_LISTS = 4;
   imports: [EmptyState, Icon, RouterLink, SwipeRow],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './inbox.html',
+  host: { '(document:keydown)': 'onKey($event)' },
   styleUrl: './inbox.scss',
 })
 export class Inbox {
@@ -35,6 +37,8 @@ export class Inbox {
     inboxSections(this.store.inboxTodos(), this.store.inboxNotes(), this.clock.today()),
   );
   protected readonly open = signal<string | null>(null);
+  protected readonly focused = signal(-1);
+  private readonly flat = computed(() => this.sections().flatMap((section) => section.items));
   protected readonly quickLists = computed(() => this.store.openLists().slice(0, QUICK_LISTS));
   protected readonly swatch = listColourStyle;
 
@@ -46,6 +50,38 @@ export class Inbox {
     right: { label: 'Keep', icon: 'check' as const },
     left: { label: 'Archive', icon: 'archive' as const, quiet: true },
   };
+
+  protected onKey(event: KeyboardEvent) {
+    if (isTyping(event.target) || event.ctrlKey || event.metaKey || this.sheets.anyOpen()) {
+      return;
+    }
+    const items = this.flat();
+    const item = items[this.focused()];
+    const key = event.key.toLowerCase();
+    if (key === 'arrowdown' || key === 'arrowup') {
+      event.preventDefault();
+      const next = this.focused() + (key === 'arrowdown' ? 1 : -1);
+      this.focused.set(Math.max(0, Math.min(items.length - 1, next)));
+    } else if (!item) {
+      return;
+    } else if (key === 'enter') {
+      if (item.kind === 'todo') {
+        this.router.navigate(['/todo', item.record.id], { state: { back: '/inbox' } });
+      } else {
+        this.keep(item.record as Note);
+      }
+    } else if (key === 't' && item.kind === 'todo') {
+      this.putOnToday(item.record as Todo);
+    } else if (key === 'm' && item.kind === 'todo') {
+      this.moreLists(item.record as Todo);
+    } else if (key === 'd' && item.kind === 'todo') {
+      this.pickDate(item.record as Todo);
+    }
+  }
+
+  protected isFocused(item: InboxItem) {
+    return this.flat()[this.focused()]?.record.id === item.record.id;
+  }
 
   protected toggle(item: InboxItem) {
     this.open.set(this.open() === item.record.id ? null : item.record.id);

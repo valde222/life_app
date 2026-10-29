@@ -1,5 +1,12 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions } from '../data/actions';
@@ -27,11 +34,13 @@ export interface CaptureData {
   imports: [FormsModule, Icon, Segmented, Sheet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './capture-sheet.html',
+  host: { '(keydown)': 'onKey($event)' },
   styleUrl: './capture-sheet.scss',
 })
 export class CaptureSheet {
-  private readonly ref = inject(DialogRef);
+  private readonly ref = inject(DialogRef, { optional: true });
   private readonly data = inject<CaptureData>(DIALOG_DATA, { optional: true }) ?? {};
+  readonly done = output();
   private readonly actions = inject(Actions);
   private readonly store = inject(Store);
   private readonly sheets = inject(Sheets);
@@ -60,6 +69,20 @@ export class CaptureSheet {
   );
   protected readonly dateLabel = computed(() => (this.date() ? longDate(this.date()) : ''));
   protected readonly listName = computed(() => this.store.list(this.list())?.name ?? 'Inbox');
+
+  protected finish() {
+    this.ref?.close();
+    this.done.emit();
+  }
+
+  protected onKey(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key.toLowerCase() === 'd') {
+      event.preventDefault();
+      this.addDetails();
+    } else if (event.key === 'Escape' && !this.ref) {
+      this.finish();
+    }
+  }
 
   protected async pickDate() {
     const result = await this.sheets.open<DatePickerResult, DatePickerData>(DatePicker, {
@@ -99,14 +122,14 @@ export class CaptureSheet {
     } else {
       await this.actions.createNote({ title, list: this.list(), inbox: !this.list() });
     }
-    this.ref.close();
+    this.finish();
     if (!this.list()) {
       this.toasts.show({ title: 'In the Inbox' });
     }
   }
 
   protected async addDetails() {
-    this.ref.close();
+    this.finish();
     const back = this.data.back ?? this.router.url;
     if (this.kind() === 'todo') {
       await this.router.navigate(['/todo/new'], {
