@@ -131,4 +131,19 @@
       }
     </div>
   }
+
+  @if (overdue().length) {
+    <a class="repeating-head" routerLink="/repeating">Repeating<span>All</span></a>
+    <div class="stack">
+      @for (item of overdue(); track item.todo.id) {
+        <app-repeat-row
+          [title]="item.todo.title"
+          [status]="item.status"
+          [checkbox]="true"
+          (tick)="completeRepeating(item.todo)"
+          (open)="openRepeating()"
+        />
+      }
+    </div>
+  }
 </main>

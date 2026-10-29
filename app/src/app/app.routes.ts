@@ -63,6 +63,11 @@ export const routes: Routes = [
     loadComponent: () => import('./lists/list-settings').then((m) => m.ListSettings),
   },
   {
+    path: 'repeat/:id',
+    canActivate: [signedIn],
+    loadComponent: () => import('./repeating/repeat-editor').then((m) => m.RepeatEditor),
+  },
+  {
     path: 'note/:id',
     canActivate: [signedIn],
     loadComponent: () => import('./note/note-editor').then((m) => m.NoteEditor),
@@ -77,6 +82,10 @@ export const routes: Routes = [
         pathMatch: 'full',
         canActivate: [setUp],
         loadComponent: () => import('./today/today').then((m) => m.Today),
+      },
+      {
+        path: 'repeating',
+        loadComponent: () => import('./repeating/repeating-page').then((m) => m.RepeatingPage),
       },
       { path: 'inbox', loadComponent: () => import('./inbox/inbox').then((m) => m.Inbox) },
       { path: 'lists', loadComponent: () => import('./lists/lists-page').then((m) => m.ListsPage) },

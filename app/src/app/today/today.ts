@@ -23,10 +23,12 @@ import { TodoRow } from '../ui/todo-row';
 import { FirstLaunchTip } from './first-launch-tip';
 import { PickSheet } from './pick-sheet';
 import { todayItems } from './today-items';
+import { isRepeating, repeatStatus } from '../repeating/repeat-status';
+import { RepeatRow } from '../repeating/repeat-row';
 
 @Component({
   selector: 'app-today',
-  imports: [EmptyState, FirstLaunchTip, Icon, NextCard, RouterLink, TodoRow],
+  imports: [EmptyState, FirstLaunchTip, Icon, NextCard, RepeatRow, RouterLink, TodoRow],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './today.html',
   styleUrl: './today.scss',
@@ -41,6 +43,17 @@ export class Today {
   protected readonly sync = inject(SyncService);
 
   protected readonly items = computed(() => todayItems(this.store.todos(), this.clock.now()));
+  protected readonly overdue = computed(() =>
+    this.store
+      .todos()
+      .filter((todo) => isRepeating(todo) && !todo.archived_at)
+      .map((todo) => ({
+        todo,
+        status: repeatStatus(todo, this.store.completions(), this.clock.today()),
+      }))
+      .filter((item) => item.status.overdue)
+      .sort((a, b) => b.status.daysSince - a.status.daysSince),
+  );
   protected readonly dateLabel = computed(() => longDate(this.clock.today()));
   protected readonly doneCount = computed(() => this.items().done.length);
   protected readonly allDone = computed(
@@ -83,6 +96,15 @@ export class Today {
   protected async untick(todo: Todo) {
     const undo = await this.actions.untick(todo);
     this.toasts.show({ title: `${todo.title} is back on Today`, undo });
+  }
+
+  protected async completeRepeating(todo: Todo) {
+    const undo = await this.actions.complete(todo);
+    this.toasts.show({ title: `${todo.title} done`, undo });
+  }
+
+  protected openRepeating() {
+    this.router.navigateByUrl('/repeating');
   }
 
   protected openPick() {

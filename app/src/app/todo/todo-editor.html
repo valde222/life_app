@@ -50,7 +50,7 @@
       </app-detail-row>
       <app-detail-row label="Date" [value]="dateLabel()" empty="Add date" (pick)="pickDate()" />
       <app-detail-row label="Time" [value]="timeLabel()" empty="Add time" (pick)="pickTime()" />
-      <app-detail-row label="Repeat" value="" empty="Never" />
+      <app-detail-row label="Repeat" value="" empty="Never" (pick)="repeat()" />
       <div class="switch-row">
         <span>Event</span>
         <app-switch label="Event" [on]="todo.is_event" (onChange)="setEvent($event)" />

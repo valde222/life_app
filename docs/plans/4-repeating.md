@@ -19,11 +19,11 @@
 
 ## Steps
 
-- [ ] Repeat status rules with unit tests
-- [ ] Repeat editor and Stop repeating
-- [ ] Repeating screen and its sheet
-- [ ] Today's Repeating section
-- [ ] e2e T12 and T13
+- [x] Repeat status rules with unit tests
+- [x] Repeat editor and Stop repeating
+- [x] Repeating screen and its sheet
+- [x] Today's Repeating section
+- [x] e2e T12 and T13
 
 ## Done when
 
