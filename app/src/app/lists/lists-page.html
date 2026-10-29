@@ -1,0 +1,34 @@
+<header class="head">
+  <h1 class="t-display">Lists.</h1>
+  <a class="edit" routerLink="/lists/edit">Edit</a>
+</header>
+
+<main class="content">
+  @for (entry of groups(); track entry.group.id) {
+    <section class="box">
+      <button
+        type="button"
+        class="box-head"
+        [attr.aria-expanded]="entry.open"
+        (click)="toggle(entry.group)"
+      >
+        <span class="group-name">{{ entry.group.name }}</span>
+        <span class="summary">{{ entry.summary }}</span>
+        <app-icon name="chevron-right" [size]="16" [stroke]="2.2" [class.open]="entry.open" />
+      </button>
+      @if (entry.open) {
+        <div class="rows">
+          @for (list of entry.lists; track list.id) {
+            <a class="row" [routerLink]="['/lists', list.id]">
+              <app-list-swatch [colour]="list.colour" />
+              <span class="name">{{ list.name }}</span>
+              <span class="counts">{{ counts(list) }}</span>
+            </a>
+          }
+          <button type="button" class="row add" (click)="newList(entry.group)">+ New list</button>
+        </div>
+      }
+    </section>
+  }
+  <button type="button" class="btn-add new-group" (click)="newGroup()">+ New group</button>
+</main>

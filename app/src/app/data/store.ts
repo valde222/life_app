@@ -1,4 +1,5 @@
 import { computed, inject, Injectable } from '@angular/core';
+import { countsByList } from '../lists/list-counts';
 import { List, Note, Todo } from './models';
 import { Repository } from './repository';
 
@@ -25,15 +26,10 @@ export class Store {
   readonly inboxNotes = computed(() => this.notes().filter(isInInbox));
   readonly inboxCount = computed(() => this.inboxTodos().length + this.inboxNotes().length);
 
-  readonly openTodoCountByList = computed(() => {
-    const counts = new Map<string, number>();
-    for (const todo of this.todos()) {
-      if (todo.list && !todo.done_at && !todo.archived_at) {
-        counts.set(todo.list, (counts.get(todo.list) ?? 0) + 1);
-      }
-    }
-    return counts;
-  });
+  readonly countsByList = computed(() => countsByList(this.todos(), this.notes()));
+  readonly openTodoCountByList = computed(
+    () => new Map([...this.countsByList()].map(([list, counts]) => [list, counts.todos])),
+  );
 
   stepsOf(todoId: string) {
     return computed(() =>
@@ -41,6 +37,14 @@ export class Store {
         .filter((step) => step.todo === todoId)
         .sort((a, b) => a.order - b.order),
     );
+  }
+
+  group(id: string) {
+    return this.groups().find((group) => group.id === id);
+  }
+
+  listsIn(groupId: string) {
+    return this.openLists().filter((list) => list.group === groupId);
   }
 
   list(id: string): List | undefined {

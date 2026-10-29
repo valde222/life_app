@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input, output, signal } f
 import { Icon, IconName } from './icon';
 
 export interface SwipeAction {
-  label: string;
+  label?: string;
   icon: IconName;
   quiet?: boolean;
 }

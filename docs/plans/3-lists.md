@@ -16,11 +16,11 @@
 
 ## Steps
 
-- [ ] GroupBox and ListRow; Lists screen with remembered open groups
-- [ ] New list and New group sheets
-- [ ] List page with Todos and Notes tabs, empty states, swipes and action sheets
-- [ ] List settings
-- [ ] Edit lists with reordering
+- [x] GroupBox and ListRow; Lists screen with remembered open groups
+- [x] New list and New group sheets
+- [x] List page with Todos and Notes tabs, empty states, swipes and action sheets
+- [x] List settings
+- [x] Edit lists with reordering
 - [ ] e2e T10
 
 ## Done when
