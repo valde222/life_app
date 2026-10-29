@@ -4,7 +4,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Phase 1: Foundations (`v0.1-foundations`, done when T9 passes)
 
-- [ ] Phase 1 plans written and committed (`docs/plans/1-*.md`)
+- [x] Phase 1 plans written and committed (`docs/plans/1-*.md`)
 - [ ] Repo layout: one Angular app, a Capacitor shell, a Tauri shell; top-level README (`1-repo-layout`)
 - [ ] Design tokens as a code file, fonts, base styles (`1-design-tokens`)
 - [ ] PocketBase schema and migrations for the eight collections, version pinned (`1-pocketbase`)
