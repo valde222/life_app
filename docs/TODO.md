@@ -33,7 +33,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 - [x] Ticking, the toast with Add note and Undo, "N done" fold (R7, R25; T2; `2-today`)
 - [x] Left over and Pick for today (R8, R9; T8; `2-today`)
 - [x] Welcome, First Today, set up groups and lists (`2-first-launch`)
-- [ ] T1–T8 pass
+- [x] T1–T8 pass
 
 ## Phase 3: Lists and notes (`v0.3-lists`, done when T10–T11 pass)
 
