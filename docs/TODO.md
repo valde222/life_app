@@ -61,7 +61,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Phase 5: Agenda, This week, Search, Archive (`v0.5-agenda`, done when T15 passes)
 
-- [ ] Phase 5 plans written and committed
+- [x] Phase 5 plans written and committed (`docs/plans/5-agenda-week-search-archive.md`)
 - [ ] Agenda: week strip, month view, choose month and year, empty-day folding (R28)
 - [ ] This week (R29)
 - [ ] Search with All, Todos and Notes filters, link into Archive search (R30)
