@@ -49,14 +49,14 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Phase 4: Repeating, events, calendars (`v0.4-repeating`, done when T12–T14 pass)
 
-- [ ] Phase 4 plans written and committed
-- [ ] Repeating roughly: days since, red past target, Just count days (R19; T12)
-- [ ] Repeating on a schedule: next due day, red after a missed day (R20; T13)
-- [ ] Repeat row and Stop repeating, completions kept (R21)
-- [ ] Today's Repeating section, ticking adds a completion (R10; T12)
-- [ ] Event detail, Event label everywhere (R12)
-- [ ] Calendar import on the phone, Settings → Calendars, read-only (R13, R14; T14)
-- [ ] Reminders as Android notifications
+- [x] Phase 4 plans written and committed (`docs/plans/4-*.md`)
+- [ ] Repeating roughly: days since, red past target, Just count days (R19; T12; `4-repeating`)
+- [ ] Repeating on a schedule: next due day, red after a missed day (R20; T13; `4-repeating`)
+- [ ] Repeat row and Stop repeating, completions kept (R21; `4-repeating`)
+- [ ] Today's Repeating section, ticking adds a completion (R10; T12; `4-repeating`)
+- [ ] Event detail, Event label everywhere (R12; `4-events-calendars`)
+- [ ] Calendar import on the phone, Settings → Calendars, read-only (R13, R14; T14; `4-events-calendars`)
+- [ ] Reminders as Android notifications (`4-events-calendars`)
 - [ ] T12–T14 pass
 
 ## Phase 5: Agenda, This week, Search, Archive (`v0.5-agenda`, done when T15 passes)
