@@ -19,11 +19,11 @@
 
 ## Steps
 
-- [ ] Clock service, today's items, Scheduled and Anytime
-- [ ] Next card timing
-- [ ] Ticking, toast, done fold
-- [ ] Left over and Pick for today
-- [ ] Pill and empty states
+- [x] Clock service, today's items, Scheduled and Anytime
+- [x] Next card timing
+- [x] Ticking, toast, done fold
+- [x] Left over and Pick for today
+- [x] Pill and empty states
 - [ ] e2e T1, T2, T8
 
 ## Done when

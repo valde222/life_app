@@ -1,42 +1,134 @@
+@if (compact()) {
+  <div class="compact-bar">
+    <span class="compact-title">Today.</span>
+    @if (!nothing()) {
+      <a class="pill compact-pill tabular" routerLink="/week"
+        >{{ doneCount() }} / {{ items().total }} done</a
+      >
+    }
+  </div>
+}
 <header class="head">
-  <span class="t-eyebrow date">{{ dateLabel }}</span>
+  <div class="top-row">
+    <span class="eyebrow date">{{ dateLabel() }}</span>
+    <span class="top-actions">
+      @if (!nothing()) {
+        <a class="pill tabular" routerLink="/week"
+          >{{ doneCount() }} / {{ items().total }} done<app-icon
+            name="chevron-right"
+            [size]="14"
+            [stroke]="2.6"
+        /></a>
+      }
+      <a class="avatar" routerLink="/settings" aria-label="Settings">{{ initial }}</a>
+    </span>
+  </div>
   <div class="title-row">
     <h1 class="t-display">Today.</h1>
     @if (!sync.online()) {
-      <span class="offline" role="status">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M3 3l18 18" />
-          <path d="M7 18h10a4 4 0 0 0 1.5-7.7A6 6 0 0 0 8.4 7.6" />
-          <path d="M5.2 9.6A4.5 4.5 0 0 0 7 18" />
-        </svg>
-        Offline, {{ sync.waiting() }} waiting
-      </span>
+      <span class="offline" role="status"
+        ><app-icon name="offline" [size]="14" [stroke]="2.2" />Offline,
+        {{ sync.waiting() }} waiting</span
+      >
     }
   </div>
 </header>
 
 <main class="content">
-  <form class="add" (ngSubmit)="add()">
-    <input name="title" aria-label="New todo" placeholder="New todo" [(ngModel)]="title" />
-  </form>
-  <ul class="rows">
-    @for (todo of sorted(); track todo.id) {
-      <li class="row t-row">
-        @if (todo.time) {
-          <span class="t-meta tabular">{{ todo.time }}</span>
+  @if (allDone()) {
+    <section class="all-done">
+      <span class="done-mark"><app-icon name="check" [size]="40" [stroke]="2.6" /></span>
+      <p class="all-done-title">All done.</p>
+      <div class="all-done-actions">
+        <a class="btn btn-primary" routerLink="/week">See this week</a>
+        <button type="button" class="btn btn-quiet" (click)="openPick()">
+          Pick something else
+        </button>
+      </div>
+    </section>
+  } @else if (nothing()) {
+    <app-empty-state class="nothing" title="Nothing yet." />
+    @if (!firstLaunch()) {
+      <button type="button" class="btn-add pick" (click)="openPick()">
+        + Pick for today
+        @if (items().leftOver.length) {
+          <span class="left-over">{{ items().leftOver.length }} left over</span>
         }
-        {{ todo.title }}
-      </li>
+      </button>
+    } @else {
+      <app-first-launch-tip />
     }
-  </ul>
+  } @else {
+    @if (items().next || items().scheduled.length) {
+      <h2 class="eyebrow section">Scheduled</h2>
+      <div class="stack">
+        @if (items().next; as next) {
+          <app-next-card
+            [title]="next.title"
+            [link]="['/todo', next.id]"
+            [time]="next.time"
+            [timeEnd]="next.time_end"
+            [date]="next.date"
+            [now]="clock.now()"
+            [event]="next.is_event"
+            [list]="list(next)"
+          />
+        }
+        @for (todo of items().scheduled; track todo.id) {
+          <app-todo-row
+            [title]="todo.title"
+            [link]="['/todo', todo.id]"
+            [time]="todo.time"
+            [event]="todo.is_event"
+            [list]="list(todo)"
+            (toggle)="tick(todo)"
+          />
+        }
+      </div>
+    }
+
+    <h2 class="eyebrow section">Anytime</h2>
+    <div class="stack">
+      @for (todo of items().anytime; track todo.id) {
+        <app-todo-row
+          [title]="todo.title"
+          [link]="['/todo', todo.id]"
+          [trailing]="steps(todo)"
+          [event]="todo.is_event"
+          [list]="list(todo)"
+          (toggle)="tick(todo)"
+        />
+      }
+      <button type="button" class="btn-add" (click)="openPick()">
+        + Pick for today
+        @if (items().leftOver.length) {
+          <span class="left-over">{{ items().leftOver.length }} left over</span>
+        }
+      </button>
+      @if (items().done.length) {
+        <button
+          type="button"
+          class="fold"
+          [attr.aria-expanded]="showDone()"
+          (click)="showDone.set(!showDone())"
+        >
+          <app-icon name="chevron-right" [size]="14" [stroke]="2.4" [class.open]="showDone()" />{{
+            items().done.length
+          }}
+          done
+        </button>
+        @if (showDone()) {
+          @for (todo of items().done; track todo.id) {
+            <app-todo-row
+              [title]="todo.title"
+              [link]="['/todo', todo.id]"
+              [list]="list(todo)"
+              [done]="true"
+              (toggle)="untick(todo)"
+            />
+          }
+        }
+      }
+    </div>
+  }
 </main>
