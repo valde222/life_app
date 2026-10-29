@@ -3,6 +3,7 @@ import { CollectionName, Collections } from '../data/models';
 
 export interface RemoteWriter {
   upsert<C extends CollectionName>(collection: C, record: Collections[C]): Promise<Collections[C]>;
+  purge(collection: CollectionName, id: string): Promise<void>;
 }
 
 export type SendFailure = 'offline' | 'unauthorised' | 'rejected';
@@ -21,13 +22,14 @@ export async function enqueue(
   collection: CollectionName,
   id: string,
   changedAt: number,
+  op?: 'purge',
 ) {
   const key = `${collection}/${id}`;
   const existing = await store.outbox.where('key').equals(key).first();
   if (existing) {
-    await store.outbox.update(existing.seq!, { changed_at: changedAt });
+    await store.outbox.update(existing.seq!, { changed_at: changedAt, op });
   } else {
-    await store.outbox.add({ key, collection, id, changed_at: changedAt });
+    await store.outbox.add({ key, collection, id, changed_at: changedAt, ...(op ? { op } : {}) });
   }
 }
 
@@ -41,8 +43,11 @@ export async function drainOutbox(
     entry;
     entry = await store.outbox.orderBy('seq').first()
   ) {
-    const record = await store.records(entry.collection).get(entry.id);
-    if (record) {
+    const record =
+      entry.op === 'purge' ? undefined : await store.records(entry.collection).get(entry.id);
+    if (entry.op === 'purge') {
+      await remote.purge(entry.collection, entry.id);
+    } else if (record) {
       try {
         await onSent(entry.collection, await remote.upsert(entry.collection, record));
       } catch (error) {

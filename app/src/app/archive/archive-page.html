@@ -1,0 +1,96 @@
+<header class="bar">
+  <a class="back" routerLink="/search"
+    ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />Search</a
+  >
+</header>
+<h1 class="t-display title">Archive.</h1>
+<app-segmented class="tabs" [segments]="tabs" [(value)]="tab" />
+<label class="search">
+  <app-icon name="search" [size]="18" [stroke]="2" />
+  <input
+    [attr.aria-label]="tab() === 'archive' ? 'Search the archive' : 'Search done'"
+    [placeholder]="tab() === 'archive' ? 'Search the archive' : 'Search done'"
+    [ngModel]="query()"
+    (ngModelChange)="query.set($event)"
+  />
+</label>
+
+<main class="content">
+  @if (tab() === 'archive') {
+    @for (group of archived(); track group.day) {
+      <h2 class="eyebrow section">{{ group.label }}</h2>
+      <div class="options">
+        @for (row of group.items; track row.id) {
+          <div class="option row">
+            <span class="text">
+              <span class="name">{{ row.title }}</span>
+              @if (row.sub) {
+                <span class="sub">{{ row.sub }}</span>
+              }
+            </span>
+            <button type="button" class="pill-button" (click)="restore(row)">Restore</button>
+            <button
+              type="button"
+              class="icon-button"
+              [attr.aria-label]="'Delete ' + row.title"
+              (click)="delete(row)"
+            >
+              <app-icon name="trash" [size]="18" />
+            </button>
+          </div>
+        }
+      </div>
+    } @empty {
+      @if (!closedLists().length) {
+        <p class="t-empty-title none">Nothing archived.</p>
+      }
+    }
+    @if (closedLists().length) {
+      <h2 class="eyebrow section">Closed lists</h2>
+      <div class="options">
+        @for (list of closedLists(); track list.id) {
+          <div class="option row">
+            <span class="text">
+              <span class="name">{{ list.name }}</span>
+              <span class="sub">{{ closedSub(list) }}</span>
+            </span>
+            <button type="button" class="pill-button" (click)="restoreList(list)">Restore</button>
+            <button
+              type="button"
+              class="icon-button"
+              [attr.aria-label]="'Delete ' + list.name"
+              (click)="deleteList(list)"
+            >
+              <app-icon name="trash" [size]="18" />
+            </button>
+          </div>
+        }
+      </div>
+    }
+    <a class="card deleted-link" routerLink="/archive/deleted">
+      <span>Recently deleted</span>
+      <span class="count"
+        >{{ deletedCount() || '' }}<app-icon name="chevron-right" [size]="16" [stroke]="2.2"
+      /></span>
+    </a>
+  } @else {
+    @for (group of done(); track group.day) {
+      <h2 class="eyebrow section">{{ group.label }}</h2>
+      <div class="options">
+        @for (row of group.items; track row.id) {
+          <div class="option row">
+            <span class="text">
+              <span class="name">{{ row.title }}</span>
+              @if (row.sub) {
+                <span class="sub">{{ row.sub }}</span>
+              }
+            </span>
+            <button type="button" class="pill-button" (click)="notDone(row)">Not done</button>
+          </div>
+        }
+      </div>
+    } @empty {
+      <p class="t-empty-title none">Nothing done yet.</p>
+    }
+  }
+</main>

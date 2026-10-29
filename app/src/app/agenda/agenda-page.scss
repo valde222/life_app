@@ -1,0 +1,258 @@
+:host {
+  display: block;
+}
+
+.head {
+  padding: calc(52px + env(safe-area-inset-top)) var(--space-5) 0;
+
+  .eyebrow {
+    padding: 0;
+  }
+
+  h1 {
+    margin: 6px 0 0;
+  }
+}
+
+.strip {
+  margin: var(--space-4) var(--space-4) 0;
+  padding: 10px 8px 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  touch-action: pan-y;
+}
+
+.day {
+  height: 64px;
+  border: 0;
+  border-radius: var(--radius-input);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--ink-2);
+
+  .wd {
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .n {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  &.today .n {
+    font-weight: 700;
+  }
+
+  &.on {
+    background: var(--accent);
+    color: var(--on-accent-2);
+
+    .n {
+      color: var(--on-accent);
+    }
+
+    .dot {
+      background: var(--on-accent);
+    }
+  }
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background: transparent;
+
+  &.shown {
+    background: var(--ink);
+  }
+}
+
+.handle {
+  align-self: center;
+  width: 36px;
+  height: 14px;
+  margin-top: 2px;
+  border: 0;
+  background: transparent;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 5px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--control);
+  }
+}
+
+.month-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 8px;
+}
+
+.arrow {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.month-name {
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  row-gap: 2px;
+}
+
+.grid-wd {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.cell {
+  height: 46px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+
+  &.past {
+    color: var(--faint);
+  }
+
+  &.has {
+    font-weight: 700;
+  }
+
+  &.on {
+    background: var(--accent);
+    color: var(--on-accent);
+
+    .dot.shown {
+      background: var(--on-accent);
+    }
+  }
+}
+
+.months {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  padding-bottom: 8px;
+}
+
+.month {
+  height: 46px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--bg);
+  font-size: 15px;
+  font-weight: 600;
+
+  &.on {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+}
+
+.content {
+  padding: 0 var(--space-4) 164px;
+}
+
+.day-head {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+  display: flex;
+  justify-content: space-between;
+}
+
+.free {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.row {
+  min-height: 56px;
+  padding: 8px 14px;
+  border-radius: var(--radius-row);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--ink);
+
+  &.quiet {
+    background: var(--quiet);
+
+    .time {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-2);
+    }
+  }
+}
+
+.time {
+  width: 64px;
+  flex-shrink: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.end {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 500;
+}

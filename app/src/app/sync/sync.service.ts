@@ -16,6 +16,7 @@ export class SyncService {
   private readonly server = inject(Server);
 
   readonly online = signal(navigator.onLine);
+  readonly lastSynced = signal<Date | null>(null);
   readonly waiting = inject(Repository).watchOutboxSize();
 
   private resolveFirstSync!: () => void;
@@ -49,6 +50,7 @@ export class SyncService {
   sync(): Promise<void> {
     return this.run(async () => {
       await this.pull();
+      await this.pruneDeleted();
       await this.subscribe();
       await this.drain();
     });
@@ -79,6 +81,7 @@ export class SyncService {
           this.rerun = false;
           await work();
           this.online.set(true);
+          this.lastSynced.set(new Date());
         } while (this.rerun);
       } catch (error) {
         this.handleFailure(error);
@@ -131,6 +134,28 @@ export class SyncService {
       if (latest !== cursor) {
         await this.store.meta.put({ key: cursorKey, value: latest });
       }
+    }
+  }
+
+  private async pruneDeleted() {
+    for (const collection of COLLECTIONS_IN_DEPENDENCY_ORDER) {
+      const table = this.store.records(collection);
+      const localDeleted = await table.filter((record) => !!record.deleted_at).primaryKeys();
+      if (!localDeleted.length) {
+        continue;
+      }
+      const remote = await this.server.pb.collection(collection).getFullList<{ id: string }>({
+        filter: "deleted_at != ''",
+        fields: 'id',
+        requestKey: null,
+      });
+      const kept = new Set(remote.map((record) => record.id));
+      const pending = new Set(
+        (await this.store.outbox.filter((entry) => entry.collection === collection).toArray()).map(
+          (entry) => entry.id,
+        ),
+      );
+      await table.bulkDelete(localDeleted.filter((id) => !kept.has(id) && !pending.has(id)));
     }
   }
 

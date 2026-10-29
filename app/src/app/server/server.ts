@@ -66,6 +66,17 @@ export class Server implements RemoteWriter, PhotoWriter {
     }
   }
 
+  async purge(collection: CollectionName, id: string): Promise<void> {
+    try {
+      await this.pb.collection(collection).delete(id);
+    } catch (error) {
+      if (error instanceof ClientResponseError && error.status === 404) {
+        return;
+      }
+      throw toSendError(error);
+    }
+  }
+
   async addPhoto(note: string, file: Blob, name: string): Promise<Note> {
     const form = new FormData();
     form.append('photos+', file, name);

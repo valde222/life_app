@@ -8,6 +8,7 @@ export interface OutboxEntry {
   collection: CollectionName;
   id: string;
   changed_at: number;
+  op?: 'purge';
 }
 
 export interface PendingPhoto {
