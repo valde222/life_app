@@ -1,0 +1,66 @@
+<header class="head">
+  <label class="field">
+    <app-icon name="search" [size]="18" [stroke]="2" />
+    <input
+      #field
+      aria-label="Search todos and notes"
+      placeholder="Search todos and notes"
+      [ngModel]="query()"
+      (ngModelChange)="query.set($event)"
+    />
+    @if (query()) {
+      <button type="button" class="clear" aria-label="Clear" (click)="query.set('')">
+        <app-icon name="close" [size]="12" [stroke]="2.4" />
+      </button>
+    }
+  </label>
+  <button type="button" class="cancel" (click)="cancel()">Cancel</button>
+</header>
+<div class="filters">
+  @for (each of filters; track each.value) {
+    <button
+      type="button"
+      class="chip"
+      [class.on]="each.value === filter()"
+      [attr.aria-pressed]="each.value === filter()"
+      (click)="filter.set(each.value)"
+    >
+      {{ each.label }}
+    </button>
+  }
+  <a class="chip archive" routerLink="/archive" [queryParams]="query() ? { q: query() } : {}"
+    >Archive<app-icon name="chevron-right" [size]="14" [stroke]="2.2"
+  /></a>
+</div>
+
+<main class="content">
+  @for (section of sections(); track section.label) {
+    <h2 class="eyebrow section">{{ section.label }}</h2>
+    <div class="stack">
+      @for (hit of section.hits; track hit.kind + hit.id) {
+        <a class="hit" [routerLink]="link(hit)" [state]="{ back: '/search' }">
+          @if (hit.kind === 'note') {
+            <app-icon name="note" [size]="20" class="kind" />
+          } @else {
+            <span class="box" [class.done]="hit.done">
+              @if (hit.done) {
+                <app-icon name="check" [size]="14" [stroke]="3" />
+              }
+            </span>
+          }
+          <span class="title">{{ hit.title }}</span>
+          @if (list(hit)) {
+            <app-list-label [list]="list(hit)" />
+          }
+        </a>
+      }
+    </div>
+  } @empty {
+    @if (query().trim()) {
+      <p class="t-empty-title none">No results for “{{ query().trim() }}”.</p>
+      <button type="button" class="btn btn-secondary capture" (click)="captureAsNote()">
+        Capture “{{ query().trim() }}” as a note
+      </button>
+    }
+  }
+</main>

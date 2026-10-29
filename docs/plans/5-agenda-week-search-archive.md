@@ -19,7 +19,7 @@
 - [x] Hard delete in the outbox and pruning on pull
 - [x] Agenda with week strip, month view and month picker
 - [x] This week
-- [ ] Search
+- [x] Search
 - [ ] Archive, Done and Recently deleted
 - [ ] Settings
 - [ ] e2e T15
