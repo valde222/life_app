@@ -26,7 +26,7 @@
 - [x] Photo upload through the outbox, local pending photos, file tokens
 - [x] Add a photo sheet and photo view
 - [x] Link picker and links shown both ways
-- [ ] e2e T11
+- [x] e2e T11
 
 ## Done when
 

@@ -21,7 +21,7 @@
 - [x] List page with Todos and Notes tabs, empty states, swipes and action sheets
 - [x] List settings
 - [x] Edit lists with reordering
-- [ ] e2e T10
+- [x] e2e T10
 
 ## Done when
 
