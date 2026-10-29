@@ -1,0 +1,55 @@
+<div class="handle" aria-hidden="true"></div>
+<div class="head">
+  <h2 class="t-sheet-title">Link to…</h2>
+  <button type="button" class="done" (click)="done()">Done</button>
+</div>
+<label class="search">
+  <app-icon name="search" [size]="18" [stroke]="2" />
+  <input
+    aria-label="Search notes and todos"
+    placeholder="Search notes and todos"
+    [ngModel]="query()"
+    (ngModelChange)="query.set($event)"
+  />
+</label>
+@if (!data.onlyNotes) {
+  <app-segmented class="filters" [segments]="filters" [(value)]="filter" />
+}
+<div class="items">
+  @if (suggested().length) {
+    <h3 class="eyebrow">Suggested for {{ listName() }}</h3>
+    @for (candidate of suggested(); track candidate.kind + candidate.id) {
+      <ng-container [ngTemplateOutlet]="row" [ngTemplateOutletContext]="{ $implicit: candidate }" />
+    }
+  }
+  @if (others().length) {
+    <h3 class="eyebrow">{{ query() ? 'Matches' : 'Recent' }}</h3>
+    @for (candidate of others(); track candidate.kind + candidate.id) {
+      <ng-container [ngTemplateOutlet]="row" [ngTemplateOutletContext]="{ $implicit: candidate }" />
+    }
+  }
+  <button type="button" class="btn-add" (click)="newNote()">+ New note and link it</button>
+</div>
+
+<ng-template #row let-candidate>
+  <button
+    type="button"
+    class="item"
+    role="checkbox"
+    [attr.aria-checked]="isPicked(candidate)"
+    (click)="toggle(candidate)"
+  >
+    <span class="kind">{{ candidate.kind === 'note' ? 'Note' : 'Todo' }}</span>
+    <span class="text">
+      <span class="title">{{ candidate.title }}</span>
+      @if (candidate.meta) {
+        <span class="meta">{{ candidate.meta }}</span>
+      }
+    </span>
+    <span class="tick" [class.on]="isPicked(candidate)">
+      @if (isPicked(candidate)) {
+        <app-icon name="check" [size]="14" [stroke]="3" />
+      }
+    </span>
+  </button>
+</ng-template>

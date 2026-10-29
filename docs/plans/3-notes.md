@@ -22,10 +22,10 @@
 
 - [x] Migration adding `notes.links`
 - [x] Markdown renderer with unit tests
-- [ ] Note page with view and edit modes and toolbar
+- [x] Note page with view and edit modes and toolbar
 - [x] Photo upload through the outbox, local pending photos, file tokens
-- [ ] Add a photo sheet and photo view
-- [ ] Link picker and links shown both ways
+- [x] Add a photo sheet and photo view
+- [x] Link picker and links shown both ways
 - [ ] e2e T11
 
 ## Done when
