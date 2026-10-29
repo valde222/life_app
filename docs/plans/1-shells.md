@@ -13,7 +13,7 @@
 
 ## Steps
 
-- [ ] Capacitor added, Android project generated, `app/android/README.md`
+- [x] Capacitor added, Android project generated, `app/android/README.md`
 - [ ] Tauri shell, `desktop/README.md`
 - [ ] Both build locally once
 
