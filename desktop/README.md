@@ -1,6 +1,6 @@
 # Desktop shell
 
-Tauri 2 wrapping the Angular app as the Windows app "Life". Phase 6 adds the tray icon and the Ctrl+Space capture window here.
+Tauri 2 wrapping the Angular app as the Windows app "Life": a tray icon keeps it running when the window is closed, and Ctrl+Space anywhere opens a small capture window (R1).
 
 ## Build
 
@@ -22,6 +22,16 @@ For a window on the dev server instead: start the dev environment, then `cmd.exe
 | App id, window size | `src-tauri/tauri.conf.json` |
 | Icons | Generated from `docs/brand/icon.svg` with `cargo tauri icon` |
 | Server address | Sign-in screen, kept on the device |
+
+## Native parts
+
+| Part | What it does |
+| --- | --- |
+| Tray icon | Show Life, Capture, Quit. Closing a window hides it; Quit ends the app |
+| `tauri-plugin-global-shortcut` | Ctrl+Space anywhere shows the always-on-top capture window (`/capture` in the app), which hides itself after Save or Esc |
+| `tauri-plugin-single-instance` | A second launch brings the running app forward |
+
+To start it with Windows, put a shortcut to `Life.exe` in `shell:startup`.
 
 ## Talks to
 
