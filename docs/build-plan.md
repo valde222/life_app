@@ -217,5 +217,5 @@ Nine things to settle. The first three are best answered before the build starts
 - [ ] **Calendar window:** how far back and ahead the phone imports, for example 2 weeks back and 3 months ahead.
 - [ ] **Past events on Today:** do they stay, fade, or disappear once their time has passed?
 - [ ] **Reminders in v1:** Android notifications only, or desktop too?
-- [ ] **Repo name and license.** MIT would match PocketBase.
+- [x] **Repo name and license.** MIT would match PocketBase. *Taken: MIT; the repo is `life-app`.*
 - [x] **Walkthroughs in the planning doc** still mention the Calendar label and "All 5"; update them to the current screens.
