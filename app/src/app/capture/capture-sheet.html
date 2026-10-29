@@ -1,0 +1,42 @@
+<app-sheet>
+  <app-segmented [segments]="kinds" [(value)]="kind" />
+  <div class="card entry">
+    <input
+      class="what"
+      aria-label="What's on your mind"
+      [placeholder]="kind() === 'todo' ? 'New todo' : 'Quick note'"
+      [ngModel]="text()"
+      (ngModelChange)="text.set($event)"
+      (keydown.enter)="save()"
+      cdkFocusInitial
+      autocomplete="off"
+    />
+    <div class="chips">
+      @if (kind() === 'todo') {
+        @if (date()) {
+          <span class="chip on date">
+            <button type="button" class="date-pick" (click)="pickDate()">
+              <app-icon name="calendar-chip" [size]="14" [stroke]="2.2" />{{ dateLabel() }}
+            </button>
+            <button type="button" class="remove" aria-label="Remove date" (click)="clearDate()">
+              <app-icon name="close" [size]="14" [stroke]="2.2" />
+            </button>
+          </span>
+        } @else {
+          <button type="button" class="chip quiet" (click)="pickDate()">
+            <app-icon name="calendar-chip" [size]="14" [stroke]="2.2" />Date
+          </button>
+        }
+      }
+      <button type="button" class="chip quiet" (click)="pickList()">
+        {{ listName() }}<app-icon name="chevron-down" [size]="14" [stroke]="2.4" />
+      </button>
+    </div>
+  </div>
+  <div class="actions">
+    <button type="button" class="btn btn-secondary" (click)="addDetails()">Add details</button>
+    <button type="button" class="btn btn-primary save" [disabled]="!title()" (click)="save()">
+      Save
+    </button>
+  </div>
+</app-sheet>

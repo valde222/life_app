@@ -1,0 +1,61 @@
+@if (note(); as note) {
+  @if (mode() === 'edit') {
+    <header class="page-bar">
+      <a class="back" [routerLink]="back" (click)="persist()"
+        ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />Back</a
+      >
+    </header>
+  } @else {
+    <header class="sheet-bar">
+      <button type="button" class="bar-link" (click)="cancel()">Cancel</button>
+      <h1 class="bar-title">{{ heading() }}</h1>
+      <button type="button" class="bar-save" (click)="save()">Save</button>
+    </header>
+  }
+
+  <main class="body">
+    <input
+      class="card title"
+      aria-label="Title"
+      placeholder="Title"
+      [ngModel]="title()"
+      (ngModelChange)="title.set($event)"
+      (blur)="persist()"
+    />
+
+    <button
+      type="button"
+      class="list-chip"
+      [style]="swatch(listRecord()?.colour)"
+      [class.none]="!listRecord()"
+      (click)="pickList()"
+    >
+      {{ listRecord()?.name ?? 'Add to a list' }}
+      <app-icon name="chevron-down" [size]="14" [stroke]="2.4" />
+    </button>
+
+    <textarea
+      class="card body-text"
+      aria-label="Note text"
+      placeholder="Write more"
+      [ngModel]="body()"
+      (ngModelChange)="body.set($event)"
+      (blur)="persist()"
+    ></textarea>
+
+    @if (linkedTodos().length) {
+      <h2 class="eyebrow section">Linked</h2>
+      <div class="linked">
+        @for (todo of linkedTodos(); track todo.id) {
+          <a class="linked-item" [routerLink]="['/todo', todo.id]">
+            <span class="mini-box"></span>{{ todo.title }}
+          </a>
+        }
+      </div>
+    }
+
+    @if (mode() === 'edit') {
+      <button type="button" class="delete" (click)="delete()">Delete</button>
+    }
+  </main>
+}

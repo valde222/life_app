@@ -22,11 +22,11 @@
 ## Steps
 
 - [x] Day-word parsing and date labels ("Fri 23 Oct", "Today") with unit tests
-- [ ] Capture sheet, todo and quick note
+- [x] Capture sheet, todo and quick note
 - [x] Move to sheet
 - [x] Date, Time and Reminder pickers
-- [ ] Todo editor: New todo / New event / detail, steps
-- [ ] Note editor (title, list, body)
+- [x] Todo editor: New todo / New event / detail, steps
+- [x] Note editor (title, list, body)
 - [ ] e2e T3 and T4
 
 ## Done when

@@ -1,0 +1,131 @@
+@if (todo(); as todo) {
+  @if (isNew()) {
+    <header class="sheet-bar">
+      <button type="button" class="bar-link" (click)="cancel()">Cancel</button>
+      <h1 class="bar-title">{{ heading() }}</h1>
+      <button type="button" class="bar-save" [disabled]="!title().trim()" (click)="save()">
+        Save
+      </button>
+    </header>
+  } @else {
+    <header class="page-bar">
+      <a class="back" [routerLink]="back"
+        ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />{{ backLabel }}</a
+      >
+    </header>
+  }
+
+  <main class="body">
+    <div class="title-card">
+      @if (todo.is_event) {
+        <span class="event-icon"><app-icon name="calendar" [size]="20" /></span>
+      } @else if (isNew()) {
+        <span class="box"></span>
+      } @else {
+        <app-checkbox
+          class="tick"
+          [checked]="!!todo.done_at"
+          [label]="todo.done_at ? 'Mark not done' : 'Mark done'"
+          (toggle)="toggleDone()"
+        />
+      }
+      <input
+        class="title"
+        aria-label="Title"
+        [ngModel]="title()"
+        (ngModelChange)="title.set($event)"
+        (blur)="saveTitle()"
+        (keydown.enter)="isNew() ? save() : saveTitle()"
+        [placeholder]="todo.is_event ? 'Event' : 'Todo'"
+      />
+    </div>
+
+    <div class="options details">
+      <app-detail-row label="List" [value]="list()?.name ?? ''" empty="Inbox" (pick)="pickList()">
+        @if (list()) {
+          <app-list-label [list]="list()" />
+        } @else {
+          Inbox
+        }
+      </app-detail-row>
+      <app-detail-row label="Date" [value]="dateLabel()" empty="Add date" (pick)="pickDate()" />
+      <app-detail-row label="Time" [value]="timeLabel()" empty="Add time" (pick)="pickTime()" />
+      <app-detail-row label="Repeat" value="" empty="Never" />
+      <div class="switch-row">
+        <span>Event</span>
+        <app-switch label="Event" [on]="todo.is_event" (onChange)="setEvent($event)" />
+      </div>
+      <app-detail-row
+        label="Reminder"
+        [value]="reminderText()"
+        empty="Off"
+        (pick)="pickReminder()"
+      />
+    </div>
+
+    @if (!todo.is_event) {
+      <h2 class="eyebrow section">
+        @if (steps().length) {
+          Steps {{ isNew() ? steps().length : doneSteps() + ' of ' + steps().length }}
+        } @else {
+          Steps
+        }
+      </h2>
+      <div class="card steps">
+        @for (step of steps(); track trackStep($index, step)) {
+          <div class="step" [class.done]="step.done">
+            <button
+              type="button"
+              class="step-box"
+              [attr.aria-label]="(step.done ? 'Mark not done: ' : 'Mark done: ') + step.text"
+              (click)="toggleStep(step, $index)"
+            >
+              @if (step.done) {
+                <app-icon name="check" [size]="12" [stroke]="3.2" />
+              }
+            </button>
+            <span class="step-text">{{ step.text }}</span>
+            <button
+              type="button"
+              class="remove"
+              [attr.aria-label]="'Remove ' + step.text"
+              (click)="removeStep(step, $index)"
+            >
+              <app-icon name="close" [size]="14" [stroke]="2" />
+            </button>
+          </div>
+        }
+        <form class="add-step" (ngSubmit)="addStep()">
+          <app-icon name="plus" [size]="16" [stroke]="2" />
+          <input
+            name="step"
+            aria-label="Add a step"
+            placeholder="Add a step"
+            [ngModel]="newStep()"
+            (ngModelChange)="newStep.set($event)"
+          />
+        </form>
+      </div>
+    }
+
+    @if (!isNew()) {
+      <h2 class="eyebrow section">Notes</h2>
+      <div class="stack">
+        @for (note of linkedNotes(); track note.id) {
+          <a
+            class="card note"
+            [routerLink]="['/note', note.id]"
+            [state]="{ back: '/todo/' + id() }"
+          >
+            <span class="note-title">{{ note.title || 'Untitled' }}</span>
+            @if (note.body) {
+              <span class="note-body">{{ note.body }}</span>
+            }
+          </a>
+        }
+        <button type="button" class="btn-add" (click)="writeNote()">+ Write a note</button>
+      </div>
+      <button type="button" class="delete" (click)="delete()">Delete</button>
+    }
+  </main>
+}
