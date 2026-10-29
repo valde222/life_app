@@ -37,14 +37,14 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Phase 3: Lists and notes (`v0.3-lists`, done when T10–T11 pass)
 
-- [ ] Phase 3 plans written and committed
-- [ ] Lists screen with groups opening and closing, counts on closed groups (R22)
-- [ ] New list inside a group, New group, Edit lists and groups (R23; T10)
-- [ ] A list's Todos and Notes tabs, empty list, List settings, archive a list
-- [ ] Todo detail with steps (data model `steps`)
-- [ ] Notes with markdown body and photos from camera or files, full-size view (R24; T11)
-- [ ] Links between todos and notes, both ways, Link picker (R25)
-- [ ] Move to
+- [x] Phase 3 plans written and committed (`docs/plans/3-*.md`)
+- [ ] Lists screen with groups opening and closing, counts on closed groups (R22; `3-lists`)
+- [ ] New list inside a group, New group, Edit lists and groups (R23; T10; `3-lists`)
+- [ ] A list's Todos and Notes tabs, empty list, List settings, archive a list (`3-lists`)
+- [x] Todo detail with steps (data model `steps`; built with the todo editor in phase 2)
+- [ ] Notes with markdown body and photos from camera or files, full-size view (R24; T11; `3-notes`)
+- [ ] Links between todos and notes, and between notes, both ways, Link picker (R25; `3-notes`)
+- [x] Move to (built in phase 2)
 - [ ] T10–T11 pass
 
 ## Phase 4: Repeating, events, calendars (`v0.4-repeating`, done when T12–T14 pass)
