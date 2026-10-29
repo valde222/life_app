@@ -6,6 +6,7 @@ import { addDays, localDate, longDate, monthName, parseLocalDate } from '../time
 import { Icon } from '../ui/icon';
 import { ListLabel } from '../ui/list-label';
 import { agendaDays, AgendaSources, datesWithItems } from './agenda-days';
+import { isTyping } from '../ui/keyboard';
 
 type View = 'week' | 'month' | 'year';
 const DAYS_SHOWN = 21;
@@ -20,6 +21,7 @@ function mondayOf(date: string) {
   imports: [Icon, ListLabel, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './agenda-page.html',
+  host: { '(document:keydown)': 'onKey($event)' },
   styleUrl: './agenda-page.scss',
 })
 export class AgendaPage {
@@ -120,6 +122,17 @@ export class AgendaPage {
   protected openYear() {
     this.shownYear.set(Number(this.shownMonth().slice(0, 4)));
     this.view.set('year');
+  }
+
+  protected onKey(event: KeyboardEvent) {
+    if (isTyping(event.target) || event.ctrlKey || event.metaKey) {
+      return;
+    }
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      this.pick(addDays(this.selected(), event.key === 'ArrowLeft' ? -1 : 1));
+    } else if (event.key.toLowerCase() === 't') {
+      this.pick(this.today);
+    }
   }
 
   private swipeStart = 0;

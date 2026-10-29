@@ -1,0 +1,66 @@
+<button type="button" class="capture" (click)="capture.emit()">
+  <app-icon name="plus" [size]="16" [stroke]="2.4" />
+  <span class="grow">Capture</span>
+  <kbd>Ctrl Space</kbd>
+</button>
+
+<nav aria-label="Main">
+  @for (item of nav; track item.path) {
+    <a
+      class="item"
+      [routerLink]="item.path"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+      #active="routerLinkActive"
+      [attr.aria-current]="active.isActive ? 'page' : null"
+    >
+      <app-icon [name]="item.icon" [size]="18" [stroke]="active.isActive ? 2 : 1.8" />
+      <span class="grow">{{ item.label }}</span>
+      @if (item.path === '/inbox' && store.inboxCount()) {
+        <span class="badge" [attr.aria-label]="store.inboxCount() + ' in the inbox'">{{
+          store.inboxCount()
+        }}</span>
+      }
+    </a>
+  }
+</nav>
+
+<div class="lists-head">
+  <span>Lists</span>
+  <a routerLink="/lists/edit">Edit</a>
+</div>
+<div class="tree">
+  @for (entry of groups(); track entry.group.id) {
+    <button
+      type="button"
+      class="group"
+      [attr.aria-expanded]="entry.open"
+      (click)="toggle(entry.group.id)"
+    >
+      <app-icon name="chevron-right" [size]="14" [stroke]="2.2" [class.open]="entry.open" />
+      <span class="grow">{{ entry.group.name }}</span>
+    </button>
+    @if (entry.open) {
+      @for (list of entry.lists; track list.id) {
+        <a class="item list" [routerLink]="['/lists', list.id]" routerLinkActive="active">
+          <app-list-swatch [colour]="list.colour" style="--swatch-height: 18px; width: 8px" />
+          <span class="grow">{{ list.name }}</span>
+        </a>
+      }
+      <button type="button" class="add list" (click)="newList(entry.group.id)">+ New list</button>
+    }
+  }
+  <button type="button" class="add" (click)="newGroup()">+ New group</button>
+</div>
+
+<footer class="foot">
+  <a class="item settings" routerLink="/settings"
+    ><app-icon name="settings" [size]="18" /><span>Settings</span></a
+  >
+  <span class="state">{{
+    sync.online() ? 'Synced' : 'Offline, ' + sync.waiting() + ' waiting'
+  }}</span>
+  <button type="button" class="help" aria-label="Keyboard shortcuts" (click)="shortcuts.emit()">
+    ?
+  </button>
+</footer>

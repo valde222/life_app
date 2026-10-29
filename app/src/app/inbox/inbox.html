@@ -69,7 +69,12 @@
             (swipedRight)="putOnToday(asTodo(item))"
             (swipedLeft)="moreLists(asTodo(item))"
           >
-            <button type="button" class="row" (click)="toggle(item)">
+            <button
+              type="button"
+              class="row"
+              [class.focused]="isFocused(item)"
+              (click)="toggle(item)"
+            >
               <span class="box" aria-label="Todo"></span>
               <span class="row-title">{{ item.record.title }}</span>
             </button>
@@ -81,7 +86,12 @@
             (swipedRight)="keepNow(asNote(item))"
             (swipedLeft)="archive(asNote(item))"
           >
-            <button type="button" class="row" (click)="toggle(item)">
+            <button
+              type="button"
+              class="row"
+              [class.focused]="isFocused(item)"
+              (click)="toggle(item)"
+            >
               <app-icon name="note" [size]="20" class="note-icon" />
               <span class="row-title">{{ item.record.title }}</span>
             </button>

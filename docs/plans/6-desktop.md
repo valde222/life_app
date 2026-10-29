@@ -28,8 +28,8 @@
 
 ## Steps
 
-- [ ] Desktop layout: sidebar, content, detail pane, dialogs
-- [ ] Keyboard shortcuts and the overlay
+- [x] Desktop layout: sidebar, content, detail pane, dialogs
+- [x] Keyboard shortcuts and the overlay
 - [ ] Capture route for the capture window
 - [ ] Tauri: global shortcut, capture window, tray, single instance
 - [ ] e2e T16 (web side: Ctrl+Space and the capture window route)

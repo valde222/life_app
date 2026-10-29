@@ -22,6 +22,10 @@ Install packages from WSL only; never run npm on the Windows side.
 
 - PocketBase address: `DEFAULT_SERVER_URL` in `src/app/server/server.ts` (`http://localhost:8090`); the sign-in screen changes it, and the choice is kept on the device.
 
+## Layouts
+
+Under 900px wide it's the phone layout with the bottom nav; from 900px the desktop layout: sidebar, content, and a detail pane for todos, notes and events. Same routes, same components.
+
 ## Data
 
 Screens read the local copy (IndexedDB, `src/app/data/`), never the network. Every write goes to the local copy and an outbox; `src/app/sync/` sends the outbox in order, pulls changes since the last pull, listens for live updates, and keeps whichever change has the later `changed_at`.
