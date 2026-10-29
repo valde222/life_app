@@ -24,7 +24,7 @@
 - [x] Icons collected from the screens
 - [x] ListLabel, TodoRow, EventRow, NextCard
 - [x] Sheet and Toast services
-- [ ] BottomNav and main layout with routes for Today, Agenda, Inbox, Lists, Search
+- [x] BottomNav and main layout with routes for Today, Agenda, Inbox, Lists, Search
 - [x] SegmentedControl, DetailRow, Switch, EmptyState, button styles
 - [x] SwipeRow
 - [x] Unit tests for the parts with logic (NextCard timing, toast lifetime, swipe thresholds)

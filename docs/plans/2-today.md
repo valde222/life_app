@@ -24,7 +24,7 @@
 - [x] Ticking, toast, done fold
 - [x] Left over and Pick for today
 - [x] Pill and empty states
-- [ ] e2e T1, T2, T8
+- [x] e2e T1, T2, T8
 
 ## Done when
 

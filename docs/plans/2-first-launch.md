@@ -12,8 +12,8 @@
 
 ## Steps
 
-- [ ] Setup groups and lists
-- [ ] First Today tip
+- [x] Setup groups and lists
+- [x] First Today tip
 
 ## Done when
 

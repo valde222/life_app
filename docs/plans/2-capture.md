@@ -27,7 +27,7 @@
 - [x] Date, Time and Reminder pickers
 - [x] Todo editor: New todo / New event / detail, steps
 - [x] Note editor (title, list, body)
-- [ ] e2e T3 and T4
+- [x] e2e T3 and T4
 
 ## Done when
 

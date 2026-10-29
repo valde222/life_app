@@ -20,7 +20,7 @@
 - [x] Todo actions
 - [x] Swipes with undo
 - [x] Inbox zero
-- [ ] e2e T6 and T7
+- [x] e2e T6 and T7
 
 ## Done when
 
