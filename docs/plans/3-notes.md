@@ -20,10 +20,10 @@
 
 ## Steps
 
-- [ ] Migration adding `notes.links`
-- [ ] Markdown renderer with unit tests
+- [x] Migration adding `notes.links`
+- [x] Markdown renderer with unit tests
 - [ ] Note page with view and edit modes and toolbar
-- [ ] Photo upload through the outbox, local pending photos, file tokens
+- [x] Photo upload through the outbox, local pending photos, file tokens
 - [ ] Add a photo sheet and photo view
 - [ ] Link picker and links shown both ways
 - [ ] e2e T11

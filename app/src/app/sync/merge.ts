@@ -2,6 +2,7 @@ import { LocalStore } from '../data/local-store';
 import { CollectionName, Collections } from '../data/models';
 
 const SERVER_ONLY_FIELDS = ['collectionId', 'collectionName', 'expand'];
+const SERVER_OWNED_FIELDS: Partial<Record<CollectionName, string[]>> = { notes: ['photos'] };
 
 export function isAtLeastAsNew(
   remote: { changed_at: number },
@@ -29,7 +30,19 @@ export async function applyRemote<C extends CollectionName>(
       const local = await table.get(remote.id);
       if (isAtLeastAsNew(remote, local)) {
         await table.put(withoutServerFields(remote));
+      } else if (local) {
+        await table.put({ ...local, ...serverOwned(collection, remote) });
       }
     }
   });
+}
+
+function serverOwned<C extends CollectionName>(
+  collection: C,
+  remote: Collections[C],
+): Partial<Collections[C]> {
+  const fields = SERVER_OWNED_FIELDS[collection] ?? [];
+  return Object.fromEntries(
+    fields.map((field) => [field, remote[field as keyof Collections[C]]]),
+  ) as Partial<Collections[C]>;
 }

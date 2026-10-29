@@ -5,6 +5,7 @@ import { Repository } from '../data/repository';
 import { Server, toSendError } from '../server/server';
 import { applyRemote } from './merge';
 import { drainOutbox, SendError } from './outbox';
+import { drainPhotos } from './photos';
 
 const PAGE_SIZE = 500;
 const RETRY_MS = 30_000;
@@ -49,9 +50,7 @@ export class SyncService {
     return this.run(async () => {
       await this.pull();
       await this.subscribe();
-      await drainOutbox(this.store, this.server, (collection, saved) =>
-        applyRemote(this.store, collection, [saved]),
-      );
+      await this.drain();
     });
   }
 
@@ -59,11 +58,14 @@ export class SyncService {
     if (!this.online()) {
       return Promise.resolve();
     }
-    return this.run(() =>
-      drainOutbox(this.store, this.server, (collection, saved) =>
-        applyRemote(this.store, collection, [saved]),
-      ),
+    return this.run(() => this.drain());
+  }
+
+  private async drain() {
+    await drainOutbox(this.store, this.server, (collection, saved) =>
+      applyRemote(this.store, collection, [saved]),
     );
+    await drainPhotos(this.store, this.server);
   }
 
   private run(work: () => Promise<void>): Promise<void> {

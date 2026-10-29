@@ -2,6 +2,8 @@ import { Injectable, signal } from '@angular/core';
 import PocketBase, { ClientResponseError } from 'pocketbase';
 import { CollectionName, Collections } from '../data/models';
 import { RemoteWriter, SendError } from '../sync/outbox';
+import { PhotoWriter } from '../sync/photos';
+import { Note } from '../data/models';
 
 export const DEFAULT_SERVER_URL = 'http://localhost:8090';
 const SERVER_URL_KEY = 'life.serverUrl';
@@ -15,7 +17,7 @@ const READ_ONLY_FIELDS = [
 ];
 
 @Injectable({ providedIn: 'root' })
-export class Server implements RemoteWriter {
+export class Server implements RemoteWriter, PhotoWriter {
   readonly url = signal(localStorage.getItem(SERVER_URL_KEY) ?? DEFAULT_SERVER_URL);
   pb = new PocketBase(this.url());
   readonly signedIn = signal(this.pb.authStore.isValid);
@@ -59,6 +61,37 @@ export class Server implements RemoteWriter {
         }
         throw error;
       }
+    } catch (error) {
+      throw toSendError(error);
+    }
+  }
+
+  async addPhoto(note: string, file: Blob, name: string): Promise<Note> {
+    const form = new FormData();
+    form.append('photos+', file, name);
+    return this.send(() => this.pb.collection('notes').update<Note>(note, form));
+  }
+
+  async removePhoto(note: string, filename: string): Promise<Note> {
+    return this.send(() =>
+      this.pb.collection('notes').update<Note>(note, { 'photos-': [filename] }),
+    );
+  }
+
+  async fileToken(): Promise<string> {
+    return this.pb.files.getToken({ requestKey: null });
+  }
+
+  photoUrl(note: Note, filename: string, token: string, thumb?: string): string {
+    return this.pb.files.getURL({ ...note, collectionName: 'notes' }, filename, {
+      token,
+      ...(thumb ? { thumb } : {}),
+    });
+  }
+
+  private async send<T>(write: () => Promise<T>): Promise<T> {
+    try {
+      return await write();
     } catch (error) {
       throw toSendError(error);
     }
