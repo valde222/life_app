@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: PocketBase API tests
+        working-directory: pocketbase
+        run: |
+          docker build -q -t life-pocketbase:ci .
+          docker run -d --name pb -p 8090:8090 -e PB_USER_EMAIL=ci@example.com -e PB_USER_PASSWORD=ci-password life-pocketbase:ci
+          timeout 60 sh -c 'until wget -q --spider http://localhost:8090/api/health; do sleep 1; done'
+          PB_URL=http://localhost:8090 PB_USER_EMAIL=ci@example.com PB_USER_PASSWORD=ci-password node --test tests/*.test.mjs
+          docker rm -f pb
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: app/test-results

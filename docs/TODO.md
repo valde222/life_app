@@ -4,20 +4,20 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Phase 1: Foundations (`v0.1-foundations`, done when T9 passes)
 
-- [ ] Phase 1 plans written and committed (`docs/plans/1-*.md`)
-- [ ] Repo layout: one Angular app, a Capacitor shell, a Tauri shell; top-level README (`1-repo-layout`)
-- [ ] Design tokens as a code file, fonts, base styles (`1-design-tokens`)
-- [ ] PocketBase schema and migrations for the eight collections, version pinned (`1-pocketbase`)
-- [ ] Single account with email and password sign-in, no sign-up (`1-pocketbase`; decision 8, open question Sign-in)
-- [ ] Docker Compose for development with seed data matching the screens, plus a reset command (`1-docker`)
-- [ ] Docker Compose for production on the Pi (arm64): PocketBase, nightly backup job, tunnel container slot (`1-docker`)
-- [ ] Local copy, outbox, pull since last sync, live updates, newest change wins, soft deletes (`1-sync`; Offline and sync 1–6)
-- [ ] "Offline, N waiting" status (`1-sync`; Offline and sync 7)
-- [ ] Capacitor Android shell running the app (`1-shells`)
-- [ ] Tauri desktop shell running the app (`1-shells`)
-- [ ] CI: unit and end-to-end tests on every push; Windows app and APK built on phase tags (`1-ci`)
-- [ ] Service READMEs: app, Android, desktop, PocketBase, deployment (`1-repo-layout` and each service's plan)
-- [ ] T9 passes: a todo made offline appears on the other device after reconnecting
+- [x] Phase 1 plans written and committed (`docs/plans/1-*.md`)
+- [x] Repo layout: one Angular app, a Capacitor shell, a Tauri shell; top-level README (`1-repo-layout`)
+- [x] Design tokens as a code file, fonts, base styles (`1-design-tokens`)
+- [x] PocketBase schema and migrations for the eight collections, version pinned (`1-pocketbase`)
+- [x] Single account with email and password sign-in, no sign-up (`1-pocketbase`; decision 8, open question Sign-in)
+- [x] Docker Compose for development with seed data matching the screens, plus a reset command (`1-docker`)
+- [x] Docker Compose for production on the Pi (arm64): PocketBase, nightly backup job, tunnel container slot (`1-docker`)
+- [x] Local copy, outbox, pull since last sync, live updates, newest change wins, soft deletes (`1-sync`; Offline and sync 1–6)
+- [x] "Offline, N waiting" status (`1-sync`; Offline and sync 7)
+- [x] Capacitor Android shell running the app (`1-shells`)
+- [x] Tauri desktop shell running the app (`1-shells`)
+- [x] CI: unit and end-to-end tests on every push; Windows app and APK built on phase tags (`1-ci`)
+- [x] Service READMEs: app, Android, desktop, PocketBase, deployment (`1-repo-layout` and each service's plan)
+- [x] T9 passes: a todo made offline appears on the other device after reconnecting
 
 ## Phase 2: Capture, Inbox, Today (`v0.2-capture`, done when T1–T8 pass)
 

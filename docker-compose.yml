@@ -1,0 +1,50 @@
+name: life
+
+services:
+  pocketbase:
+    build: ./pocketbase
+    image: life-pocketbase:latest
+    platform: linux/arm64
+    restart: always
+    environment:
+      PB_USER_EMAIL: ${PB_USER_EMAIL}
+      PB_USER_PASSWORD: ${PB_USER_PASSWORD}
+      PB_ADMIN_EMAIL: ${PB_ADMIN_EMAIL}
+      PB_ADMIN_PASSWORD: ${PB_ADMIN_PASSWORD}
+    volumes:
+      - ./data/pb_data:/pb/pb_data
+    ports:
+      - "127.0.0.1:8090:8090"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8090/api/health"]
+      interval: 30s
+      retries: 3
+
+  backup:
+    build: ./deploy/backup
+    platform: linux/arm64
+    restart: always
+    depends_on:
+      pocketbase:
+        condition: service_healthy
+    environment:
+      PB_URL: http://pocketbase:8090
+      PB_ADMIN_EMAIL: ${PB_ADMIN_EMAIL}
+      PB_ADMIN_PASSWORD: ${PB_ADMIN_PASSWORD}
+      BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
+    volumes:
+      - ./data/pb_data/backups:/backups:ro
+      - ${BACKUP_TARGET:-./data/offsite}:/target
+
+  tunnel:
+    image: tailscale/tailscale:v1.104.1
+    profiles: ["tunnel"]
+    restart: always
+    hostname: life
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_SERVE_CONFIG: /config/serve.json
+    volumes:
+      - ./data/tailscale:/var/lib/tailscale
+      - ./deploy/tailscale/serve.json:/config/serve.json:ro

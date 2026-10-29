@@ -1,0 +1,42 @@
+<header class="head">
+  <span class="t-eyebrow date">{{ dateLabel }}</span>
+  <div class="title-row">
+    <h1 class="t-display">Today.</h1>
+    @if (!sync.online()) {
+      <span class="offline" role="status">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M3 3l18 18" />
+          <path d="M7 18h10a4 4 0 0 0 1.5-7.7A6 6 0 0 0 8.4 7.6" />
+          <path d="M5.2 9.6A4.5 4.5 0 0 0 7 18" />
+        </svg>
+        Offline, {{ sync.waiting() }} waiting
+      </span>
+    }
+  </div>
+</header>
+
+<main class="content">
+  <form class="add" (ngSubmit)="add()">
+    <input name="title" aria-label="New todo" placeholder="New todo" [(ngModel)]="title" />
+  </form>
+  <ul class="rows">
+    @for (todo of sorted(); track todo.id) {
+      <li class="row t-row">
+        @if (todo.time) {
+          <span class="t-meta tabular">{{ todo.time }}</span>
+        }
+        {{ todo.title }}
+      </li>
+    }
+  </ul>
+</main>

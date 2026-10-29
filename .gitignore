@@ -52,3 +52,6 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Production data on the Pi
+/data/
