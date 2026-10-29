@@ -73,8 +73,14 @@ export interface CalendarEvent extends SyncedRecord {
   synced_at: string;
 }
 
+export interface CalendarChoice {
+  id: string;
+  name: string;
+  enabled: boolean;
+}
+
 export interface Settings extends SyncedRecord {
-  calendars: string[] | null;
+  calendars: CalendarChoice[] | null;
 }
 
 export interface Collections {

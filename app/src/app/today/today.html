@@ -65,7 +65,7 @@
         @if (items().next; as next) {
           <app-next-card
             [title]="next.title"
-            [link]="['/todo', next.id]"
+            [link]="link(next)"
             [time]="next.time"
             [timeEnd]="next.time_end"
             [date]="next.date"
@@ -76,8 +76,9 @@
         }
         @for (todo of items().scheduled; track todo.id) {
           <app-todo-row
+            [class.ended]="ended(todo)"
             [title]="todo.title"
-            [link]="['/todo', todo.id]"
+            [link]="link(todo)"
             [time]="todo.time"
             [event]="todo.is_event"
             [list]="list(todo)"
@@ -92,7 +93,7 @@
       @for (todo of items().anytime; track todo.id) {
         <app-todo-row
           [title]="todo.title"
-          [link]="['/todo', todo.id]"
+          [link]="link(todo)"
           [trailing]="steps(todo)"
           [event]="todo.is_event"
           [list]="list(todo)"

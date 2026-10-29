@@ -23,6 +23,7 @@ import { TodoRow } from '../ui/todo-row';
 import { FirstLaunchTip } from './first-launch-tip';
 import { PickSheet } from './pick-sheet';
 import { todayItems } from './today-items';
+import { calendarEventAsTodo, hasEnded, itemLink } from '../calendar/calendar-items';
 import { isRepeating, repeatStatus } from '../repeating/repeat-status';
 import { RepeatRow } from '../repeating/repeat-row';
 
@@ -42,7 +43,12 @@ export class Today {
   protected readonly clock = inject(Clock);
   protected readonly sync = inject(SyncService);
 
-  protected readonly items = computed(() => todayItems(this.store.todos(), this.clock.now()));
+  private readonly dayItems = computed(() => [
+    ...this.store.todos(),
+    ...this.store.calendarEvents().map(calendarEventAsTodo),
+  ]);
+  protected readonly items = computed(() => todayItems(this.dayItems(), this.clock.now()));
+  protected readonly link = itemLink;
   protected readonly overdue = computed(() =>
     this.store
       .todos()
@@ -56,9 +62,13 @@ export class Today {
   );
   protected readonly dateLabel = computed(() => longDate(this.clock.today()));
   protected readonly doneCount = computed(() => this.items().done.length);
-  protected readonly allDone = computed(
-    () => this.items().total > 0 && this.doneCount() === this.items().total,
-  );
+  protected readonly allDone = computed(() => {
+    const { next, scheduled, anytime } = this.items();
+    const remaining = [...scheduled, ...anytime].filter(
+      (todo) => !todo.is_event || !hasEnded(todo, this.clock.now()),
+    );
+    return this.doneCount() > 0 && !next && remaining.length === 0;
+  });
   protected readonly nothing = computed(() => this.items().total === 0);
   protected readonly firstLaunch = computed(
     () => this.store.todos().length === 0 && this.store.notes().length === 0,
@@ -73,6 +83,10 @@ export class Today {
     const onScroll = () => this.compact.set(window.scrollY > 90);
     window.addEventListener('scroll', onScroll, { passive: true });
     inject(DestroyRef).onDestroy(() => window.removeEventListener('scroll', onScroll));
+  }
+
+  protected ended(todo: Todo) {
+    return todo.is_event && hasEnded(todo, this.clock.now());
   }
 
   protected list(todo: Todo) {

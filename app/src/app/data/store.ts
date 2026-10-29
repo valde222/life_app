@@ -13,6 +13,8 @@ export class Store {
   readonly steps = this.repository.watch('steps');
   readonly completions = this.repository.watch('completions');
   readonly notes = this.repository.watch('notes');
+  readonly calendarEvents = this.repository.watch('calendar_events');
+  readonly settings = this.repository.watch('settings');
 
   readonly sortedGroups = computed(() => [...this.groups()].sort((a, b) => a.order - b.order));
   readonly openLists = computed(() =>

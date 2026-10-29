@@ -5,6 +5,8 @@ import { MainLayout } from './layout/main-layout';
 import { Placeholder } from './layout/placeholder';
 import { Server } from './server/server';
 import { ShareReceiver } from './share/share-receiver';
+import { CalendarImporter } from './calendar/calendar-importer';
+import { Reminders } from './reminders/reminders';
 import { SyncService } from './sync/sync.service';
 
 const signedIn: CanActivateFn = () => {
@@ -13,6 +15,8 @@ const signedIn: CanActivateFn = () => {
   }
   inject(SyncService).start();
   inject(ShareReceiver).start();
+  inject(CalendarImporter).start();
+  inject(Reminders).start();
   return true;
 };
 
@@ -66,6 +70,16 @@ export const routes: Routes = [
     path: 'repeat/:id',
     canActivate: [signedIn],
     loadComponent: () => import('./repeating/repeat-editor').then((m) => m.RepeatEditor),
+  },
+  {
+    path: 'event/:id',
+    canActivate: [signedIn],
+    loadComponent: () => import('./calendar/event-page').then((m) => m.EventPage),
+  },
+  {
+    path: 'settings/calendars',
+    canActivate: [signedIn],
+    loadComponent: () => import('./calendar/calendars-page').then((m) => m.CalendarsPage),
   },
   {
     path: 'note/:id',

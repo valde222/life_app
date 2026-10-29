@@ -54,10 +54,10 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 - [x] Repeating on a schedule: next due day, red after a missed day (R20; T13; `4-repeating`)
 - [x] Repeat row and Stop repeating, completions kept (R21; `4-repeating`)
 - [x] Today's Repeating section, ticking adds a completion (R10; T12; `4-repeating`)
-- [ ] Event detail, Event label everywhere (R12; `4-events-calendars`)
-- [ ] Calendar import on the phone, Settings → Calendars, read-only (R13, R14; T14; `4-events-calendars`)
-- [ ] Reminders as Android notifications (`4-events-calendars`)
-- [ ] T12–T14 pass
+- [x] Event detail, Event label everywhere (R12; `4-events-calendars`)
+- [x] Calendar import on the phone, Settings → Calendars, read-only (R13, R14; T14; `4-events-calendars`)
+- [x] Reminders as Android notifications (`4-events-calendars`)
+- [x] T12–T14 pass
 
 ## Phase 5: Agenda, This week, Search, Archive (`v0.5-agenda`, done when T15 passes)
 

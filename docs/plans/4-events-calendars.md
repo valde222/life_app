@@ -13,10 +13,10 @@
 
 ## Steps
 
-- [ ] Calendar events on Today, faded past events, read-only event page
-- [ ] Settings › Calendars and the phone importer with unit tests
-- [ ] Android reminders
-- [ ] e2e T14 (web side: imported events show read-only)
+- [x] Calendar events on Today, faded past events, read-only event page
+- [x] Settings › Calendars and the phone importer with unit tests
+- [x] Android reminders
+- [x] e2e T14 (web side: imported events show read-only)
 
 ## Done when
 
