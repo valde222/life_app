@@ -20,9 +20,9 @@
 
 ## Steps
 
-- [ ] Dev compose with seed and reset
-- [ ] Production compose, backup job, tunnel profile
-- [ ] `deploy/README.md`
+- [x] Dev compose with seed and reset
+- [x] Production compose, backup job, tunnel profile
+- [x] `deploy/README.md`
 
 ## Done when
 

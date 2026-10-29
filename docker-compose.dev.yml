@@ -1,0 +1,50 @@
+name: life-dev
+
+services:
+  pocketbase:
+    build: ./pocketbase
+    environment:
+      PB_USER_EMAIL: me@example.com
+      PB_USER_PASSWORD: lifeapp-dev
+      PB_ADMIN_EMAIL: admin@example.com
+      PB_ADMIN_PASSWORD: lifeapp-admin
+    volumes:
+      - pb_dev_data:/pb/pb_data
+      - ./pocketbase/pb_migrations:/pb/pb_migrations:ro
+      - ./pocketbase/pb_hooks:/pb/pb_hooks:ro
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8090/api/health"]
+      interval: 2s
+      retries: 30
+
+  seed:
+    image: node:22-alpine
+    depends_on:
+      pocketbase:
+        condition: service_healthy
+    environment:
+      PB_URL: http://pocketbase:8090
+      PB_USER_EMAIL: me@example.com
+      PB_USER_PASSWORD: lifeapp-dev
+    volumes:
+      - ./pocketbase/seed:/seed:ro
+    command: ["node", "/seed/seed.mjs"]
+    restart: "no"
+
+  app:
+    image: node:22-alpine
+    working_dir: /repo/app
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - .:/repo
+      - app_node_modules:/repo/app/node_modules
+    ports:
+      - "4200:4200"
+    command: ["sh", "-c", "npm ci && npx ng serve --host 0.0.0.0 --poll 1000"]
+
+volumes:
+  pb_dev_data:
+  app_node_modules:
