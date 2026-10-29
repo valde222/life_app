@@ -15,11 +15,11 @@
 
 ## Steps
 
-- [ ] Inbox screen with sections and badge
-- [ ] Note actions and Keep note
-- [ ] Todo actions
-- [ ] Swipes with undo
-- [ ] Inbox zero
+- [x] Inbox screen with sections and badge
+- [x] Note actions and Keep note
+- [x] Todo actions
+- [x] Swipes with undo
+- [x] Inbox zero
 - [ ] e2e T6 and T7
 
 ## Done when

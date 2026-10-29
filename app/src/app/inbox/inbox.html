@@ -1,0 +1,95 @@
+<header class="head">
+  <h1 class="t-display">Inbox.</h1>
+</header>
+
+<main class="content">
+  @for (section of sections(); track section.label) {
+    <h2 class="eyebrow section">{{ section.label }}</h2>
+    <div class="stack">
+      @for (item of section.items; track item.record.id) {
+        @if (open() === item.record.id) {
+          <div class="expanded">
+            @if (item.kind === 'todo') {
+              <a
+                class="expanded-title"
+                [routerLink]="['/todo', item.record.id]"
+                [state]="{ back: '/inbox' }"
+                >{{ item.record.title }}</a
+              >
+              <div>
+                <h3 class="eyebrow move-label">Move to</h3>
+                <div class="move-chips">
+                  @for (list of quickLists(); track list.id) {
+                    <button
+                      type="button"
+                      class="move-chip"
+                      [style]="swatch(list.colour)"
+                      (click)="moveTo(asTodo(item), list.id)"
+                    >
+                      {{ list.name }}
+                    </button>
+                  }
+                  <button type="button" class="move-chip more" (click)="moreLists(asTodo(item))">
+                    More…
+                  </button>
+                </div>
+              </div>
+              <div class="todo-actions">
+                <button type="button" class="act primary" (click)="putOnToday(asTodo(item))">
+                  Today
+                </button>
+                <button type="button" class="act" (click)="pickDate(asTodo(item))">Date</button>
+                <a class="act" [routerLink]="['/todo', item.record.id]" [state]="{ back: '/inbox' }"
+                  >Repeat…</a
+                >
+                <button type="button" class="act danger" (click)="delete(asTodo(item))">
+                  Delete
+                </button>
+              </div>
+            } @else {
+              <span class="expanded-title">{{ item.record.title }}</span>
+              <div class="note-actions">
+                <button type="button" class="act primary" (click)="keep(asNote(item))">Keep</button>
+                <button type="button" class="act" (click)="makeTodo(asNote(item))">
+                  Make todo
+                </button>
+                <button type="button" class="act quiet" (click)="archive(asNote(item))">
+                  Archive
+                </button>
+              </div>
+            }
+          </div>
+        } @else if (item.kind === 'todo') {
+          <app-swipe-row
+            [right]="todoSwipe.right"
+            [left]="todoSwipe.left"
+            (swipedRight)="putOnToday(asTodo(item))"
+            (swipedLeft)="moreLists(asTodo(item))"
+          >
+            <button type="button" class="row" (click)="toggle(item)">
+              <span class="box" aria-label="Todo"></span>
+              <span class="row-title">{{ item.record.title }}</span>
+            </button>
+          </app-swipe-row>
+        } @else {
+          <app-swipe-row
+            [right]="noteSwipe.right"
+            [left]="noteSwipe.left"
+            (swipedRight)="keepNow(asNote(item))"
+            (swipedLeft)="archive(asNote(item))"
+          >
+            <button type="button" class="row" (click)="toggle(item)">
+              <app-icon name="note" [size]="20" class="note-icon" />
+              <span class="row-title">{{ item.record.title }}</span>
+            </button>
+          </app-swipe-row>
+        }
+      }
+    </div>
+  } @empty {
+    <app-empty-state class="zero" title="Inbox zero.">
+      <span icon class="zero-icon"><app-icon name="inbox" [size]="32" /></span>
+      <p class="zero-line">Everything has a home.</p>
+    </app-empty-state>
+  }
+</main>
