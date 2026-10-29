@@ -10,15 +10,21 @@ From WSL, in `app/`:
 | --- | --- |
 | `npm start` | Dev server on http://localhost:4200 (the dev Compose file runs it for you) |
 | `npm test` | Unit tests (Vitest) |
-| `npm run e2e` | End-to-end tests (Playwright) against a test PocketBase |
+| `npm run e2e` | End-to-end tests (Playwright) against a throwaway PocketBase on port 8091 |
+| `npm run e2e:docker` | The same inside Playwright's Docker image, for WSL without Chromium's libraries |
 | `npm run build` | Production web files in `dist/app/browser`, used by both shells |
+| `npm run build:android` / `build:desktop` | Web build, then the APK or Windows installer (see the shell READMEs) |
 | `npm run tokens` | Regenerates `src/styles/_tokens.scss` from `docs/design-system/tokens.json` |
 
 Install packages from WSL only; never run npm on the Windows side.
 
 ## Config
 
-- PocketBase address: `src/environments/` holds the default; the sign-in screen can change it, and the choice is kept on the device.
+- PocketBase address: `DEFAULT_SERVER_URL` in `src/app/server/server.ts` (`http://localhost:8090`); the sign-in screen changes it, and the choice is kept on the device.
+
+## Data
+
+Screens read the local copy (IndexedDB, `src/app/data/`), never the network. Every write goes to the local copy and an outbox; `src/app/sync/` sends the outbox in order, pulls changes since the last pull, listens for live updates, and keeps whichever change has the later `changed_at`.
 
 ## Talks to
 
