@@ -20,7 +20,7 @@
 - [x] Agenda with week strip, month view and month picker
 - [x] This week
 - [x] Search
-- [ ] Archive, Done and Recently deleted
+- [x] Archive, Done and Recently deleted
 - [ ] Settings
 - [ ] e2e T15
 
