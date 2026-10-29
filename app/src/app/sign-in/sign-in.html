@@ -1,0 +1,41 @@
+<main class="welcome">
+  <div class="mark" aria-hidden="true">
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.6"
+      stroke-linecap="round"
+    >
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  </div>
+  <h1 class="t-display">Life.</h1>
+
+  <form class="fields" (ngSubmit)="signIn()">
+    <label>
+      <span class="t-eyebrow">Email</span>
+      <input name="email" type="email" autocomplete="username" required [(ngModel)]="email" />
+    </label>
+    <label>
+      <span class="t-eyebrow">Password</span>
+      <input
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        required
+        [(ngModel)]="password"
+      />
+    </label>
+    <label>
+      <span class="t-eyebrow">Server</span>
+      <input name="server" type="url" inputmode="url" required [(ngModel)]="serverUrl" />
+    </label>
+    @if (error()) {
+      <p class="error t-control" role="alert">{{ error() }}</p>
+    }
+    <button class="primary t-button" type="submit" [disabled]="busy()">Sign in</button>
+  </form>
+</main>

@@ -16,15 +16,19 @@
 
 ## Steps
 
-- [ ] `LocalStore` with Dexie, ids, `changed_at`
-- [ ] Outbox and drain
-- [ ] Pull with cursor, live subscriptions, merge rule
-- [ ] Online/offline detection and status signals
-- [ ] Sign-in screen (email and password) and auth persistence
-- [ ] A minimal todo screen to exercise it (replaced in phase 2)
-- [ ] Unit tests for merge, outbox collapse, cursor
-- [ ] Playwright T9: two browser contexts on test PocketBase; one offline creates a todo and shows "Offline, 1 waiting"; after reconnecting the other sees it
+- [x] `LocalStore` with Dexie, ids, `changed_at`
+- [x] Outbox and drain
+- [x] Pull with cursor, live subscriptions, merge rule
+- [x] Online/offline detection and status signals
+- [x] Sign-in screen (email and password) and auth persistence
+- [x] A minimal todo screen to exercise it (replaced in phase 2)
+- [x] Unit tests for merge, outbox collapse, cursor
+- [x] Playwright T9: two browser contexts on test PocketBase; one offline creates a todo and shows "Offline, 1 waiting"; after reconnecting the other sees it
 
 ## Done when
 
 T9 passes in CI.
+
+## Notes
+
+- WSL lacks Chromium's system libraries and sudo, so `npm run e2e:docker` runs Playwright inside its official image; CI installs them and runs `npm run e2e` directly.
