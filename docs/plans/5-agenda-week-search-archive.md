@@ -18,7 +18,7 @@
 
 - [x] Hard delete in the outbox and pruning on pull
 - [x] Agenda with week strip, month view and month picker
-- [ ] This week
+- [x] This week
 - [ ] Search
 - [ ] Archive, Done and Recently deleted
 - [ ] Settings

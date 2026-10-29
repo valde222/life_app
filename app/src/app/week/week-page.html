@@ -1,0 +1,92 @@
+<header class="bar">
+  <a class="back" routerLink="/"
+    ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />Today</a
+  >
+</header>
+<div class="title">
+  <div class="eyebrow">{{ range() }}</div>
+  <h1 class="t-display">This week.</h1>
+</div>
+
+<main class="content">
+  <div class="stats">
+    <div class="stat dark">
+      <span class="number tabular">{{ week().doneCount }}</span>
+      <span class="label">things done</span>
+    </div>
+    <div class="stat">
+      <span class="number tabular">{{ week().notes.length }}</span>
+      <span class="label">notes written</span>
+    </div>
+  </div>
+
+  @if (quickNotes()) {
+    <a class="inbox-link" routerLink="/inbox">
+      {{ quickNotes() }} quick note{{ quickNotes() === 1 ? '' : 's' }} left in the inbox
+      <app-icon name="chevron-right" [size]="16" [stroke]="2.2" />
+    </a>
+  }
+
+  <section class="card chart">
+    <h2 class="eyebrow">Done per day</h2>
+    <div class="bars">
+      @for (day of week().days; track day.date) {
+        <div class="bar-cell" [class.today]="day.date === today">
+          <span class="bar-value tabular">{{ day.done || '' }}</span>
+          <span class="column" [style.height.px]="6 + (day.done / maxDone()) * 66"></span>
+          <span class="bar-day">{{ letter(day.date) }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  @if (week().finished.length) {
+    <h2 class="eyebrow section">Finished</h2>
+    <div class="stack">
+      @for (todo of week().finished; track todo.id) {
+        <a class="card finished" [routerLink]="['/todo', todo.id]">
+          <span class="check"><app-icon name="check" [size]="14" [stroke]="3" /></span>
+          <span class="text">
+            <span class="name">{{ todo.title }}</span>
+            <span class="sub">{{ finishedSub(todo.id, todo.done_at) }}</span>
+          </span>
+          @if (list(todo.list)) {
+            <app-list-label [list]="list(todo.list)" />
+          }
+        </a>
+      }
+    </div>
+  }
+
+  @if (week().byList.length) {
+    <h2 class="eyebrow section">By list</h2>
+    <div class="options">
+      @for (entry of week().byList; track entry.list) {
+        <div class="option by-list">
+          <span class="name">{{ list(entry.list)?.name }}</span>
+          <span class="count tabular">{{ entry.count }}</span>
+        </div>
+      }
+    </div>
+  }
+
+  @if (week().notes.length) {
+    <h2 class="eyebrow section">Notes written</h2>
+    <div class="options">
+      @for (note of shownNotes(); track note.id) {
+        <a class="option note" [routerLink]="['/note', note.id]" [state]="{ back: '/week' }">
+          <span class="name">{{ note.title || 'Untitled' }}</span>
+          <span class="sub"
+            >{{ list(note.list)?.name }}{{ list(note.list) ? ', ' : ''
+            }}{{ dayName(note.created!) }}</span
+          >
+        </a>
+      }
+      @if (!showAllNotes() && week().notes.length > shownNotes().length) {
+        <button type="button" class="option more" (click)="showAllNotes.set(true)">
+          Show {{ week().notes.length - shownNotes().length }} more
+        </button>
+      }
+    </div>
+  }
+</main>
