@@ -16,6 +16,7 @@ export class SyncService {
   private readonly server = inject(Server);
 
   readonly online = signal(navigator.onLine);
+  readonly lastSynced = signal<Date | null>(null);
   readonly waiting = inject(Repository).watchOutboxSize();
 
   private resolveFirstSync!: () => void;
@@ -80,6 +81,7 @@ export class SyncService {
           this.rerun = false;
           await work();
           this.online.set(true);
+          this.lastSynced.set(new Date());
         } while (this.rerun);
       } catch (error) {
         this.handleFailure(error);

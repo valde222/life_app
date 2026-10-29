@@ -1,0 +1,48 @@
+<header class="bar">
+  <a class="back" routerLink="/"
+    ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />Today</a
+  >
+</header>
+<div class="title">
+  <div class="eyebrow">{{ name }}</div>
+  <h1 class="t-display">Settings.</h1>
+</div>
+
+<main class="content">
+  <h2 class="eyebrow section">Account</h2>
+  <div class="options">
+    <div class="option row">
+      <span class="label">Signed in as</span><span class="value">{{ email }}</span>
+    </div>
+    <div class="option row">
+      <span class="label">Server</span><span class="value">{{ serverUrl() }}</span>
+    </div>
+    <button type="button" class="option row" (click)="syncNow()">
+      <span class="label">Sync</span><span class="value">{{ synced() }}</span
+      ><app-icon name="chevron-right" [size]="16" [stroke]="2.2" />
+    </button>
+    <a class="option row" routerLink="/settings/calendars">
+      <span class="label">Calendars</span
+      ><span class="value">{{ calendars.summary() || 'None' }}</span
+      ><app-icon name="chevron-right" [size]="16" [stroke]="2.2" />
+    </a>
+  </div>
+
+  <h2 class="eyebrow section">Your stuff</h2>
+  <div class="options">
+    <a class="option row" routerLink="/lists/edit"
+      ><span class="label">Lists and groups</span
+      ><app-icon name="chevron-right" [size]="16" [stroke]="2.2"
+    /></a>
+    <a class="option row" routerLink="/archive"
+      ><span class="label">Archive</span><app-icon name="chevron-right" [size]="16" [stroke]="2.2"
+    /></a>
+    <a class="option row" routerLink="/archive/deleted">
+      <span class="label">Recently deleted</span
+      ><span class="value">{{ deletedCount() || '' }}</span
+      ><app-icon name="chevron-right" [size]="16" [stroke]="2.2" />
+    </a>
+  </div>
+
+  <button type="button" class="card sign-out" (click)="signOut()">Sign out</button>
+</main>

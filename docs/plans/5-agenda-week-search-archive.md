@@ -21,8 +21,8 @@
 - [x] This week
 - [x] Search
 - [x] Archive, Done and Recently deleted
-- [ ] Settings
-- [ ] e2e T15
+- [x] Settings
+- [x] e2e T15
 
 ## Done when
 

@@ -62,13 +62,13 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Phase 5: Agenda, This week, Search, Archive (`v0.5-agenda`, done when T15 passes)
 
 - [x] Phase 5 plans written and committed (`docs/plans/5-agenda-week-search-archive.md`)
-- [ ] Agenda: week strip, month view, choose month and year, empty-day folding (R28)
-- [ ] This week (R29)
-- [ ] Search with All, Todos and Notes filters, link into Archive search (R30)
-- [ ] Archive and Done, Restore, Not done, closed lists (R26)
-- [ ] Recently deleted: days left, Restore, Empty now, purge after 30 days (R27; T15)
-- [ ] Settings screen
-- [ ] T15 passes
+- [x] Agenda: week strip, month view, choose month and year, empty-day folding (R28)
+- [x] This week (R29)
+- [x] Search with All, Todos and Notes filters, link into Archive search (R30)
+- [x] Archive and Done, Restore, Not done, closed lists (R26)
+- [x] Recently deleted: days left, Restore, Empty now, purge after 30 days (R27; T15)
+- [x] Settings screen
+- [x] T15 passes
 
 ## Phase 6: Desktop (`v0.6-desktop`, done when T16 passes)
 

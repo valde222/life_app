@@ -2,7 +2,6 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router, Routes } from '@angular/router';
 import { LocalStore } from './data/local-store';
 import { MainLayout } from './layout/main-layout';
-import { Placeholder } from './layout/placeholder';
 import { Server } from './server/server';
 import { ShareReceiver } from './share/share-receiver';
 import { CalendarImporter } from './calendar/calendar-importer';
@@ -28,12 +27,6 @@ const setUp: CanActivateFn = async () => {
     (await store.records('groups').count()) === 0 && (await store.records('todos').count()) === 0;
   return empty ? router.parseUrl('/setup/groups') : true;
 };
-
-const placeholder = (path: string, title: string) => ({
-  path,
-  component: Placeholder,
-  data: { title },
-});
 
 export const routes: Routes = [
   { path: 'sign-in', loadComponent: () => import('./sign-in/sign-in').then((m) => m.SignIn) },
@@ -77,6 +70,11 @@ export const routes: Routes = [
     loadComponent: () => import('./calendar/event-page').then((m) => m.EventPage),
   },
   {
+    path: 'settings',
+    canActivate: [signedIn],
+    loadComponent: () => import('./settings/settings-page').then((m) => m.SettingsPage),
+  },
+  {
     path: 'settings/calendars',
     canActivate: [signedIn],
     loadComponent: () => import('./calendar/calendars-page').then((m) => m.CalendarsPage),
@@ -107,10 +105,23 @@ export const routes: Routes = [
         path: 'lists/:id',
         loadComponent: () => import('./lists/list-page').then((m) => m.ListPage),
       },
-      placeholder('agenda', 'Agenda.'),
-      placeholder('search', 'Search.'),
-      placeholder('week', 'This week.'),
-      placeholder('settings', 'Settings.'),
+      {
+        path: 'agenda',
+        loadComponent: () => import('./agenda/agenda-page').then((m) => m.AgendaPage),
+      },
+      {
+        path: 'search',
+        loadComponent: () => import('./search/search-page').then((m) => m.SearchPage),
+      },
+      { path: 'week', loadComponent: () => import('./week/week-page').then((m) => m.WeekPage) },
+      {
+        path: 'archive',
+        loadComponent: () => import('./archive/archive-page').then((m) => m.ArchivePage),
+      },
+      {
+        path: 'archive/deleted',
+        loadComponent: () => import('./archive/deleted-page').then((m) => m.DeletedPage),
+      },
     ],
   },
   { path: '**', redirectTo: '' },
