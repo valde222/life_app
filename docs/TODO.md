@@ -21,19 +21,19 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Phase 2: Capture, Inbox, Today (`v0.2-capture`, done when T1–T8 pass)
 
-- [ ] Phase 2 plans written and committed
-- [ ] Shared components: ListRow, TodoRow, GroupBox, ListLabel, Button, Sheet, Toast, BottomNav, SegmentedControl, EmptyState, SwipeRow
-- [ ] Capture sheet: todo and quick note, from the + button; lands in the Inbox (R1, R2; T3)
-- [ ] Add details for a todo: date, time, end time, reminder, list, Event switch (R4; T4)
-- [ ] Android share sheet makes a quick note in the Inbox (R1, R3; T5)
-- [ ] Inbox: badge, Today and Earlier sections, Inbox zero (R15, R16; T3)
-- [ ] Inbox quick note actions: Keep, Make todo, Archive (R17; T6)
-- [ ] Inbox swipes on todos and quick notes, Move to (R18; T7)
-- [ ] Today: Scheduled and Anytime, next-up card, done/total pill (R5, R6, R11, R12; T1)
-- [ ] Ticking, the toast with Add note and Undo, "N done" fold (R7, R25; T2)
-- [ ] Left over and Pick for today (R8, R9; T8)
-- [ ] Welcome, First Today, set up groups and lists
-- [ ] T1–T8 pass
+- [x] Phase 2 plans written and committed (`docs/plans/2-*.md`)
+- [x] Shared components: TodoRow, ListLabel, Button, Sheet, Toast, BottomNav, SegmentedControl, EmptyState, SwipeRow (`2-ui-kit`)
+- [x] Capture sheet: todo and quick note, from the + button; lands in the Inbox (R1, R2; T3; `2-capture`)
+- [x] Add details for a todo: date, time, end time, reminder, list, Event switch (R4; T4; `2-capture`)
+- [x] Android share sheet makes a quick note in the Inbox (R1, R3; T5; `2-share-sheet`)
+- [x] Inbox: badge, Today and Earlier sections, Inbox zero (R15, R16; T3; `2-inbox`)
+- [x] Inbox quick note actions: Keep, Make todo, Archive (R17; T6; `2-inbox`)
+- [x] Inbox swipes on todos and quick notes, Move to (R18; T7; `2-inbox`)
+- [x] Today: Scheduled and Anytime, next-up card, done/total pill (R5, R6, R11, R12; T1; `2-today`)
+- [x] Ticking, the toast with Add note and Undo, "N done" fold (R7, R25; T2; `2-today`)
+- [x] Left over and Pick for today (R8, R9; T8; `2-today`)
+- [x] Welcome, First Today, set up groups and lists (`2-first-launch`)
+- [x] T1–T8 pass
 
 ## Phase 3: Lists and notes (`v0.3-lists`, done when T10–T11 pass)
 

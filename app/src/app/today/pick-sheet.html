@@ -1,0 +1,65 @@
+<div class="handle" aria-hidden="true"></div>
+<div class="head">
+  <h2 class="t-sheet-title">Pick for today.</h2>
+  <button type="button" class="done" (click)="ref.close()">Done</button>
+</div>
+<label class="search">
+  <app-icon name="search" [size]="18" [stroke]="2" />
+  <input
+    aria-label="Search todos"
+    placeholder="Search"
+    [ngModel]="query()"
+    (ngModelChange)="query.set($event)"
+  />
+</label>
+<div class="filters">
+  @for (name of filters(); track name) {
+    <button
+      type="button"
+      class="chip"
+      [class.on]="name === filter()"
+      [attr.aria-pressed]="name === filter()"
+      (click)="filter.set(name)"
+    >
+      {{ name }}
+    </button>
+  }
+</div>
+<div class="items">
+  @for (todo of items(); track todo.id) {
+    <div class="item">
+      <div class="text">
+        <div class="title">{{ todo.title }}</div>
+        @if (listOf(todo) || meta(todo)) {
+          <div class="sub">
+            @if (listOf(todo)) {
+              <app-list-label [list]="listOf(todo)" />
+            }
+            <span class="meta">{{ meta(todo) }}</span>
+          </div>
+        }
+      </div>
+      <button
+        type="button"
+        class="pick"
+        [attr.aria-label]="
+          (picked().has(todo.id) ? 'Take ' : 'Pick ') +
+          todo.title +
+          (picked().has(todo.id) ? ' off today' : ' for today')
+        "
+        [attr.aria-pressed]="picked().has(todo.id)"
+        (click)="toggle(todo)"
+      >
+        <span class="mark" [class.on]="picked().has(todo.id)">
+          <app-icon
+            [name]="picked().has(todo.id) ? 'check' : 'plus-small'"
+            [size]="16"
+            [stroke]="2.6"
+          />
+        </span>
+      </button>
+    </div>
+  } @empty {
+    <p class="t-empty-title nothing">Nothing here.</p>
+  }
+</div>

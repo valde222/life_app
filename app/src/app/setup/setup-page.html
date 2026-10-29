@@ -1,0 +1,40 @@
+<header class="bar">
+  <a class="back" [routerLink]="back"
+    ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />Back</a
+  >
+  <span class="steps" aria-hidden="true"
+    ><span class="on"></span><span [class.on]="step === 2"></span
+  ></span>
+</header>
+<main class="body">
+  <h1 class="t-display">{{ heading }}</h1>
+  @for (section of sections(); track section.name) {
+    @if (section.name) {
+      <section class="card group">
+        <h2>{{ section.name }}</h2>
+        <app-choice-chips
+          class="small"
+          [choices]="section.choices"
+          (toggle)="toggle(section.name, $event)"
+        />
+      </section>
+    } @else {
+      <app-choice-chips [choices]="section.choices" (toggle)="toggle(section.name, $event)" />
+    }
+  }
+  <form class="add" (ngSubmit)="add()">
+    <app-icon name="plus" [size]="16" [stroke]="2" />
+    <input
+      name="name"
+      [attr.aria-label]="addLabel"
+      [placeholder]="addLabel"
+      [ngModel]="newName()"
+      (ngModelChange)="newName.set($event)"
+    />
+  </form>
+</main>
+<footer class="foot">
+  <button type="button" class="btn btn-primary" [disabled]="!canContinue()" (click)="continue()">
+    Continue
+  </button>
+</footer>

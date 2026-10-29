@@ -1,45 +1,101 @@
-import { Component, computed, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Repository } from '../data/repository';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { Actions } from '../data/actions';
+import { Todo } from '../data/models';
+import { Store } from '../data/store';
+import { Server } from '../server/server';
 import { SyncService } from '../sync/sync.service';
-import { localDate } from '../time/local-date';
+import { Clock } from '../time/clock';
+import { longDate } from '../time/local-date';
+import { EmptyState } from '../ui/empty-state';
+import { Icon } from '../ui/icon';
+import { NextCard } from '../ui/next-card';
+import { Sheets } from '../ui/sheet';
+import { Toasts } from '../ui/toast';
+import { TodoRow } from '../ui/todo-row';
+import { FirstLaunchTip } from './first-launch-tip';
+import { PickSheet } from './pick-sheet';
+import { todayItems } from './today-items';
 
 @Component({
   selector: 'app-today',
-  imports: [FormsModule],
+  imports: [EmptyState, FirstLaunchTip, Icon, NextCard, RouterLink, TodoRow],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './today.html',
   styleUrl: './today.scss',
 })
 export class Today {
-  private readonly repository = inject(Repository);
+  private readonly store = inject(Store);
+  private readonly actions = inject(Actions);
+  private readonly toasts = inject(Toasts);
+  private readonly sheets = inject(Sheets);
+  private readonly router = inject(Router);
+  protected readonly clock = inject(Clock);
   protected readonly sync = inject(SyncService);
 
-  protected readonly today = localDate();
-  protected readonly todos = this.repository.watch(
-    'todos',
-    (todo) => todo.date === this.today && !todo.done_at,
+  protected readonly items = computed(() => todayItems(this.store.todos(), this.clock.now()));
+  protected readonly dateLabel = computed(() => longDate(this.clock.today()));
+  protected readonly doneCount = computed(() => this.items().done.length);
+  protected readonly allDone = computed(
+    () => this.items().total > 0 && this.doneCount() === this.items().total,
   );
-  protected readonly sorted = computed(() =>
-    [...this.todos()].sort(
-      (a, b) => (a.time || '99').localeCompare(b.time || '99') || a.title.localeCompare(b.title),
-    ),
+  protected readonly nothing = computed(() => this.items().total === 0);
+  protected readonly firstLaunch = computed(
+    () => this.store.todos().length === 0 && this.store.notes().length === 0,
   );
-  protected readonly dateLabel = new Intl.DateTimeFormat('en-GB', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-  })
-    .format(new Date())
-    .replace(',', '');
+  protected readonly showDone = signal(false);
+  protected readonly compact = signal(false);
+  protected readonly initial =
+    (inject(Server).pb.authStore.record?.['email'] as string | undefined)?.[0]?.toUpperCase() ??
+    'V';
 
-  protected title = '';
+  constructor() {
+    const onScroll = () => this.compact.set(window.scrollY > 90);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    inject(DestroyRef).onDestroy(() => window.removeEventListener('scroll', onScroll));
+  }
 
-  protected async add() {
-    const title = this.title.trim();
-    if (!title) {
-      return;
-    }
-    this.title = '';
-    await this.repository.save('todos', { title, date: this.today });
+  protected list(todo: Todo) {
+    return this.store.list(todo.list);
+  }
+
+  protected steps(todo: Todo) {
+    const steps = this.store.steps().filter((step) => step.todo === todo.id);
+    return steps.length ? `${steps.filter((step) => step.done).length}/${steps.length}` : '';
+  }
+
+  protected async tick(todo: Todo) {
+    const undo = await this.actions.tick(todo);
+    this.toasts.show({
+      title: `${todo.title} done`,
+      action: { label: 'Add note', run: () => this.addNote(todo) },
+      undo,
+    });
+  }
+
+  protected async untick(todo: Todo) {
+    const undo = await this.actions.untick(todo);
+    this.toasts.show({ title: `${todo.title} is back on Today`, undo });
+  }
+
+  protected openPick() {
+    this.sheets.open(PickSheet, undefined, { panelClass: ['sheet-panel', 'sheet-tall'] });
+  }
+
+  private async addNote(todo: Todo) {
+    const note = await this.actions.createNote({
+      title: '',
+      list: todo.list,
+      todos: [todo.id],
+      inbox: false,
+    });
+    await this.router.navigate(['/note', note.id], { state: { back: '/' } });
   }
 }

@@ -17,6 +17,9 @@ export class SyncService {
   readonly online = signal(navigator.onLine);
   readonly waiting = inject(Repository).watchOutboxSize();
 
+  private resolveFirstSync!: () => void;
+  readonly firstSync = new Promise<void>((resolve) => (this.resolveFirstSync = resolve));
+
   private started = false;
   private running: Promise<void> | null = null;
   private rerun = false;
@@ -33,7 +36,7 @@ export class SyncService {
     this.store.outbox.hook('creating', () => {
       setTimeout(() => this.push());
     });
-    this.sync();
+    this.sync().finally(() => this.resolveFirstSync());
   }
 
   async stop() {

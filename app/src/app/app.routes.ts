@@ -1,6 +1,10 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, Routes } from '@angular/router';
+import { LocalStore } from './data/local-store';
+import { MainLayout } from './layout/main-layout';
+import { Placeholder } from './layout/placeholder';
 import { Server } from './server/server';
+import { ShareReceiver } from './share/share-receiver';
 import { SyncService } from './sync/sync.service';
 
 const signedIn: CanActivateFn = () => {
@@ -8,15 +12,69 @@ const signedIn: CanActivateFn = () => {
     return inject(Router).parseUrl('/sign-in');
   }
   inject(SyncService).start();
+  inject(ShareReceiver).start();
   return true;
 };
+
+const setUp: CanActivateFn = async () => {
+  const store = inject(LocalStore);
+  const router = inject(Router);
+  await inject(SyncService).firstSync;
+  const empty =
+    (await store.records('groups').count()) === 0 && (await store.records('todos').count()) === 0;
+  return empty ? router.parseUrl('/setup/groups') : true;
+};
+
+const placeholder = (path: string, title: string) => ({
+  path,
+  component: Placeholder,
+  data: { title },
+});
 
 export const routes: Routes = [
   { path: 'sign-in', loadComponent: () => import('./sign-in/sign-in').then((m) => m.SignIn) },
   {
-    path: '',
+    path: 'setup',
     canActivate: [signedIn],
-    loadComponent: () => import('./today/today').then((m) => m.Today),
+    children: [
+      {
+        path: 'groups',
+        loadComponent: () => import('./setup/setup-groups').then((m) => m.SetupGroups),
+      },
+      {
+        path: 'lists',
+        loadComponent: () => import('./setup/setup-lists').then((m) => m.SetupLists),
+      },
+    ],
+  },
+  {
+    path: 'todo/:id',
+    canActivate: [signedIn],
+    loadComponent: () => import('./todo/todo-editor').then((m) => m.TodoEditor),
+  },
+  {
+    path: 'note/:id',
+    canActivate: [signedIn],
+    loadComponent: () => import('./note/note-editor').then((m) => m.NoteEditor),
+  },
+  {
+    path: '',
+    component: MainLayout,
+    canActivate: [signedIn],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        canActivate: [setUp],
+        loadComponent: () => import('./today/today').then((m) => m.Today),
+      },
+      { path: 'inbox', loadComponent: () => import('./inbox/inbox').then((m) => m.Inbox) },
+      placeholder('lists', 'Lists.'),
+      placeholder('agenda', 'Agenda.'),
+      placeholder('search', 'Search.'),
+      placeholder('week', 'This week.'),
+      placeholder('settings', 'Settings.'),
+    ],
   },
   { path: '**', redirectTo: '' },
 ];
