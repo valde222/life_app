@@ -25,7 +25,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 - [x] Shared components: TodoRow, ListLabel, Button, Sheet, Toast, BottomNav, SegmentedControl, EmptyState, SwipeRow (`2-ui-kit`)
 - [x] Capture sheet: todo and quick note, from the + button; lands in the Inbox (R1, R2; T3; `2-capture`)
 - [x] Add details for a todo: date, time, end time, reminder, list, Event switch (R4; T4; `2-capture`)
-- [ ] Android share sheet makes a quick note in the Inbox (R1, R3; T5; `2-share-sheet`)
+- [x] Android share sheet makes a quick note in the Inbox (R1, R3; T5; `2-share-sheet`)
 - [x] Inbox: badge, Today and Earlier sections, Inbox zero (R15, R16; T3; `2-inbox`)
 - [x] Inbox quick note actions: Keep, Make todo, Archive (R17; T6; `2-inbox`)
 - [x] Inbox swipes on todos and quick notes, Move to (R18; T7; `2-inbox`)

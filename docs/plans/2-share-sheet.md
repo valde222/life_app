@@ -13,9 +13,9 @@
 
 ## Steps
 
-- [ ] Intent filter and plugin in the Android shell
-- [ ] ShareReceiver with unit tests
-- [ ] e2e T5 (web side)
+- [x] Intent filter and plugin in the Android shell
+- [x] ShareReceiver with unit tests
+- [x] e2e T5 (web side)
 
 ## Done when
 

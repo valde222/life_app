@@ -48,7 +48,7 @@ export class Today {
   );
   protected readonly nothing = computed(() => this.items().total === 0);
   protected readonly firstLaunch = computed(
-    () => this.store.groups().length === 0 && this.store.todos().length === 0,
+    () => this.store.todos().length === 0 && this.store.notes().length === 0,
   );
   protected readonly showDone = signal(false);
   protected readonly compact = signal(false);

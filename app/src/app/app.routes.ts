@@ -4,6 +4,7 @@ import { LocalStore } from './data/local-store';
 import { MainLayout } from './layout/main-layout';
 import { Placeholder } from './layout/placeholder';
 import { Server } from './server/server';
+import { ShareReceiver } from './share/share-receiver';
 import { SyncService } from './sync/sync.service';
 
 const signedIn: CanActivateFn = () => {
@@ -11,6 +12,7 @@ const signedIn: CanActivateFn = () => {
     return inject(Router).parseUrl('/sign-in');
   }
   inject(SyncService).start();
+  inject(ShareReceiver).start();
   return true;
 };
 
