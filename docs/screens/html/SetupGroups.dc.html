@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Set up groups</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+input::placeholder{color:#6B7080}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+<div style="padding: 44px 8px 0 4px; display: flex; align-items: center; justify-content: space-between;"><a href="Welcome.dc.html" style="height: 44px; padding: 0 8px; display: inline-flex; align-items: center; font-size: 15px; font-weight: 600; color: #3A4152;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Back</a><span style="padding-right: 16px;"><div style="display: flex; gap: 6px; flex-shrink: 0;"><span style="width: 24px; height: 4px; border-radius: 2px; background: #3A4152;"></span><span style="width: 24px; height: 4px; border-radius: 2px; background: #C3C7D3;"></span></div></span></div><div style="flex: 1; padding: 8px 20px 32px; display: flex; flex-direction: column;"><h1 style="margin: 0; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Your groups.</h1><div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px;"><sc-for list="{{chips}}" as="c" hint-placeholder-count="5"><button aria-pressed="{{c.pressed}}" onClick="{{c.toggle}}" style="{{c.style}}">{{c.label}}</button></sc-for></div><label style="margin-top: 12px; height: 52px; padding: 0 16px; border-radius: 16px; border: 1.5px dashed #BCC1CF; box-sizing: border-box; display: flex; align-items: center; gap: 8px;"><span style="font-size: 18px; font-weight: 600; color: #3A4152;">+</span><input placeholder="New group" style="flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: 16px; color: #15171E;"></label><div style="flex: 1;"></div><a href="SetupLists.dc.html" style="margin-top: 0px; flex-shrink: 0; height: 52px; border-radius: 16px; background: #3A4152; color: #FFFFFF; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center;">Continue</a></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var on = s.on || { Life: true, Work: true };
+var items = ['Life', 'Work', 'Family', 'Hobbies', 'Study'];
+return { chips: items.map((n) => { var a = !!on[n]; return { name: n, label: (a ? "\u2713 " : "+ ") + n, pressed: a ? "true" : "false", style: "height: 44px; padding: 0 16px; border: 0; border-radius: 14px; font-size: 16px; font-weight: 600; " + (a ? "background: #3A4152; color: #FFFFFF;" : "background: #FFFFFF; color: #15171E;"), toggle: () => { var o = Object.assign({}, on); o[n] = !a; this.setState({ on: o }); } }; }) };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Swipe on a note</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+input::placeholder{color:#6B7080}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+<div aria-hidden="true" style="flex: 1; display: flex; flex-direction: column; min-height: 0;"><div style="padding: 44px 8px 0 4px;"><a href="All.dc.html" style="height: 44px; padding: 0 8px; display: inline-flex; align-items: center; gap: 2px; text-decoration: none; font-size: 15px; font-weight: 600; color: #3A4152;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Lists</a></div><div style="padding: 0 20px;"><div style="font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;">Work</div><h1 style="margin: 6px 0 0; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Client A.</h1></div><div role="tablist" style="margin: 16px 16px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E3E5EC; border-radius: 14px; flex-shrink: 0;"><button role="tab" aria-selected="false" style="height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 700; background: transparent; color: #4B5060;">Todos 5</button><button role="tab" aria-selected="true" style="height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 700; background: #FFFFFF; color: #15171E; box-shadow: 0 1px 2px rgba(0,0,0,0.08);">Notes 9</button></div><div style="margin-top: 12px; padding: 0 16px; display: flex; flex-direction: column; gap: 8px;"><div style="flex-shrink: 0; padding: 14px 16px; border-radius: 16px; background: #FFFFFF;"><div style="display: flex; gap: 8px;"><span style="flex: 1; font-size: 17px; font-weight: 600;">How the login flow works</span><span style="font-size: 13px; color: #4B5060;">Oct 19</span></div><div style="margin-top: 4px; font-size: 14px; color: #4B5060;">Token is refreshed in middleware.</div></div><div style="position: relative; height: 76px; border-radius: 16px; background: #3A4152; overflow: hidden;"><div style="position: absolute; right: 18px; top: 0; bottom: 0; display: flex; align-items: center; color: #FFFFFF; font-size: 13px; font-weight: 700;">⋯</div><div style="position: absolute; left: -64px; right: 64px; top: 0; bottom: 0; padding: 14px 16px; border-radius: 16px; background: #FFFFFF;"><div style="font-size: 17px; font-weight: 600;">Why the staging deploy failed</div><div style="margin-top: 4px; font-size: 14px; color: #4B5060;">Migrations ran after traffic switched.</div></div></div><div style="flex-shrink: 0; padding: 14px 16px; border-radius: 16px; background: #FFFFFF;"><div style="display: flex; gap: 8px;"><span style="flex: 1; font-size: 17px; font-weight: 600;">Client A onboarding</span><span style="font-size: 13px; color: #4B5060;">Oct 12</span></div><div style="margin-top: 4px; font-size: 14px; color: #4B5060;">Accounts, repos, who to ask for what.</div></div></div></div><div style="position: absolute; inset: 0; background: rgba(21, 23, 30, 0.36);"></div><div role="dialog" aria-label="Actions for a note" style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 780px; overflow-y: auto; background: #F1F2F6; border-radius: 24px 24px 0 0; padding: 10px 16px 32px; display: flex; flex-direction: column;"><div style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3; align-self: center; flex-shrink: 0;"></div><h2 style="margin: 14px 4px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Why the staging deploy failed</h2><div style="margin-top: 12px;"><div style="flex-shrink: 0; padding: 0 16px; border-radius: 16px; background: #FFFFFF;"><a href="MoveTo.dc.html" style="min-height: 52px; display: flex; align-items: center; text-decoration: none; font-size: 16px; font-weight: 500; color: #15171E;">Move to…</a><a href="LinkPicker.dc.html" style="min-height: 52px; display: flex; align-items: center; border-top: 1px solid #EEF0F4; text-decoration: none; font-size: 16px; font-weight: 500; color: #15171E;">Link to…</a><a href="List.dc.html" style="min-height: 52px; display: flex; align-items: center; border-top: 1px solid #EEF0F4; text-decoration: none; font-size: 16px; font-weight: 500; color: #15171E;">Archive</a></div></div><div style="margin-top: 8px;"><div style="flex-shrink: 0; padding: 0 16px; border-radius: 16px; background: #FFFFFF;"><a href="List.dc.html" style="min-height: 52px; display: flex; align-items: center; text-decoration: none; font-size: 16px; font-weight: 500; color: #B4321F; box-sizing: border-box;">Delete</a></div></div><a href="List.dc.html" style="margin-top: 8px; flex-shrink: 0; height: 48px; border-radius: 14px; background: #FFFFFF; color: #15171E; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center;">Cancel</a></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

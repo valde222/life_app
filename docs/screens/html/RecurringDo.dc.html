@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Repeating</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+
+<div style="padding: 44px 8px 0 4px;">
+<a href="Main.dc.html" style="height: 44px; padding: 0 8px; display: inline-flex; align-items: center; gap: 2px; text-decoration: none; font-size: 15px; font-weight: 600; color: #3A4152;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Today</a>
+</div>
+<div style="padding: 0 20px; display: flex; align-items: flex-end; justify-content: space-between;">
+<div>
+<h1 style="margin: 0 0 0; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Repeating.</h1>
+</div>
+<a href="Recurring.dc.html" style="height: 40px; padding: 0 12px; border-radius: 12px; background: #FFFFFF; display: inline-flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 600; color: #3A4152;">+ New</a>
+</div>
+
+<div style="flex: 1; min-height: 0; overflow-y: auto; padding: 18px 16px 164px; display: flex; flex-direction: column; gap: 8px;">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+<div style="{{r.rowStyle}}">
+<button aria-label="{{r.doneLabel}}" onClick="{{r.quickDone}}" style="width: 44px; height: 44px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+<sc-if value="{{r.isDone}}" hint-placeholder-val="{{false}}"><span style="width: 26px; height: 26px; border-radius: 12px; background: #22542B; display: flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"></path></svg></span></sc-if>
+<sc-if value="{{r.notDone}}" hint-placeholder-val="{{true}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{r.iconColor}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7"></path><path d="M20 4v5h-5"></path></svg></sc-if>
+</button>
+<button onClick="{{r.open}}" style="flex: 1; min-width: 0; min-height: 60px; padding: 8px 14px 8px 0; border: 0; background: transparent; display: flex; align-items: center; gap: 10px; text-align: left; color: #15171E;">
+<span style="flex: 1; min-width: 0;"><span style="display: block; font-size: 17px; font-weight: 500;">{{r.name}}</span><span style="display: block; font-size: 12px; color: #4B5060;">{{r.sub}}</span></span>
+<sc-if value="{{r.isOnToday}}" hint-placeholder-val="{{false}}"><span style="height: 22px; padding: 0 7px; border-radius: 8px; background: #E3E5EC; color: #3A4152; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center;">On Today</span></sc-if>
+<span style="{{r.tagStyle}}">{{r.tag}}</span>
+</button>
+</div>
+</sc-for>
+
+</div>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+<div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 164px; min-height: 56px; padding: 6px 6px 6px 18px; box-sizing: border-box; border-radius: 18px; background: #3A4152; display: flex; align-items: center; gap: 12px; z-index: 2;">
+<div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 600; color: #FFFFFF;">{{toastTitle}}</div></div>
+<button onClick="{{undo}}" style="height: 44px; padding: 0 14px; border: 0; border-radius: 12px; background: #FFFFFF; color: #3A4152; font-size: 14px; font-weight: 700;">{{undoLabel}}</button>
+</div>
+</sc-if>
+
+<nav aria-label="Main" style="position: absolute; left: 16px; right: 16px; bottom: 24px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 8px 6px 6px; border-radius: 26px; background: #FFFFFF; box-shadow: 0 8px 24px rgba(21, 23, 30, 0.12);"><a href="Search.dc.html" aria-label="Search" style="grid-column: 1 / -1; margin: 0 0 4px; height: 40px; padding: 0 14px; border-radius: 20px; background: #F1F2F6; display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: 15px; color: #6B7080;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Search</a><a href="Main.dc.html" aria-current="page" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 700; color: #15171E;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"></path></svg>Today</a><a href="Agenda.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>Agenda</a><a href="CaptureSheet.dc.html" aria-label="Capture" style="justify-self: center; width: 52px; height: 52px; border-radius: 18px; background: #3A4152; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></a><a href="Inbox.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><span style="position: relative; display: flex;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l2.5-7h11L20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="M4 13h5l1 2h4l1-2h5"></path></svg><span style="position: absolute; top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 8px; background: #3A4152; color: #FFFFFF; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;">6</span></span>Inbox</a><a href="All.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"></path><circle cx="4.5" cy="6" r="1"></circle><circle cx="4.5" cy="12" r="1"></circle><circle cx="4.5" cy="18" r="1"></circle></svg>Lists</a></nav>
+
+<sc-if value="{{hasSheet}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; inset: 0; z-index: 3;">
+<button aria-label="Close" onClick="{{closeSheet}}" style="position: absolute; inset: 0; border: 0; padding: 0; background: rgba(21, 23, 30, 0.36); cursor: default;"></button>
+<div role="dialog" aria-label="{{sh.name}}" style="position: absolute; left: 0; right: 0; bottom: 0; background: #F1F2F6; border-radius: 24px 24px 0 0; padding: 10px 16px 32px; display: flex; flex-direction: column;">
+<div style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3; align-self: center;"></div>
+<div style="margin-top: 14px; padding: 0 4px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+<div><h2 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">{{sh.name}}</h2><div style="margin-top: 2px; font-size: 13px; color: #4B5060;">{{sh.sub}}, {{sh.list}}</div></div>
+<a href="Recurring.dc.html" style="height: 40px; padding: 0 12px; border-radius: 12px; background: #FFFFFF; display: inline-flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 600; color: #3A4152;">Edit</a>
+</div>
+
+<div style="margin-top: 14px; padding: 16px; border-radius: 18px; background: #FFFFFF;">
+<div style="display: flex; align-items: baseline; gap: 8px;"><span style="{{sh.bigStyle}}">{{sh.big}}</span><span style="font-size: 15px; color: #4B5060;">{{sh.bigUnit}}</span></div>
+<div style="margin-top: 10px; height: 8px; border-radius: 4px; background: #F1F2F6;"><div style="{{sh.barStyle}}"></div></div>
+<div style="margin-top: 6px; display: flex; justify-content: space-between; font-size: 12px; color: #4B5060;"><span>Last done</span><span>{{sh.targetText}}</span></div>
+<div style="margin-top: 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;">Recently done</div>
+<div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
+<sc-for list="{{sh.history}}" as="h" hint-placeholder-count="4">
+<span style="height: 28px; padding: 0 10px; border-radius: 8px; background: #F1F2F6; font-size: 13px; font-weight: 600; color: #3A4152; display: inline-flex; align-items: center;">{{h.d}}</span>
+</sc-for>
+</div>
+<div style="margin-top: 8px; font-size: 13px; color: #4B5060;">{{sh.avg}}</div>
+</div>
+
+<button onClick="{{sh.doneToday}}" style="margin-top: 14px; height: 52px; border: 0; border-radius: 16px; background: #3A4152; color: #FFFFFF; font-size: 16px; font-weight: 700;">Done today</button>
+<div style="margin-top: 8px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px;">
+<button onClick="{{sh.doneYesterday}}" style="height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; color: #15171E; font-size: 15px; font-weight: 600;">Did it yesterday</button>
+<button onClick="{{sh.toggleToday}}" aria-pressed="{{sh.onToday}}" style="{{sh.todayBtnStyle}}">{{sh.todayBtnLabel}}</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var done = s.done || {};
+var onToday = s.onToday || {};
+var data = [
+{ id: 'call', name: 'Call grandma', list: 'Life', target: 14, days: 16, sub: 'about every 2 weeks', unit: '2 weeks', history: ['Oct 5', 'Sep 21', 'Sep 8', 'Aug 24'], avg: 'Usually every 14 days' },
+{ id: 'bath', name: 'Clean bathroom', list: 'Apartment', target: 7, days: 9, sub: 'about weekly', unit: 'a week', history: ['Oct 12', 'Oct 4', 'Sep 27', 'Sep 19'], avg: 'Usually every 8 days' },
+{ id: 'vacuum', name: 'Vacuum', list: 'Apartment', target: 7, days: 5, sub: 'about weekly', unit: 'a week', history: ['Oct 16', 'Oct 9', 'Oct 1', 'Sep 24'], avg: 'Usually every 7 days' },
+{ id: 'sheets', name: 'Change sheets', list: 'Apartment', target: 14, days: 6, sub: 'about every 2 weeks', unit: '2 weeks', history: ['Oct 15', 'Oct 1', 'Sep 16'], avg: 'Usually every 15 days' },
+{ id: 'plants', name: 'Water plants', list: 'Apartment', target: 3, days: 2, sub: 'every Mon and Thu', next: 'Thu', unit: '3 days', history: ['Oct 19', 'Oct 16', 'Oct 13', 'Oct 10'], avg: 'Usually every 3 days' }
+];
+var items = data.map(function (d) {
+var ago = done[d.id];
+var days = ago === undefined ? d.days : ago;
+return Object.assign({}, d, { now: days, isDone: ago !== undefined });
+});
+items.sort(function (a, b) { return (b.now / b.target) - (a.now / a.target); });
+
+var markDone = (d, ago) => {
+var nd = Object.assign({}, done); nd[d.id] = ago;
+var nt = Object.assign({}, onToday); delete nt[d.id];
+this.setState({ done: nd, onToday: nt, sheet: null, toast: { id: d.id, kind: 'done', title: d.name + (ago === 0 ? ' done today' : ' done yesterday'), sub: 'Counter reset. Next in about ' + d.unit + '.' } });
+};
+var dayWord = function (n) { return n === 0 ? 'Today' : n === 1 ? 'Yesterday' : n + ' days'; };
+
+var rows = items.map((d) => {
+var over = !d.isDone && d.now >= d.target;
+return {
+name: d.name, sub: d.sub, isDone: d.isDone, notDone: !d.isDone, isOnToday: !!onToday[d.id],
+tag: d.next && !d.isDone ? d.next : dayWord(d.now),
+iconColor: over ? '#B4321F' : '#6B7080',
+doneLabel: 'Mark ' + d.name + ' done today',
+rowStyle: 'display: flex; align-items: center; gap: 4px; padding-left: 6px; border-radius: 16px; flex-shrink: 0; background: ' + (d.isDone ? '#E9EBF0' : '#FFFFFF') + ';',
+tagStyle: over ? 'height: 24px; padding: 0 9px; border-radius: 8px; background: #FCE3DE; color: #8F2414; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center;' : d.isDone ? 'height: 24px; padding: 0 9px; border-radius: 8px; background: #DFF1E2; color: #22542B; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center;' : 'font-size: 13px; font-weight: 500; color: #4B5060;',
+quickDone: () => { if (!d.isDone) markDone(d, 0); },
+open: () => this.setState({ sheet: d.id })
+};
+});
+
+var sh = null;
+var cur = items.filter(function (d) { return d.id === s.sheet; })[0];
+if (cur) {
+var over = !cur.isDone && cur.now >= cur.target;
+var pct = Math.min(cur.now / cur.target, 1) * 100;
+var on = !!onToday[cur.id];
+sh = {
+name: cur.name, sub: cur.sub, list: cur.list, onToday: on,
+big: cur.isDone ? (cur.now === 0 ? 'Today' : 'Yesterday') : String(cur.now),
+bigUnit: cur.isDone ? '' : (cur.now === 1 ? 'day since' : 'days since'),
+bigStyle: 'font-size: 44px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; color: ' + (over ? '#8F2414' : '#15171E') + ';',
+barStyle: 'width: ' + pct + '%; height: 8px; border-radius: 4px; background: ' + (over ? '#B4321F' : '#3A4152') + ';',
+targetText: over ? 'past about ' + cur.unit : 'about ' + cur.unit,
+history: (cur.isDone ? [cur.now === 0 ? 'Today' : 'Yesterday'] : []).concat(cur.history).slice(0, 5).map(function (h) { return { d: h }; }),
+avg: cur.avg,
+doneToday: () => markDone(cur, 0),
+doneYesterday: () => markDone(cur, 1),
+todayBtnLabel: on ? 'On Today ✓' : 'Put on Today',
+todayBtnStyle: 'height: 48px; border: 0; border-radius: 14px; font-size: 15px; font-weight: 600; ' + (on ? 'background: #E3E5EC; color: #3A4152;' : 'background: #FFFFFF; color: #15171E;'),
+toggleToday: () => {
+var nt = Object.assign({}, onToday);
+if (on) { delete nt[cur.id]; } else { nt[cur.id] = true; }
+this.setState({ onToday: nt, sheet: on ? cur.id : null, toast: on ? null : { id: cur.id, kind: 'today', title: cur.name + ' is on Today', sub: 'Tick it there and the counter resets.' } });
+}
+};
+}
+
+var t = s.toast;
+return {
+rows: rows,
+hasSheet: !!sh,
+sh: sh || { name: '', sub: '', list: '', history: [] },
+closeSheet: () => this.setState({ sheet: null }),
+hasToast: !!t && !sh,
+toastTitle: t ? t.title : '',
+toastSub: t ? t.sub : '',
+undoLabel: 'Undo',
+undo: () => {
+if (!t) return;
+if (t.kind === 'done') { var nd = Object.assign({}, done); delete nd[t.id]; this.setState({ done: nd, toast: null }); }
+else { var nt = Object.assign({}, onToday); delete nt[t.id]; this.setState({ onToday: nt, toast: null }); }
+}
+};
+}
+}
+</script>
+</body>
+</html>

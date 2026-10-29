@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Move to</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+input::placeholder{color:#6B7080}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+<div aria-hidden="true" style="flex: 1; display: flex; flex-direction: column; min-height: 0;"><div style="padding: 52px 20px 0;"><h1 style="margin: 0 0 0; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Inbox.</h1></div><div style="margin: 16px 16px 0; height: 56px; border-radius: 16px; background: #FFFFFF;"></div><div style="margin: 8px 16px 0; height: 180px; border-radius: 18px; background: #FFFFFF;"></div></div><div style="position: absolute; inset: 0; background: rgba(21, 23, 30, 0.36);"></div><div role="dialog" aria-label="Move to" style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 780px; overflow-y: auto; background: #F1F2F6; border-radius: 24px 24px 0 0; padding: 10px 16px 32px; display: flex; flex-direction: column;"><div style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3; align-self: center; flex-shrink: 0;"></div><h2 style="margin: 14px 4px 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">Move to.</h2><div role="tablist" aria-label="Groups" style="margin: 14px -16px 0; padding: 0 16px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0;">
+<sc-for list="{{tabs}}" as="g" hint-placeholder-count="4"><button role="tab" aria-selected="{{g.sel}}" onClick="{{g.pick}}" style="{{g.style}}">{{g.name}}</button></sc-for>
+</div>
+<div style="margin-top: 12px; padding: 0 16px; border-radius: 18px; background: #FFFFFF; flex-shrink: 0;">
+<sc-for list="{{lists}}" as="r" hint-placeholder-count="4">
+<a href="{{r.href}}" style="{{r.row}}"><span style="{{r.swatch}}"></span><span style="flex: 1; font-size: 16px; font-weight: 500;">{{r.name}}</span><span style="font-size: 13px; color: #6B7080;">{{r.count}}</span><sc-if value="{{r.current}}" hint-placeholder-val="{{false}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A4152" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-label="Current list"><path d="M5 12l5 5 9-10"></path></svg></sc-if></a>
+</sc-for>
+<sc-if value="{{canAdd}}" hint-placeholder-val="{{true}}"><a href="NewList.dc.html" style="min-height: 48px; display: flex; align-items: center; border-top: 1px solid #EEF0F4; font-size: 15px; font-weight: 600; color: #4B5060;">+ New list in {{groupName}}</a></sc-if>
+</div><a href="Inbox.dc.html" style="margin-top: 8px; flex-shrink: 0; height: 48px; border-radius: 14px; background: #FFFFFF; color: #15171E; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center;">Cancel</a></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var g = s.g || 'Recent';
+var L = { Life: ['#E3ECF8', '#23446C', 7], Apartment: ['#ECE4F8', '#4B2E7A', 6], Shopping: ['#DCF1EE', '#14524A', 4], Music: ['#DFF1E2', '#22542B', 2], Someday: ['#ECEDF1', '#4B5060', 11], 'Client A': ['#FBE7D7', '#7A3611', 5], 'Client B': ['#FBE0EC', '#7A1F48', 3], Bouldering: ['#DCF1EE', '#14524A', 0], Inbox: ['#E3E5EC', '#3A4152', 3] };
+var G = { Recent: ['Client A', 'Apartment', 'Shopping'], Life: ['Life', 'Apartment', 'Shopping', 'Music', 'Someday'], Work: ['Client A', 'Client B'], Hobbies: ['Bouldering'], Inbox: ['Inbox'] };
+var names = Object.keys(G);
+return {
+tabs: names.map((n) => { var on = n === g; return { name: n, sel: on ? 'true' : 'false', pick: () => this.setState({ g: n }),
+style: 'flex-shrink: 0; height: 38px; padding: 0 16px; border: 0; border-radius: 12px; font-size: 15px; font-weight: 600; ' + (on ? 'background: #3A4152; color: #FFFFFF;' : 'background: #FFFFFF; color: #3A4152;') }; }),
+lists: G[g].map(function (n, i) { var c = L[n]; return { name: n, count: c[2] || '', href: 'Inbox.dc.html', current: n === 'Inbox',
+row: 'min-height: 52px; display: flex; align-items: center; gap: 12px; text-decoration: none; color: #15171E;' + (i ? ' border-top: 1px solid #EEF0F4;' : ''),
+swatch: 'width: 12px; height: 26px; border-radius: 4px; flex-shrink: 0; background: ' + c[0] + '; box-shadow: inset 0 0 0 1.5px ' + c[1] + '33;' }; }),
+canAdd: g !== 'Recent' && g !== 'Inbox', groupName: g
+};
+}
+}
+</script>
+</body>
+</html>

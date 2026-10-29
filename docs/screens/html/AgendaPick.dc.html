@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agenda, choose month and year</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+input::placeholder{color:#6B7080}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+<div style="padding: 52px 20px 0; display: flex; align-items: flex-end; justify-content: space-between;"><div><div style="font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;">{{monthLabel}}</div><h1 style="margin: 6px 0 0; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Agenda.</h1></div><sc-if value="{{away}}" hint-placeholder-val="{{false}}"><button onClick="{{goToday}}" style="height: 32px; padding: 0 12px; border: 0; border-radius: 16px; background: #E3E5EC; color: #3A4152; font-size: 13px; font-weight: 700;">Today</button></sc-if></div>
+<div style="margin: 16px 16px 0; padding: 6px; border-radius: 18px; background: #FFFFFF; flex-shrink: 0;">
+<sc-if value="{{isWeek}}" hint-placeholder-val="{{true}}">
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center;">
+<sc-for list="{{week}}" as="d" hint-placeholder-count="7">
+<button onClick="{{d.pick}}" aria-current="{{d.cur}}" style="{{d.style}}">{{d.wd}}<span style="{{d.numStyle}}">{{d.n}}</span><span style="{{d.dot}}"></span></button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{isMonth}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 2px 2px 6px;">
+<button onClick="{{prevMonth}}" aria-label="Previous month" style="width: 40px; height: 40px; border: 0; border-radius: 12px; background: #F1F2F6; font-size: 18px; color: #3A4152;">‹</button>
+<button onClick="{{openPicker}}" style="height: 40px; padding: 0 12px; border: 0; border-radius: 12px; background: transparent; display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 700; color: #15171E;">{{viewLabel}}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+<button onClick="{{nextMonth}}" aria-label="Next month" style="width: 40px; height: 40px; border: 0; border-radius: 12px; background: #F1F2F6; font-size: 18px; color: #3A4152;">›</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; gap: 2px;">
+<sc-for list="{{heads}}" as="h" hint-placeholder-count="7"><div style="height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #4B5060;">{{h}}</div></sc-for>
+<sc-for list="{{month}}" as="d" hint-placeholder-count="35">
+<button onClick="{{d.pick}}" style="{{d.style}}">{{d.n}}<span style="{{d.dot}}"></span></button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{isPicker}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 2px 2px 8px;">
+<button onClick="{{prevYear}}" aria-label="Previous year" style="width: 40px; height: 40px; border: 0; border-radius: 12px; background: #F1F2F6; font-size: 18px; color: #3A4152;">‹</button>
+<div style="font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums;">{{year}}</div>
+<button onClick="{{nextYear}}" aria-label="Next year" style="width: 40px; height: 40px; border: 0; border-radius: 12px; background: #F1F2F6; font-size: 18px; color: #3A4152;">›</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding-bottom: 4px;">
+<sc-for list="{{months}}" as="m" hint-placeholder-count="12"><button onClick="{{m.pick}}" style="{{m.style}}">{{m.name}}</button></sc-for>
+</div>
+</sc-if>
+<button onClick="{{toggle}}" aria-label="{{toggleLabel}}" style="width: 100%; height: 22px; border: 0; background: transparent; display: flex; align-items: center; justify-content: center;"><span style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3;"></span></button>
+</div>
+<div style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 164px; display: flex; flex-direction: column;">
+<sc-for list="{{days}}" as="day" hint-placeholder-count="4">
+<div style="{{day.headStyle}}"><span>{{day.label}}</span><span style="letter-spacing: 0; text-transform: none; font-weight: 600;">{{day.side}}</span></div>
+<sc-if value="{{day.free}}" hint-placeholder-val="{{false}}"><div style="margin-top: 6px; padding: 0 4px; font-size: 14px; color: #4B5060;">Nothing planned</div></sc-if>
+<div style="margin-top: 8px; display: flex; flex-direction: column; gap: 8px;">
+<sc-for list="{{day.items}}" as="it" hint-placeholder-count="2">
+<a href="{{it.href}}" style="{{it.rowStyle}}"><span style="{{it.timeStyle}}">{{it.time}}<span style="display: block; font-size: 12px; font-weight: 500; color: #4B5060;">{{it.timeEnd}}</span></span><span style="flex: 1; min-width: 0; font-size: 17px; font-weight: 500;">{{it.t}}</span><span style="{{it.pill}}">{{it.l}}</span></a>
+</sc-for>
+</div>
+</sc-for>
+</div>
+<nav aria-label="Main" style="position: absolute; left: 16px; right: 16px; bottom: 24px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 8px 6px 6px; border-radius: 26px; background: #FFFFFF; box-shadow: 0 8px 24px rgba(21, 23, 30, 0.12);"><a href="Search.dc.html" aria-label="Search" style="grid-column: 1 / -1; margin: 0 0 4px; height: 40px; padding: 0 14px; border-radius: 20px; background: #F1F2F6; display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: 15px; color: #6B7080;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Search</a><a href="Main.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"></path></svg>Today</a><a href="Agenda.dc.html" aria-current="page" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 700; color: #15171E;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>Agenda</a><a href="CaptureSheet.dc.html" aria-label="Capture" style="justify-self: center; width: 52px; height: 52px; border-radius: 18px; background: #3A4152; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></a><a href="Inbox.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><span style="position: relative; display: flex;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l2.5-7h11L20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="M4 13h5l1 2h4l1-2h5"></path></svg><span style="position: absolute; top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 8px; background: #3A4152; color: #FFFFFF; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;">6</span></span>Inbox</a><a href="All.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"></path><circle cx="4.5" cy="6" r="1"></circle><circle cx="4.5" cy="12" r="1"></circle><circle cx="4.5" cy="18" r="1"></circle></svg>Lists</a></nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var sel = s.sel || '2026-10-21';
+var open = s.open === undefined ? true : s.open;
+var picker = s.picker === undefined ? true : s.picker;
+var p2 = function (n) { return (n < 10 ? '0' : '') + n; };
+var iso = function (d) { return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()); };
+var parse = function (t) { var a = t.split('-'); return new Date(+a[0], +a[1] - 1, +a[2]); };
+var TODAY = '2026-10-21';
+var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var WD = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var P = { Life: ['#E3ECF8','#23446C'], Apartment: ['#ECE4F8','#4B2E7A'], 'Client A': ['#FBE7D7','#7A3611'], Shopping: ['#DCF1EE','#14524A'], Recurring: ['#ECEDF1','#4B5060'], Music: ['#DFF1E2','#22542B'], Event: ['#ECEDF1','#4B5060'] };
+var items = {
+'2026-10-21': [['12:00','Lunch with sister','Event'],['17:00','Call the landlord','Apartment'],['','Pay taxes','Life'],['','Review login PR','Client A'],['','Set up the living room','Apartment'],['','Practice chords, 15 min','Music'],['9 days','Clean bathroom','Recurring'],['16 days','Call grandma','Recurring']],
+'2026-10-23': [['','Order internet','Apartment'],['','Set up Client A staging','Client A']],
+'2026-10-24': [['18:30–21:00','Dinner with friends','Event']],
+'2026-10-29': [['Due','Change sheets','Recurring']],
+'2026-10-27': [['10:00','Client A demo','Client A']],
+'2026-10-30': [['','Buy butter','Shopping']],
+'2026-11-02': [['','Birthday gift for mum','Life']],
+'2026-11-14': [['','Move-in anniversary','Life']],
+'2026-12-24': [['','Christmas Eve at mum’s','Life']]
+};
+var sd = parse(sel);
+var vy = s.vy === undefined ? sd.getFullYear() : s.vy;
+var vm = s.vm === undefined ? sd.getMonth() : s.vm;
+var dow = function (d) { return (d.getDay() + 6) % 7; };
+var add = function (d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); };
+var monday = add(sd, -dow(sd));
+var b = 'height: 60px; border: 0; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 11px;';
+var week = [];
+for (var i = 0; i < 7; i++) { (function (d, i) {
+var k = iso(d), isSel = k === sel, isToday = k === TODAY, has = !!items[k];
+week.push({ wd: WD[i], n: d.getDate(), dot: 'width: 5px; height: 5px; border-radius: 4px; background: ' + (has ? (isSel ? '#FFFFFF' : '#3A4152') : 'transparent') + ';', cur: isSel ? 'date' : 'false',
+style: b + (isSel ? ' background: #3A4152; color: #E3E5EC;' : ' background: transparent; color: #4B5060;') + (isToday && !isSel ? ' box-shadow: inset 0 0 0 1.5px #3A4152;' : ''),
+numStyle: 'font-size: 16px; font-weight: ' + (isSel || has ? 700 : 500) + '; color: ' + (isSel ? '#FFFFFF' : has ? '#15171E' : '#6B7080') + ';',
+pick: () => this.setState({ sel: k }) });
+}).call(this, add(monday, i), i); }
+var first = new Date(vy, vm, 1), lead = dow(first), dim = new Date(vy, vm + 1, 0).getDate();
+var month = [];
+for (var j = 0; j < lead; j++) month.push({ n: '', dot: '', style: 'height: 40px; border: 0; background: transparent;', pick: () => {} });
+for (var dd = 1; dd <= dim; dd++) { (function (k, n) {
+var isSel = k === sel, isToday = k === TODAY, has = !!items[k], past = k < TODAY;
+month.push({ n: n, dot: 'width: 5px; height: 5px; border-radius: 4px; background: ' + (has ? (isSel ? '#FFFFFF' : '#3A4152') : 'transparent') + ';', style: 'height: 44px; border: 0; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 15px; font-variant-numeric: tabular-nums; ' + (isSel ? 'background: #3A4152; color: #FFFFFF; font-weight: 700;' : isToday ? 'background: transparent; color: #15171E; font-weight: 700; box-shadow: inset 0 0 0 1.5px #3A4152;' : 'background: transparent; color: ' + (has ? '#15171E; font-weight: 700;' : past ? '#9CA1B0;' : '#4B5060;')),
+pick: () => this.setState({ sel: k, open: false, vy: undefined, vm: undefined }) });
+}).call(this, vy + '-' + p2(vm + 1) + '-' + p2(dd), dd); }
+var shift = (n) => { var m = vm + n, y = vy; if (m < 0) { m = 11; y--; } if (m > 11) { m = 0; y++; } this.setState({ vm: m, vy: y }); };
+var mb = 'height: 44px; border: 0; border-radius: 12px; font-size: 14px; font-weight: 600;';
+var months = MONTHS.map((m, i) => ({ name: m.slice(0, 3), style: mb + (i === vm ? ' background: #3A4152; color: #FFFFFF;' : ' background: #F1F2F6; color: #15171E;'), pick: () => this.setState({ vm: i, picker: false }) }));
+var list = [];
+for (var q = 0; q < 8; q++) { (function (d, qi) {
+var k = iso(d), its = items[k] || [];
+var lab = (k === TODAY ? 'Today, ' : '') + WD[dow(d)] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0, 3);
+list.push({ label: lab, side: '', free: its.length === 0,
+headStyle: 'margin-top: ' + (qi ? 20 : 12) + 'px; padding: 0 4px; display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ' + (qi === 0 ? '#15171E' : '#4B5060') + ';',
+items: its.map(function (x) { var c = P[x[2]]; var timed = /^\d+:\d+/.test(x[0]); var tp = x[0].split('\u2013'); return { time: tp[0], timeEnd: tp[1] || '', t: x[1], l: x[2], href: x[2] === 'Recurring' ? 'RecurringDo.dc.html' : x[2] === 'Event' ? 'Event.dc.html' : 'Todo.dc.html',
+rowStyle: 'display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 14px; border-radius: 16px; text-decoration: none; color: #15171E; background: ' + (x[2] === 'Recurring' ? '#E9EBF0' : '#FFFFFF') + ';',
+timeStyle: x[0] === '' ? 'display: none;' : 'width: 64px; flex-shrink: 0; font-size: ' + (timed ? '16px; font-weight: 700; font-variant-numeric: tabular-nums;' : '13px; font-weight: 500; color: #4B5060;'),
+pill: x[2] === 'Recurring' ? 'display: none;' : 'height: 24px; padding: 0 9px; border-radius: 8px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; flex-shrink: 0; background: ' + c[0] + '; color: ' + c[1] + ';' }; }) });
+})(add(sd, q), q); }
+var folded = [];
+list.forEach(function (e, i) {
+var prev = folded[folded.length - 1];
+if (e.free && i > 0 && prev && prev.free && prev.idx > 0) { prev.label = prev.first + ' \u2013 ' + e.label; return; }
+e.idx = i; e.first = e.label; folded.push(e);
+});
+folded.forEach(function (e) { if (e.free) { e.side = 'Nothing planned'; e.free = false; e.headStyle = e.headStyle.replace('margin-top: 20px', 'margin-top: 16px'); } });
+list = folded;
+return {
+monthLabel: MONTHS[sd.getMonth()] + (sd.getFullYear() !== 2026 ? ' ' + sd.getFullYear() : ''),
+isWeek: !open, isMonth: open && !picker, isPicker: open && picker,
+week: week, month: month, heads: ['M','T','W','T','F','S','S'], days: list,
+viewLabel: MONTHS[vm] + ' ' + vy, year: vy, months: months,
+prevMonth: () => shift(-1), nextMonth: () => shift(1),
+openPicker: () => this.setState({ picker: true, vy: vy, vm: vm }),
+prevYear: () => this.setState({ vy: vy - 1 }), nextYear: () => this.setState({ vy: vy + 1 }),
+toggle: () => this.setState({ open: !open, picker: false, vy: undefined, vm: undefined }), toggleLabel: open ? 'Show week' : 'Show month',
+away: sel !== TODAY || (open && (vy !== 2026 || vm !== 9)),
+goToday: () => this.setState({ sel: TODAY, open: false, picker: false, vy: undefined, vm: undefined })
+};
+}
+}
+</script>
+</body>
+</html>

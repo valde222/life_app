@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+
+# Build output and caches
+dist/
+.angular/
+coverage/
+target/
+*.tsbuildinfo
+
+# Tauri
+src-tauri/gen/
+src-tauri/target/
+
+# Android (Capacitor)
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/release/
+android/capacitor-cordova-android-plugins/
+*.keystore
+*.jks
+
+# Built installers
+*.apk
+*.aab
+*.exe
+*.msi
+
+# PocketBase data and backups
+pb_data/
+backups/
+
+# Secrets and local config
+.env
+.env.*
+!.env.example
+
+# Test output
+test-results/
+playwright-report/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor and OS files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+desktop.ini

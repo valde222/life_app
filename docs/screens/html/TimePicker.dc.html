@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Time picker</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+input::placeholder{color:#6B7080}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+<div aria-hidden="true" style="flex: 1; display: flex; flex-direction: column; min-height: 0;"><div style="padding: 44px 8px 0 4px;"><a href="Main.dc.html" style="height: 44px; padding: 0 8px; display: inline-flex; align-items: center; gap: 2px; text-decoration: none; font-size: 15px; font-weight: 600; color: #3A4152;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Today</a></div><div style="padding: 0 20px;"><div style="display: flex; gap: 6px;"><span style="height: 24px; padding: 0 9px; border-radius: 8px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; flex-shrink: 0; background: #ECE4F8; color: #4B2E7A;">Apartment</span></div><div style="margin-top: 10px; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">Call the landlord</div></div><div style="margin: 16px 16px 0; height: 160px; border-radius: 16px; background: #FFFFFF;"></div></div><div style="position: absolute; inset: 0; background: rgba(21, 23, 30, 0.36);"></div><div role="dialog" aria-label="Pick a time" style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 780px; overflow-y: auto; background: #F1F2F6; border-radius: 24px 24px 0 0; padding: 10px 16px 32px; display: flex; flex-direction: column;"><div style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3; align-self: center; flex-shrink: 0;"></div><h2 style="margin: 14px 4px 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">Time.</h2><div role="tablist" style="margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E3E5EC; border-radius: 14px; flex-shrink: 0;"><button role="tab" aria-selected="{{atSel}}" onClick="{{modeAt}}" style="{{atStyle}}">At a time</button><button role="tab" aria-selected="{{rangeSel}}" onClick="{{modeRange}}" style="{{rangeStyle}}">From – to</button></div>
+<sc-if value="{{isRange}}" hint-placeholder-val="{{false}}"><div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; flex-shrink: 0;">
+<button onClick="{{editFrom}}" style="{{fromStyle}}"><span style="font-size: 12px; font-weight: 600; color: #4B5060;">From</span><span style="font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums;">{{fromLabel}}</span></button>
+<button onClick="{{editTo}}" style="{{toStyle}}"><span style="font-size: 12px; font-weight: 600; color: #4B5060;">To</span><span style="font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums;">{{toLabel}}</span></button>
+</div></sc-if>
+<sc-if value="{{isAt}}" hint-placeholder-val="{{true}}"><div style="margin-top: 10px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; flex-shrink: 0;"><sc-for list="{{quick}}" as="q" hint-placeholder-count="4"><button onClick="{{q.pick}}" aria-pressed="{{q.pressed}}" style="{{q.style}}"><span style="font-size: 12px; font-weight: 600;">{{q.name}}</span><span style="font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums;">{{q.time}}</span></button></sc-for></div></sc-if>
+<div style="margin-top: 10px; padding: 8px 12px; border-radius: 16px; background: #FFFFFF; display: grid; grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr); align-items: center; flex-shrink: 0;">
+<div style="display: grid; grid-template-rows: repeat(5, 40px); gap: 2px;"><sc-for list="{{hours}}" as="h" hint-placeholder-count="5"><button onClick="{{h.pick}}" style="{{h.style}}">{{h.v}}</button></sc-for></div>
+<span style="text-align: center; font-size: 24px; font-weight: 700; color: #15171E;">:</span>
+<div style="display: grid; grid-template-rows: repeat(5, 40px); gap: 2px;"><sc-for list="{{mins}}" as="m" hint-placeholder-count="5"><button onClick="{{m.pick}}" style="{{m.style}}">{{m.v}}</button></sc-for></div>
+</div>
+<a href="Todo.dc.html" style="margin-top: 14px; flex-shrink: 0; height: 52px; border-radius: 16px; background: #3A4152; color: #FFFFFF; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center;">{{setLabel}}</a><a href="Todo.dc.html" style="margin-top: 8px; flex-shrink: 0; height: 48px; border-radius: 14px; background: #FFFFFF; color: #15171E; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center;">No time</a></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var range = !!s.range, edit = s.edit || 'from';
+var from = s.from || [18, 30], to = s.to || [19, 30];
+var cur = range && edit === 'to' ? to : from;
+var h = cur[0], m = cur[1];
+var p2 = function (n) { return (n < 10 ? '0' : '') + n; };
+var fmt = function (t) { return p2(t[0]) + ':' + p2(t[1]); };
+var setCur = (t) => { if (range && edit === 'to') { this.setState({ to: t }); } else { var o = { from: t }; if (range && (t[0] * 60 + t[1]) >= (to[0] * 60 + to[1])) { o.to = [(t[0] + 1) % 24, t[1]]; } this.setState(o); } };
+var cell = function (on) { return 'height: 40px; border: 0; border-radius: 10px; font-size: ' + (on ? 22 : 17) + 'px; font-weight: ' + (on ? 700 : 500) + '; font-variant-numeric: tabular-nums; ' + (on ? 'background: #E3E5EC; color: #15171E;' : 'background: transparent; color: #6B7080;'); };
+var ring = function (on) { return 'height: 64px; border: 0; border-radius: 14px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; padding: 0 14px; color: #15171E; background: #FFFFFF;' + (on ? ' box-shadow: inset 0 0 0 2px #3A4152;' : ''); };
+var segOn = 'height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 700; background: #FFFFFF; color: #15171E; box-shadow: 0 1px 2px rgba(0,0,0,0.08);';
+var segOff = 'height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 700; background: transparent; color: #4B5060;';
+var hours = [], mins = [];
+for (var i = -2; i <= 2; i++) { hours.push((h + i + 24) % 24); }
+var mi = Math.round(m / 5);
+for (var j = -2; j <= 2; j++) { mins.push(((mi + j + 12) % 12) * 5); }
+var quick = [['Morning', 9, 0], ['Noon', 12, 0], ['Afternoon', 15, 0], ['Evening', 18, 0]];
+return {
+isRange: range, isAt: !range, atSel: range ? 'false' : 'true', rangeSel: range ? 'true' : 'false',
+atStyle: range ? segOff : segOn, rangeStyle: range ? segOn : segOff,
+modeAt: () => this.setState({ range: false, edit: 'from' }), modeRange: () => this.setState({ range: true, edit: 'from' }),
+fromLabel: fmt(from), toLabel: fmt(to), fromStyle: ring(edit === 'from'), toStyle: ring(edit === 'to'),
+editFrom: () => this.setState({ edit: 'from' }), editTo: () => this.setState({ edit: 'to' }),
+quick: quick.map((q) => { var on = q[1] === from[0] && q[2] === from[1]; return { name: q[0], time: p2(q[1]) + ':' + p2(q[2]), pressed: on ? 'true' : 'false', style: 'height: 56px; border: 0; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; ' + (on ? 'background: #3A4152; color: #FFFFFF;' : 'background: #FFFFFF; color: #15171E;'), pick: () => setCur([q[1], q[2]]) }; }),
+hours: hours.map((v) => ({ v: p2(v), style: cell(v === h), pick: () => setCur([v, m]) })),
+mins: mins.map((v) => ({ v: p2(v), style: cell(v === m), pick: () => setCur([h, v]) })),
+setLabel: range ? 'Set ' + fmt(from) + ' \u2013 ' + fmt(to) : 'Set ' + fmt(from)
+};
+}
+}
+</script>
+</body>
+</html>

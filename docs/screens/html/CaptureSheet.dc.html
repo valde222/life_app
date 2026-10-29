@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Capture</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+
+<div aria-hidden="true" style="padding: 52px 20px 0;">
+<div style="font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;">Wed 21 Oct</div>
+<div style="margin-top: 6px; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Today.</div>
+<div style="margin-top: 28px; height: 64px; border-radius: 18px; background: #3A4152;"></div>
+<div style="margin-top: 8px; height: 56px; border-radius: 16px; background: #FFFFFF;"></div>
+<div style="margin-top: 8px; height: 56px; border-radius: 16px; background: #FFFFFF;"></div>
+</div>
+
+<div style="position: absolute; inset: 0; background: rgba(21, 23, 30, 0.36);"></div>
+
+<div role="dialog" aria-label="Capture" style="position: absolute; left: 0; right: 0; bottom: 0; background: #F1F2F6; border-radius: 24px 24px 0 0; padding: 10px 16px 32px; display: flex; flex-direction: column;">
+<div style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3; align-self: center;"></div>
+
+<div role="tablist" aria-label="Capture as" style="margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E3E5EC; border-radius: 14px;">
+<button role="tab" aria-selected="true" style="height: 40px; border: 0; border-radius: 10px; background: #FFFFFF; color: #15171E; font-size: 14px; font-weight: 700; box-shadow: 0 1px 2px rgba(0,0,0,0.08);">Todo</button>
+<a href="CaptureJot.dc.html" role="tab" aria-selected="false" style="height: 40px; border-radius: 10px; color: #4B5060; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center;">Note</a>
+</div>
+
+<div style="margin-top: 12px; padding: 16px; border-radius: 18px; background: #FFFFFF;">
+<input aria-label="What's on your mind" value="Set up Client A staging fri" style="width: 100%; box-sizing: border-box; border: 0; outline: 0; background: transparent; font: inherit; font-size: 20px; font-weight: 500; color: #15171E;">
+<div style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px;">
+<span style="height: 34px; padding: 0 4px 0 10px; border-radius: 10px; background: #3A4152; color: #FFFFFF; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;"><a href="DatePicker.dc.html" style="display: inline-flex; align-items: center; gap: 6px; color: #FFFFFF; text-decoration: none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"></rect><path d="M4 10h16"></path></svg>Fri 23 Oct</a><button aria-label="Remove date" style="width: 28px; height: 28px; border: 0; border-radius: 8px; background: transparent; color: #FFFFFF; display: flex; align-items: center; justify-content: center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span>
+<a href="MoveTo.dc.html" style="height: 34px; padding: 0 10px; border-radius: 10px; background: #F1F2F6; color: #15171E; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">Inbox<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
+
+</div>
+</div>
+
+
+
+<div style="margin-top: 14px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px;">
+<a href="CaptureTodo.dc.html" style="height: 52px; border-radius: 16px; background: #FFFFFF; color: #15171E; font-size: 16px; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">Add details</a>
+<a href="Main.dc.html" style="height: 52px; border-radius: 16px; background: #3A4152; color: #FFFFFF; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center;">Save</a>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

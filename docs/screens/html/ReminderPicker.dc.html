@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reminder picker</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+input::placeholder{color:#6B7080}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+<div aria-hidden="true" style="flex: 1; display: flex; flex-direction: column; min-height: 0;"><div style="padding: 52px 16px 0;"><div style="padding: 0 4px; display: flex; justify-content: space-between; font-size: 15px; font-weight: 600;"><span>Cancel</span><span>New todo</span><span>Save</span></div><div style="margin-top: 16px; height: 64px; border-radius: 16px; background: #FFFFFF;"></div><div style="margin-top: 8px; height: 260px; border-radius: 16px; background: #FFFFFF;"></div></div></div><div style="position: absolute; inset: 0; background: rgba(21, 23, 30, 0.36);"></div><div role="dialog" aria-label="Pick a reminder" style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 780px; overflow-y: auto; background: #F1F2F6; border-radius: 24px 24px 0 0; padding: 10px 16px 32px; display: flex; flex-direction: column;"><div style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3; align-self: center; flex-shrink: 0;"></div><h2 style="margin: 14px 4px 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">Remind me.</h2><div style="margin-top: 12px; padding: 0 16px; border-radius: 16px; background: #FFFFFF; flex-shrink: 0;"><sc-for list="{{opts}}" as="o" hint-placeholder-count="5"><button role="radio" aria-checked="{{o.checked}}" onClick="{{o.pick}}" style="{{o.style}}"><span style="flex: 1; text-align: left; font-size: 16px; font-weight: 500;">{{o.label}}</span><span style="font-size: 14px; color: #6B7080;">{{o.when}}</span><span style="{{o.dot}}"></span></button></sc-for></div><a href="CaptureTodo.dc.html" style="margin-top: 14px; flex-shrink: 0; height: 52px; border-radius: 16px; background: #3A4152; color: #FFFFFF; font-size: 16px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center;">Done</a></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var sel = s.sel || 'Off';
+var opts = [['Off', ''], ['At the time', '17:00'], ['10 minutes before', '16:50'], ['1 hour before', '16:00'], ['Morning of', '08:00']];
+return { opts: opts.map((o, i) => { var on = o[0] === sel; return { label: o[0], when: o[1], checked: on ? 'true' : 'false', pick: () => this.setState({ sel: o[0] }),
+style: 'width: 100%; min-height: 52px; padding: 0; border: 0; ' + (i ? 'border-top: 1px solid #EEF0F4; ' : '') + 'background: transparent; display: flex; align-items: center; gap: 10px; color: #15171E;',
+dot: 'width: 20px; height: 20px; border-radius: 10px; box-sizing: border-box; flex-shrink: 0; ' + (on ? 'border: 6px solid #3A4152;' : 'border: 2px solid #C3C7D3;') }; }) };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lists</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+input::placeholder{color:#6B7080}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+<div style="padding: 52px 12px 0 20px; display: flex; align-items: flex-end; justify-content: space-between;"><div><h1 style="margin: 0 0 0; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Lists.</h1></div><div style="display: flex; align-items: center;"><a href="ManageLists.dc.html" style="height: 44px; padding: 0 8px; display: inline-flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 600; color: #4B5060;">Edit</a></div></div><div style="flex: 1; min-height: 0; overflow-y: auto; margin-top: 16px; padding: 0 16px 164px; display: flex; flex-direction: column; gap: 8px;">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+<div style="flex-shrink: 0; border-radius: 18px; background: #FFFFFF; overflow: hidden;">
+<button onClick="{{g.toggle}}" aria-expanded="{{g.open}}" style="width: 100%; min-height: 60px; padding: 0 16px; border: 0; background: transparent; display: flex; align-items: center; gap: 10px; text-align: left; color: #15171E;">
+<span style="flex: 1; font-size: 18px; font-weight: 700; letter-spacing: -0.01em;">{{g.name}}</span>
+<span style="font-size: 13px; color: #4B5060;">{{g.summary}}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4B5060" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="{{g.chev}}"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<sc-if value="{{g.open}}" hint-placeholder-val="{{true}}">
+<div style="padding: 0 16px 6px;">
+<sc-for list="{{g.lists}}" as="r" hint-placeholder-count="3">
+<a href="List.dc.html" style="min-height: 52px; display: flex; align-items: center; gap: 12px; border-top: 1px solid #EEF0F4; text-decoration: none; color: #15171E;"><span style="{{r.swatch}}"></span><span style="flex: 1; font-size: 16px; font-weight: 500;">{{r.name}}</span><span style="font-size: 13px; color: #4B5060;">{{r.counts}}</span></a>
+</sc-for>
+<a href="NewList.dc.html" style="min-height: 48px; display: flex; align-items: center; border-top: 1px solid #EEF0F4; text-decoration: none; font-size: 15px; font-weight: 600; color: #4B5060;">+ New list</a>
+</div>
+</sc-if>
+</div>
+</sc-for>
+<a href="NewGroup.dc.html" style="flex-shrink: 0; height: 52px; border-radius: 16px; border: 1.5px dashed #BCC1CF; box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600; color: #3A4152;">+ New group</a>
+</div>
+<nav aria-label="Main" style="position: absolute; left: 16px; right: 16px; bottom: 24px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; padding: 8px 6px 6px; border-radius: 26px; background: #FFFFFF; box-shadow: 0 8px 24px rgba(21, 23, 30, 0.12);"><a href="Search.dc.html" aria-label="Search" style="grid-column: 1 / -1; margin: 0 0 4px; height: 40px; padding: 0 14px; border-radius: 20px; background: #F1F2F6; display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: 15px; color: #6B7080;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Search</a><a href="Main.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"></path></svg>Today</a><a href="Agenda.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>Agenda</a><a href="CaptureSheet.dc.html" aria-label="Capture" style="justify-self: center; width: 52px; height: 52px; border-radius: 18px; background: #3A4152; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></a><a href="Inbox.dc.html" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 500; color: #4B5060;"><span style="position: relative; display: flex;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l2.5-7h11L20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="M4 13h5l1 2h4l1-2h5"></path></svg><span style="position: absolute; top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 8px; background: #3A4152; color: #FFFFFF; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;">6</span></span>Inbox</a><a href="All.dc.html" aria-current="page" style="height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; font-size: 11px; font-weight: 700; color: #15171E;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"></path><circle cx="4.5" cy="6" r="1"></circle><circle cx="4.5" cy="12" r="1"></circle><circle cx="4.5" cy="18" r="1"></circle></svg>Lists</a></nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var open = s.open || { Life: true, Work: false, Hobbies: false };
+var groups = [
+{ name: 'Life', lists: [['Life', '#E3ECF8', '#23446C', 7, 6], ['Apartment', '#ECE4F8', '#4B2E7A', 6, 4], ['Shopping', '#DCF1EE', '#14524A', 4, 0], ['Music', '#DFF1E2', '#22542B', 2, 3], ['Someday', '#ECEDF1', '#4B5060', 11, 1]] },
+{ name: 'Work', lists: [['Client A', '#FBE7D7', '#7A3611', 5, 9], ['Client B', '#FBE0EC', '#7A1F48', 3, 5]] },
+{ name: 'Hobbies', lists: [['Bouldering', '#DCF1EE', '#14524A', 0, 0]] }
+];
+var part = function (n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); };
+return {
+groups: groups.map((g) => {
+var on = !!open[g.name];
+var todos = g.lists.reduce(function (a, l) { return a + l[3]; }, 0);
+return {
+name: g.name, open: on,
+summary: on ? '' : !todos ? part(g.lists.length, 'list') : part(g.lists.length, 'list') + ', ' + part(todos, 'todo'),
+chev: 'transition: transform 150ms; transform: rotate(' + (on ? 90 : 0) + 'deg);',
+toggle: () => { var o = Object.assign({}, open); o[g.name] = !on; this.setState({ open: o }); },
+lists: g.lists.map(function (l) { return {
+name: l[0],
+counts: [l[3] ? part(l[3], 'todo') : '', l[4] ? part(l[4], 'note') : ''].filter(Boolean).join(', ') || 'Empty',
+swatch: 'width: 12px; height: 28px; border-radius: 4px; flex-shrink: 0; background: ' + l[1] + '; box-shadow: inset 0 0 0 1.5px ' + l[2] + '33;'
+}; })
+};
+})
+};
+}
+}
+</script>
+</body>
+</html>

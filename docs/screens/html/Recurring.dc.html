@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Repeating item</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+
+<div style="padding: 44px 8px 0; display: flex; align-items: center; justify-content: space-between;">
+<a href="RecurringDo.dc.html" style="height: 44px; padding: 0 10px; display: inline-flex; align-items: center; text-decoration: none; font-size: 15px; font-weight: 600; color: #3A4152;">Cancel</a>
+<a href="RecurringDo.dc.html" style="height: 40px; padding: 0 18px; border-radius: 12px; background: #3A4152; color: #FFFFFF; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center;">Save</a>
+</div>
+
+<div style="flex: 1; min-height: 0; overflow-y: auto; padding: 8px 16px 32px;">
+<div style="padding: 0 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;">Repeating</div>
+<div style="margin-top: 6px; display: flex; padding: 12px 14px; border-radius: 14px; background: #FFFFFF;"><input aria-label="Name" value="Clean bathroom" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 18px; font-weight: 600; color: #15171E; padding: 0;"></div>
+
+<div style="margin-top: 20px; padding: 0 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;">How often</div>
+<div role="tablist" style="margin-top: 8px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E3E5EC; border-radius: 14px;"><button role="tab" aria-selected="{{roughSel}}" onClick="{{toRough}}" style="{{roughTab}}">Roughly</button><button role="tab" aria-selected="{{schedSel}}" onClick="{{toSched}}" style="{{schedTab}}">On a schedule</button></div>
+<sc-if value="{{isRough}}" hint-placeholder-val="{{true}}"><div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px;"><sc-for list="{{options}}" as="o" hint-placeholder-count="5"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for></div></sc-if>
+<sc-if value="{{isSched}}" hint-placeholder-val="{{false}}"><div style="margin-top: 10px; padding: 14px 16px; border-radius: 16px; background: #FFFFFF;"><div style="font-size: 13px; font-weight: 600; color: #4B5060;">Every</div><div style="margin-top: 8px; display: flex; gap: 6px;"><sc-for list="{{everys}}" as="e" hint-placeholder-count="3"><button aria-pressed="{{e.on}}" onClick="{{e.pick}}" style="{{e.style}}">{{e.label}}</button></sc-for></div><div style="margin-top: 14px; font-size: 13px; font-weight: 600; color: #4B5060;">On</div><div style="margin-top: 8px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px;"><sc-for list="{{wdays}}" as="d" hint-placeholder-count="7"><button aria-pressed="{{d.on}}" onClick="{{d.pick}}" style="{{d.style}}">{{d.label}}</button></sc-for></div><div style="margin-top: 12px; font-size: 14px; font-weight: 600; color: #15171E;">{{schedText}}</div></div></sc-if>
+
+
+
+<div style="margin-top: 20px; padding: 0 16px; border-radius: 18px; background: #FFFFFF;">
+<a href="MoveTo.dc.html" style="width: 100%; min-height: 52px; padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: space-between; font-size: 16px; color: #15171E; text-decoration: none; box-sizing: border-box;"><span style="color: #4B5060;">List</span><span style="height: 24px; padding: 0 9px; border-radius: 8px; background: #ECE4F8; color: #4B2E7A; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center;">Apartment</span></a>
+<div style="min-height: 52px; border-top: 1px solid #EEF0F4; display: flex; align-items: center; justify-content: space-between; font-size: 16px;"><span style="color: #4B5060;">Last done</span><span style="display: flex; align-items: center; gap: 10px;"><span style="font-weight: 600;">9 days ago</span><button style="height: 36px; padding: 0 12px; border: 0; border-radius: 10px; background: #F1F2F6; font-size: 14px; font-weight: 600; color: #3A4152;">Done today</button></span></div>
+</div>
+
+<div style="margin-top: 20px; display: flex; justify-content: space-between;">
+<a href="StopRepeat.dc.html" style="height: 44px; padding: 0 4px; display: inline-flex; align-items: center; text-decoration: none; font-size: 15px; font-weight: 600; color: #3A4152;">Stop repeating</a>
+<a href="RecurringDo.dc.html" style="height: 44px; padding: 0 4px; border: 0; background: transparent; font-size: 15px; font-weight: 600; color: #B4321F; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; box-sizing: border-box;">Delete</a>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var sel = s.sel === undefined ? 7 : s.sel;
+var opts = [
+{ days: 3, label: 'Every few days', sub: 'every few days' },
+{ days: 7, label: 'Weekly', sub: 'about weekly' },
+{ days: 14, label: 'Every 2 weeks', sub: 'about every 2 weeks' },
+{ days: 30, label: 'Monthly', sub: 'about monthly' },
+{ days: 0, label: 'Just count days', sub: 'counting days' }
+];
+var cur = opts.filter(function (o) { return o.days === sel; })[0];
+var base = 'height: 40px; padding: 0 14px; border: 0; border-radius: 12px; font-size: 14px; font-weight: 600;';
+var options = opts.map((o) => {
+var on = o.days === sel;
+return { label: o.label, on: on, style: base + (on ? ' background: #3A4152; color: #FFFFFF;' : ' background: #FFFFFF; color: #3A4152;'), pick: () => this.setState({ sel: o.days }) };
+});
+var over = sel > 0 && 9 >= sel;
+var labelDays = { 3: '3 days', 7: 'a week', 14: '2 weeks', 30: 'a month' };
+var mode = s.mode || 'rough';
+var every = s.every || 1;
+var wd = s.wd || { Mon: true };
+var WD = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+var segOn = 'height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 700; background: #FFFFFF; color: #15171E; box-shadow: 0 1px 2px rgba(0,0,0,0.08);';
+var segOff = 'height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 700; background: transparent; color: #4B5060;';
+var chip = function (on) { return 'height: 38px; padding: 0 12px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 600; ' + (on ? 'background: #3A4152; color: #FFFFFF;' : 'background: #F1F2F6; color: #15171E;'); };
+var picked = WD.filter(function (d) { return wd[d]; });
+var full = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday' };
+var names = picked.map(function (d) { return full[d]; });
+var dayText = names.length === 0 ? 'pick a day' : names.length === 1 ? names[0] : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+return {
+isRough: mode === 'rough', isSched: mode === 'sched', roughSel: mode === 'rough' ? 'true' : 'false', schedSel: mode === 'sched' ? 'true' : 'false',
+roughTab: mode === 'rough' ? segOn : segOff, schedTab: mode === 'sched' ? segOn : segOff,
+toRough: () => this.setState({ mode: 'rough' }), toSched: () => this.setState({ mode: 'sched' }),
+everys: [[1, 'Week'], [2, '2 weeks'], [4, '4 weeks']].map((e) => ({ label: e[1], on: e[0] === every ? 'true' : 'false', style: chip(e[0] === every), pick: () => this.setState({ every: e[0] }) })),
+wdays: WD.map((d) => ({ label: d.slice(0, 2), on: wd[d] ? 'true' : 'false', style: chip(!!wd[d]).replace('padding: 0 12px', 'padding: 0'), pick: () => { var o = Object.assign({}, wd); o[d] = !o[d]; this.setState({ wd: o }); } })),
+schedText: (every === 1 ? 'Every ' : 'Every ' + every + ' weeks on ') + dayText,
+options: options,
+explain: sel === 0 ? 'It just counts the days since you last did it. It never turns red.' : 'No due dates, so nothing piles up. After about ' + labelDays[sel] + ' it turns red so you notice it.',
+sub: cur.sub,
+iconColor: over ? '#B4321F' : '#6B7080',
+tagStyle: over ? 'height: 24px; padding: 0 9px; border-radius: 8px; background: #FCE3DE; color: #8F2414; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center;' : 'font-size: 13px; font-weight: 500; color: #4B5060;'
+};
+}
+}
+</script>
+</body>
+</html>

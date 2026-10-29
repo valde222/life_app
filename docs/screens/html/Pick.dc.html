@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pick for today</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+input::placeholder{color:#6B7080}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+
+<div aria-hidden="true" style="padding: 52px 20px 0;">
+<div style="font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;">Wed 21 Oct</div>
+<div style="margin-top: 6px; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Today.</div>
+</div>
+
+<div style="position: absolute; inset: 0; background: rgba(21, 23, 30, 0.36);"></div>
+
+<div role="dialog" aria-label="Pick for today" style="position: absolute; left: 0; right: 0; top: 96px; bottom: 0; background: #F1F2F6; border-radius: 24px 24px 0 0; padding-top: 10px; display: flex; flex-direction: column;">
+<div style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3; align-self: center;"></div>
+
+<div style="margin-top: 14px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between;">
+<div>
+<h2 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">Pick for today.</h2>
+
+</div>
+<a href="Main.dc.html" style="height: 44px; padding: 0 18px; border-radius: 14px; background: #3A4152; color: #FFFFFF; font-size: 15px; font-weight: 700; text-decoration: none; display: flex; align-items: center;">Done</a>
+</div>
+
+<label style="margin: 14px 16px 0; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; background: #FFFFFF; border-radius: 14px;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+<input aria-label="Search todos" placeholder="Search" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 15px; color: #15171E;">
+</label>
+
+<div style="margin-top: 10px; padding: 0 16px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0;">
+<sc-for list="{{chips}}" as="chip" hint-placeholder-count="6">
+<button onClick="{{chip.pick}}" aria-pressed="{{chip.on}}" style="{{chip.style}}">{{chip.name}}</button>
+</sc-for>
+</div>
+
+<div style="flex: 1; min-height: 0; overflow-y: auto; margin-top: 12px; padding: 0 16px 24px; display: flex; flex-direction: column; gap: 8px;">
+<sc-for list="{{items}}" as="item" hint-placeholder-count="8">
+<div style="display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 8px 6px 8px 16px; box-sizing: border-box; border-radius: 16px; background: #FFFFFF; flex-shrink: 0;">
+<div style="flex: 1; min-width: 0;">
+<div style="font-size: 17px; font-weight: 500;">{{item.t}}</div>
+<div style="margin-top: 4px; display: flex; align-items: center; gap: 8px;"><span style="{{item.pill}}">{{item.tab}}</span><span style="font-size: 12px; color: #4B5060;">{{item.meta}}</span></div>
+</div>
+<button aria-label="{{item.label}}" aria-pressed="{{item.on}}" onClick="{{item.toggle}}" style="width: 44px; height: 44px; border: 0; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+<sc-if value="{{item.on}}" hint-placeholder-val="{{false}}"><span style="width: 30px; height: 30px; border-radius: 10px; background: #3A4152; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"></path></svg></span></sc-if>
+<sc-if value="{{item.off}}" hint-placeholder-val="{{true}}"><span style="width: 30px; height: 30px; border-radius: 10px; background: #E3E5EC; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3A4152" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 6v12M6 12h12"></path></svg></span></sc-if>
+</button>
+</div>
+</sc-for>
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
+<div style="padding: 32px 0; text-align: center; font-size: 15px; color: #4B5060;">Nothing here.</div>
+</sc-if>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var picked = s.picked || {};
+var f = s.filter || 'left';
+var colors = {
+'Life': ['#E3ECF8', '#23446C'], 'Apartment': ['#ECE4F8', '#4B2E7A'], 'Shopping': ['#DCF1EE', '#14524A'],
+'Music': ['#DFF1E2', '#22542B'], 'Client A': ['#FBE7D7', '#7A3611'], 'Client B': ['#FBE0EC', '#7A1F48'], 'Someday': ['#ECEDF1', '#4B5060']
+};
+var todos = [
+{ id: 'bulbs', t: 'Light bulbs', tab: 'Shopping', added: '2 hours ago' },
+{ id: 'postgres', t: 'Read up on postgres indexes', tab: 'Client A', added: '5 hours ago' },
+{ id: 'song', t: 'Learn a new song', tab: 'Music', added: 'yesterday' },
+{ id: 'curtains', t: 'Buy curtains', tab: 'Apartment', added: 'Monday' },
+{ id: 'migration', t: 'Write migration notes', tab: 'Client B', added: 'Monday', left: true },
+{ id: 'internet', t: 'Order internet', tab: 'Apartment', added: 'Sunday', due: 'Due Fri' },
+{ id: 'door', t: 'Fix bathroom door', tab: 'Apartment', added: 'Oct 17', left: true },
+{ id: 'gift', t: 'Birthday gift for mum', tab: 'Life', added: 'Oct 16', due: 'Due Nov 2' },
+{ id: 'boulder', t: 'Try bouldering', tab: 'Someday', added: 'Oct 14' }
+];
+var filters = ['All', 'Due soon', 'Left over', 'Life', 'Apartment', 'Shopping', 'Music', 'Client A', 'Client B', 'Someday'];
+var keyOf = { 'All': 'all', 'Due soon': 'due', 'Left over': 'left' };
+var isTab = f !== 'all' && f !== 'due' && f !== 'left';
+var list = todos.filter(function (x) {
+if (f === 'all') return true;
+if (f === 'due') return !!x.due;
+if (f === 'left') return !!x.left;
+return x.tab === f;
+});
+var n = 0;
+Object.keys(picked).forEach(function (k) { if (picked[k]) n++; });
+var items = list.map((x) => {
+var on = !!picked[x.id];
+var c = colors[x.tab];
+return {
+t: x.t, tab: x.tab, on: on, off: !on,
+pill: isTab ? 'display: none;' : 'height: 22px; padding: 0 8px; border-radius: 8px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; background: ' + c[0] + '; color: ' + c[1] + ';',
+meta: x.due || '',
+label: (on ? 'Remove ' : 'Add ') + x.t + (on ? ' from today' : ' to today'),
+toggle: () => { var p = Object.assign({}, picked); p[x.id] = !on; this.setState({ picked: p }); }
+};
+});
+var chipBase = 'flex-shrink: 0; height: 34px; padding: 0 14px; border-radius: 10px; border: 0; font-size: 14px; font-weight: 600;';
+var chips = filters.map((name) => {
+var key = keyOf[name] || name;
+var on = key === f;
+return {
+name: name, on: on,
+style: chipBase + (on ? ' background: #3A4152; color: #FFFFFF;' : ' background: #FFFFFF; color: #3A4152;'),
+pick: () => this.setState({ filter: key })
+};
+});
+return {
+chips: chips,
+items: items,
+isEmpty: items.length === 0,
+countText: ''
+};
+}
+}
+</script>
+</body>
+</html>

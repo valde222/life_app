@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Edit lists</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3A4152;text-decoration:none}a:hover{color:#15171E}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #F1F2F6; color: #15171E; font-family: 'Space Grotesk', system-ui, sans-serif;">
+
+<div style="padding: 52px 20px 0; display: flex; align-items: flex-end; justify-content: space-between;">
+<div>
+<h1 style="margin: 6px 0 0; font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.035em;">Edit lists.</h1>
+</div>
+<a href="All.dc.html" style="height: 40px; padding: 0 16px; border-radius: 12px; background: #3A4152; color: #FFFFFF; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center;">Done</a>
+</div>
+
+<div style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 32px;">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+<label style="margin-top: 18px; padding: 0 4px; display: flex; align-items: center; gap: 6px; min-height: 32px;"><input aria-label="Group name" value="{{g.name}}" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; padding: 0; font: inherit; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg><button aria-label="Delete group {{g.name}}" onClick="{{g.askDelete}}" style="width: 32px; height: 32px; margin-right: -6px; border: 0; border-radius: 8px; background: transparent; color: #B4321F; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></label>
+<div style="margin-top: 8px; display: flex; flex-direction: column; gap: 8px;">
+<sc-for list="{{g.lists}}" as="l" hint-placeholder-count="3">
+<div style="border-radius: 16px; background: #FFFFFF;">
+<a href="ListSettings.dc.html" style="width: 100%; min-height: 56px; padding: 0 14px 0 8px; border: 0; background: transparent; display: flex; align-items: center; gap: 10px; color: #15171E; text-decoration: none;">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="#6B7080" aria-hidden="true"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg>
+<span style="{{l.pill}}">{{l.name}}</span>
+<span style="flex: 1;"></span>
+<span style="font-size: 14px; color: #4B5060;">{{l.count}}</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="{{l.chev}}"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+</div>
+</sc-for>
+<a href="NewList.dc.html" style="height: 48px; border-radius: 16px; border: 1.5px dashed #BCC1CF; box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600; color: #3A4152;">+ New list</a>
+</div>
+</sc-for>
+
+<a href="NewGroup.dc.html" style="margin-top: 12px; height: 44px; padding: 0 4px; border: 0; background: transparent; font-size: 15px; font-weight: 600; color: #3A4152; display: inline-flex; align-items: center; text-decoration: none;">+ New group</a>
+
+<div style="margin-top: 20px; padding: 0 4px; display: flex; align-items: baseline; justify-content: space-between;"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5060;">Archived</span></div>
+<div style="margin-top: 8px; display: flex; flex-direction: column; gap: 8px;">
+<sc-for list="{{archived}}" as="a" hint-placeholder-count="1">
+<div style="min-height: 60px; padding: 8px 8px 8px 14px; box-sizing: border-box; border-radius: 16px; background: #E9EBF0; display: flex; align-items: center; gap: 10px;">
+<div style="flex: 1; min-width: 0;"><div style="font-size: 16px; font-weight: 600; color: #3A4152;">{{a.name}}</div><div style="font-size: 12px; color: #4B5060;">{{a.meta}}</div></div>
+<button aria-label="Delete {{a.name}}" onClick="{{a.del}}" style="width: 40px; height: 40px; border: 0; border-radius: 12px; background: transparent; color: #B4321F; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button>
+<button onClick="{{a.restore}}" style="height: 40px; padding: 0 12px; border: 0; border-radius: 12px; background: #FFFFFF; font-size: 14px; font-weight: 600; color: #3A4152;">Restore</button>
+</div>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+<div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 28px; min-height: 56px; padding: 6px 6px 6px 18px; box-sizing: border-box; border-radius: 18px; background: #3A4152; display: flex; align-items: center; gap: 12px;">
+<div style="flex: 1; min-width: 0; font-size: 15px; font-weight: 600; color: #FFFFFF;">{{toast}}</div>
+<button onClick="{{undo}}" style="height: 44px; padding: 0 14px; border: 0; border-radius: 12px; background: #FFFFFF; color: #3A4152; font-size: 14px; font-weight: 700;">Undo</button>
+</div>
+</sc-if>
+
+<sc-if value="{{hasConfirm}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; inset: 0;">
+<button aria-label="Cancel" onClick="{{cancelArchive}}" style="position: absolute; inset: 0; border: 0; padding: 0; background: rgba(21, 23, 30, 0.36); cursor: default;"></button>
+<div role="dialog" aria-label="{{cf.title}}" style="position: absolute; left: 0; right: 0; bottom: 0; background: #F1F2F6; border-radius: 24px 24px 0 0; padding: 10px 16px 32px; display: flex; flex-direction: column;">
+<div style="width: 36px; height: 4px; border-radius: 2px; background: #C3C7D3; align-self: center;"></div>
+<h2 style="margin: 16px 4px 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;">{{cf.title}}</h2>
+<div style="margin: 6px 4px 0; font-size: 15px; color: #4B5060;">{{cf.sub}}</div>
+<sc-if value="{{isArchive}}" hint-placeholder-val="{{true}}"><button onClick="{{confirmArchive}}" style="width: 100%; margin-top: 14px; height: 52px; border: 0; border-radius: 16px; background: #3A4152; color: #FFFFFF; font-size: 16px; font-weight: 700;">Archive</button></sc-if>
+<sc-if value="{{isDelete}}" hint-placeholder-val="{{false}}"><button onClick="{{confirmMove}}" style="width: 100%; margin-top: 14px; height: 52px; border: 0; border-radius: 16px; background: #3A4152; color: #FFFFFF; font-size: 16px; font-weight: 700;">{{moveLabel}}</button><button onClick="{{confirmDelete}}" style="width: 100%; margin-top: 8px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; color: #B4321F; font-size: 15px; font-weight: 700;">{{deleteLabel}}</button></sc-if>
+<button onClick="{{cancelArchive}}" style="margin-top: 8px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; color: #15171E; font-size: 15px; font-weight: 600;">Cancel</button>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var s = this.state || {};
+var editing = null;
+var colors = s.colors || {};
+var archivedSet = s.archived || { clientC: true };
+var deletedSet = s.deleted || {};
+var goneGroups = s.goneGroups || {};
+var palette = [
+{ n: 'Blue', bg: '#E3ECF8', fg: '#23446C' },
+{ n: 'Purple', bg: '#ECE4F8', fg: '#4B2E7A' },
+{ n: 'Teal', bg: '#DCF1EE', fg: '#14524A' },
+{ n: 'Green', bg: '#DFF1E2', fg: '#22542B' },
+{ n: 'Orange', bg: '#FBE7D7', fg: '#7A3611' },
+{ n: 'Pink', bg: '#FBE0EC', fg: '#7A1F48' },
+{ n: 'Grey', bg: '#ECEDF1', fg: '#4B5060' }
+];
+var data = [
+{ name: 'Life', lists: [ { key: 'life', name: 'Life', c: 0, count: 7, notes: 6 }, { key: 'apartment', name: 'Apartment', c: 1, count: 6, notes: 4, recurring: 4 }, { key: 'shopping', name: 'Shopping', c: 2, count: 4, notes: 0 }, { key: 'music', name: 'Music', c: 3, count: 2, notes: 3 }, { key: 'someday', name: 'Someday', c: 6, count: 11, notes: 1 } ] },
+{ name: 'Work', lists: [ { key: 'clientA', name: 'Client A', c: 4, count: 5, notes: 9 }, { key: 'clientB', name: 'Client B', c: 5, count: 3, notes: 5 }, { key: 'clientC', name: 'Client C', c: 6, count: 0, notes: 14, ended: 'Archived Sep 30' } ] }
+];
+var all = [];
+data.forEach(function (g) { g.lists.forEach(function (l) { all.push(l); }); });
+var archive = (l) => {
+var a = Object.assign({}, archivedSet); a[l.key] = true;
+this.setState({ archived: a, confirm: null, editing: null, toast: { key: l.key, text: l.name + ' archived' } });
+};
+var restore = (l) => {
+var a = Object.assign({}, archivedSet); delete a[l.key];
+this.setState({ archived: a, toast: { key: l.key, text: l.name + ' restored', restored: true } });
+};
+var groups = data.filter(function (g) { return !goneGroups[g.name]; }).map((g) => ({
+name: g.name,
+askDelete: () => this.setState({ confirm: 'group:' + g.name }),
+lists: g.lists.filter(function (l) { return !archivedSet[l.key] && !deletedSet[l.key]; }).map((l) => {
+var ci = colors[l.key] === undefined ? l.c : colors[l.key];
+var p = palette[ci];
+var on = editing === l.key;
+return {
+name: l.name, count: l.count, editing: on,
+pill: 'height: 26px; padding: 0 10px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; background: ' + p.bg + '; color: ' + p.fg + ';',
+chev: 'transition: transform 150ms; transform: rotate(' + (on ? 90 : 0) + 'deg);',
+toggle: () => this.setState({ editing: on ? null : l.key }),
+askArchive: () => this.setState({ confirm: l.key, mode: 'archive' }),
+askDelete: () => this.setState({ confirm: l.key, mode: 'delete' }),
+swatches: palette.map((sw, i) => ({
+name: sw.n, on: i === ci,
+style: 'width: 40px; height: 40px; border: 0; border-radius: 12px; background: ' + sw.bg + '; box-shadow: ' + (i === ci ? 'inset 0 0 0 2.5px #3A4152' : 'inset 0 0 0 1px rgba(21,23,30,0.08)') + ';',
+pick: () => { var c = Object.assign({}, colors); c[l.key] = i; this.setState({ colors: c }); }
+}))
+};
+})
+}));
+var archived = all.filter(function (l) { return archivedSet[l.key] && !deletedSet[l.key]; }).map((l) => ({
+name: l.name,
+del: () => this.setState({ confirm: l.key, mode: 'delete' }),
+meta: (l.ended || 'Archived today') + ', ' + l.notes + ' notes',
+restore: () => restore(l)
+}));
+var isGroup = typeof s.confirm === 'string' && s.confirm.indexOf('group:') === 0;
+var gname = isGroup ? s.confirm.slice(6) : null;
+var other = data.filter(function (g) { return g.name !== gname && !goneGroups[g.name]; })[0];
+var cl = isGroup ? null : all.filter(function (l) { return l.key === s.confirm; })[0];
+var del = isGroup || s.mode === 'delete';
+var gl = isGroup ? data.filter(function (g) { return g.name === gname; })[0].lists.filter(function (l) { return !archivedSet[l.key] && !deletedSet[l.key]; }) : [];
+var cf = isGroup ? { title: 'Delete ' + gname + '?', sub: gl.length + ' lists in this group' }
+: cl ? { title: (del ? 'Delete ' : 'Archive ') + cl.name + '?', sub: (cl.count > 0 ? cl.count + ' open todos' : 'No open todos') + ', ' + cl.notes + ' notes' }
+: { title: '', sub: '' };
+var deleteList = (l, text) => { var d = Object.assign({}, deletedSet); d[l.key] = true; this.setState({ deleted: d, confirm: null, mode: null, editing: null, toast: { key: l.key, text: text, del: true } }); };
+var deleteGroup = (text) => { var g = Object.assign({}, goneGroups); g[gname] = true; var d = Object.assign({}, deletedSet); if (text.indexOf('Deleted') === 0) { gl.forEach(function (l) { d[l.key] = true; }); } this.setState({ goneGroups: g, deleted: d, confirm: null, toast: { group: gname, keys: gl.map(function (l) { return l.key; }), text: text, del: true } }); };
+var t = s.toast;
+return {
+groups: groups,
+archived: archived,
+hasConfirm: !!cl || isGroup,
+isArchive: !del,
+isDelete: del,
+moveLabel: isGroup ? 'Move its lists to ' + (other ? other.name : 'another group') : 'Move todos and notes to Inbox',
+deleteLabel: isGroup ? 'Delete the group and its lists' : 'Delete the list and everything in it',
+confirmMove: () => { if (isGroup) deleteGroup(gname + ' deleted, lists moved'); else if (cl) deleteList(cl, cl.name + ' deleted, items in Inbox'); },
+confirmDelete: () => { if (isGroup) deleteGroup('Deleted ' + gname + ' and its lists'); else if (cl) deleteList(cl, 'Deleted ' + cl.name); },
+cf: cf,
+confirmArchive: () => { if (cl) archive(cl); },
+cancelArchive: () => this.setState({ confirm: null, mode: null }),
+hasToast: !!t && !cl && !isGroup,
+toast: t ? t.text : '',
+undo: () => {
+if (!t) return;
+if (t.group) { var g = Object.assign({}, goneGroups); delete g[t.group]; var d0 = Object.assign({}, deletedSet); t.keys.forEach(function (k) { delete d0[k]; }); this.setState({ goneGroups: g, deleted: d0, toast: null }); return; }
+if (t.del) { var d = Object.assign({}, deletedSet); delete d[t.key]; this.setState({ deleted: d, toast: null }); return; }
+var a = Object.assign({}, archivedSet);
+if (t.restored) { a[t.key] = true; } else { delete a[t.key]; }
+this.setState({ archived: a, toast: null });
+}
+};
+}
+}
+</script>
+</body>
+</html>
