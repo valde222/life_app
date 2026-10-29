@@ -192,3 +192,29 @@
 .compact-pill {
   height: 30px;
 }
+
+.repeating-head {
+  margin-top: var(--space-3);
+  height: 32px;
+  padding: 0 var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+
+  span {
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+}
+
+.ended {
+  opacity: 0.55;
+}

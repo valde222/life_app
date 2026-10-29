@@ -215,8 +215,10 @@ Nine things to settle. The first three are best answered before the build starts
 - [x] **Apps on the work PC.** Can you install the Tauri app there? If not, the Pi also serves the Angular app as a website for the browser at work. *Yes: the Tauri app is installed there; the Pi serves no web build.*
 - [x] **Sign-in.** The First launch screens say "Continue with Apple". For one user on PocketBase, email and password is simplest; Google is the other option. *Email and password.*
 - [ ] **Where backups go:** a second disk, another machine, or a cloud bucket?
-- [ ] **Calendar window:** how far back and ahead the phone imports, for example 2 weeks back and 3 months ahead.
-- [ ] **Past events on Today:** do they stay, fade, or disappear once their time has passed?
-- [ ] **Reminders in v1:** Android notifications only, or desktop too?
+- [x] **Calendar window:** how far back and ahead the phone imports, for example 2 weeks back and 3 months ahead. *Taken: 2 weeks back, 3 months ahead.*
+- [x] **Past events on Today:** do they stay, fade, or disappear once their time has passed? *Taken: they stay and fade once ended.*
+- [x] **Reminders in v1:** Android notifications only, or desktop too? *Taken: Android only.*
 - [x] **Repo name and license.** MIT would match PocketBase. *Taken: MIT; the repo is `life-app`.*
+- [ ] **Sync conflict screen vs the newest-change-wins rule.** The SyncConflict screen asks which version to keep; decision 6 and Offline and sync 4 say the newest change wins without asking. The rule wins, so the screen isn't built. Build it only if conflicts turn out to matter.
+- [ ] **Scheduled items due today.** R10 shows only overdue repeating items on Today, so "Water plants" doesn't appear on a Thursday until Friday, when it's late. Built as the rule says.
 - [x] **Walkthroughs in the planning doc** still mention the Calendar label and "All 5"; update them to the current screens.

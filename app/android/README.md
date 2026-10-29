@@ -1,6 +1,6 @@
 # Android shell
 
-Capacitor 8 wrapping the Angular app as the Android app `dk.ottes.life`. It also receives shares from other apps (R3); calendar import (R13) comes in phase 4.
+Capacitor 8 wrapping the Angular app as the Android app `dk.ottes.life`. It also receives shares from other apps (R3), imports the phone's calendars (R13) and shows reminders as notifications.
 
 ## Build
 
@@ -34,6 +34,10 @@ The APK lands in `app/build/outputs/apk/debug/app-debug.apk`. Install it with th
 | Part | What it does |
 | --- | --- |
 | `ShareTargetPlugin` | Receives `ACTION_SEND` text, links and images and hands them to the app, which makes a quick note in the Inbox |
+| `@ebarooni/capacitor-calendar` | Read-only calendar access; the app imports enabled calendars from 2 weeks back to 3 months ahead every 15 minutes and on resume |
+| `@capacitor/local-notifications` | Todo reminders, rescheduled whenever todos change |
+
+Permissions: `READ_CALENDAR`, `POST_NOTIFICATIONS`, both asked for when first needed.
 
 ## Talks to
 

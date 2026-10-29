@@ -176,6 +176,18 @@ export class TodoEditor {
     }
   }
 
+  protected async repeat() {
+    if (this.isNew()) {
+      const draft = this.draft();
+      await this.router.navigate(['/repeat/new'], {
+        state: { back: this.back, title: this.title(), list: draft.list },
+      });
+      return;
+    }
+    this.saveTitle();
+    await this.router.navigate(['/repeat', this.id()], { state: { back: this.back } });
+  }
+
   protected setEvent(isEvent: boolean) {
     this.update({ is_event: isEvent });
   }

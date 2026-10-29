@@ -5,6 +5,8 @@ import { MainLayout } from './layout/main-layout';
 import { Placeholder } from './layout/placeholder';
 import { Server } from './server/server';
 import { ShareReceiver } from './share/share-receiver';
+import { CalendarImporter } from './calendar/calendar-importer';
+import { Reminders } from './reminders/reminders';
 import { SyncService } from './sync/sync.service';
 
 const signedIn: CanActivateFn = () => {
@@ -13,6 +15,8 @@ const signedIn: CanActivateFn = () => {
   }
   inject(SyncService).start();
   inject(ShareReceiver).start();
+  inject(CalendarImporter).start();
+  inject(Reminders).start();
   return true;
 };
 
@@ -63,6 +67,21 @@ export const routes: Routes = [
     loadComponent: () => import('./lists/list-settings').then((m) => m.ListSettings),
   },
   {
+    path: 'repeat/:id',
+    canActivate: [signedIn],
+    loadComponent: () => import('./repeating/repeat-editor').then((m) => m.RepeatEditor),
+  },
+  {
+    path: 'event/:id',
+    canActivate: [signedIn],
+    loadComponent: () => import('./calendar/event-page').then((m) => m.EventPage),
+  },
+  {
+    path: 'settings/calendars',
+    canActivate: [signedIn],
+    loadComponent: () => import('./calendar/calendars-page').then((m) => m.CalendarsPage),
+  },
+  {
     path: 'note/:id',
     canActivate: [signedIn],
     loadComponent: () => import('./note/note-editor').then((m) => m.NoteEditor),
@@ -77,6 +96,10 @@ export const routes: Routes = [
         pathMatch: 'full',
         canActivate: [setUp],
         loadComponent: () => import('./today/today').then((m) => m.Today),
+      },
+      {
+        path: 'repeating',
+        loadComponent: () => import('./repeating/repeating-page').then((m) => m.RepeatingPage),
       },
       { path: 'inbox', loadComponent: () => import('./inbox/inbox').then((m) => m.Inbox) },
       { path: 'lists', loadComponent: () => import('./lists/lists-page').then((m) => m.ListsPage) },

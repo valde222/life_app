@@ -74,6 +74,11 @@ export class Actions {
     };
   }
 
+  async complete(todo: Todo, day = this.clock.today()): Promise<Undo> {
+    const completion = await this.repository.save('completions', { todo: todo.id, done_on: day });
+    return () => this.repository.remove('completions', completion.id);
+  }
+
   private async change<C extends CollectionName>(
     collection: C,
     record: Collections[C],

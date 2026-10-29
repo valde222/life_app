@@ -46,7 +46,7 @@ export class ItemActions {
       case 'move':
         return this.moveTodo(todo);
       case 'repeat':
-        return this.router.navigate(['/todo', todo.id], { state: { back } });
+        return this.router.navigate(['/repeat', todo.id], { state: { back } });
       case 'delete':
         return this.done('Deleted', await this.actions.delete('todos', todo));
     }

@@ -25,6 +25,8 @@
     "@angular/router": "22.2.2",
     "@capacitor/android": "8.5.3",
     "@capacitor/core": "8.5.3",
+    "@capacitor/local-notifications": "8.3.1",
+    "@ebarooni/capacitor-calendar": "8.9.0",
     "@fontsource/inter": "5.3.0",
     "@fontsource/space-grotesk": "5.3.0",
     "dexie": "4.4.6",

@@ -1,0 +1,96 @@
+<header class="sheet-bar">
+  <button type="button" class="bar-link" (click)="cancel()">Cancel</button>
+  <span></span>
+  <button type="button" class="bar-save" [disabled]="!canSave()" (click)="save()">Save</button>
+</header>
+
+<main class="body">
+  <h1 class="eyebrow">Repeating</h1>
+  <input
+    class="card title"
+    aria-label="Title"
+    placeholder="Clean bathroom"
+    [ngModel]="title()"
+    (ngModelChange)="title.set($event)"
+  />
+
+  <h2 class="eyebrow">How often</h2>
+  <app-segmented [segments]="modes" [(value)]="mode" />
+  @if (mode() === 'rough') {
+    <div class="chips" role="radiogroup" aria-label="How often">
+      @for (choice of roughChoices; track choice.days) {
+        <button
+          type="button"
+          role="radio"
+          class="chip"
+          [class.on]="choice.days === everyDays()"
+          [attr.aria-checked]="choice.days === everyDays()"
+          (click)="everyDays.set(choice.days)"
+        >
+          {{ choice.label }}
+        </button>
+      }
+    </div>
+  } @else {
+    <div class="chips" role="radiogroup" aria-label="Every">
+      @for (weeks of weekChoices; track weeks) {
+        <button
+          type="button"
+          role="radio"
+          class="chip"
+          [class.on]="weeks === everyWeeks()"
+          [attr.aria-checked]="weeks === everyWeeks()"
+          (click)="everyWeeks.set(weeks)"
+        >
+          {{ weeks === 1 ? 'Every week' : 'Every ' + weeks + ' weeks' }}
+        </button>
+      }
+    </div>
+    <div class="weekdays" role="group" aria-label="Days">
+      @for (weekday of weekdays; track weekday.day) {
+        <button
+          type="button"
+          class="day"
+          [class.on]="days().includes(weekday.day)"
+          [attr.aria-pressed]="days().includes(weekday.day)"
+          (click)="toggleDay(weekday.day)"
+        >
+          {{ weekday.label }}
+        </button>
+      }
+    </div>
+  }
+
+  <div class="options details">
+    <app-detail-row
+      label="List"
+      [value]="listRecord()?.name ?? ''"
+      empty="Inbox"
+      (pick)="pickList()"
+    >
+      @if (listRecord()) {
+        <app-list-label [list]="listRecord()" />
+      } @else {
+        Inbox
+      }
+    </app-detail-row>
+    @if (wasRepeating()) {
+      <div class="last-done">
+        <span class="label">Last done</span>
+        <span class="value">{{ lastDone() }}</span>
+        <button type="button" class="done-today" (click)="doneToday()">Done today</button>
+      </div>
+    }
+  </div>
+
+  @if (todo()) {
+    <div class="foot">
+      @if (wasRepeating()) {
+        <button type="button" class="link" (click)="stopRepeating()">Stop repeating</button>
+      } @else {
+        <span></span>
+      }
+      <button type="button" class="link danger" (click)="delete()">Delete</button>
+    </div>
+  }
+</main>

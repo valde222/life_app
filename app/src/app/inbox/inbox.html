@@ -39,7 +39,10 @@
                   Today
                 </button>
                 <button type="button" class="act" (click)="pickDate(asTodo(item))">Date</button>
-                <a class="act" [routerLink]="['/todo', item.record.id]" [state]="{ back: '/inbox' }"
+                <a
+                  class="act"
+                  [routerLink]="['/repeat', item.record.id]"
+                  [state]="{ back: '/inbox' }"
                   >Repeat…</a
                 >
                 <button type="button" class="act danger" (click)="delete(asTodo(item))">
