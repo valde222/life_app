@@ -9,9 +9,10 @@ The backend: one PocketBase (v0.40.4, pinned in the `Dockerfile`) holding the on
 | `Dockerfile` | Pinned PocketBase for amd64 and arm64; applies migrations and creates the superuser on start |
 | `pb_migrations/` | The schema: `groups`, `lists`, `todos`, `steps`, `completions`, `notes` (with `links` to other notes, and private `photos`), `calendar_events`, `settings` |
 | `pb_hooks/account.pb.js` | Creates or updates the one account from the environment on start. Sign-up is off |
+| `pb_hooks/public_access.pb.js` | Refuses the admin UI, superuser sign-in and any superuser request that came through a proxy (the public tunnel). Superusers work only from the Pi itself |
 | `pb_hooks/sync.pb.js` | Newest change wins: an update older than the stored `changed_at` is ignored. Purges records deleted more than 30 days ago, nightly at 04:15 |
 | `seed/seed.mjs` | Development data matching the design canvas, dated relative to today. Does nothing if data exists |
-| `tests/` | API tests (`node --test tests/*.test.mjs`) |
+| `tests/` | API tests, including `access.test.mjs`, which attacks every collection signed out, with expired and forged tokens, as a second account and as a superuser through the public address. Run against a running server with `PB_URL`, `PB_USER_*` and `PB_ADMIN_*` set: `node --test --test-concurrency=1 tests/*.test.mjs` |
 
 Every record carries a client-made id, `changed_at` (the device's clock, in ms) and `deleted_at` (soft delete), plus PocketBase's `created` and `updated`. Apps pull changes by `updated`. Note photos are protected files: the apps fetch them with a short-lived file token.
 

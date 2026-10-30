@@ -19,6 +19,17 @@ No web build is served: the work PC runs the desktop app.
 3. For public HTTPS: create a Tailscale auth key, put it in `TS_AUTHKEY`, enable Funnel for the tailnet, then `docker compose --profile tunnel up -d`.
 4. In each app, set the server address on the sign-in screen to the Funnel address.
 
+## Admin UI
+
+The public address never serves the admin UI or lets a superuser sign in: the tunnel refuses `/_/` and `/api/collections/_superusers/`, and PocketBase refuses any superuser request that came through a proxy. To use the admin UI, tunnel to the Pi over SSH and open it locally:
+
+```sh
+ssh -L 8090:127.0.0.1:8090 <pi>
+# then http://localhost:8090/_/
+```
+
+After starting the tunnel, check from outside: `curl -s -o /dev/null -w '%{http_code}\n' https://life.<tailnet>.ts.net/_/` must not print `200` with the dashboard, and `https://life.<tailnet>.ts.net/api/health` must print `200`.
+
 ## Update and roll back
 
 `git checkout <tag> && docker compose up -d --build`. Migrations run on start. Before rolling back across a schema change, restore the backup taken before the update.

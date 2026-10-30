@@ -343,6 +343,16 @@ describe('superuser access through the public address', () => {
     assert.ok(records.status >= 400, `refused (${records.status})`);
   });
 
+  test('the owner still signs in and syncs through the public address', async () => {
+    const auth = await call('POST', '/api/collections/users/auth-with-password', {
+      body: { identity: owner.email, password: owner.password },
+      headers: forwarded,
+    });
+    assert.equal(auth.status, 200, auth.text);
+    const list = await call('GET', '/api/collections/todos/records', { token: auth.body.token, headers: forwarded });
+    assert.equal(list.status, 200);
+  });
+
   test('the backup job and the local dashboard still work', async () => {
     assert.equal((await call('GET', '/api/settings', { token: adminToken })).status, 200);
   });
