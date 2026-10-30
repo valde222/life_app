@@ -26,7 +26,8 @@ The APK lands in `app/build/outputs/apk/debug/app-debug.apk`. Install it with th
 | Setting | Where | Use |
 | --- | --- | --- |
 | `LIFE_DEV_SERVER=1` at `cap sync` | `../capacitor.config.ts` | Lets the app reach a plain-HTTP dev PocketBase (mixed content) |
-| Cleartext HTTP | `app/src/debug/AndroidManifest.xml` | Debug builds only, for the dev server |
+| Cleartext HTTP | `app/src/*/res/xml/network_security_config.xml` | Never in release builds. Debug builds allow it only to `localhost`, `127.0.0.1` and the emulator's `10.0.2.2`: on a phone, run `adb reverse tcp:8090 tcp:8090` and use `http://localhost:8090` |
+| Backups | `allowBackup`, `data_extraction_rules.xml` | Off: notes, photos and the sign-in token stay out of Google cloud backups and device-to-device transfer |
 | Server address | Sign-in screen | Kept on the device |
 
 ## Native parts
