@@ -24,7 +24,7 @@ docker compose -f docker-compose.dev.yml up
 
 Then open http://localhost:4200 and sign in with `me@example.com` / `lifeapp-dev`. The data matches the design canvas, dated around today. PocketBase's admin UI is at http://localhost:8090/_/ (`admin@example.com` / `lifeapp-admin`).
 
-To throw the data away and start fresh: `./scripts/dev-reset.sh`.
+The seed is dated around the day it first ran. To throw the data away and reseed for today: `./scripts/dev-reset.sh`. After pulling new code, recreate the containers (`docker compose -f docker-compose.dev.yml up -d --force-recreate`) so the dev server and PocketBase pick it up.
 
 ## Docs
 
