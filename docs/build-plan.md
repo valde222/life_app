@@ -77,10 +77,11 @@ Each app keeps its own copy and talks to PocketBase over HTTPS; how the Pi gets 
 | 15 | The repo lives on the Windows drive. Git, Docker, Node and the Angular build run in WSL; Rust/Tauri and the Android SDK run on Windows, called from WSL through cmd.exe. GitHub Actions also builds the Windows app and the APK on every phase tag for a release. Valdemar deploys to the Pi | Uses each tool where it's already installed; a repo on the Windows drive is reachable from both sides. Windows needs no Node: WSL builds the web files, and Tauri and Gradle only package them | Cross-compiling Windows builds from WSL; building on the Windows side by hand |
 | 16 | The local copy is IndexedDB (Dexie) on every platform, behind a `LocalStore` interface | One code path for Android, desktop and tests; Capacitor's WebView storage isn't evicted | SQLite on Android only (two implementations to keep in step) |
 | 17 | Notes link to other notes through a `links` field (relation to notes, many), shown on both ends | The Link picker and Note screens link notes to notes; the data model only had note-to-todo links | A separate links collection (more sync and more code for one user) |
+| 18 | Every record has an `owner` (relation to users), stamped by the server on create; every rule is "signed in as a user and the owner is you", and the owner can't be changed | Defence in depth for data on the internet: a second account (made by mistake, or through a future PocketBase bug) sees nothing | Rules that only check "signed in" (any account sees everything) |
 
 ## Data model
 
-Eight PocketBase collections. A todo, an event and a repeating item are one `todos` collection with flags, because the app turns one into another (Event switch, Repeat row, Stop repeating). Every record gets a client-made id so it can be created offline, and PocketBase's own `created` and `updated` times.
+Eight PocketBase collections. A todo, an event and a repeating item are one `todos` collection with flags, because the app turns one into another (Event switch, Repeat row, Stop repeating). Every record gets a client-made id so it can be created offline, PocketBase's own `created` and `updated` times, and an `owner` the server sets (decision 18).
 
 &#91;embedded content: data model · 8 collections\]
 

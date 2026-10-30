@@ -14,6 +14,7 @@ const READ_ONLY_FIELDS = [
   'collectionName',
   'expand',
   'photos',
+  'owner',
 ];
 
 @Injectable({ providedIn: 'root' })

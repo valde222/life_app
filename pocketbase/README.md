@@ -9,6 +9,7 @@ The backend: one PocketBase (v0.40.4, pinned in the `Dockerfile`) holding the on
 | `Dockerfile` | Pinned PocketBase for amd64 and arm64; applies migrations and creates the superuser on start |
 | `pb_migrations/` | The schema: `groups`, `lists`, `todos`, `steps`, `completions`, `notes` (with `links` to other notes, and private `photos`), `calendar_events`, `settings` |
 | `pb_hooks/account.pb.js` | Creates or updates the one account from the environment on start. Sign-up is off |
+| `pb_hooks/owner.pb.js` | Stamps `owner` with the signed-in account on every create. Every rule is "a user, and the owner is you" (decision 18); the owner can't be changed and accounts can't delete themselves |
 | `pb_hooks/public_access.pb.js` | Refuses the admin UI, superuser sign-in and any superuser request that came through a proxy (the public tunnel). Superusers work only from the Pi itself |
 | `pb_hooks/settings.pb.js` | On every start: rate limits on (5 sign-ins a minute per client), client address taken from the tunnel's `X-Forwarded-For` |
 | `pb_hooks/sync.pb.js` | Newest change wins: an update older than the stored `changed_at` is ignored. Purges records deleted more than 30 days ago, nightly at 04:15 |

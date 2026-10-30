@@ -5,12 +5,17 @@ const baseUrl = process.env.PB_URL ?? 'http://localhost:8090';
 let token;
 
 async function call(method, path, body) {
-  const response = await fetch(`${baseUrl}${path}`, {
-    method,
-    headers: { 'content-type': 'application/json', ...(token ? { authorization: token } : {}) },
-    body: body && JSON.stringify(body),
-  });
-  return { status: response.status, body: await response.json() };
+  for (;;) {
+    const response = await fetch(`${baseUrl}${path}`, {
+      method,
+      headers: { 'content-type': 'application/json', ...(token ? { authorization: token } : {}) },
+      body: body && JSON.stringify(body),
+    });
+    if (response.status !== 429) {
+      return { status: response.status, body: await response.json() };
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
 }
 
 const newId = () => Math.random().toString(36).slice(2, 9).padEnd(15, '0');

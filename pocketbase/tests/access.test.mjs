@@ -32,7 +32,7 @@ async function call(method, path, { token, body, headers = {} } = {}) {
       },
       body: body && (isForm ? body : JSON.stringify(body)),
     });
-    if (response.status === 429 && attempt < 20 && !headers['x-forwarded-for']) {
+    if (response.status === 429 && attempt < 75 && !headers['x-forwarded-for']) {
       await sleep(1000);
       continue;
     }
@@ -401,3 +401,42 @@ function tinyPng() {
     'base64',
   );
 }
+
+describe('schema', () => {
+  const owned = "@request.auth.collectionName = 'users' && owner = @request.auth.id";
+  const ownerUnchanged = '(@request.body.owner:isset = false || @request.body.owner = @request.auth.id)';
+
+  test('every collection is owned, and the rules say so', async () => {
+    for (const name of Object.keys(COLLECTIONS)) {
+      const collection = (await call('GET', `/api/collections/${name}`, { token: adminToken })).body;
+      assert.equal(collection.listRule, owned, `${name} list`);
+      assert.equal(collection.viewRule, owned, `${name} view`);
+      assert.equal(collection.createRule, `@request.auth.collectionName = 'users' && ${ownerUnchanged}`, `${name} create`);
+      assert.equal(collection.updateRule, `${owned} && ${ownerUnchanged}`, `${name} update`);
+      assert.equal(collection.deleteRule, owned, `${name} delete`);
+      assert.ok(collection.fields.some((field) => field.name === 'owner' && field.type === 'relation'), `${name} owner`);
+    }
+  });
+
+  test('accounts: no sign-up, no self-delete, no OAuth', async () => {
+    const users = (await call('GET', '/api/collections/users', { token: adminToken })).body;
+    assert.equal(users.createRule, null);
+    assert.equal(users.deleteRule, null);
+    assert.equal(users.oauth2.enabled, false);
+    assert.ok(users.fields.find((field) => field.name === 'password').min >= 8);
+  });
+
+  test('photos are protected images with a size limit', async () => {
+    const notes = (await call('GET', '/api/collections/notes', { token: adminToken })).body;
+    const photos = notes.fields.find((field) => field.name === 'photos');
+    assert.equal(photos.protected, true);
+    assert.ok(photos.maxSize > 0 && photos.maxSize <= 25 * 1024 * 1024);
+    assert.ok(photos.mimeTypes.length > 0 && photos.mimeTypes.every((type) => type.startsWith('image/') && type !== 'image/svg+xml'));
+  });
+
+  test('rate limits are on', async () => {
+    const settings = (await call('GET', '/api/settings', { token: adminToken })).body;
+    assert.equal(settings.rateLimits.enabled, true);
+    assert.ok(settings.rateLimits.rules.some((rule) => rule.label === '*:auth' && rule.maxRequests <= 10));
+  });
+});
