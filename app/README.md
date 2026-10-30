@@ -22,6 +22,11 @@ Install packages from WSL only; never run npm on the Windows side.
 
 - PocketBase address: `DEFAULT_SERVER_URL` in `src/app/server/server.ts` (`http://localhost:8090`); the sign-in screen changes it, and the choice is kept on the device.
 
+## Security
+
+- `src/index.html` carries a Content Security Policy: scripts only from the app itself, no inline scripts or event handlers, network and images only over HTTPS (plain HTTP only to `localhost`, `127.0.0.1` and the emulator's `10.0.2.2`). Critical-CSS inlining is off in the production build because it relies on an inline `onload` handler. `e2e/security.spec.ts` checks the policy blocks injected scripts and nothing the app does.
+- Note markdown is rendered by a tokenizer that escapes every piece of text; `markdown.spec.ts` checks no input can produce tags or attributes outside a short allowlist.
+
 ## Layouts
 
 Under 900px wide it's the phone layout with the bottom nav; from 900px the desktop layout: sidebar, content, and a detail pane for todos, notes and events. Same routes, same components.
