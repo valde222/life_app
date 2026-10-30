@@ -22,6 +22,8 @@ For a window on the dev server instead: start the dev environment, then `cmd.exe
 | App id, window size | `src-tauri/tauri.conf.json` |
 | Icons | Generated from `docs/brand/icon.svg` with `cargo tauri icon` |
 | Server address | Sign-in screen, kept on the device |
+| Content Security Policy | `app.security.csp` in `src-tauri/tauri.conf.json`, the same policy as `app/src/index.html`: scripts only from the app, network only to HTTPS (or plain HTTP on localhost) |
+| IPC permissions | `src-tauri/capabilities/default.json`: only the capture window, and it may only hide itself. The main window gets no IPC; there are no custom commands |
 
 ## Native parts
 

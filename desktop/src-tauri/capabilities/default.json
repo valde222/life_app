@@ -1,15 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "default",
-  "description": "enables the default permissions",
-  "windows": [
-    "main",
-    "capture"
-  ],
-  "permissions": [
-    "core:default",
-    "core:window:allow-hide",
-    "core:window:allow-show",
-    "core:window:allow-set-focus"
-  ]
+  "identifier": "capture",
+  "description": "The capture window may hide itself after saving. The main window needs no IPC",
+  "windows": ["capture"],
+  "permissions": ["core:window:allow-hide"]
 }
