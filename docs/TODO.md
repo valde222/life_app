@@ -77,3 +77,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 - [x] Ctrl+Space global capture window, tray icon (R1, R2; T16)
 - [x] Desktop keyboard shortcuts screen
 - [x] T16 passes
+
+## Security audit (`v0.7-security`)
+
+- [ ] Security audit: every check in `docs/plans/security-audit.md` done, findings fixed, `docs/security.md` written
