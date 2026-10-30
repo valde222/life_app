@@ -113,7 +113,7 @@ export function toSendError(error: unknown): unknown {
   if (!(error instanceof ClientResponseError)) {
     return error;
   }
-  if (error.status === 0 || error.status >= 500) {
+  if (error.status === 0 || error.status === 429 || error.status >= 500) {
     return new SendError('offline', error);
   }
   if (error.status === 401 || error.status === 403) {

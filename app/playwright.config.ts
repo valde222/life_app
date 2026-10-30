@@ -31,7 +31,7 @@ function pocketBaseServer() {
     command:
       'docker build -q -t life-pocketbase:e2e ../pocketbase && ' +
       `docker run --rm --name life-e2e-pocketbase -p 8091:8090 -e PB_USER_EMAIL=${E2E_USER.email} ` +
-      `-e PB_USER_PASSWORD=${E2E_USER.password} life-pocketbase:e2e`,
+      `-e PB_USER_PASSWORD=${E2E_USER.password} -e PB_RATE_LIMITS=off life-pocketbase:e2e`,
     url: `${E2E_SERVER}/api/health`,
     timeout: 180_000,
     reuseExistingServer: !process.env['CI'],

@@ -31,8 +31,14 @@ export class SignIn {
       await this.store.adopt(`${this.server.url()}#${this.server.pb.authStore.record?.id}`);
       await this.router.navigateByUrl('/');
     } catch (error) {
-      const unreachable = error instanceof ClientResponseError && error.status === 0;
-      this.error.set(unreachable ? "Can't reach the server" : 'Wrong email or password');
+      const status = error instanceof ClientResponseError ? error.status : undefined;
+      this.error.set(
+        status === 0
+          ? "Can't reach the server"
+          : status === 429
+            ? 'Too many tries. Wait a minute'
+            : 'Wrong email or password',
+      );
     } finally {
       this.busy.set(false);
     }

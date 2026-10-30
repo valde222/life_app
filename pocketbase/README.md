@@ -10,6 +10,7 @@ The backend: one PocketBase (v0.40.4, pinned in the `Dockerfile`) holding the on
 | `pb_migrations/` | The schema: `groups`, `lists`, `todos`, `steps`, `completions`, `notes` (with `links` to other notes, and private `photos`), `calendar_events`, `settings` |
 | `pb_hooks/account.pb.js` | Creates or updates the one account from the environment on start. Sign-up is off |
 | `pb_hooks/public_access.pb.js` | Refuses the admin UI, superuser sign-in and any superuser request that came through a proxy (the public tunnel). Superusers work only from the Pi itself |
+| `pb_hooks/settings.pb.js` | On every start: rate limits on (5 sign-ins a minute per client), client address taken from the tunnel's `X-Forwarded-For` |
 | `pb_hooks/sync.pb.js` | Newest change wins: an update older than the stored `changed_at` is ignored. Purges records deleted more than 30 days ago, nightly at 04:15 |
 | `seed/seed.mjs` | Development data matching the design canvas, dated relative to today. Does nothing if data exists |
 | `tests/` | API tests, including `access.test.mjs`, which attacks every collection signed out, with expired and forged tokens, as a second account and as a superuser through the public address. Run against a running server with `PB_URL`, `PB_USER_*` and `PB_ADMIN_*` set: `node --test --test-concurrency=1 tests/*.test.mjs` |
@@ -26,6 +27,7 @@ Use the Compose files at the repo root; the dev one starts this with seed data. 
 | --- | --- |
 | `PB_USER_EMAIL`, `PB_USER_PASSWORD` | The one account the apps sign in with |
 | `PB_ADMIN_EMAIL`, `PB_ADMIN_PASSWORD` | Superuser for the admin UI and backups |
+| `PB_RATE_LIMITS` | `off` only for the end-to-end test server, which signs in dozens of times a minute. Never set in production |
 
 ## Talks to
 
