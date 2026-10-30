@@ -16,7 +16,6 @@
   ::ng-deep > :not(router-outlet) {
     display: block;
     max-width: 640px;
-    margin: 0 auto;
     --nav-space: 48px;
   }
 }

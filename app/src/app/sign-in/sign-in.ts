@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientResponseError } from 'pocketbase';
+import { LocalStore } from '../data/local-store';
 import { Server } from '../server/server';
 
 @Component({
@@ -13,6 +14,7 @@ import { Server } from '../server/server';
 export class SignIn {
   private readonly server = inject(Server);
   private readonly router = inject(Router);
+  private readonly store = inject(LocalStore);
 
   protected email = '';
   protected password = '';
@@ -26,6 +28,7 @@ export class SignIn {
     try {
       this.server.setUrl(this.serverUrl);
       await this.server.signIn(this.email.trim(), this.password);
+      await this.store.adopt(`${this.server.url()}#${this.server.pb.authStore.record?.id}`);
       await this.router.navigateByUrl('/');
     } catch (error) {
       const unreachable = error instanceof ClientResponseError && error.status === 0;

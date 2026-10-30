@@ -24,6 +24,8 @@ export interface PhotoRemoval {
   filename: string;
 }
 
+const OWNER_KEY = 'owner';
+
 export interface MetaEntry {
   key: string;
   value: string;
@@ -53,6 +55,20 @@ export class LocalStore extends Dexie {
     this.version(2).stores({
       pendingPhotos: 'id, note',
       photoRemovals: 'id, note',
+    });
+  }
+
+  async adopt(owner: string) {
+    const current = (await this.meta.get(OWNER_KEY))?.value;
+    if (current === owner) {
+      return;
+    }
+    await this.transaction('rw', this.tables, async () => {
+      const unsentFromBefore = current === undefined && (await this.outbox.count()) > 0;
+      if (!unsentFromBefore) {
+        await Promise.all(this.tables.map((table) => table.clear()));
+      }
+      await this.meta.put({ key: OWNER_KEY, value: owner });
     });
   }
 
