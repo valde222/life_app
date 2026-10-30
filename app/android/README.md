@@ -42,3 +42,7 @@ Permissions: `READ_CALENDAR`, `POST_NOTIFICATIONS`, both asked for when first ne
 ## Talks to
 
 PocketBase, at the address chosen on the sign-in screen.
+
+## Share target
+
+`ShareTargetPlugin` takes text (capped at 100,000 characters) and images from other apps. It reads an image only from another app's `content://` provider and only if that provider says it's an image; `file://` paths and Life's own providers are refused, so a malicious app can't get Life to copy its private files into a note. The checks live in `SharedContent` and are unit-tested: `gradlew.bat app:testDebugUnitTest`.

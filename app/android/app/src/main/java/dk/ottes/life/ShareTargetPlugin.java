@@ -51,8 +51,8 @@ public class ShareTargetPlugin extends Plugin {
             return null;
         }
         JSObject share = new JSObject();
-        share.put("text", intent.getStringExtra(Intent.EXTRA_TEXT));
-        share.put("subject", intent.getStringExtra(Intent.EXTRA_SUBJECT));
+        share.put("text", SharedContent.cappedText(intent.getStringExtra(Intent.EXTRA_TEXT)));
+        share.put("subject", SharedContent.cappedText(intent.getStringExtra(Intent.EXTRA_SUBJECT)));
         JSArray images = new JSArray();
         for (Uri uri : imageUris(intent)) {
             JSObject image = readImage(uri);
@@ -82,6 +82,10 @@ public class ShareTargetPlugin extends Plugin {
     }
 
     private JSObject readImage(Uri uri) {
+        String mimeType = getContext().getContentResolver().getType(uri);
+        if (!SharedContent.isReadableImage(uri.getScheme(), uri.getAuthority(), mimeType, getContext().getPackageName())) {
+            return null;
+        }
         try (InputStream input = getContext().getContentResolver().openInputStream(uri)) {
             if (input == null) {
                 return null;
@@ -96,7 +100,7 @@ public class ShareTargetPlugin extends Plugin {
                 }
             }
             JSObject image = new JSObject();
-            image.put("mimeType", getContext().getContentResolver().getType(uri));
+            image.put("mimeType", mimeType);
             image.put("base64", Base64.encodeToString(output.toByteArray(), Base64.NO_WRAP));
             return image;
         } catch (Exception error) {
