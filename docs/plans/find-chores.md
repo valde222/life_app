@@ -12,6 +12,6 @@ Bug: repeating items ("chores") were hard to find.
 
 ## Steps
 
-- [ ] Search marks chores and shows them as chore rows
-- [ ] The Repeating card on Lists, and the sidebar entry
-- [ ] End-to-end test; tests, lint and visual check (only Lists, Search and the desktop sidebar change); merge to `main`
+- [x] Search marks chores and shows them as chore rows
+- [x] The Repeating card on Lists, and the sidebar entry
+- [x] End-to-end test; tests, lint and visual check (only Lists, Search and the desktop sidebar change); merge to `main`
