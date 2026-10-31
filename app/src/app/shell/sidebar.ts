@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '../core/data/store';
+import { readJsonPreference, writeJsonPreference } from '../core/platform/preferences';
 import { NewGroupSheet } from '../features/lists/new-group-sheet';
 import { NewListData, NewListSheet } from '../features/lists/new-list-sheet';
 import { SyncService } from '../core/sync/sync.service';
@@ -52,9 +53,7 @@ export class Sidebar {
       ? this.open().filter((each) => each !== id)
       : [...this.open(), id];
     this.open.set(next);
-    try {
-      localStorage.setItem(OPEN_KEY, JSON.stringify(next));
-    } catch {}
+    writeJsonPreference(OPEN_KEY, next);
   }
 
   protected newList(group: string) {
@@ -66,10 +65,6 @@ export class Sidebar {
   }
 
   private readOpen(): string[] {
-    try {
-      return JSON.parse(localStorage.getItem(OPEN_KEY) ?? '[]') as string[];
-    } catch {
-      return [];
-    }
+    return readJsonPreference<string[]>(OPEN_KEY, []);
   }
 }

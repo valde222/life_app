@@ -1,6 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ShownPhoto } from '../../core/photos/photos';
+import { logError } from '../../core/logging/log';
 
 export interface ImageViewData {
   photos: ShownPhoto[];
@@ -114,6 +115,10 @@ export class ImageView {
     try {
       const blob = await (await fetch(this.photo().full)).blob();
       await navigator.share({ files: [new File([blob], 'photo.jpg', { type: blob.type })] });
-    } catch {}
+    } catch (error) {
+      if (!(error instanceof DOMException && error.name === 'AbortError')) {
+        logError('Sharing a photo failed', error);
+      }
+    }
   }
 }

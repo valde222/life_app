@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { Router, RouterLink } from '@angular/router';
 import { Group, List } from '../../domain/models';
 import { Store } from '../../core/data/store';
+import { readJsonPreference, writeJsonPreference } from '../../core/platform/preferences';
 import { Icon } from '../../shared/ui/icon';
 import { ListSwatch } from '../../shared/ui/list-swatch';
 import { Sheets } from '../../shared/ui/sheet';
@@ -12,11 +13,7 @@ import { NewListData, NewListSheet } from './new-list-sheet';
 const OPEN_GROUPS_KEY = 'life.lists.open';
 
 function readOpen(): string[] | null {
-  try {
-    return JSON.parse(localStorage.getItem(OPEN_GROUPS_KEY) ?? 'null') as string[] | null;
-  } catch {
-    return null;
-  }
+  return readJsonPreference<string[] | null>(OPEN_GROUPS_KEY, null);
 }
 
 @Component({
@@ -60,9 +57,7 @@ export class ListsPage {
       open.add(group.id);
     }
     this.savedOpen.set([...open]);
-    try {
-      localStorage.setItem(OPEN_GROUPS_KEY, JSON.stringify([...open]));
-    } catch {}
+    writeJsonPreference(OPEN_GROUPS_KEY, [...open]);
   }
 
   protected async newList(group: Group) {

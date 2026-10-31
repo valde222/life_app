@@ -1,13 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { readPreference, writePreference } from '../../core/platform/preferences';
 
 const TIP_KEY = 'life.tip.capture';
 
 function seen(): boolean {
-  try {
-    return localStorage.getItem(TIP_KEY) === 'seen';
-  } catch {
-    return false;
-  }
+  return readPreference(TIP_KEY) === 'seen';
 }
 
 @Component({
@@ -68,9 +65,7 @@ export class FirstLaunchTip {
   protected readonly visible = signal(!seen());
 
   protected dismiss() {
-    try {
-      localStorage.setItem(TIP_KEY, 'seen');
-    } catch {}
+    writePreference(TIP_KEY, 'seen');
     this.visible.set(false);
   }
 }
