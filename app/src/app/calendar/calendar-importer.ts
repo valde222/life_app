@@ -4,7 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { LocalStore } from '../data/local-store';
 import { Repository } from '../data/repository';
 import { CalendarSettings } from './calendar-settings';
-import { importWindow, planImport } from './import-plan';
+import { importWindow, planImport } from '../domain/import-plan';
 
 const EVERY_MS = 15 * 60_000;
 

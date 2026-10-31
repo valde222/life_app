@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { LocalStore } from '../data/local-store';
-import { EMPTY_RECORDS, Note } from '../data/models';
+import { EMPTY_RECORDS, Note } from '../domain/models';
 import { Server } from '../server/server';
 import { SyncService } from '../sync/sync.service';
 import { Photos, THUMB } from './photos';

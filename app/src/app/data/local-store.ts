@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
-import { CollectionName, Collections } from './models';
+import { CollectionName, Collections } from '../domain/models';
 
 export interface OutboxEntry {
   seq?: number;

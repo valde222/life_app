@@ -1,4 +1,4 @@
-import { Group, List, Note, Todo } from '../data/models';
+import { Group, List, Note, Todo } from './models';
 
 export interface ListCounts {
   todos: number;

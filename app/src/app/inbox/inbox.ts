@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Actions, Undo } from '../data/actions';
-import { Note, Todo } from '../data/models';
+import { Note, Todo } from '../domain/models';
 import { Store } from '../data/store';
 import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
 import { MoveTo, MoveToData } from '../pickers/move-to';
@@ -12,7 +12,7 @@ import { listColourStyle } from '../ui/list-colours';
 import { Sheets } from '../ui/sheet';
 import { SwipeRow } from '../ui/swipe-row';
 import { Toasts } from '../ui/toast';
-import { inboxSections, InboxItem } from './inbox-items';
+import { inboxSections, InboxItem } from '../domain/inbox-items';
 import { isTyping } from '../ui/keyboard';
 
 const QUICK_LISTS = 4;

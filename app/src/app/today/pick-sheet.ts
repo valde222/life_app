@@ -2,13 +2,13 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Actions, Undo } from '../data/actions';
-import { Todo } from '../data/models';
+import { Todo } from '../domain/models';
 import { Store } from '../data/store';
 import { Clock } from '../time/clock';
-import { addDays, relativeDay } from '../time/local-date';
+import { addDays, relativeDay } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { ListLabel } from '../ui/list-label';
-import { todayItems } from './today-items';
+import { todayItems } from '../domain/today-items';
 
 const ALL = 'All';
 const DUE_SOON = 'Due soon';

@@ -1,4 +1,4 @@
-import { ListColour } from '../data/models';
+import { ListColour } from '../domain/models';
 
 export const GROUP_SUGGESTIONS = [
   { name: 'Life', picked: true },

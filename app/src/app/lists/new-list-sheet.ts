@@ -1,7 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { List, ListColour } from '../data/models';
+import { List, ListColour } from '../domain/models';
 import { Repository } from '../data/repository';
 import { Store } from '../data/store';
 import { LIST_COLOURS } from '../ui/list-colours';

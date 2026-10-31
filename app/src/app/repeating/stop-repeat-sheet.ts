@@ -1,11 +1,11 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { Todo } from '../data/models';
+import { Todo } from '../domain/models';
 import { Store } from '../data/store';
 import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
 import { MoveTo, MoveToData } from '../pickers/move-to';
 import { Clock } from '../time/clock';
-import { addDays, longDate, nextWeekday } from '../time/local-date';
+import { addDays, longDate, nextWeekday } from '../domain/time/local-date';
 import { Sheet, Sheets } from '../ui/sheet';
 
 export interface StopRepeatResult {

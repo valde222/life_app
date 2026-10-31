@@ -2,16 +2,16 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Actions } from '../data/actions';
-import { List } from '../data/models';
+import { List } from '../domain/models';
 import { Repository } from '../data/repository';
 import { Store } from '../data/store';
-import { search } from '../search/search-items';
+import { search } from '../domain/search-items';
 import { Clock } from '../time/clock';
-import { localDate, longDate, shortDate } from '../time/local-date';
+import { localDate, longDate, shortDate } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { Segmented } from '../ui/segmented';
 import { Toasts } from '../ui/toast';
-import { deletedItems } from './deleted-items';
+import { deletedItems } from '../domain/deleted-items';
 
 type Tab = 'archive' | 'done';
 

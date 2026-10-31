@@ -1,4 +1,4 @@
-import { CalendarEvent, EMPTY_RECORDS, EMPTY_RECORDS as E } from '../data/models';
+import { CalendarEvent, EMPTY_RECORDS, EMPTY_RECORDS as E } from './models';
 import { calendarEventAsTodo, hasEnded, itemLink } from './calendar-items';
 
 const event = (fields: Partial<CalendarEvent>): CalendarEvent => ({

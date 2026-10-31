@@ -1,7 +1,7 @@
 import { DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Group } from '../data/models';
+import { Group } from '../domain/models';
 import { Repository } from '../data/repository';
 import { Store } from '../data/store';
 import { Sheet } from '../ui/sheet';

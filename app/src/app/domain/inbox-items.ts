@@ -1,5 +1,5 @@
-import { Note, Todo } from '../data/models';
-import { localDate } from '../time/local-date';
+import { Note, Todo } from './models';
+import { localDate } from './time/local-date';
 
 export type InboxItem = { kind: 'todo'; record: Todo } | { kind: 'note'; record: Note };
 

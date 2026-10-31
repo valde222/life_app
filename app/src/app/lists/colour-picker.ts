@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, model } from '@angular/core';
-import { ListColour } from '../data/models';
+import { ListColour } from '../domain/models';
 import { LIST_COLOURS, listColourStyle } from '../ui/list-colours';
 
 const NAMES: Record<ListColour, string> = {

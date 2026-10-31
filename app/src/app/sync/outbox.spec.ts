@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LocalStore } from '../data/local-store';
-import { CollectionName, Collections, Todo } from '../data/models';
+import { CollectionName, Collections, Todo } from '../domain/models';
 import { Repository } from '../data/repository';
 import { drainOutbox, RemoteWriter, SendError } from './outbox';
 

@@ -11,8 +11,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Actions } from '../data/actions';
-import { pocketBaseTimestamp } from '../data/ids';
-import { ListColour } from '../data/models';
+import { pocketBaseTimestamp } from '../domain/ids';
+import { ListColour } from '../domain/models';
 import { Repository } from '../data/repository';
 import { Store } from '../data/store';
 import { Icon } from '../ui/icon';

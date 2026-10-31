@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Actions } from '../data/actions';
-import { Todo } from '../data/models';
+import { Todo } from '../domain/models';
 import { Store } from '../data/store';
 import { Clock } from '../time/clock';
-import { addDays } from '../time/local-date';
+import { addDays } from '../domain/time/local-date';
 import { EmptyState } from '../ui/empty-state';
 import { Icon } from '../ui/icon';
 import { Sheets } from '../ui/sheet';
 import { Toasts } from '../ui/toast';
-import { isRepeating, repeatStatus } from './repeat-status';
+import { isRepeating, repeatStatus } from '../domain/repeat-status';
 import { RepeatRow } from './repeat-row';
 import { RepeatSheet, RepeatSheetResult } from './repeat-sheet';
 

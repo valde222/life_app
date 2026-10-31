@@ -15,7 +15,7 @@ import { Store } from '../data/store';
 import { Icon } from '../ui/icon';
 import { ListLabel } from '../ui/list-label';
 import { Toasts } from '../ui/toast';
-import { search, SearchFilter, SearchHit } from './search-items';
+import { search, SearchFilter, SearchHit } from '../domain/search-items';
 
 const RECENT_MS = 7 * 86_400_000;
 const RECENT_WHEN_EMPTY = 8;

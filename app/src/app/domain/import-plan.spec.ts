@@ -1,4 +1,4 @@
-import { EMPTY_RECORDS } from '../data/models';
+import { EMPTY_RECORDS } from './models';
 import { DeviceEvent, planImport, stableId } from './import-plan';
 
 const now = new Date(2026, 9, 21, 10, 0);

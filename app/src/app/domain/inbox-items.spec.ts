@@ -1,4 +1,4 @@
-import { EMPTY_RECORDS, Note, Todo } from '../data/models';
+import { EMPTY_RECORDS, Note, Todo } from './models';
 import { inboxSections } from './inbox-items';
 
 describe('inboxSections', () => {

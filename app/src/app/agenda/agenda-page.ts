@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { RouterLink } from '@angular/router';
 import { Store } from '../data/store';
 import { Clock } from '../time/clock';
-import { addDays, localDate, longDate, monthName, parseLocalDate } from '../time/local-date';
+import { addDays, localDate, longDate, monthName, parseLocalDate } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { ListLabel } from '../ui/list-label';
-import { agendaDays, AgendaSources, datesWithItems } from './agenda-days';
+import { agendaDays, AgendaSources, datesWithItems } from '../domain/agenda-days';
 import { isTyping } from '../ui/keyboard';
 
 type View = 'week' | 'month' | 'year';

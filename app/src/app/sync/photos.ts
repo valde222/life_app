@@ -1,5 +1,5 @@
 import { LocalStore } from '../data/local-store';
-import { Note } from '../data/models';
+import { Note } from '../domain/models';
 import { applyRemote } from './merge';
 import { SendError } from './outbox';
 

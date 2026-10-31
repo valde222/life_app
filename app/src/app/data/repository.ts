@@ -3,9 +3,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { liveQuery } from 'dexie';
 import { from } from 'rxjs';
 import { enqueue } from '../sync/outbox';
-import { newId, pocketBaseTimestamp } from './ids';
+import { newId, pocketBaseTimestamp } from '../domain/ids';
 import { LocalStore } from './local-store';
-import { CollectionName, Collections, EMPTY_RECORDS } from './models';
+import { CollectionName, Collections, EMPTY_RECORDS } from '../domain/models';
 
 export type Draft<C extends CollectionName> = Partial<Collections[C]>;
 

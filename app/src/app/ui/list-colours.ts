@@ -1,4 +1,4 @@
-import { ListColour } from '../data/models';
+import { ListColour } from '../domain/models';
 
 export const LIST_COLOUR_TOKENS: Record<ListColour, string> = {
   blue: 'life',

@@ -7,7 +7,7 @@ import { Server } from '../server/server';
 import { SyncService } from '../sync/sync.service';
 import { Clock } from '../time/clock';
 import { Icon } from '../ui/icon';
-import { deletedItems } from '../archive/deleted-items';
+import { deletedItems } from '../domain/deleted-items';
 
 export function syncedLabel(last: Date | null, now: Date, online: boolean): string {
   if (!online) {

@@ -1,5 +1,5 @@
 import { LocalStore, OutboxEntry } from '../data/local-store';
-import { CollectionName, Collections } from '../data/models';
+import { CollectionName, Collections } from '../domain/models';
 
 export interface RemoteWriter {
   upsert<C extends CollectionName>(collection: C, record: Collections[C]): Promise<Collections[C]>;

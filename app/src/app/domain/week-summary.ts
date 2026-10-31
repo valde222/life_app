@@ -1,5 +1,5 @@
-import { Completion, Note, Step, Todo } from '../data/models';
-import { addDays, localDate, parseLocalDate } from '../time/local-date';
+import { Completion, Note, Step, Todo } from './models';
+import { addDays, localDate, parseLocalDate } from './time/local-date';
 
 export interface WeekSummary {
   start: string;

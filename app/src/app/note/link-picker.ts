@@ -3,10 +3,10 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Actions } from '../data/actions';
-import { Note, Todo } from '../data/models';
+import { Note, Todo } from '../domain/models';
 import { Store } from '../data/store';
 import { Clock } from '../time/clock';
-import { localDate, relativeDay, shortDate } from '../time/local-date';
+import { localDate, relativeDay, shortDate } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { Segmented } from '../ui/segmented';
 

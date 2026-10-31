@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Clock } from '../time/clock';
-import { pocketBaseTimestamp } from './ids';
-import { CollectionName, Collections, Note, Todo } from './models';
+import { pocketBaseTimestamp } from '../domain/ids';
+import { CollectionName, Collections, Note, Todo } from '../domain/models';
 import { Draft, Repository } from './repository';
 
 export type Undo = () => Promise<unknown>;

@@ -1,5 +1,5 @@
-import { CalendarEvent, EMPTY_RECORDS, Todo } from '../data/models';
-import { localDate } from '../time/local-date';
+import { CalendarEvent, EMPTY_RECORDS, Todo } from './models';
+import { localDate } from './time/local-date';
 
 export const CALENDAR_PREFIX = 'cal:';
 

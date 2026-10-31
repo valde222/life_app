@@ -1,4 +1,4 @@
-import { EMPTY_RECORDS, Todo } from '../data/models';
+import { EMPTY_RECORDS, Todo } from './models';
 import { todayItems } from './today-items';
 
 let next = 0;

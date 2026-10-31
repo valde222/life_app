@@ -12,7 +12,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Actions } from '../data/actions';
-import { EMPTY_RECORDS, Note, Step, Todo } from '../data/models';
+import { EMPTY_RECORDS, Note, Step, Todo } from '../domain/models';
 import { Draft, Repository } from '../data/repository';
 import { Store } from '../data/store';
 import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
@@ -21,7 +21,7 @@ import { reminderLabel, ReminderPicker, ReminderPickerData } from '../pickers/re
 import { TimePicker, TimePickerData, TimePickerResult } from '../pickers/time-picker';
 import { LinkPicker, LinkPickerData, LinkPickerResult } from '../note/link-picker';
 import { Clock } from '../time/clock';
-import { relativeDay } from '../time/local-date';
+import { relativeDay } from '../domain/time/local-date';
 import { Checkbox } from '../ui/checkbox';
 import { DetailRow } from '../ui/detail-row';
 import { Icon } from '../ui/icon';

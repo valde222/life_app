@@ -1,6 +1,6 @@
-import { Todo } from '../data/models';
-import { localDate } from '../time/local-date';
-import { startOf } from '../time/until';
+import { Todo } from './models';
+import { localDate } from './time/local-date';
+import { startOf } from './time/until';
 
 export interface TodayItems {
   next: Todo | null;

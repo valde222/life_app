@@ -1,4 +1,4 @@
-import { EMPTY_RECORDS } from '../data/models';
+import { EMPTY_RECORDS } from './models';
 import { search } from './search-items';
 
 describe('search (R30)', () => {

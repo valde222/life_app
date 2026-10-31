@@ -1,4 +1,4 @@
-import { EMPTY_RECORDS, Group, List, Note, Todo } from '../data/models';
+import { EMPTY_RECORDS, Group, List, Note, Todo } from './models';
 import { countsByList, groupSummary, listSummary } from './list-counts';
 
 const life: Group = { ...EMPTY_RECORDS.groups, id: 'life', name: 'Life' };

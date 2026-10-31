@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Actions } from '../data/actions';
-import { Group, List } from '../data/models';
+import { Group, List } from '../domain/models';
 import { Repository } from '../data/repository';
 import { Store } from '../data/store';
 import { Icon } from '../ui/icon';

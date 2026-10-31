@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Group, List } from '../data/models';
+import { Group, List } from '../domain/models';
 import { Store } from '../data/store';
 import { Icon } from '../ui/icon';
 import { ListSwatch } from '../ui/list-swatch';
 import { Sheets } from '../ui/sheet';
-import { groupSummary, listSummary } from './list-counts';
+import { groupSummary, listSummary } from '../domain/list-counts';
 import { NewGroupSheet } from './new-group-sheet';
 import { NewListData, NewListSheet } from './new-list-sheet';
 

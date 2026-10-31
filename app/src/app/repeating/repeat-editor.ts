@@ -12,7 +12,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions } from '../data/actions';
-import { RepeatMode, Todo } from '../data/models';
+import { RepeatMode, Todo } from '../domain/models';
 import { Draft, Repository } from '../data/repository';
 import { Store } from '../data/store';
 import { MoveTo, MoveToData } from '../pickers/move-to';
@@ -22,7 +22,7 @@ import { ListLabel } from '../ui/list-label';
 import { Segmented } from '../ui/segmented';
 import { Sheets } from '../ui/sheet';
 import { Toasts } from '../ui/toast';
-import { repeatStatus, ROUGH_CHOICES, WEEK_CHOICES, WEEKDAY_ORDER } from './repeat-status';
+import { repeatStatus, ROUGH_CHOICES, WEEK_CHOICES, WEEKDAY_ORDER } from '../domain/repeat-status';
 import { StopRepeatResult, StopRepeatSheet } from './stop-repeat-sheet';
 
 type Mode = Exclude<RepeatMode, 'none'>;

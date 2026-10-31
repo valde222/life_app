@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, Injector } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { Todo } from '../data/models';
+import { Todo } from '../domain/models';
 import { Store } from '../data/store';
 
 const MAX_SCHEDULED = 60;

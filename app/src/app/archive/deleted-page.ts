@@ -5,7 +5,7 @@ import { Store } from '../data/store';
 import { Clock } from '../time/clock';
 import { EmptyState } from '../ui/empty-state';
 import { Icon } from '../ui/icon';
-import { DeletedItem, deletedItems, deletedSub } from './deleted-items';
+import { DeletedItem, deletedItems, deletedSub } from '../domain/deleted-items';
 
 @Component({
   selector: 'app-deleted-page',

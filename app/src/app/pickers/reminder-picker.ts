@@ -1,7 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { pocketBaseTimestamp } from '../data/ids';
-import { startOf } from '../time/until';
+import { pocketBaseTimestamp } from '../domain/ids';
+import { startOf } from '../domain/time/until';
 import { Sheet } from '../ui/sheet';
 
 export interface ReminderPickerData {

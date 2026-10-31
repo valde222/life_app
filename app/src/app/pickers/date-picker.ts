@@ -8,7 +8,7 @@ import {
   nextWeekday,
   parseLocalDate,
   weekdayName,
-} from '../time/local-date';
+} from '../domain/time/local-date';
 import { Sheet, Sheets } from '../ui/sheet';
 import { TimePicker, TimePickerData, TimePickerResult } from './time-picker';
 

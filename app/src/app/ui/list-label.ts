@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { List } from '../data/models';
+import { List } from '../domain/models';
 import { Icon } from './icon';
 import { listColourStyle } from './list-colours';
 

@@ -8,12 +8,12 @@ import {
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Actions } from '../data/actions';
-import { Todo } from '../data/models';
+import { Todo } from '../domain/models';
 import { Store } from '../data/store';
 import { Server } from '../server/server';
 import { SyncService } from '../sync/sync.service';
 import { Clock } from '../time/clock';
-import { longDate } from '../time/local-date';
+import { longDate } from '../domain/time/local-date';
 import { EmptyState } from '../ui/empty-state';
 import { Icon } from '../ui/icon';
 import { NextCard } from '../ui/next-card';
@@ -22,9 +22,9 @@ import { Toasts } from '../ui/toast';
 import { TodoRow } from '../ui/todo-row';
 import { FirstLaunchTip } from './first-launch-tip';
 import { PickSheet } from './pick-sheet';
-import { todayItems } from './today-items';
-import { calendarEventAsTodo, hasEnded, itemLink } from '../calendar/calendar-items';
-import { isRepeating, repeatStatus } from '../repeating/repeat-status';
+import { todayItems } from '../domain/today-items';
+import { calendarEventAsTodo, hasEnded, itemLink } from '../domain/calendar-items';
+import { isRepeating, repeatStatus } from '../domain/repeat-status';
 import { RepeatRow } from '../repeating/repeat-row';
 
 @Component({

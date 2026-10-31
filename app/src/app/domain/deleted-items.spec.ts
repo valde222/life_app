@@ -1,4 +1,4 @@
-import { EMPTY_RECORDS } from '../data/models';
+import { EMPTY_RECORDS } from './models';
 import { deletedItems, deletedSub } from './deleted-items';
 
 describe('Recently deleted (R27)', () => {

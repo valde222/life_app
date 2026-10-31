@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { Store } from '../data/store';
 import { Clock } from '../time/clock';
-import { relativeDay } from '../time/local-date';
+import { relativeDay } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
-import { calendarEventAsTodo } from './calendar-items';
+import { calendarEventAsTodo } from '../domain/calendar-items';
 import { CalendarSettings } from './calendar-settings';
 
 @Component({

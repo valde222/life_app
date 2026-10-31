@@ -1,4 +1,4 @@
-import { Note, Todo } from '../data/models';
+import { Note, Todo } from './models';
 
 export type SearchFilter = 'all' | 'todos' | 'notes';
 

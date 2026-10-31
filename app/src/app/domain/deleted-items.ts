@@ -1,5 +1,5 @@
-import { List, Note, Todo } from '../data/models';
-import { daysBetween, localDate } from '../time/local-date';
+import { List, Note, Todo } from './models';
+import { daysBetween, localDate } from './time/local-date';
 
 export const KEEP_DELETED_DAYS = 30;
 

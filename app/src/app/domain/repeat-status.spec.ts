@@ -1,4 +1,4 @@
-import { Completion, EMPTY_RECORDS, Todo } from '../data/models';
+import { Completion, EMPTY_RECORDS, Todo } from './models';
 import { isScheduledOn, repeatStatus, weekdayList } from './repeat-status';
 
 const created = '2026-10-01 08:00:00.000Z';

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Icon } from '../ui/icon';
-import { RepeatStatus } from './repeat-status';
+import { RepeatStatus } from '../domain/repeat-status';
 
 @Component({
   selector: 'app-repeat-row',

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Undo } from '../data/actions';
-import { Note, Todo } from '../data/models';
+import { Note, Todo } from '../domain/models';
 import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
 import { MoveTo, MoveToData } from '../pickers/move-to';
 import { ActionSheet, ActionSheetData } from '../ui/action-sheet';

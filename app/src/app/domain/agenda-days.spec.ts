@@ -1,4 +1,4 @@
-import { EMPTY_RECORDS, Todo } from '../data/models';
+import { EMPTY_RECORDS, Todo } from './models';
 import { agendaDays } from './agenda-days';
 
 const todo = (fields: Partial<Todo>): Todo => ({

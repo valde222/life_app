@@ -1,9 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import PocketBase, { ClientResponseError, getTokenPayload } from 'pocketbase';
-import { CollectionName, Collections } from '../data/models';
+import { CollectionName, Collections } from '../domain/models';
 import { RemoteWriter, SendError } from '../sync/outbox';
 import { PhotoWriter } from '../sync/photos';
-import { Note } from '../data/models';
+import { Note } from '../domain/models';
 
 export const DEFAULT_SERVER_URL = 'http://localhost:8090';
 const SERVER_URL_KEY = 'life.serverUrl';

@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Actions } from '../data/actions';
-import { Note, Todo } from '../data/models';
+import { Note, Todo } from '../domain/models';
 import { Store } from '../data/store';
 import { CaptureData, CaptureSheet } from '../capture/capture-sheet';
 import { Clock } from '../time/clock';
-import { relativeDay, shortDate, weekdayName, daysBetween } from '../time/local-date';
-import { localDate } from '../time/local-date';
+import { relativeDay, shortDate, weekdayName, daysBetween } from '../domain/time/local-date';
+import { localDate } from '../domain/time/local-date';
 import { EmptyState } from '../ui/empty-state';
 import { Icon } from '../ui/icon';
 import { Segmented } from '../ui/segmented';
@@ -14,7 +14,7 @@ import { Sheets } from '../ui/sheet';
 import { SwipeRow } from '../ui/swipe-row';
 import { Toasts } from '../ui/toast';
 import { TodoRow } from '../ui/todo-row';
-import { isFiledNote } from './list-counts';
+import { isFiledNote } from '../domain/list-counts';
 import { ItemActions } from './item-actions';
 
 type Tab = 'todos' | 'notes';

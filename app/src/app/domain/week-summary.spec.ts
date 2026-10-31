@@ -1,4 +1,4 @@
-import { Completion, EMPTY_RECORDS, Note, Todo } from '../data/models';
+import { Completion, EMPTY_RECORDS, Note, Todo } from './models';
 import { weekSummary } from './week-summary';
 
 describe('weekSummary (R29)', () => {

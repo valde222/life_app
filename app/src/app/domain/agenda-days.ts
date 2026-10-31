@@ -1,12 +1,7 @@
-import { CalendarEvent, Completion, List, Todo } from '../data/models';
-import { calendarEventAsTodo, itemLink } from '../calendar/calendar-items';
-import {
-  completionDays,
-  isRepeating,
-  isScheduledOn,
-  repeatStatus,
-} from '../repeating/repeat-status';
-import { addDays, daysBetween } from '../time/local-date';
+import { CalendarEvent, Completion, List, Todo } from './models';
+import { calendarEventAsTodo, itemLink } from './calendar-items';
+import { completionDays, isRepeating, isScheduledOn, repeatStatus } from './repeat-status';
+import { addDays, daysBetween } from './time/local-date';
 
 export interface AgendaItem {
   key: string;

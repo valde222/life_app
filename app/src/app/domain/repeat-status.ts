@@ -1,5 +1,5 @@
-import { Completion, Todo } from '../data/models';
-import { addDays, daysBetween, localDate, weekday, weekdayName } from '../time/local-date';
+import { Completion, Todo } from './models';
+import { addDays, daysBetween, localDate, weekday, weekdayName } from './time/local-date';
 
 export const ROUGH_CHOICES = [
   { label: 'Every few days', days: 3, sub: 'about every few days', unit: 'a few days' },
