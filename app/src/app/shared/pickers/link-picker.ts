@@ -36,6 +36,13 @@ interface Candidate {
 
 const RECENT = 6;
 
+function todoState(todo: Todo, today: string): string {
+  if (todo.done_at) {
+    return 'done';
+  }
+  return todo.date ? `due ${relativeDay(todo.date, today)}` : '';
+}
+
 @Component({
   selector: 'app-link-picker',
   imports: [FormsModule, Icon, NgTemplateOutlet, Segmented],
@@ -136,11 +143,7 @@ export class LinkPicker {
   }
 
   private fromTodo(todo: Todo): Candidate {
-    const state = todo.done_at
-      ? 'done'
-      : todo.date
-        ? `due ${relativeDay(todo.date, this.clock.today())}`
-        : '';
+    const state = todoState(todo, this.clock.today());
     return {
       kind: 'todo',
       id: todo.id,

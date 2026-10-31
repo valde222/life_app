@@ -126,7 +126,7 @@ export class MoveTo {
     return this.store
       .openLists()
       .filter((list) => latest.has(list.id))
-      .sort((a, b) => latest.get(b.id)! - latest.get(a.id)!)
+      .sort((a, b) => (latest.get(b.id) ?? 0) - (latest.get(a.id) ?? 0))
       .slice(0, 3);
   });
 

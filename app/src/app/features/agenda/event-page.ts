@@ -6,6 +6,7 @@ import { relativeDay } from '../../domain/time/local-date';
 import { Icon } from '../../shared/ui/icon';
 import { calendarEventAsTodo } from '../../domain/calendar-items';
 import { CalendarSettings } from '../../core/calendar/calendar-settings';
+import { timeRange } from '../../domain/time/time-range';
 
 @Component({
   selector: 'app-event-page',
@@ -33,7 +34,7 @@ import { CalendarSettings } from '../../core/calendar/calendar-settings';
           <div class="row">
             <span class="label">Time</span>
             <span class="value tabular">{{
-              item.time ? item.time + (item.time_end ? '–' + item.time_end : '') : 'All day'
+              timeRange(item.time, item.time_end) || 'All day'
             }}</span>
           </div>
         </div>
@@ -95,6 +96,7 @@ export class EventPage {
   private readonly event = computed(() =>
     this.store.calendarEvents().find((event) => event.id === this.id()),
   );
+  protected readonly timeRange = timeRange;
   protected readonly item = computed(() => {
     const event = this.event();
     return event ? calendarEventAsTodo(event) : undefined;

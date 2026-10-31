@@ -32,6 +32,7 @@ import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { Sheets } from '../../shared/ui/sheet';
 import { Switch } from '../../shared/ui/switch';
+import { timeRange } from '../../domain/time/time-range';
 
 export interface TodoDraftState {
   draft?: Draft<'todos'>;
@@ -96,7 +97,7 @@ export class TodoEditor {
   });
   protected readonly timeLabel = computed(() => {
     const todo = this.todo();
-    return todo?.time ? (todo.time_end ? `${todo.time}–${todo.time_end}` : todo.time) : '';
+    return todo ? timeRange(todo.time, todo.time_end) : '';
   });
   protected readonly reminderText = computed(() => {
     const todo = this.todo();

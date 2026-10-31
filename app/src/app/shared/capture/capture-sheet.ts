@@ -64,9 +64,10 @@ export class CaptureSheet {
       : null,
   );
   protected readonly date = computed(() => this.pickedDate() ?? this.parsed()?.date ?? '');
-  protected readonly title = computed(() =>
-    this.pickedDate() === null && this.parsed() ? this.parsed()!.title : this.text().trim(),
-  );
+  protected readonly title = computed(() => {
+    const parsed = this.pickedDate() === null ? this.parsed() : null;
+    return parsed ? parsed.title : this.text().trim();
+  });
   protected readonly dateLabel = computed(() => (this.date() ? longDate(this.date()) : ''));
   protected readonly listName = computed(() => this.store.list(this.list())?.name ?? 'Inbox');
 
@@ -78,7 +79,7 @@ export class CaptureSheet {
   protected onKey(event: KeyboardEvent) {
     if (event.ctrlKey && event.key.toLowerCase() === 'd') {
       event.preventDefault();
-      this.addDetails();
+      void this.addDetails();
     } else if (event.key === 'Escape' && !this.ref) {
       this.finish();
     }

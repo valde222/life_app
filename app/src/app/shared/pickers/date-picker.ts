@@ -11,6 +11,7 @@ import {
 } from '../../domain/time/local-date';
 import { Sheet, Sheets } from '../ui/sheet';
 import { TimePicker, TimePickerData, TimePickerResult } from './time-picker';
+import { timeRange } from '../../domain/time/time-range';
 
 export interface DatePickerData {
   date: string;
@@ -226,8 +227,8 @@ export class DatePicker {
     });
   });
 
-  protected readonly timeLabel = computed(() =>
-    this.time() ? (this.timeEnd() ? `${this.time()}–${this.timeEnd()}` : this.time()) : 'Add time',
+  protected readonly timeLabel = computed(
+    () => timeRange(this.time(), this.timeEnd()) || 'Add time',
   );
 
   protected shiftMonth(by: number) {
