@@ -14,18 +14,33 @@ From WSL, in `app/`:
 | `npm run e2e:docker`                      | The same inside Playwright's Docker image, for WSL without Chromium's libraries |
 | `npm run build`                           | Production web files in `dist/app/browser`, used by both shells                 |
 | `npm run build:android` / `build:desktop` | Web build, then the APK or Windows installer (see the shell READMEs)            |
+| `npm run lint`                            | ESLint, layer boundaries, design-token check and Prettier (CI runs it)          |
 | `npm run tokens`                          | Regenerates `src/styles/_tokens.scss` from `docs/design-system/tokens.json`     |
 
 Install packages from WSL only; never run npm on the Windows side.
 
 ## Config
 
-- PocketBase address: `DEFAULT_SERVER_URL` in `src/app/server/server.ts` (`http://localhost:8090`); the sign-in screen changes it, and the choice is kept on the device.
+- PocketBase address: `DEFAULT_SERVER_URL` in `src/app/core/server/server.ts` (`http://localhost:8090`); the sign-in screen changes it, and the choice is kept on the device.
 
 ## Security
 
 - `src/index.html` carries a Content Security Policy: scripts only from the app itself, no inline scripts or event handlers, network and images only over HTTPS (plain HTTP only to `localhost`, `127.0.0.1` and the emulator's `10.0.2.2`). Critical-CSS inlining is off in the production build because it relies on an inline `onload` handler. `e2e/security.spec.ts` checks the policy blocks injected scripts and nothing the app does.
 - Note markdown is rendered by a tokenizer that escapes every piece of text; `markdown.spec.ts` checks no input can produce tags or attributes outside a short allowlist.
+
+## Structure
+
+| Folder                     | Holds                                                                                                                                                                                                                                | May import                                 |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
+| `src/app/domain/`          | Models and the rules as plain functions: Today, Inbox, repeating, events, lists, search, archive, week, agenda, timestamps                                                                                                           | `domain` only                              |
+| `src/app/core/`            | Services with no UI: local copy and `Repository`, task services (`Actions`, `ListActions`, `StepActions`, `LinkActions`, `ArchiveActions`), `Sync`, `Server`, `Session`, photos, calendar import, reminders, share receiver, logging | `core`, `domain`                           |
+| `src/app/shared/`          | Design-system components, pickers, the capture sheet, markdown                                                                                                                                                                       | `shared`, `core`, `domain`                 |
+| `src/app/features/<name>/` | One folder per screen area: today, inbox, lists, notes, todos, repeating, agenda, week, search, archive, settings, capture, setup, sign-in                                                                                           | its own folder, `shared`, `core`, `domain` |
+| `src/app/shell/`           | App root, routes, layout, sidebar                                                                                                                                                                                                    | anything                                   |
+
+`npm run lint` enforces these (dependency-cruiser), keeps Dexie and the PocketBase SDK inside `core`, and refuses style values a design token already names. Components inject `Repository`, `Sync` and the task services; `provideCore()` binds them.
+
+`e2e/visual.spec.ts` screenshots every screen. It runs on demand: take a baseline on the commit to compare with (`VISUAL=1 npm run e2e:docker -- visual.spec.ts --update-snapshots`), switch commits, and run it again without the flag.
 
 ## Layouts
 
@@ -33,7 +48,7 @@ Under 900px wide it's the phone layout with the bottom nav; from 900px the deskt
 
 ## Data
 
-Screens read the local copy (IndexedDB, `src/app/data/`), never the network. Every write goes to the local copy and an outbox; `src/app/sync/` sends the outbox in order, pulls changes since the last pull, listens for live updates, and keeps whichever change has the later `changed_at`.
+Screens read the local copy (IndexedDB, `src/app/core/data/`), never the network. Every write goes to the local copy and an outbox; `src/app/core/sync/` sends the outbox in order, pulls changes since the last pull, listens for live updates, and keeps whichever change has the later `changed_at`.
 
 ## Talks to
 

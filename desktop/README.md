@@ -33,6 +33,8 @@ For a window on the dev server instead: start the dev environment, then `cmd.exe
 | `tauri-plugin-global-shortcut` | Ctrl+Space anywhere shows the always-on-top capture window (`/capture` in the app), which hides itself after Save or Esc |
 | `tauri-plugin-single-instance` | A second launch brings the running app forward |
 
+The Rust side is `src-tauri/src/`: `lib.rs` wires the app, `hotkey.rs`, `tray.rs` and `windows.rs` each own one part, and `error.rs` is the one error type. Clippy refuses `unwrap` and `expect`; CI runs `cargo fmt --check`, `cargo clippy -- -D warnings` and `cargo test`.
+
 To start it with Windows, put a shortcut to `Life.exe` in `shell:startup`.
 
 ## Talks to

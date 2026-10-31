@@ -34,7 +34,7 @@ The APK lands in `app/build/outputs/apk/debug/app-debug.apk`. Install it with th
 
 | Part | What it does |
 | --- | --- |
-| `ShareTargetPlugin` | Receives `ACTION_SEND` text, links and images and hands them to the app, which makes a quick note in the Inbox |
+| `ShareTargetPlugin` | Receives `ACTION_SEND` text, links and images and hands them to the app (`SharedImages` reads the image streams), which makes a quick note in the Inbox |
 | `@ebarooni/capacitor-calendar` | Read-only calendar access; the app imports enabled calendars from 2 weeks back to 3 months ahead every 15 minutes and on resume |
 | `@capacitor/local-notifications` | Todo reminders, rescheduled whenever todos change |
 
