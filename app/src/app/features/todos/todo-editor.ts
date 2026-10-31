@@ -25,7 +25,7 @@ import { ListLabel } from '../../shared/ui/list-label';
 import { Switch } from '../../shared/ui/switch';
 import { timeRange } from '../../domain/time/time-range';
 import { Pickers } from '../../shared/pickers/pickers';
-import { todoBackLabel } from '../../domain/back-labels';
+import { backLabel } from '../../domain/back-labels';
 import { TodoSteps } from './todo-steps';
 
 export interface TodoDraftState {
@@ -54,7 +54,9 @@ export class TodoEditor {
 
   private readonly state = (history.state ?? {}) as TodoDraftState;
   protected readonly back = this.state.back ?? '/';
-  protected readonly backLabel = todoBackLabel(this.back);
+  protected readonly backLabel = computed(() =>
+    backLabel(this.back, (id) => this.store.list(id)?.name),
+  );
 
   protected readonly isNew = computed(() => this.id() === 'new');
   private readonly saved = computed(() => this.store.todos().find((todo) => todo.id === this.id()));

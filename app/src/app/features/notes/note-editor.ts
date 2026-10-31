@@ -27,7 +27,7 @@ import { renderMarkdown } from '../../shared/markdown/markdown';
 import { NotePhotos } from './note-photos';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
-import { noteBackLabel } from '../../domain/back-labels';
+import { backLabel } from '../../domain/back-labels';
 import { Selection, TextEdit, withCode, withHeading } from '../../shared/markdown/markdown-edits';
 import { noteConnections, noteDateLabel } from '../../domain/note-view';
 
@@ -81,7 +81,7 @@ export class NoteEditor {
 
   protected readonly listRecord = computed(() => this.store.list(this.list()));
   protected readonly backLabel = computed(() =>
-    noteBackLabel(this.back, (id) => this.store.list(id)?.name),
+    backLabel(this.back, (id) => this.store.list(id)?.name),
   );
   protected readonly dateLabel = computed(() =>
     noteDateLabel(this.note()?.created, this.clock.today()),

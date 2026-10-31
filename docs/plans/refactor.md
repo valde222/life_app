@@ -131,9 +131,9 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 
 ## Bugs found (fixed separately afterwards)
 
-- [ ] B1. The rendered note text opens the editor on click, but it's a plain `<article>`: keyboard users can't reach or open it (no focus, no key handler). Found by angular-eslint's template accessibility rules.
-- [ ] B2. The back label differs between the editors: a todo opened from Search says "Back", a note opened from Search says "Search"; a note opened from Lists or Agenda says "Back". Kept as is in the refactor (`domain/back-labels.ts`); worth one map.
-- [ ] B3. Photos added together upload in the order of their random ids (`drainPhotos` sorts pending photos by `id`), not the order they were added, so a note's photos can swap places once synced. This is why T11 fails now and then ("Photo 1 of 2" opens as "2 of 2").
+- [x] B1. The rendered note text opens the editor on click, but it's a plain `<article>`: keyboard users can't reach or open it (no focus, no key handler). Found by angular-eslint's template accessibility rules.
+- [x] B2. The back label differs between the editors: a todo opened from Search says "Back", a note opened from Search says "Search"; a note opened from Lists or Agenda says "Back". Fixed with one map for both editors, which also names the list a todo was opened from.
+- [x] B3. Photos added together upload in the order of their random ids (`drainPhotos` sorts pending photos by `id`), not the order they were added, so a note's photos can swap places once synced. This is why T11 fails now and then ("Photo 1 of 2" opens as "2 of 2").
 
 ## Summary
 
