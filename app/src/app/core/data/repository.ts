@@ -58,8 +58,4 @@ export class Repository {
     );
     return toSignal(from(query), { initialValue: [] });
   }
-
-  watchOutboxSize(): Signal<number> {
-    return toSignal(from(liveQuery(() => this.store.outbox.count())), { initialValue: 0 });
-  }
 }

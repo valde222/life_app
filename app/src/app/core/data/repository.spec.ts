@@ -77,12 +77,4 @@ describe('Repository', () => {
     await vi.waitFor(() => expect(all()).toHaveLength(3));
     expect(watched().map((todo) => todo.id)).toEqual([kept.id]);
   });
-
-  it('watches the number of unsent changes', async () => {
-    const waiting = TestBed.runInInjectionContext(() => repository.watchOutboxSize());
-    await repository.save('todos', { title: 'a' });
-    await repository.save('notes', { title: 'b' });
-
-    await vi.waitFor(() => expect(waiting()).toBe(2));
-  });
 });

@@ -1,7 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { liveQuery } from 'dexie';
+import { from } from 'rxjs';
 import { LocalStore } from '../data/local-store';
 import { COLLECTIONS_IN_DEPENDENCY_ORDER, CollectionName } from '../../domain/models';
-import { Repository } from '../data/repository';
 import { Server, toSendError } from '../server/server';
 import { applyRemote } from './merge';
 import { drainOutbox, SendError } from './outbox';
@@ -18,7 +20,9 @@ export class SyncService {
 
   readonly online = signal(navigator.onLine);
   readonly lastSynced = signal<Date | null>(null);
-  readonly waiting = inject(Repository).watchOutboxSize();
+  readonly waiting = toSignal(from(liveQuery(() => this.store.outbox.count())), {
+    initialValue: 0,
+  });
 
   private resolveFirstSync!: () => void;
   readonly firstSync = new Promise<void>((resolve) => (this.resolveFirstSync = resolve));

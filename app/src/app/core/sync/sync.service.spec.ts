@@ -147,4 +147,12 @@ describe('SyncService', () => {
 
     expect(server.pulls.filter((pull) => pull.startsWith('groups:'))).toHaveLength(2);
   });
+
+  it('counts the changes waiting to be sent', async () => {
+    const repository = TestBed.inject(Repository);
+    await repository.save('todos', { title: 'a' });
+    await repository.save('notes', { title: 'b' });
+
+    await vi.waitFor(() => expect(sync.waiting()).toBe(2));
+  });
 });
