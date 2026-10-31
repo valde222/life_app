@@ -23,11 +23,8 @@ import { Clock } from '../../core/time/clock';
 import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { listColourStyle } from '../../shared/ui/list-colours';
-import { Sheets } from '../../shared/ui/sheet';
-import { ImagePicker } from './image-picker';
-import { ImageView, ImageViewData } from './image-view';
 import { renderMarkdown } from '../../shared/markdown/markdown';
-import { Photos } from '../../core/data/photos';
+import { NotePhotos } from './note-photos';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
 import { noteBackLabel } from '../../domain/back-labels';
@@ -55,14 +52,12 @@ export class NoteEditor {
   private readonly store = inject(Store);
   private readonly actions = inject(Actions);
   private readonly links = inject(LinkActions);
-  private readonly sheets = inject(Sheets);
   private readonly pickers = inject(Pickers);
   private readonly toasts = inject(Toasts);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly clock = inject(Clock);
   private readonly sanitizer = inject(DomSanitizer);
-  private readonly photosService = inject(Photos);
   private readonly bodyField = viewChild<ElementRef<HTMLTextAreaElement>>('bodyField');
 
   private readonly state = (history.state ?? {}) as NoteEditorState;
@@ -94,7 +89,7 @@ export class NoteEditor {
   protected readonly rendered = computed(() =>
     this.sanitizer.bypassSecurityTrustHtml(renderMarkdown(this.body())),
   );
-  protected readonly photos = this.photosService.shown(this.note);
+  protected readonly photos = new NotePhotos(this.note, this.noteId);
 
   protected readonly connections = computed(() =>
     noteConnections(this.note(), this.noteId(), {
@@ -151,27 +146,6 @@ export class NoteEditor {
 
   protected insertCode() {
     this.edit(withCode);
-  }
-
-  protected async addPhoto() {
-    const files = await this.sheets.open<File[]>(ImagePicker).closed;
-    if (files?.length) {
-      await this.photosService.add(this.noteId(), files);
-    }
-  }
-
-  protected async openPhoto(index: number) {
-    const result = await this.sheets.openFull<string, ImageViewData>(ImageView, {
-      photos: this.photos(),
-      index,
-    }).closed;
-    const note = this.note();
-    const photo = result?.startsWith('delete:')
-      ? this.photos()[Number(result.slice(7))]
-      : undefined;
-    if (note && photo) {
-      await this.photosService.remove(note, photo);
-    }
   }
 
   protected async addLink() {
@@ -233,9 +207,7 @@ export class NoteEditor {
 
   protected async cancel() {
     if (this.mode() === 'new') {
-      for (const photo of this.photos().filter((each) => each.pendingId)) {
-        await this.photosService.remove(this.draft(), photo);
-      }
+      await this.photos.discardPending(this.draft());
     }
     this.location.back();
   }

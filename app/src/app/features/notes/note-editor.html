@@ -5,7 +5,7 @@
         ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />{{ backLabel() }}</a
       >
       <span class="bar-actions">
-        <button type="button" class="bar-action" (click)="addPhoto()">+ Photo</button>
+        <button type="button" class="bar-action" (click)="photos.add()">+ Photo</button>
         <button type="button" class="bar-action" (click)="addLink()">+ Link…</button>
       </span>
     </header>
@@ -72,7 +72,7 @@
           >
             <app-icon name="code" [size]="14" [stroke]="2.2" />Code
           </button>
-          <button type="button" class="tool" (click)="addPhoto()">
+          <button type="button" class="tool" (click)="photos.add()">
             <app-icon name="image" [size]="14" [stroke]="2.2" />Photo
           </button>
         </div>
@@ -102,14 +102,14 @@
       </article>
     }
 
-    @if (photos().length) {
+    @if (photos.shown().length) {
       <div class="photos">
-        @for (photo of photos(); track photo.key) {
+        @for (photo of photos.shown(); track photo.key) {
           <button
             type="button"
             class="photo"
             [attr.aria-label]="'Open photo ' + ($index + 1)"
-            (click)="openPhoto($index)"
+            (click)="photos.open($index)"
           >
             <img [src]="photo.thumb" alt="" />
           </button>
