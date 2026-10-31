@@ -1,5 +1,5 @@
 import { EMPTY_RECORDS, Todo } from './models';
-import { todayItems } from './today-items';
+import { allDoneToday, stepProgress, todayItems } from './today-items';
 
 let next = 0;
 const todo = (fields: Partial<Todo>): Todo => ({
@@ -51,5 +51,32 @@ describe('todayItems', () => {
     const items = todayItems(all, at('10:40'));
     expect(items.leftOver).toEqual([dentist]);
     expect([...items.scheduled, ...items.anytime]).not.toContain(dentist);
+  });
+});
+
+describe('Today summary rules', () => {
+  const now = new Date(2026, 9, 31, 15, 0);
+  const todo = (id: string, fields: Partial<Todo> = {}): Todo => ({
+    ...EMPTY_RECORDS.todos,
+    id,
+    title: id,
+    date: '2026-10-31',
+    ...fields,
+  });
+
+  it('is all done once something is done and only ended events remain', () => {
+    const done = todo('a', { done_at: 'x' });
+    const endedEvent = todo('b', { is_event: true, time: '09:00', time_end: '10:00' });
+    expect(allDoneToday(todayItems([done, endedEvent], now), now)).toBe(true);
+    expect(allDoneToday(todayItems([done, todo('c')], now), now)).toBe(false);
+    expect(allDoneToday(todayItems([endedEvent], now), now)).toBe(false);
+  });
+
+  it('shows step progress as done/total', () => {
+    const step = { ...EMPTY_RECORDS.steps, todo: 'a' };
+    expect(stepProgress(todo('a'), [])).toBe('');
+    expect(stepProgress(todo('a'), [{ ...step, done: true }, step, { ...step, todo: 'b' }])).toBe(
+      '1/2',
+    );
   });
 });

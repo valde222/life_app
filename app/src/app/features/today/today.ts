@@ -21,9 +21,9 @@ import { Sheets } from '../../shared/ui/sheet';
 import { TodoRow } from '../../shared/ui/todo-row';
 import { FirstLaunchTip } from './first-launch-tip';
 import { PickSheet } from './pick-sheet';
-import { todayItems } from '../../domain/today-items';
+import { allDoneToday, stepProgress, todayItems } from '../../domain/today-items';
 import { calendarEventAsTodo, hasEnded, itemLink } from '../../domain/calendar-items';
-import { isRepeating, repeatStatus } from '../../domain/repeat-status';
+import { overdueRepeating } from '../../domain/repeat-status';
 import { RepeatRow } from '../../shared/ui/repeat-row';
 import { Toasts } from '../../core/toasts/toasts';
 
@@ -50,25 +50,11 @@ export class Today {
   protected readonly items = computed(() => todayItems(this.dayItems(), this.clock.now()));
   protected readonly link = itemLink;
   protected readonly overdue = computed(() =>
-    this.store
-      .todos()
-      .filter((todo) => isRepeating(todo) && !todo.archived_at)
-      .map((todo) => ({
-        todo,
-        status: repeatStatus(todo, this.store.completions(), this.clock.today()),
-      }))
-      .filter((item) => item.status.overdue)
-      .sort((a, b) => b.status.daysSince - a.status.daysSince),
+    overdueRepeating(this.store.todos(), this.store.completions(), this.clock.today()),
   );
   protected readonly dateLabel = computed(() => longDate(this.clock.today()));
   protected readonly doneCount = computed(() => this.items().done.length);
-  protected readonly allDone = computed(() => {
-    const { next, scheduled, anytime } = this.items();
-    const remaining = [...scheduled, ...anytime].filter(
-      (todo) => !todo.is_event || !hasEnded(todo, this.clock.now()),
-    );
-    return this.doneCount() > 0 && !next && remaining.length === 0;
-  });
+  protected readonly allDone = computed(() => allDoneToday(this.items(), this.clock.now()));
   protected readonly nothing = computed(() => this.items().total === 0);
   protected readonly firstLaunch = computed(
     () => this.store.todos().length === 0 && this.store.notes().length === 0,
@@ -92,8 +78,7 @@ export class Today {
   }
 
   protected steps(todo: Todo) {
-    const steps = this.store.steps().filter((step) => step.todo === todo.id);
-    return steps.length ? `${steps.filter((step) => step.done).length}/${steps.length}` : '';
+    return stepProgress(todo, this.store.steps());
   }
 
   protected async tick(todo: Todo) {
@@ -116,7 +101,7 @@ export class Today {
   }
 
   protected openRepeating() {
-    this.router.navigateByUrl('/repeating');
+    void this.router.navigateByUrl('/repeating');
   }
 
   protected openPick() {
@@ -124,12 +109,7 @@ export class Today {
   }
 
   private async addNote(todo: Todo) {
-    const note = await this.actions.createNote({
-      title: '',
-      list: todo.list,
-      todos: [todo.id],
-      inbox: false,
-    });
+    const note = await this.actions.startNoteFor(todo);
     await this.router.navigate(['/note', note.id], { state: { back: '/' } });
   }
 }

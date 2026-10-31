@@ -1,4 +1,5 @@
-import { Todo } from './models';
+import { hasEnded } from './calendar-items';
+import { Step, Todo } from './models';
 import { localDate } from './time/local-date';
 import { startOf } from './time/until';
 
@@ -42,4 +43,16 @@ export function todayItems(todos: Todo[], now: Date): TodayItems {
     ),
     total: dated.length,
   };
+}
+
+export function allDoneToday(items: TodayItems, now: Date): boolean {
+  const remaining = [...items.scheduled, ...items.anytime].filter(
+    (todo) => !todo.is_event || !hasEnded(todo, now),
+  );
+  return items.done.length > 0 && !items.next && remaining.length === 0;
+}
+
+export function stepProgress(todo: Todo, steps: readonly Step[]): string {
+  const own = steps.filter((step) => step.todo === todo.id);
+  return own.length ? `${own.filter((step) => step.done).length}/${own.length}` : '';
 }

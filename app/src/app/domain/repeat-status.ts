@@ -194,3 +194,20 @@ export function stoppedRepeatFields(stop: StopRepeating): Draft<'todos'> {
     inbox: !stop.list && !stop.date,
   };
 }
+
+export interface RepeatingWithStatus {
+  todo: Todo;
+  status: RepeatStatus;
+}
+
+export function overdueRepeating(
+  todos: readonly Todo[],
+  completions: Completion[],
+  today: string,
+): RepeatingWithStatus[] {
+  return todos
+    .filter((todo) => isRepeating(todo) && !todo.archived_at)
+    .map((todo) => ({ todo, status: repeatStatus(todo, completions, today) }))
+    .filter((item) => item.status.overdue)
+    .sort((a, b) => b.status.daysSince - a.status.daysSince);
+}

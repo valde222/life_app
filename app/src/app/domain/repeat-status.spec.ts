@@ -1,6 +1,7 @@
 import { Completion, EMPTY_RECORDS, Todo } from './models';
 import {
   isScheduledOn,
+  overdueRepeating,
   repeatFields,
   repeatStatus,
   stoppedRepeatFields,
@@ -132,5 +133,22 @@ describe('repeat fields', () => {
       inbox: true,
     });
     expect(stoppedRepeatFields({ list: 'l1', date: '' }).inbox).toBe(false);
+  });
+});
+
+describe('overdue repeating', () => {
+  it('lists overdue, unarchived repeating todos, longest waiting first', () => {
+    const late = { ...rough(7), id: 'late', title: 'late' };
+    const later = { ...rough(7), id: 'later', title: 'later' };
+    const fine = { ...rough(7), id: 'fine', title: 'fine' };
+    const archived = { ...rough(7), id: 'gone', archived_at: 'x' };
+    const completions = [
+      ...done(late, '2026-10-10'),
+      ...done(later, '2026-10-01'),
+      ...done(fine, '2026-10-20'),
+      ...done(archived, '2026-10-01'),
+    ];
+    const overdue = overdueRepeating([late, later, fine, archived], completions, '2026-10-21');
+    expect(overdue.map((item) => item.todo.id)).toEqual(['later', 'late']);
   });
 });
