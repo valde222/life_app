@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { LocalStore } from '../data/local-store';
-import { COLLECTIONS_IN_DEPENDENCY_ORDER, CollectionName, Collections } from '../../domain/models';
+import { COLLECTIONS_IN_DEPENDENCY_ORDER, CollectionName } from '../../domain/models';
 import { Repository } from '../data/repository';
 import { Server, toSendError } from '../server/server';
 import { applyRemote } from './merge';
@@ -115,27 +115,24 @@ export class SyncService {
 
   private async pull() {
     for (const collection of COLLECTIONS_IN_DEPENDENCY_ORDER) {
-      const cursorKey = `cursor:${collection}`;
-      const cursor = (await this.store.meta.get(cursorKey))?.value ?? '';
-      let latest = cursor;
-      for (let page = 1; ; page++) {
-        const result = await this.server.pb
-          .collection(collection)
-          .getList<Collections[CollectionName]>(page, PAGE_SIZE, {
-            filter: cursor ? this.server.pb.filter('updated >= {:cursor}', { cursor }) : '',
-            sort: 'updated',
-            skipTotal: true,
-            requestKey: null,
-          });
-        await applyRemote(this.store, collection, result.items);
-        latest = result.items.at(-1)?.updated ?? latest;
-        if (result.items.length < PAGE_SIZE) {
-          break;
-        }
+      await this.pullCollection(collection);
+    }
+  }
+
+  private async pullCollection(collection: CollectionName) {
+    const cursorKey = `cursor:${collection}`;
+    const cursor = (await this.store.meta.get(cursorKey))?.value ?? '';
+    let latest = cursor;
+    for (let number = 1; ; number++) {
+      const items = await this.server.changedSince(collection, cursor, { number, size: PAGE_SIZE });
+      await applyRemote(this.store, collection, items);
+      latest = items.at(-1)?.updated ?? latest;
+      if (items.length < PAGE_SIZE) {
+        break;
       }
-      if (latest !== cursor) {
-        await this.store.meta.put({ key: cursorKey, value: latest });
-      }
+    }
+    if (latest !== cursor) {
+      await this.store.meta.put({ key: cursorKey, value: latest });
     }
   }
 
@@ -146,12 +143,7 @@ export class SyncService {
       if (!localDeleted.length) {
         continue;
       }
-      const remote = await this.server.pb.collection(collection).getFullList<{ id: string }>({
-        filter: "deleted_at != ''",
-        fields: 'id',
-        requestKey: null,
-      });
-      const kept = new Set(remote.map((record) => record.id));
+      const kept = new Set(await this.server.deletedIds(collection));
       const pending = new Set(
         (await this.store.outbox.filter((entry) => entry.collection === collection).toArray()).map(
           (entry) => entry.id,
@@ -166,15 +158,13 @@ export class SyncService {
       return;
     }
     for (const collection of COLLECTIONS_IN_DEPENDENCY_ORDER) {
-      const unsubscribe = await this.server.pb
-        .collection(collection)
-        .subscribe<Collections[CollectionName]>('*', ({ action, record }) => {
-          if (action === 'delete') {
-            this.store.records(collection).delete(record.id);
-          } else {
-            applyRemote(this.store, collection, [record]);
-          }
-        });
+      const unsubscribe = await this.server.subscribe(collection, ({ deleted, record }) => {
+        if (deleted) {
+          this.store.records(collection).delete(record.id);
+        } else {
+          applyRemote(this.store, collection, [record]);
+        }
+      });
       this.unsubscribers.push(unsubscribe);
     }
   }

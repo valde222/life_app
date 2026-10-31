@@ -4,9 +4,10 @@ import { LocalStore } from '../data/local-store';
 import { CollectionName, Collections, EMPTY_RECORDS, Todo } from '../../domain/models';
 import { Repository } from '../data/repository';
 import { Server } from '../server/server';
+import { Page, RemoteChange } from './remote-reader';
 import { SyncService } from './sync.service';
 
-type Handler = (event: { action: string; record: Collections[CollectionName] }) => void;
+type Handler = (change: RemoteChange<CollectionName>) => void;
 
 class FakeServer {
   remote = new Map<CollectionName, Collections[CollectionName][]>();
@@ -15,31 +16,29 @@ class FakeServer {
   unsubscribed = 0;
   signedOut = false;
   failWith: Error | null = null;
-  filters: string[] = [];
+  pulls: string[] = [];
 
-  pb = {
-    filter: (text: string, params: { cursor: string }) => text.replace('{:cursor}', params.cursor),
-    collection: (name: CollectionName) => ({
-      getList: async (page: number, perPage: number, options: { filter: string }) => {
-        if (this.failWith) {
-          throw this.failWith;
-        }
-        this.filters.push(`${name}:${options.filter}`);
-        const items = (this.remote.get(name) ?? []).slice((page - 1) * perPage, page * perPage);
-        return { items };
-      },
-      getFullList: async () =>
-        (this.remote.get(name) ?? [])
-          .filter((record) => record.deleted_at)
-          .map(({ id }) => ({ id })),
-      subscribe: async (_topic: string, handler: Handler) => {
-        this.handlers.set(name, handler);
-        return async () => {
-          this.unsubscribed++;
-        };
-      },
-    }),
-  };
+  async changedSince(collection: CollectionName, cursor: string, page: Page) {
+    if (this.failWith) {
+      throw this.failWith;
+    }
+    this.pulls.push(`${collection}:${cursor}`);
+    const start = (page.number - 1) * page.size;
+    return (this.remote.get(collection) ?? []).slice(start, start + page.size);
+  }
+
+  async deletedIds(collection: CollectionName) {
+    return (this.remote.get(collection) ?? [])
+      .filter((record) => record.deleted_at)
+      .map(({ id }) => id);
+  }
+
+  async subscribe(collection: CollectionName, handler: Handler) {
+    this.handlers.set(collection, handler);
+    return async () => {
+      this.unsubscribed++;
+    };
+  }
 
   async refreshIfStale() {}
 
@@ -85,11 +84,11 @@ describe('SyncService', () => {
 
     await sync.sync();
     expect(await store.records('todos').get('t1')).toMatchObject({ title: 't1' });
-    expect(server.filters).toContain('todos:');
+    expect(server.pulls).toContain('todos:');
     expect((await store.meta.get('cursor:todos'))?.value).toBe('2026-10-31 09:00:00.000Z');
 
     await sync.sync();
-    expect(server.filters).toContain('todos:updated >= 2026-10-31 09:00:00.000Z');
+    expect(server.pulls).toContain('todos:2026-10-31 09:00:00.000Z');
     expect(sync.online()).toBe(true);
     expect(sync.lastSynced()).toBeInstanceOf(Date);
   });
@@ -121,9 +120,9 @@ describe('SyncService', () => {
     await sync.sync();
     const live = server.handlers.get('todos');
 
-    live?.({ action: 'create', record: todo('t2', { changed_at: 5 }) });
+    live?.({ deleted: false, record: todo('t2', { changed_at: 5 }) });
     await vi.waitFor(async () => expect(await store.records('todos').get('t2')).toBeDefined());
-    live?.({ action: 'delete', record: todo('t2') });
+    live?.({ deleted: true, record: todo('t2') });
     await vi.waitFor(async () => expect(await store.records('todos').get('t2')).toBeUndefined());
   });
 
@@ -144,21 +143,8 @@ describe('SyncService', () => {
   });
 
   it('runs one sync at a time, running again once if asked meanwhile', async () => {
-    let pulls = 0;
-    const getList = server.pb.collection('groups').getList;
-    server.pb.collection = (name: CollectionName) => ({
-      ...new FakeServer().pb.collection(name),
-      getList: async (...args: Parameters<typeof getList>) => {
-        if (name === 'groups') {
-          pulls++;
-        }
-        return getList(...args);
-      },
-      subscribe: async () => async () => undefined,
-    });
-
     await Promise.all([sync.sync(), sync.sync(), sync.sync()]);
 
-    expect(pulls).toBe(2);
+    expect(server.pulls.filter((pull) => pull.startsWith('groups:'))).toHaveLength(2);
   });
 });

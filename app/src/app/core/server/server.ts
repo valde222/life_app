@@ -2,8 +2,14 @@ import { Injectable, signal } from '@angular/core';
 import PocketBase, { ClientResponseError, getTokenPayload } from 'pocketbase';
 import { CollectionName, Collections } from '../../domain/models';
 import { RemoteWriter, SendError } from '../sync/outbox';
+import { Page, RemoteChange, RemoteReader } from '../sync/remote-reader';
 import { PhotoWriter } from '../sync/photos';
 import { Note } from '../../domain/models';
+
+export interface Account {
+  id: string;
+  email: string;
+}
 
 export const DEFAULT_SERVER_URL = 'http://localhost:8090';
 const SERVER_URL_KEY = 'life.serverUrl';
@@ -19,10 +25,15 @@ const READ_ONLY_FIELDS = [
 ];
 
 @Injectable({ providedIn: 'root' })
-export class Server implements RemoteWriter, PhotoWriter {
+export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
   readonly url = signal(localStorage.getItem(SERVER_URL_KEY) ?? DEFAULT_SERVER_URL);
-  pb = new PocketBase(this.url());
+  private pb = new PocketBase(this.url());
   readonly signedIn = signal(this.pb.authStore.isValid);
+
+  account(): Account | null {
+    const record = this.pb.authStore.record;
+    return record ? { id: record.id, email: (record['email'] as string | undefined) ?? '' } : null;
+  }
 
   setUrl(url: string) {
     const trimmed = url.trim().replace(/\/+$/, '');
@@ -52,6 +63,40 @@ export class Server implements RemoteWriter, PhotoWriter {
   signOut() {
     this.pb.authStore.clear();
     this.signedIn.set(false);
+  }
+
+  async changedSince<C extends CollectionName>(
+    collection: C,
+    cursor: string,
+    page: Page,
+  ): Promise<Collections[C][]> {
+    const result = await this.pb
+      .collection(collection)
+      .getList<Collections[C]>(page.number, page.size, {
+        filter: cursor ? this.pb.filter('updated >= {:cursor}', { cursor }) : '',
+        sort: 'updated',
+        skipTotal: true,
+        requestKey: null,
+      });
+    return result.items;
+  }
+
+  async deletedIds(collection: CollectionName): Promise<string[]> {
+    const records = await this.pb.collection(collection).getFullList<{ id: string }>({
+      filter: "deleted_at != ''",
+      fields: 'id',
+      requestKey: null,
+    });
+    return records.map((record) => record.id);
+  }
+
+  subscribe<C extends CollectionName>(
+    collection: C,
+    onChange: (change: RemoteChange<C>) => void,
+  ): Promise<() => Promise<void>> {
+    return this.pb.collection(collection).subscribe<Collections[C]>('*', ({ action, record }) => {
+      onChange({ deleted: action === 'delete', record });
+    });
   }
 
   async upsert<C extends CollectionName>(
