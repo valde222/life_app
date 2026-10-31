@@ -6,7 +6,7 @@ import { Toasts } from '../../core/toasts/toasts';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (toasts.current(); as toast) {
-      <div class="toast" role="status">
+      <div class="toast" role="status" animate.enter="toast-in" animate.leave="toast-out">
         <div class="title">{{ toast.title }}</div>
         @if (toast.action; as action) {
           <button type="button" class="action" (click)="toasts.run(action.run)">
@@ -20,6 +20,18 @@ import { Toasts } from '../../core/toasts/toasts';
     }
   `,
   styles: `
+    .toast-in {
+      animation: toast-in var(--motion-base) var(--ease-enter);
+    }
+    .toast-out {
+      animation: toast-in var(--motion-fast) var(--ease-exit) reverse forwards;
+    }
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(var(--space-4));
+      }
+    }
     .toast {
       position: fixed;
       left: var(--space-4);

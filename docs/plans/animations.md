@@ -25,7 +25,7 @@ Each line gives what moves, then how long, then the easing.
 | | | Then the row fades, slides 24px right and collapses its height; the row below closes the gap. Saved when it has gone (fast + base = 320 ms) | base | exit |
 | | | The "N done" count and the done/total pill: the new number slides up 4px and fades in | fast | enter |
 | | | Undo: the row expands back in (reverse of the collapse) | base | enter |
-| 2 | Toast | In: up 16px and fade in, from above the nav | base | enter |
+| 2 | Toast | In: up 16px and fade in, from above the nav. A new toast replacing one on screen swaps its text in place | base | enter |
 | | | Out (time-out, Undo, action): down 16px and fade out | fast | exit |
 | 3 | Adding an item | The new row expands in where it lands (Today, Inbox, a list) | base | enter |
 | | | The Inbox badge bumps when its count changes (scale 1.25→1) | fast | standard |
@@ -53,7 +53,9 @@ Each line gives what moves, then how long, then the easing.
 
 Moments not on the list, added under the same rules. Each one is listed here before it is built.
 
-(none yet)
+| # | Moment | What moves | Time | Easing |
+| --- | --- | --- | --- | --- |
+| F1 | Today's "All done." panel | Fades in when the last todo of the day is ticked, instead of appearing all at once | base | enter |
 
 ## Steps
 
