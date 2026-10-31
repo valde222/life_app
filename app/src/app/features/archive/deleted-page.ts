@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Repository } from '../../core/data/repository';
-import { Store } from '../../core/data/store';
+import { AllRecords } from '../../core/data/all-records';
+import { ArchiveActions } from '../../core/data/archive-actions';
 import { Clock } from '../../core/time/clock';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { Icon } from '../../shared/ui/icon';
-import { DeletedItem, deletedItems, deletedSub } from '../../domain/deleted-items';
+import { DeletedItem, deletedSub } from '../../domain/deleted-items';
 
 @Component({
   selector: 'app-deleted-page',
@@ -94,24 +94,16 @@ import { DeletedItem, deletedItems, deletedSub } from '../../domain/deleted-item
   `,
 })
 export class DeletedPage {
-  private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
+  private readonly all = inject(AllRecords);
+  private readonly archive = inject(ArchiveActions);
   private readonly today = inject(Clock).today();
-  private readonly allTodos = this.repository.watchAll('todos');
-  private readonly allNotes = this.repository.watchAll('notes');
-  private readonly allLists = this.repository.watchAll('lists');
   protected readonly confirming = signal(false);
   protected readonly sub = deletedSub;
 
-  protected readonly items = computed(() =>
-    deletedItems(
-      { todos: this.allTodos(), notes: this.allNotes(), lists: this.allLists() },
-      this.today,
-    ),
-  );
+  protected readonly items = computed(() => this.all.deletedOn(this.today));
 
   protected async restore(item: DeletedItem) {
-    await this.repository.save(item.kind, { id: item.id, deleted_at: '' });
+    await this.archive.undelete(item);
   }
 
   protected async emptyNow() {
@@ -119,9 +111,7 @@ export class DeletedPage {
       this.confirming.set(true);
       return;
     }
-    for (const item of this.items()) {
-      await this.repository.purge(item.kind, item.id);
-    }
+    await this.archive.purgeAll(this.items());
     this.confirming.set(false);
   }
 }

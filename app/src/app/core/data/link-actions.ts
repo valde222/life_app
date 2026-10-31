@@ -18,8 +18,8 @@ export class LinkActions {
 
   async setNotesOfTodo(todo: string, chosen: ReadonlySet<string>): Promise<void> {
     for (const note of this.store.notes()) {
-      const linked: boolean | undefined = note.todos?.includes(todo);
-      if (chosen.has(note.id) !== (linked === true)) {
+      const linked = (note.todos ?? []).includes(todo);
+      if (chosen.has(note.id) !== linked) {
         const todos = linked
           ? note.todos.filter((each) => each !== todo)
           : [...(note.todos ?? []), todo];

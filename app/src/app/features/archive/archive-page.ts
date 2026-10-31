@@ -2,17 +2,18 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Actions } from '../../core/data/actions';
-import { List } from '../../domain/models';
-import { Repository } from '../../core/data/repository';
+import { AllRecords } from '../../core/data/all-records';
+import { ArchiveActions } from '../../core/data/archive-actions';
+import { ListActions } from '../../core/data/list-actions';
 import { Store } from '../../core/data/store';
-import { search } from '../../domain/search-items';
 import { Clock } from '../../core/time/clock';
-import { longDate, shortDate } from '../../domain/time/local-date';
+import { Toasts } from '../../core/toasts/toasts';
+import { closedListSub, groupByDay } from '../../domain/archive-rows';
+import { List, Note, Todo } from '../../domain/models';
+import { matches, search } from '../../domain/search-items';
+import { dayOfTimestamp } from '../../domain/time/timestamps';
 import { Icon } from '../../shared/ui/icon';
 import { Segmented } from '../../shared/ui/segmented';
-import { deletedItems } from '../../domain/deleted-items';
-import { Toasts } from '../../core/toasts/toasts';
-import { dayOfTimestamp } from '../../domain/time/timestamps';
 
 type Tab = 'archive' | 'done';
 
@@ -24,16 +25,6 @@ interface Row {
   day: string;
 }
 
-function byDay(rows: Row[]) {
-  const groups = new Map<string, Row[]>();
-  for (const row of rows) {
-    groups.set(row.day, [...(groups.get(row.day) ?? []), row]);
-  }
-  return [...groups]
-    .sort(([a], [b]) => b.localeCompare(a))
-    .map(([day, items]) => ({ day, label: longDate(day), items }));
-}
-
 @Component({
   selector: 'app-archive-page',
   imports: [FormsModule, Icon, RouterLink, Segmented],
@@ -43,13 +34,12 @@ function byDay(rows: Row[]) {
 })
 export class ArchivePage {
   private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
+  private readonly all = inject(AllRecords);
   private readonly actions = inject(Actions);
+  private readonly archive = inject(ArchiveActions);
+  private readonly lists = inject(ListActions);
   private readonly toasts = inject(Toasts);
   private readonly today = inject(Clock).today();
-  private readonly allTodos = this.repository.watchAll('todos');
-  private readonly allNotes = this.repository.watchAll('notes');
-  private readonly allLists = this.repository.watchAll('lists');
 
   protected readonly tabs = [
     { value: 'archive' as Tab, label: 'Archive' },
@@ -58,96 +48,95 @@ export class ArchivePage {
   protected readonly tab = signal<Tab>('archive');
   protected readonly query = signal(inject(ActivatedRoute).snapshot.queryParamMap.get('q') ?? '');
 
-  protected readonly archived = computed(() =>
-    byDay(
-      search(
-        { todos: this.store.todos(), notes: this.store.notes() },
-        { query: this.query(), filter: 'all', archived: true },
-      ).map((hit) => {
-        const record =
-          hit.kind === 'todo'
-            ? this.store.todos().find((todo) => todo.id === hit.id)!
-            : this.store.notes().find((note) => note.id === hit.id)!;
-        return {
-          kind: hit.kind === 'todo' ? ('todos' as const) : ('notes' as const),
-          id: hit.id,
-          title: hit.title,
-          sub: this.store.list(hit.list)?.name ?? '',
-          day: dayOfTimestamp(record.archived_at),
-        };
-      }),
-    ),
-  );
+  protected readonly archived = computed(() => {
+    const archivedAt = new Map(
+      [...this.store.todos(), ...this.store.notes()].map((record) => [
+        record.id,
+        record.archived_at,
+      ]),
+    );
+    const hits = search(
+      { todos: this.store.todos(), notes: this.store.notes() },
+      { query: this.query(), filter: 'all', archived: true },
+    );
+    return groupByDay(
+      hits.map((hit) => ({
+        kind: hit.kind === 'todo' ? ('todos' as const) : ('notes' as const),
+        id: hit.id,
+        title: hit.title,
+        sub: this.listName(hit.list),
+        day: dayOfTimestamp(archivedAt.get(hit.id) ?? ''),
+      })),
+    );
+  });
 
   protected readonly closedLists = computed(() =>
-    this.allLists().filter((list) => list.archived_at && !list.deleted_at),
+    this.all.lists().filter((list) => list.archived_at && !list.deleted_at),
   );
 
   protected readonly done = computed(() =>
-    byDay(
+    groupByDay(
       this.store
         .todos()
         .filter(
           (todo) =>
             todo.done_at &&
             !todo.archived_at &&
-            (!this.query() || todo.title.toLowerCase().includes(this.query().toLowerCase())),
+            (!this.query() || matches(todo.title, this.query())),
         )
         .map((todo) => ({
           kind: 'todos' as const,
           id: todo.id,
           title: todo.title,
-          sub: this.store.list(todo.list)?.name ?? '',
+          sub: this.listName(todo.list),
           day: dayOfTimestamp(todo.done_at),
         })),
     ),
   );
 
-  protected readonly deletedCount = computed(
-    () =>
-      deletedItems(
-        { todos: this.allTodos(), notes: this.allNotes(), lists: this.allLists() },
-        this.today,
-      ).length,
-  );
+  protected readonly deletedCount = computed(() => this.all.deletedOn(this.today).length);
 
   protected closedSub(list: List) {
-    const notes = this.allNotes().filter(
-      (note) => note.list === list.id && !note.deleted_at,
-    ).length;
-    return `Closed ${shortDate(dayOfTimestamp(list.archived_at))}${notes ? `, ${notes} note${notes === 1 ? '' : 's'}` : ''}`;
+    return closedListSub(list, this.all.notes());
   }
 
   protected async restore(row: Row) {
-    await this.repository.save(row.kind, { id: row.id, archived_at: '' });
+    await this.archive.unarchive(row);
     this.toasts.show({ title: 'Restored' });
   }
 
   protected async delete(row: Row) {
-    const record =
-      row.kind === 'todos'
-        ? this.store.todos().find((todo) => todo.id === row.id)!
-        : this.store.notes().find((note) => note.id === row.id)!;
-    const undo = await this.actions.delete(row.kind, record);
-    this.toasts.show({ title: 'Deleted', undo });
+    const record = this.recordOf(row);
+    if (record) {
+      const undo = await this.actions.delete(row.kind, record);
+      this.toasts.show({ title: 'Deleted', undo });
+    }
   }
 
   protected async restoreList(list: List) {
-    await this.repository.save('lists', { id: list.id, archived_at: '' });
+    await this.lists.restoreList(list.id);
     this.toasts.show({ title: `${list.name} is back` });
   }
 
   protected async deleteList(list: List) {
-    await this.repository.remove('lists', list.id);
-    this.toasts.show({
-      title: 'Deleted',
-      undo: () => this.repository.save('lists', { id: list.id, deleted_at: '' }),
-    });
+    const undo = await this.lists.deleteList(list.id);
+    this.toasts.show({ title: 'Deleted', undo });
   }
 
   protected async notDone(row: Row) {
-    const todo = this.store.todos().find((each) => each.id === row.id)!;
-    const undo = await this.actions.untick(todo);
-    this.toasts.show({ title: 'Not done', undo });
+    const todo = this.store.todos().find((each) => each.id === row.id);
+    if (todo) {
+      const undo = await this.actions.untick(todo);
+      this.toasts.show({ title: 'Not done', undo });
+    }
+  }
+
+  private recordOf(row: Row): Todo | Note | undefined {
+    const records: (Todo | Note)[] = row.kind === 'todos' ? this.store.todos() : this.store.notes();
+    return records.find((record) => record.id === row.id);
+  }
+
+  private listName(id: string) {
+    return this.store.list(id)?.name ?? '';
   }
 }

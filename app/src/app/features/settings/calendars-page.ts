@@ -88,7 +88,7 @@ export class CalendarsPage {
 
   constructor() {
     if (this.importer.available) {
-      this.load();
+      void this.load();
     }
   }
 

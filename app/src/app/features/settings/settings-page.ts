@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CalendarSettings } from '../../core/calendar/calendar-settings';
-import { Repository } from '../../core/data/repository';
+import { AllRecords } from '../../core/data/all-records';
 import { Session } from '../../core/session/session';
 import { Sync } from '../../core/sync/sync';
 import { Clock } from '../../core/time/clock';
 import { Icon } from '../../shared/ui/icon';
-import { deletedItems } from '../../domain/deleted-items';
 
 export function syncedLabel(last: Date | null, now: Date, online: boolean): string {
   if (!online) {
@@ -28,7 +27,7 @@ export function syncedLabel(last: Date | null, now: Date, online: boolean): stri
 })
 export class SettingsPage {
   private readonly session = inject(Session);
-  private readonly repository = inject(Repository);
+  private readonly all = inject(AllRecords);
   private readonly clock = inject(Clock);
   protected readonly sync = inject(Sync);
   protected readonly calendars = inject(CalendarSettings);
@@ -39,19 +38,10 @@ export class SettingsPage {
   protected readonly synced = computed(() =>
     syncedLabel(this.sync.lastSynced(), this.clock.now(), this.sync.online()),
   );
-  private readonly todos = this.repository.watchAll('todos');
-  private readonly notes = this.repository.watchAll('notes');
-  private readonly lists = this.repository.watchAll('lists');
-  protected readonly deletedCount = computed(
-    () =>
-      deletedItems(
-        { todos: this.todos(), notes: this.notes(), lists: this.lists() },
-        this.clock.today(),
-      ).length,
-  );
+  protected readonly deletedCount = computed(() => this.all.deletedOn(this.clock.today()).length);
 
   protected syncNow() {
-    this.sync.sync();
+    void this.sync.sync();
   }
 
   protected async signOut() {
