@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { List } from '../domain/models';
+import { List } from '../../domain/models';
 import { Checkbox } from './checkbox';
 import { ListLabel } from './list-label';
 

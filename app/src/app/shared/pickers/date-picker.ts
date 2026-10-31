@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { Clock } from '../core/time/clock';
+import { Clock } from '../../core/time/clock';
 import {
   addDays,
   localDate,
@@ -8,7 +8,7 @@ import {
   nextWeekday,
   parseLocalDate,
   weekdayName,
-} from '../domain/time/local-date';
+} from '../../domain/time/local-date';
 import { Sheet, Sheets } from '../ui/sheet';
 import { TimePicker, TimePickerData, TimePickerResult } from './time-picker';
 

@@ -15,19 +15,23 @@ import { Actions } from '../core/data/actions';
 import { EMPTY_RECORDS, Note, Step, Todo } from '../domain/models';
 import { Draft, Repository } from '../core/data/repository';
 import { Store } from '../core/data/store';
-import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
-import { MoveTo, MoveToData } from '../pickers/move-to';
-import { reminderLabel, ReminderPicker, ReminderPickerData } from '../pickers/reminder-picker';
-import { TimePicker, TimePickerData, TimePickerResult } from '../pickers/time-picker';
-import { LinkPicker, LinkPickerData, LinkPickerResult } from '../note/link-picker';
+import { DatePicker, DatePickerData, DatePickerResult } from '../shared/pickers/date-picker';
+import { MoveTo, MoveToData } from '../shared/pickers/move-to';
+import {
+  reminderLabel,
+  ReminderPicker,
+  ReminderPickerData,
+} from '../shared/pickers/reminder-picker';
+import { TimePicker, TimePickerData, TimePickerResult } from '../shared/pickers/time-picker';
+import { LinkPicker, LinkPickerData, LinkPickerResult } from '../shared/pickers/link-picker';
 import { Clock } from '../core/time/clock';
 import { relativeDay } from '../domain/time/local-date';
-import { Checkbox } from '../ui/checkbox';
-import { DetailRow } from '../ui/detail-row';
-import { Icon } from '../ui/icon';
-import { ListLabel } from '../ui/list-label';
-import { Sheets } from '../ui/sheet';
-import { Switch } from '../ui/switch';
+import { Checkbox } from '../shared/ui/checkbox';
+import { DetailRow } from '../shared/ui/detail-row';
+import { Icon } from '../shared/ui/icon';
+import { ListLabel } from '../shared/ui/list-label';
+import { Sheets } from '../shared/ui/sheet';
+import { Switch } from '../shared/ui/switch';
 
 export interface TodoDraftState {
   draft?: Draft<'todos'>;

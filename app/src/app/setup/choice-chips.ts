@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { Icon } from '../ui/icon';
+import { Icon } from '../shared/ui/icon';
 import { Choice } from './setup-state';
 
 @Component({

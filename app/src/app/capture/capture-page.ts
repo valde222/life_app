@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { DesktopShell } from '../core/platform/desktop-shell';
-import { CaptureSheet } from './capture-sheet';
+import { CaptureSheet } from '../shared/capture/capture-sheet';
 
 @Component({
   selector: 'app-capture-page',

@@ -14,18 +14,18 @@ import { Server } from '../core/server/server';
 import { SyncService } from '../core/sync/sync.service';
 import { Clock } from '../core/time/clock';
 import { longDate } from '../domain/time/local-date';
-import { EmptyState } from '../ui/empty-state';
-import { Icon } from '../ui/icon';
-import { NextCard } from '../ui/next-card';
-import { Sheets } from '../ui/sheet';
-import { Toasts } from '../ui/toast';
-import { TodoRow } from '../ui/todo-row';
+import { EmptyState } from '../shared/ui/empty-state';
+import { Icon } from '../shared/ui/icon';
+import { NextCard } from '../shared/ui/next-card';
+import { Sheets } from '../shared/ui/sheet';
+import { Toasts } from '../shared/ui/toast';
+import { TodoRow } from '../shared/ui/todo-row';
 import { FirstLaunchTip } from './first-launch-tip';
 import { PickSheet } from './pick-sheet';
 import { todayItems } from '../domain/today-items';
 import { calendarEventAsTodo, hasEnded, itemLink } from '../domain/calendar-items';
 import { isRepeating, repeatStatus } from '../domain/repeat-status';
-import { RepeatRow } from '../repeating/repeat-row';
+import { RepeatRow } from '../shared/ui/repeat-row';
 
 @Component({
   selector: 'app-today',

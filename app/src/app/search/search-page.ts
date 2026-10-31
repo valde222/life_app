@@ -12,9 +12,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Actions } from '../core/data/actions';
 import { Store } from '../core/data/store';
-import { Icon } from '../ui/icon';
-import { ListLabel } from '../ui/list-label';
-import { Toasts } from '../ui/toast';
+import { Icon } from '../shared/ui/icon';
+import { ListLabel } from '../shared/ui/list-label';
+import { Toasts } from '../shared/ui/toast';
 import { search, SearchFilter, SearchHit } from '../domain/search-items';
 
 const RECENT_MS = 7 * 86_400_000;

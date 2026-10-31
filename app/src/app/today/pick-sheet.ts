@@ -6,8 +6,8 @@ import { Todo } from '../domain/models';
 import { Store } from '../core/data/store';
 import { Clock } from '../core/time/clock';
 import { addDays, relativeDay } from '../domain/time/local-date';
-import { Icon } from '../ui/icon';
-import { ListLabel } from '../ui/list-label';
+import { Icon } from '../shared/ui/icon';
+import { ListLabel } from '../shared/ui/list-label';
 import { todayItems } from '../domain/today-items';
 
 const ALL = 'All';

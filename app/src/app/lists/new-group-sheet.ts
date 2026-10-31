@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Group } from '../domain/models';
 import { Repository } from '../core/data/repository';
 import { Store } from '../core/data/store';
-import { Sheet } from '../ui/sheet';
+import { Sheet } from '../shared/ui/sheet';
 
 @Component({
   selector: 'app-new-group-sheet',

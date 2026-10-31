@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { List, ListColour } from '../domain/models';
 import { Repository } from '../core/data/repository';
 import { Store } from '../core/data/store';
-import { LIST_COLOURS } from '../ui/list-colours';
-import { Sheet } from '../ui/sheet';
+import { LIST_COLOURS } from '../shared/ui/list-colours';
+import { Sheet } from '../shared/ui/sheet';
 import { ColourPicker } from './colour-picker';
 
 export interface NewListData {

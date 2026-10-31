@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Icon } from '../ui/icon';
-import { Switch } from '../ui/switch';
+import { Icon } from '../shared/ui/icon';
+import { Switch } from '../shared/ui/switch';
 import { CalendarImporter } from '../core/calendar/calendar-importer';
 import { CalendarSettings } from '../core/calendar/calendar-settings';
 

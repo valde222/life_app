@@ -12,9 +12,9 @@ import { Actions } from '../core/data/actions';
 import { Group, List } from '../domain/models';
 import { Repository } from '../core/data/repository';
 import { Store } from '../core/data/store';
-import { Icon } from '../ui/icon';
-import { ListLabel } from '../ui/list-label';
-import { Sheets } from '../ui/sheet';
+import { Icon } from '../shared/ui/icon';
+import { ListLabel } from '../shared/ui/list-label';
+import { Sheets } from '../shared/ui/sheet';
 import { NewGroupSheet } from './new-group-sheet';
 import { NewListData, NewListSheet } from './new-list-sheet';
 

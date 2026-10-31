@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { Store } from '../core/data/store';
 import { Clock } from '../core/time/clock';
 import { relativeDay } from '../domain/time/local-date';
-import { Icon } from '../ui/icon';
+import { Icon } from '../shared/ui/icon';
 import { calendarEventAsTodo } from '../domain/calendar-items';
 import { CalendarSettings } from '../core/calendar/calendar-settings';
 

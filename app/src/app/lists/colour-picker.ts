@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, model } from '@angular/core';
 import { ListColour } from '../domain/models';
-import { LIST_COLOURS, listColourStyle } from '../ui/list-colours';
+import { LIST_COLOURS, listColourStyle } from '../shared/ui/list-colours';
 
 const NAMES: Record<ListColour, string> = {
   blue: 'Blue',

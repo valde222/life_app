@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { List } from '../domain/models';
+import { List } from '../../domain/models';
 import { Icon } from './icon';
-import { untilText } from '../domain/time/until';
+import { untilText } from '../../domain/time/until';
 
 @Component({
   selector: 'app-next-card',

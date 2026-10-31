@@ -1,6 +1,6 @@
 import { shiftTime } from './time-picker';
 import { reminderLabel, reminderOptions } from './reminder-picker';
-import { pocketBaseTimestamp } from '../domain/ids';
+import { pocketBaseTimestamp } from '../../domain/ids';
 
 describe('time picking', () => {
   it('wraps around midnight', () => {

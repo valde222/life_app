@@ -9,13 +9,13 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Actions } from '../core/data/actions';
-import { Store } from '../core/data/store';
+import { Actions } from '../../core/data/actions';
+import { Store } from '../../core/data/store';
 import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
 import { MoveTo, MoveToData } from '../pickers/move-to';
-import { Clock } from '../core/time/clock';
-import { parseDayWord } from '../domain/time/day-words';
-import { longDate } from '../domain/time/local-date';
+import { Clock } from '../../core/time/clock';
+import { parseDayWord } from '../../domain/time/day-words';
+import { longDate } from '../../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { Segmented } from '../ui/segmented';
 import { Sheet, Sheets } from '../ui/sheet';

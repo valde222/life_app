@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { Store } from '../core/data/store';
 import { Clock } from '../core/time/clock';
 import { addDays, daysBetween, longDate, shortDate } from '../domain/time/local-date';
-import { Sheet } from '../ui/sheet';
+import { Sheet } from '../shared/ui/sheet';
 import { completionDays, repeatStatus, ROUGH_CHOICES } from '../domain/repeat-status';
 
 export type RepeatSheetResult = 'today' | 'yesterday' | 'edit';

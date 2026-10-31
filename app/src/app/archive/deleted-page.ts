@@ -3,8 +3,8 @@ import { RouterLink } from '@angular/router';
 import { Repository } from '../core/data/repository';
 import { Store } from '../core/data/store';
 import { Clock } from '../core/time/clock';
-import { EmptyState } from '../ui/empty-state';
-import { Icon } from '../ui/icon';
+import { EmptyState } from '../shared/ui/empty-state';
+import { Icon } from '../shared/ui/icon';
 import { DeletedItem, deletedItems, deletedSub } from '../domain/deleted-items';
 
 @Component({

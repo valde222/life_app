@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Actions } from '../data/actions';
-import { Toasts } from '../../ui/toast';
+import { Toasts } from '../../shared/ui/toast';
 import { sharedNote, SharePayload } from '../../domain/shared-note';
 
 interface ShareTargetPlugin {

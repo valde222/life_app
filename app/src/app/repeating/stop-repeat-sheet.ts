@@ -2,11 +2,11 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Todo } from '../domain/models';
 import { Store } from '../core/data/store';
-import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
-import { MoveTo, MoveToData } from '../pickers/move-to';
+import { DatePicker, DatePickerData, DatePickerResult } from '../shared/pickers/date-picker';
+import { MoveTo, MoveToData } from '../shared/pickers/move-to';
 import { Clock } from '../core/time/clock';
 import { addDays, longDate, nextWeekday } from '../domain/time/local-date';
-import { Sheet, Sheets } from '../ui/sheet';
+import { Sheet, Sheets } from '../shared/ui/sheet';
 
 export interface StopRepeatResult {
   list: string;

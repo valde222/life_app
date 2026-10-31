@@ -8,9 +8,9 @@ import { Store } from '../core/data/store';
 import { search } from '../domain/search-items';
 import { Clock } from '../core/time/clock';
 import { localDate, longDate, shortDate } from '../domain/time/local-date';
-import { Icon } from '../ui/icon';
-import { Segmented } from '../ui/segmented';
-import { Toasts } from '../ui/toast';
+import { Icon } from '../shared/ui/icon';
+import { Segmented } from '../shared/ui/segmented';
+import { Toasts } from '../shared/ui/toast';
 import { deletedItems } from '../domain/deleted-items';
 
 type Tab = 'archive' | 'done';

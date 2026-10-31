@@ -6,7 +6,7 @@ import { LocalStore } from '../core/data/local-store';
 import { Server } from '../core/server/server';
 import { SyncService } from '../core/sync/sync.service';
 import { Clock } from '../core/time/clock';
-import { Icon } from '../ui/icon';
+import { Icon } from '../shared/ui/icon';
 import { deletedItems } from '../domain/deleted-items';
 
 export function syncedLabel(last: Date | null, now: Date, online: boolean): string {

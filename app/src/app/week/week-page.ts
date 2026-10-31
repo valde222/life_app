@@ -3,8 +3,8 @@ import { RouterLink } from '@angular/router';
 import { Store } from '../core/data/store';
 import { Clock } from '../core/time/clock';
 import { monthName, parseLocalDate, weekdayName } from '../domain/time/local-date';
-import { Icon } from '../ui/icon';
-import { ListLabel } from '../ui/list-label';
+import { Icon } from '../shared/ui/icon';
+import { ListLabel } from '../shared/ui/list-label';
 import { stepsLabel, weekSummary } from '../domain/week-summary';
 
 const NOTES_SHOWN = 3;

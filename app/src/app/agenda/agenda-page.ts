@@ -3,10 +3,10 @@ import { RouterLink } from '@angular/router';
 import { Store } from '../core/data/store';
 import { Clock } from '../core/time/clock';
 import { addDays, localDate, longDate, monthName, parseLocalDate } from '../domain/time/local-date';
-import { Icon } from '../ui/icon';
-import { ListLabel } from '../ui/list-label';
+import { Icon } from '../shared/ui/icon';
+import { ListLabel } from '../shared/ui/list-label';
 import { agendaDays, AgendaSources, datesWithItems } from '../domain/agenda-days';
-import { isTyping } from '../ui/keyboard';
+import { isTyping } from '../shared/ui/keyboard';
 
 type View = 'week' | 'month' | 'year';
 const DAYS_SHOWN = 21;

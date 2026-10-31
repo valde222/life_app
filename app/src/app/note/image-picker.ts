@@ -1,7 +1,7 @@
 import { DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Icon } from '../ui/icon';
-import { Sheet } from '../ui/sheet';
+import { Icon } from '../shared/ui/icon';
+import { Sheet } from '../shared/ui/sheet';
 
 @Component({
   selector: 'app-image-picker',

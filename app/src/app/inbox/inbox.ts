@@ -3,17 +3,17 @@ import { Router, RouterLink } from '@angular/router';
 import { Actions, Undo } from '../core/data/actions';
 import { Note, Todo } from '../domain/models';
 import { Store } from '../core/data/store';
-import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
-import { MoveTo, MoveToData } from '../pickers/move-to';
+import { DatePicker, DatePickerData, DatePickerResult } from '../shared/pickers/date-picker';
+import { MoveTo, MoveToData } from '../shared/pickers/move-to';
 import { Clock } from '../core/time/clock';
-import { EmptyState } from '../ui/empty-state';
-import { Icon } from '../ui/icon';
-import { listColourStyle } from '../ui/list-colours';
-import { Sheets } from '../ui/sheet';
-import { SwipeRow } from '../ui/swipe-row';
-import { Toasts } from '../ui/toast';
+import { EmptyState } from '../shared/ui/empty-state';
+import { Icon } from '../shared/ui/icon';
+import { listColourStyle } from '../shared/ui/list-colours';
+import { Sheets } from '../shared/ui/sheet';
+import { SwipeRow } from '../shared/ui/swipe-row';
+import { Toasts } from '../shared/ui/toast';
 import { inboxSections, InboxItem } from '../domain/inbox-items';
-import { isTyping } from '../ui/keyboard';
+import { isTyping } from '../shared/ui/keyboard';
 
 const QUICK_LISTS = 4;
 

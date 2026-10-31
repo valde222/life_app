@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Repository } from '../core/data/repository';
-import { Icon } from '../ui/icon';
+import { Icon } from '../shared/ui/icon';
 import { ChoiceChips } from './choice-chips';
 import { Choice, SetupState } from './setup-state';
 import { colourFor, LIST_SUGGESTIONS } from './suggestions';
