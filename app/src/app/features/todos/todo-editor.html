@@ -86,7 +86,12 @@
         [animate.leave]="settled.animate('collapse-out')"
       >
         @for (step of steps.all(); track steps.track($index, step)) {
-          <div class="step" [class.done]="step.done">
+          <div
+            class="step"
+            [class.done]="step.done"
+            [animate.enter]="settled.animate('collapse-in')"
+            [animate.leave]="settled.animate('collapse-out')"
+          >
             <button
               type="button"
               class="step-box"

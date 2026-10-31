@@ -108,6 +108,8 @@
           <button
             type="button"
             class="photo"
+            [animate.enter]="photo.pendingId ? settled.animate('grow-in') : ''"
+            [animate.leave]="photo.pendingId ? '' : settled.animate('fade-out')"
             [attr.aria-label]="'Open photo ' + ($index + 1)"
             (click)="photos.open($index)"
           >

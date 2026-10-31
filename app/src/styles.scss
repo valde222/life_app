@@ -601,6 +601,10 @@ a:active {
   }
 }
 
+.grow-in {
+  animation: zoom-in var(--motion-base) var(--ease-enter);
+}
+
 .fade-in {
   animation: fade-in var(--motion-base) var(--ease-enter);
 }

@@ -20,7 +20,8 @@ describe('SwipeRow haptics', () => {
     const fixture = TestBed.createComponent(SwipeRow);
     fixture.componentRef.setInput('right', { icon: 'sun', label: 'Today' });
     fixture.detectChanges();
-    const content = fixture.nativeElement.querySelector('.content') as HTMLElement;
+    const host = fixture.nativeElement as HTMLElement;
+    const content = host.querySelector('.content') as HTMLElement;
     content.setPointerCapture = () => undefined;
     const pointer = (type: string, clientX: number) =>
       content.dispatchEvent(

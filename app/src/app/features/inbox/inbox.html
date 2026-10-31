@@ -108,7 +108,7 @@
       }
     </div>
   } @empty {
-    <app-empty-state class="zero" title="Inbox zero.">
+    <app-empty-state class="zero" title="Inbox zero." [animate.enter]="settled.animate('fade-in')">
       <span icon class="zero-icon"><app-icon name="inbox" [size]="32" /></span>
       <p class="zero-line">Everything has a home.</p>
     </app-empty-state>
