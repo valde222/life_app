@@ -13,7 +13,7 @@ const signedIn: CanActivateFn = () => {
     return inject(Router).parseUrl('/sign-in');
   }
   inject(Sync).start();
-  inject(ShareReceiver).start();
+  void inject(ShareReceiver).start();
   inject(CalendarImporter).start();
   inject(Reminders).start();
   return true;

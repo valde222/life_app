@@ -67,7 +67,8 @@ export class WeekPage {
   }
 
   protected finishedSub(todoId: string, doneAt: string) {
-    const todo = this.store.todos().find((each) => each.id === todoId)!;
-    return [stepsLabel(todo, this.store.steps()), this.dayName(doneAt)].filter(Boolean).join(', ');
+    const todo = this.store.todos().find((each) => each.id === todoId);
+    const steps = todo ? stepsLabel(todo, this.store.steps()) : '';
+    return [steps, this.dayName(doneAt)].filter(Boolean).join(', ');
   }
 }

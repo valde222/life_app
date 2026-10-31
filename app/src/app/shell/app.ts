@@ -11,7 +11,7 @@ export class App {
   constructor() {
     const shell = inject(DesktopShell);
     if (shell.inCaptureWindow()) {
-      inject(Router).navigateByUrl('/capture');
+      void inject(Router).navigateByUrl('/capture');
     }
   }
 }

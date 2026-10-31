@@ -26,6 +26,10 @@ import { Viewport } from './viewport';
 const NO_SEARCH_BAR = /^\/(search|archive)/;
 const FULL_SCREEN = /^\/(todo|note|event|repeat|settings|lists\/edit|lists\/[^/]+\/settings)/;
 
+function isPlainClick(event: MouseEvent): boolean {
+  return !event.defaultPrevented && event.button === 0 && !event.ctrlKey && !event.metaKey;
+}
+
 @Component({
   selector: 'app-main-layout',
   imports: [BottomNav, EventPage, Icon, NoteEditor, RouterOutlet, Sidebar, TodoEditor, Toast],
@@ -73,13 +77,7 @@ export class MainLayout {
   }
 
   protected openInPane(event: MouseEvent) {
-    if (
-      !this.viewport.desktop() ||
-      event.defaultPrevented ||
-      event.button !== 0 ||
-      event.ctrlKey ||
-      event.metaKey
-    ) {
+    if (!this.viewport.desktop() || !isPlainClick(event)) {
       return;
     }
     const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
@@ -95,16 +93,35 @@ export class MainLayout {
   }
 
   protected onKey(event: KeyboardEvent) {
-    if (event.ctrlKey && event.code === 'Space') {
-      event.preventDefault();
-      this.capture();
-    } else if (event.ctrlKey && event.key.toLowerCase() === 'k') {
-      event.preventDefault();
-      this.router.navigateByUrl('/search');
-    } else if (event.key === '?' && !isTyping(event.target) && !this.sheets.anyOpen()) {
-      this.shortcuts();
-    } else if (event.key === 'Escape' && this.pane.current() && !this.sheets.anyOpen()) {
-      this.pane.close();
+    const shortcut = this.ctrlShortcut(event) ?? this.plainShortcut(event);
+    shortcut?.();
+  }
+
+  private ctrlShortcut(event: KeyboardEvent): (() => void) | null {
+    if (!event.ctrlKey) {
+      return null;
     }
+    if (event.code === 'Space') {
+      return () => {
+        event.preventDefault();
+        this.capture();
+      };
+    }
+    return event.key.toLowerCase() === 'k'
+      ? () => {
+          event.preventDefault();
+          void this.router.navigateByUrl('/search');
+        }
+      : null;
+  }
+
+  private plainShortcut(event: KeyboardEvent): (() => void) | null {
+    if (this.sheets.anyOpen()) {
+      return null;
+    }
+    if (event.key === '?' && !isTyping(event.target)) {
+      return () => this.shortcuts();
+    }
+    return event.key === 'Escape' && this.pane.current() ? () => this.pane.close() : null;
   }
 }

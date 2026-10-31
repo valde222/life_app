@@ -101,7 +101,10 @@ export class EventPage {
     const event = this.event();
     return event ? calendarEventAsTodo(event) : undefined;
   });
-  protected readonly dateLabel = computed(() => relativeDay(this.item()!.date, this.clock.today()));
+  protected readonly dateLabel = computed(() => {
+    const item = this.item();
+    return item ? relativeDay(item.date, this.clock.today()) : '';
+  });
   protected readonly calendarName = computed(() =>
     this.calendars.nameOf(this.event()?.calendar ?? ''),
   );

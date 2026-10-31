@@ -70,7 +70,7 @@ export class SearchPage {
   }
 
   protected cancel() {
-    this.router.navigateByUrl('/');
+    void this.router.navigateByUrl('/');
   }
 
   protected async captureAsNote() {

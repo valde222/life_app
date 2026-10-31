@@ -52,31 +52,41 @@ export class Inbox {
   };
 
   protected onKey(event: KeyboardEvent) {
-    if (isTyping(event.target) || event.ctrlKey || event.metaKey || this.sheets.anyOpen()) {
+    if (this.ignoresKey(event)) {
       return;
     }
-    const items = this.flat();
-    const item = items[this.focused()];
     const key = event.key.toLowerCase();
     if (key === 'arrowdown' || key === 'arrowup') {
       event.preventDefault();
-      const next = this.focused() + (key === 'arrowdown' ? 1 : -1);
-      this.focused.set(Math.max(0, Math.min(items.length - 1, next)));
-    } else if (!item) {
+      this.moveFocus(key === 'arrowdown' ? 1 : -1);
       return;
-    } else if (key === 'enter') {
-      if (item.kind === 'todo') {
-        this.router.navigate(['/todo', item.record.id], { state: { back: '/inbox' } });
-      } else {
-        this.keep(item.record);
-      }
-    } else if (key === 't' && item.kind === 'todo') {
-      this.putOnToday(item.record);
-    } else if (key === 'm' && item.kind === 'todo') {
-      this.moreLists(item.record);
-    } else if (key === 'd' && item.kind === 'todo') {
-      this.pickDate(item.record);
     }
+    const item = this.flat()[this.focused()];
+    const action = item ? this.keyAction(key, item) : undefined;
+    void action?.();
+  }
+
+  private ignoresKey(event: KeyboardEvent) {
+    return isTyping(event.target) || event.ctrlKey || event.metaKey || this.sheets.anyOpen();
+  }
+
+  private moveFocus(by: number) {
+    const last = this.flat().length - 1;
+    this.focused.set(Math.max(0, Math.min(last, this.focused() + by)));
+  }
+
+  private keyAction(key: string, item: InboxItem): (() => Promise<unknown>) | undefined {
+    if (item.kind === 'note') {
+      return key === 'enter' ? () => this.keep(item.record) : undefined;
+    }
+    const todo = item.record;
+    const actions: Record<string, () => Promise<unknown>> = {
+      enter: () => this.router.navigate(['/todo', todo.id], { state: { back: '/inbox' } }),
+      t: () => this.putOnToday(todo),
+      m: () => this.moreLists(todo),
+      d: () => this.pickDate(todo),
+    };
+    return actions[key];
   }
 
   protected isFocused(item: InboxItem) {
