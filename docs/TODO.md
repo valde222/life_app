@@ -81,3 +81,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Security audit (`v0.7-security`)
 
 - [x] Security audit: every check in `docs/plans/security-audit.md` done, findings fixed, `docs/security.md` written
+
+## Refactor (`refactor/clean-code`, pull request)
+
+- [ ] Clean, modular structure with enforced boundaries and lint, behaviour and UI unchanged (`docs/plans/refactor.md`)
