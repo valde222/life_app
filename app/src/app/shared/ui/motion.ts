@@ -1,4 +1,4 @@
-import { afterNextRender, DestroyRef, inject, signal } from '@angular/core';
+import { afterNextRender, AnimationCallbackEvent, DestroyRef, inject, signal } from '@angular/core';
 
 export type MotionSpeed = 'fast' | 'base' | 'slow';
 
@@ -18,17 +18,36 @@ export function motionMs(speed: MotionSpeed): number {
 
 export class Settled {
   private readonly settled = signal(false);
+  private timer: ReturnType<typeof setTimeout> | undefined;
 
   constructor() {
-    let timer: ReturnType<typeof setTimeout> | undefined;
     afterNextRender(() => {
-      timer = setTimeout(() => {
-        this.settled.set(true);
-      }, SETTLE_MS);
+      this.settleSoon();
     });
     inject(DestroyRef).onDestroy(() => {
-      clearTimeout(timer);
+      clearTimeout(this.timer);
     });
+  }
+
+  leave(event: AnimationCallbackEvent, className: string) {
+    if (!this.settled()) {
+      event.animationComplete();
+      return;
+    }
+    event.target.classList.add(className);
+    event.target.addEventListener('animationend', event.animationComplete, { once: true });
+  }
+
+  pause() {
+    this.settled.set(false);
+    this.settleSoon();
+  }
+
+  private settleSoon() {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.settled.set(true);
+    }, SETTLE_MS);
   }
 
   animate(className: string): string {

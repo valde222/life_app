@@ -151,7 +151,9 @@
   }
 
   @if (overdue().length) {
-    <a class="repeating-head" routerLink="/repeating">Repeating<span>All</span></a>
+    <a class="repeating-head" routerLink="/repeating" [animate.leave]="settled.animate('fade-out')"
+      >Repeating<span>All</span></a
+    >
     <div class="stack">
       @for (item of overdue(); track item.todo.id) {
         <app-repeat-row
