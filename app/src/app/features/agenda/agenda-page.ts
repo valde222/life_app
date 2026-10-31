@@ -13,6 +13,7 @@ import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { agendaDays, AgendaSources, datesWithItems } from '../../domain/agenda-days';
 import { isTyping } from '../../shared/ui/keyboard';
+import { Settled } from '../../shared/ui/motion';
 
 type View = 'week' | 'month' | 'year';
 const DAYS_SHOWN = 21;
@@ -42,6 +43,13 @@ export class AgendaPage {
   protected readonly view = signal<View>('week');
   protected readonly shownMonth = signal(this.today.slice(0, 7));
   protected readonly shownYear = signal(Number(this.today.slice(0, 4)));
+  protected readonly settled = new Settled();
+  private readonly travel = signal<'next' | 'prev'>('next');
+  protected readonly slide = computed(() => this.settled.animate(`slide-${this.travel()}`));
+  private readonly monthMoved = signal(false);
+  protected readonly monthEnter = computed(() =>
+    this.monthMoved() ? this.slide() : this.settled.animate('expand-in'),
+  );
 
   private readonly sources = computed<AgendaSources>(() => ({
     todos: this.store.todos(),
@@ -98,11 +106,13 @@ export class AgendaPage {
   }
 
   protected pick(date: string) {
+    this.travel.set(date < this.selected() ? 'prev' : 'next');
     this.selected.set(date);
     this.shownMonth.set(date.slice(0, 7));
   }
 
   protected toggleMonth() {
+    this.monthMoved.set(false);
     this.shownMonth.set(this.selected().slice(0, 7));
     this.view.set(this.view() === 'week' ? 'month' : 'week');
   }
@@ -112,6 +122,8 @@ export class AgendaPage {
   }
 
   protected shiftMonth(by: number) {
+    this.travel.set(by < 0 ? 'prev' : 'next');
+    this.monthMoved.set(true);
     const first = parseLocalDate(`${this.shownMonth()}-01`);
     this.shownMonth.set(
       localDate(new Date(first.getFullYear(), first.getMonth() + by, 1)).slice(0, 7),

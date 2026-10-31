@@ -41,7 +41,7 @@ Each line gives what moves, then how long, then the easing.
 | 8 | Repeating on Today | Ticking an overdue chore: the red tag turns into the plain "Today" tag (fade), then the row leaves as in 1 | fast, base | enter, exit |
 | 9 | Lists: groups | The group body expands or collapses; the chevron rotates (already, now on tokens) | base | standard |
 | | Segmented controls (Todos/Notes, Archive/Done, Roughly/On a schedule) | The highlight slides to the chosen segment | base | standard |
-| 10 | Agenda | The week strip opening into the month: the month grid fades in and grows from the top | base | enter |
+| 10 | Agenda | The week strip opening into the month: the month grid fades in and grows from the top (year view: fades in) | base | enter |
 | | | Moving between days and months: the new content slides 12px in the direction of travel and fades in | base | enter |
 | 11 | Photos | Opening a thumbnail: the full image zooms from 0.9 and fades in; closing zooms back out | base, fast | enter, exit |
 | 12 | Delete and Restore (Archive, Recently deleted) | Rows collapse out and expand back in, as in 1 | base | exit / enter |

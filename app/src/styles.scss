@@ -551,6 +551,28 @@ a {
   }
 }
 
+.slide-next {
+  animation: slide-next var(--motion-base) var(--ease-enter);
+}
+
+.slide-prev {
+  animation: slide-prev var(--motion-base) var(--ease-enter);
+}
+
+@keyframes slide-next {
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-3));
+  }
+}
+
+@keyframes slide-prev {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--space-3)));
+  }
+}
+
 .fade-in {
   animation: fade-in var(--motion-base) var(--ease-enter);
 }
