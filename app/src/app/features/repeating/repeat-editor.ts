@@ -15,7 +15,6 @@ import { Actions } from '../../core/data/actions';
 import { Draft, RepeatMode, Todo } from '../../domain/models';
 import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
-import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
 import { Clock } from '../../core/time/clock';
 import { DetailRow } from '../../shared/ui/detail-row';
 import { ListLabel } from '../../shared/ui/list-label';
@@ -29,6 +28,7 @@ import {
 } from '../../domain/repeat-status';
 import { StopRepeatResult, StopRepeatSheet } from './stop-repeat-sheet';
 import { Toasts } from '../../core/toasts/toasts';
+import { Pickers } from '../../shared/pickers/pickers';
 
 type Mode = Exclude<RepeatMode, 'none'>;
 const WEEKDAY_LETTERS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -53,6 +53,7 @@ export class RepeatEditor {
   private readonly repository = inject(Repository);
   private readonly actions = inject(Actions);
   private readonly sheets = inject(Sheets);
+  private readonly pickers = inject(Pickers);
   private readonly toasts = inject(Toasts);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
@@ -122,8 +123,7 @@ export class RepeatEditor {
   }
 
   protected async pickList() {
-    const list = await this.sheets.open<string, MoveToData>(MoveTo, { current: this.list() })
-      .closed;
+    const list = await this.pickers.list(this.list());
     if (list !== undefined) {
       this.list.set(list);
     }

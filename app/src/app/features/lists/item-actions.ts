@@ -1,130 +1,129 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Undo } from '../../core/data/actions';
-import { Note, Todo } from '../../domain/models';
-import { DatePicker, DatePickerData, DatePickerResult } from '../../shared/pickers/date-picker';
-import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
-import { ActionSheet, ActionSheetData } from '../../shared/ui/action-sheet';
-import { Sheets } from '../../shared/ui/sheet';
+import { LinkActions } from '../../core/data/link-actions';
 import { Store } from '../../core/data/store';
-import { LinkPicker, LinkPickerData, LinkPickerResult } from '../../shared/pickers/link-picker';
-import { Repository } from '../../core/data/repository';
 import { Toasts } from '../../core/toasts/toasts';
+import { Note, Todo } from '../../domain/models';
+import { Pickers } from '../../shared/pickers/pickers';
+import { ActionSheet, ActionSheetData, ActionOption } from '../../shared/ui/action-sheet';
+import { Sheets } from '../../shared/ui/sheet';
 
 type TodoAction = 'today' | 'date' | 'move' | 'repeat' | 'delete';
 type NoteAction = 'move' | 'link' | 'archive' | 'delete';
+type Handlers<A extends string> = Record<A, () => Promise<unknown>>;
+
+const TODO_OPTIONS: ActionOption<TodoAction>[] = [
+  { value: 'today', label: 'Put on Today' },
+  { value: 'date', label: 'Date…' },
+  { value: 'move', label: 'Move to…' },
+  { value: 'repeat', label: 'Repeat…' },
+  { value: 'delete', label: 'Delete', danger: true },
+];
+
+const NOTE_OPTIONS: ActionOption<NoteAction>[] = [
+  { value: 'move', label: 'Move to…' },
+  { value: 'link', label: 'Link to…' },
+  { value: 'archive', label: 'Archive' },
+  { value: 'delete', label: 'Delete', danger: true },
+];
 
 @Injectable({ providedIn: 'root' })
 export class ItemActions {
   private readonly sheets = inject(Sheets);
+  private readonly pickers = inject(Pickers);
   private readonly actions = inject(Actions);
+  private readonly links = inject(LinkActions);
   private readonly toasts = inject(Toasts);
   private readonly router = inject(Router);
   private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
 
   async putOnToday(todo: Todo) {
     this.done('On Today', await this.actions.putOnToday(todo));
   }
 
   async forTodo(todo: Todo, back: string) {
-    const action = await this.sheets.open<TodoAction, ActionSheetData<TodoAction>>(ActionSheet, {
-      title: todo.title,
-      options: [
-        { value: 'today', label: 'Put on Today' },
-        { value: 'date', label: 'Date…' },
-        { value: 'move', label: 'Move to…' },
-        { value: 'repeat', label: 'Repeat…' },
-        { value: 'delete', label: 'Delete', danger: true },
-      ],
-    }).closed;
-    switch (action) {
-      case undefined:
-        return;
-      case 'today':
-        return this.putOnToday(todo);
-      case 'date':
-        return this.pickDate(todo);
-      case 'move':
-        return this.moveTodo(todo);
-      case 'repeat':
-        return this.router.navigate(['/repeat', todo.id], { state: { back } });
-      case 'delete': {
-        this.done('Deleted', await this.actions.delete('todos', todo));
-        return;
-      }
+    const action = await this.choose(todo.title, TODO_OPTIONS);
+    if (action) {
+      await this.todoHandlers(todo, back)[action]();
     }
   }
 
   async forNote(note: Note) {
-    const action = await this.sheets.open<NoteAction, ActionSheetData<NoteAction>>(ActionSheet, {
-      title: note.title || 'Untitled',
-      options: [
-        { value: 'move', label: 'Move to…' },
-        { value: 'link', label: 'Link to…' },
-        { value: 'archive', label: 'Archive' },
-        { value: 'delete', label: 'Delete', danger: true },
-      ],
-    }).closed;
-    switch (action) {
-      case undefined:
-        return;
-      case 'move': {
-        const list = await this.sheets.open<string, MoveToData>(MoveTo, { current: note.list })
-          .closed;
-        if (list !== undefined) {
-          this.done(
-            `Moved to ${this.store.list(list)?.name ?? 'Inbox'}`,
-            await this.actions.moveNote(note, list),
-          );
-        }
-        return;
-      }
-      case 'link': {
-        const result = await this.sheets.open<LinkPickerResult, LinkPickerData>(
-          LinkPicker,
-          { self: note.id, list: note.list, notes: note.links ?? [], todos: note.todos ?? [] },
-          { panelClass: ['sheet-panel', 'sheet-tall'] },
-        ).closed;
-        if (result) {
-          await this.repository.save('notes', {
-            id: note.id,
-            links: result.notes,
-            todos: result.todos,
-          });
-        }
-        return;
-      }
-      case 'archive': {
-        this.done('Moved to the archive', await this.actions.archiveNote(note));
-        return;
-      }
-      case 'delete': {
-        this.done('Deleted', await this.actions.delete('notes', note));
-        return;
-      }
+    const action = await this.choose(note.title || 'Untitled', NOTE_OPTIONS);
+    if (action) {
+      await this.noteHandlers(note)[action]();
     }
   }
 
+  private choose<A extends string>(title: string, options: ActionOption<A>[]) {
+    return this.sheets.open<A, ActionSheetData<A>>(ActionSheet, { title, options }).closed;
+  }
+
+  private todoHandlers(todo: Todo, back: string): Handlers<TodoAction> {
+    return {
+      today: () => this.putOnToday(todo),
+      date: () => this.pickDate(todo),
+      move: () => this.moveTodo(todo),
+      repeat: () => this.router.navigate(['/repeat', todo.id], { state: { back } }),
+      delete: async () => {
+        this.done('Deleted', await this.actions.delete('todos', todo));
+      },
+    };
+  }
+
+  private noteHandlers(note: Note): Handlers<NoteAction> {
+    return {
+      move: () => this.moveNote(note),
+      link: () => this.linkNote(note),
+      archive: async () => {
+        this.done('Moved to the archive', await this.actions.archiveNote(note));
+      },
+      delete: async () => {
+        this.done('Deleted', await this.actions.delete('notes', note));
+      },
+    };
+  }
+
   private async pickDate(todo: Todo) {
-    const result = await this.sheets.open<DatePickerResult, DatePickerData>(DatePicker, {
+    const result = await this.pickers.date({
       date: todo.date,
       time: todo.time,
       timeEnd: todo.time_end,
-    }).closed;
+    });
     if (result) {
       this.done('Dated', await this.actions.setDate(todo, result.date));
     }
   }
 
   private async moveTodo(todo: Todo) {
-    const list = await this.sheets.open<string, MoveToData>(MoveTo, { current: todo.list }).closed;
+    const list = await this.pickers.list(todo.list);
     if (list !== undefined) {
-      this.done(
-        `Moved to ${this.store.list(list)?.name ?? 'Inbox'}`,
-        await this.actions.moveTodo(todo, list),
-      );
+      this.done(this.movedTo(list), await this.actions.moveTodo(todo, list));
     }
+  }
+
+  private async moveNote(note: Note) {
+    const list = await this.pickers.list(note.list);
+    if (list !== undefined) {
+      this.done(this.movedTo(list), await this.actions.moveNote(note, list));
+    }
+  }
+
+  private async linkNote(note: Note) {
+    const result = await this.pickers.links({
+      self: note.id,
+      list: note.list,
+      notes: note.links ?? [],
+      todos: note.todos ?? [],
+    });
+    if (result) {
+      await this.links.setNoteLinks(note.id, result);
+    }
+  }
+
+  private movedTo(list: string) {
+    return `Moved to ${this.store.list(list)?.name ?? 'Inbox'}`;
   }
 
   private done(title: string, undo: Undo) {

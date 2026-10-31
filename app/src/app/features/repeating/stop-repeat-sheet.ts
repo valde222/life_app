@@ -2,11 +2,10 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Todo } from '../../domain/models';
 import { Store } from '../../core/data/store';
-import { DatePicker, DatePickerData, DatePickerResult } from '../../shared/pickers/date-picker';
-import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
 import { Clock } from '../../core/time/clock';
 import { addDays, longDate, nextWeekday } from '../../domain/time/local-date';
-import { Sheet, Sheets } from '../../shared/ui/sheet';
+import { Sheet } from '../../shared/ui/sheet';
+import { Pickers } from '../../shared/pickers/pickers';
 
 export interface StopRepeatResult {
   list: string;
@@ -93,7 +92,7 @@ export class StopRepeatSheet {
   protected readonly ref = inject(DialogRef<StopRepeatResult>);
   protected readonly todo = inject<Todo>(DIALOG_DATA);
   private readonly store = inject(Store);
-  private readonly sheets = inject(Sheets);
+  private readonly pickers = inject(Pickers);
   private readonly today = inject(Clock).today();
 
   protected readonly list = signal(this.todo.list);
@@ -115,18 +114,17 @@ export class StopRepeatSheet {
   protected readonly pickedLabel = computed(() => longDate(this.date()));
 
   protected async moreLists() {
-    const list = await this.sheets.open<string, MoveToData>(MoveTo, { current: this.list() })
-      .closed;
+    const list = await this.pickers.list(this.list());
     if (list !== undefined) {
       this.list.set(list);
     }
   }
 
   protected async pickDate() {
-    const result = await this.sheets.open<DatePickerResult, DatePickerData>(DatePicker, {
+    const result = await this.pickers.date({
       date: this.date(),
       withTime: false,
-    }).closed;
+    });
     if (result) {
       this.date.set(result.date);
     }

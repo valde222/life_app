@@ -11,15 +11,14 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions } from '../../core/data/actions';
 import { Store } from '../../core/data/store';
-import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
-import { MoveTo, MoveToData } from '../pickers/move-to';
 import { Clock } from '../../core/time/clock';
 import { parseDayWord } from '../../domain/time/day-words';
 import { longDate } from '../../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { Segmented } from '../ui/segmented';
-import { Sheet, Sheets } from '../ui/sheet';
+import { Sheet } from '../ui/sheet';
 import { Toasts } from '../../core/toasts/toasts';
+import { Pickers } from '../pickers/pickers';
 
 export type CaptureKind = 'todo' | 'note';
 
@@ -43,7 +42,7 @@ export class CaptureSheet {
   readonly done = output();
   private readonly actions = inject(Actions);
   private readonly store = inject(Store);
-  private readonly sheets = inject(Sheets);
+  private readonly pickers = inject(Pickers);
   private readonly toasts = inject(Toasts);
   private readonly router = inject(Router);
   private readonly clock = inject(Clock);
@@ -86,10 +85,10 @@ export class CaptureSheet {
   }
 
   protected async pickDate() {
-    const result = await this.sheets.open<DatePickerResult, DatePickerData>(DatePicker, {
+    const result = await this.pickers.date({
       date: this.date(),
       withTime: false,
-    }).closed;
+    });
     if (result) {
       this.pickedDate.set(result.date);
     }
@@ -101,8 +100,7 @@ export class CaptureSheet {
   }
 
   protected async pickList() {
-    const list = await this.sheets.open<string, MoveToData>(MoveTo, { current: this.list() })
-      .closed;
+    const list = await this.pickers.list(this.list());
     if (list !== undefined) {
       this.list.set(list);
     }

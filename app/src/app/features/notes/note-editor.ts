@@ -19,7 +19,6 @@ import { newId } from '../../domain/ids';
 import { Draft, EMPTY_RECORDS, Note } from '../../domain/models';
 import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
-import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
 import { Clock } from '../../core/time/clock';
 import { localDate, shortDate } from '../../domain/time/local-date';
 import { Icon } from '../../shared/ui/icon';
@@ -28,10 +27,10 @@ import { listColourStyle } from '../../shared/ui/list-colours';
 import { Sheets } from '../../shared/ui/sheet';
 import { ImagePicker } from './image-picker';
 import { ImageView, ImageViewData } from './image-view';
-import { LinkPicker, LinkPickerData, LinkPickerResult } from '../../shared/pickers/link-picker';
 import { renderMarkdown } from '../../shared/markdown/markdown';
 import { Photos } from '../../core/data/photos';
 import { Toasts } from '../../core/toasts/toasts';
+import { Pickers } from '../../shared/pickers/pickers';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
 
@@ -55,6 +54,7 @@ export class NoteEditor {
   private readonly repository = inject(Repository);
   private readonly actions = inject(Actions);
   private readonly sheets = inject(Sheets);
+  private readonly pickers = inject(Pickers);
   private readonly toasts = inject(Toasts);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
@@ -137,8 +137,7 @@ export class NoteEditor {
   }
 
   protected async pickList() {
-    const list = await this.sheets.open<string, MoveToData>(MoveTo, { current: this.list() })
-      .closed;
+    const list = await this.pickers.list(this.list());
     if (list !== undefined) {
       this.list.set(list);
       await this.persist();
@@ -210,11 +209,12 @@ export class NoteEditor {
 
   protected async addLink() {
     const note = this.note()!;
-    const result = await this.sheets.open<LinkPickerResult, LinkPickerData>(
-      LinkPicker,
-      { self: this.noteId(), list: this.list(), notes: note.links ?? [], todos: note.todos ?? [] },
-      { panelClass: ['sheet-panel', 'sheet-tall'] },
-    ).closed;
+    const result = await this.pickers.links({
+      self: this.noteId(),
+      list: this.list(),
+      notes: note.links ?? [],
+      todos: note.todos ?? [],
+    });
     if (result) {
       await this.setLinks(result.notes, result.todos);
     }

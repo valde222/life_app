@@ -15,24 +15,16 @@ import { Actions } from '../../core/data/actions';
 import { Draft, EMPTY_RECORDS, Note, Step, Todo } from '../../domain/models';
 import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
-import { DatePicker, DatePickerData, DatePickerResult } from '../../shared/pickers/date-picker';
-import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
-import {
-  reminderLabel,
-  ReminderPicker,
-  ReminderPickerData,
-} from '../../shared/pickers/reminder-picker';
-import { TimePicker, TimePickerData, TimePickerResult } from '../../shared/pickers/time-picker';
-import { LinkPicker, LinkPickerData, LinkPickerResult } from '../../shared/pickers/link-picker';
+import { reminderLabel } from '../../shared/pickers/reminder-picker';
 import { Clock } from '../../core/time/clock';
 import { relativeDay } from '../../domain/time/local-date';
 import { Checkbox } from '../../shared/ui/checkbox';
 import { DetailRow } from '../../shared/ui/detail-row';
 import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
-import { Sheets } from '../../shared/ui/sheet';
 import { Switch } from '../../shared/ui/switch';
 import { timeRange } from '../../domain/time/time-range';
+import { Pickers } from '../../shared/pickers/pickers';
 
 export interface TodoDraftState {
   draft?: Draft<'todos'>;
@@ -59,7 +51,7 @@ export class TodoEditor {
   private readonly store = inject(Store);
   private readonly repository = inject(Repository);
   private readonly actions = inject(Actions);
-  private readonly sheets = inject(Sheets);
+  private readonly pickers = inject(Pickers);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly clock = inject(Clock);
@@ -134,9 +126,7 @@ export class TodoEditor {
   }
 
   protected async pickList() {
-    const list = await this.sheets.open<string, MoveToData>(MoveTo, {
-      current: this.todo()?.list ?? '',
-    }).closed;
+    const list = await this.pickers.list(this.todo()?.list ?? '');
     if (list !== undefined) {
       await this.update({ list, inbox: !list && !this.todo()?.date });
     }
@@ -144,11 +134,11 @@ export class TodoEditor {
 
   protected async pickDate() {
     const todo = this.todo()!;
-    const result = await this.sheets.open<DatePickerResult, DatePickerData>(DatePicker, {
+    const result = await this.pickers.date({
       date: todo.date,
       time: todo.time,
       timeEnd: todo.time_end,
-    }).closed;
+    });
     if (result) {
       await this.update({ date: result.date, time: result.time, time_end: result.timeEnd });
     }
@@ -156,10 +146,10 @@ export class TodoEditor {
 
   protected async pickTime() {
     const todo = this.todo()!;
-    const result = await this.sheets.open<TimePickerResult, TimePickerData>(TimePicker, {
+    const result = await this.pickers.time({
       time: todo.time,
       timeEnd: todo.time_end,
-    }).closed;
+    });
     if (result) {
       await this.update({
         time: result.time,
@@ -171,11 +161,11 @@ export class TodoEditor {
 
   protected async pickReminder() {
     const todo = this.todo()!;
-    const reminder = await this.sheets.open<string, ReminderPickerData>(ReminderPicker, {
+    const reminder = await this.pickers.reminder({
       date: todo.date,
       time: todo.time,
       reminder: todo.reminder,
-    }).closed;
+    });
     if (reminder !== undefined) {
       await this.update({ reminder });
     }
@@ -245,11 +235,11 @@ export class TodoEditor {
 
   protected async link() {
     const linked = this.linkedNotes().map((note) => note.id);
-    const result = await this.sheets.open<LinkPickerResult, LinkPickerData>(
-      LinkPicker,
-      { onlyNotes: true, list: this.todo()?.list ?? '', notes: linked },
-      { panelClass: ['sheet-panel', 'sheet-tall'] },
-    ).closed;
+    const result = await this.pickers.links({
+      onlyNotes: true,
+      list: this.todo()?.list ?? '',
+      notes: linked,
+    });
     if (!result) {
       return;
     }

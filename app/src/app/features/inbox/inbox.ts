@@ -3,8 +3,6 @@ import { Router, RouterLink } from '@angular/router';
 import { Actions, Undo } from '../../core/data/actions';
 import { Note, Todo } from '../../domain/models';
 import { Store } from '../../core/data/store';
-import { DatePicker, DatePickerData, DatePickerResult } from '../../shared/pickers/date-picker';
-import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
 import { Clock } from '../../core/time/clock';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { Icon } from '../../shared/ui/icon';
@@ -14,6 +12,7 @@ import { SwipeRow } from '../../shared/ui/swipe-row';
 import { inboxSections, InboxItem } from '../../domain/inbox-items';
 import { isTyping } from '../../shared/ui/keyboard';
 import { Toasts } from '../../core/toasts/toasts';
+import { Pickers } from '../../shared/pickers/pickers';
 
 const QUICK_LISTS = 4;
 
@@ -30,6 +29,7 @@ export class Inbox {
   private readonly actions = inject(Actions);
   private readonly toasts = inject(Toasts);
   private readonly sheets = inject(Sheets);
+  private readonly pickers = inject(Pickers);
   private readonly router = inject(Router);
   private readonly clock = inject(Clock);
 
@@ -97,18 +97,18 @@ export class Inbox {
   }
 
   protected async moreLists(todo: Todo) {
-    const list = await this.sheets.open<string, MoveToData>(MoveTo, { current: todo.list }).closed;
+    const list = await this.pickers.list(todo.list);
     if (list) {
       await this.moveTo(todo, list);
     }
   }
 
   protected async pickDate(todo: Todo) {
-    const result = await this.sheets.open<DatePickerResult, DatePickerData>(DatePicker, {
+    const result = await this.pickers.date({
       date: todo.date,
       time: todo.time,
       timeEnd: todo.time_end,
-    }).closed;
+    });
     if (result?.date) {
       const undo = await this.actions.setDate(todo, result.date);
       this.done('Dated', undo);
