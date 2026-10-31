@@ -50,9 +50,9 @@ module.exports = {
       to: { path: '^node_modules/(dexie|pocketbase)/' },
     },
     {
-      name: 'local-store-stays-in-core-data-and-sync',
+      name: 'local-store-stays-in-core',
       severity: 'error',
-      from: { path: APP, pathNot: [`${APP}core/(data|sync)/`] },
+      from: { path: APP, pathNot: [`${APP}core/`] },
       to: { path: `${APP}core/data/local-store` },
     },
   ],

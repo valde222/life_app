@@ -11,6 +11,14 @@ export interface Account {
   email: string;
 }
 
+export type SignInFailure = 'unreachable' | 'throttled' | 'refused';
+
+export class SignInError extends Error {
+  constructor(readonly failure: SignInFailure) {
+    super(failure);
+  }
+}
+
 export const DEFAULT_SERVER_URL = 'http://localhost:8090';
 const SERVER_URL_KEY = 'life.serverUrl';
 const DEFAULT_TOKEN_SECONDS = 5 * 86_400;
@@ -47,7 +55,11 @@ export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
   }
 
   async signIn(email: string, password: string) {
-    await this.pb.collection('users').authWithPassword(email, password);
+    try {
+      await this.pb.collection('users').authWithPassword(email, password);
+    } catch (error) {
+      throw new SignInError(signInFailure(error));
+    }
     this.signedIn.set(true);
   }
 
@@ -184,4 +196,12 @@ export function toSendError(error: unknown): unknown {
     return new SendError('unauthorised', error);
   }
   return new SendError('rejected', error);
+}
+
+export function signInFailure(error: unknown): SignInFailure {
+  const status = error instanceof ClientResponseError ? error.status : undefined;
+  if (status === 0) {
+    return 'unreachable';
+  }
+  return status === 429 ? 'throttled' : 'refused';
 }

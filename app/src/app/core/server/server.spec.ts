@@ -1,6 +1,6 @@
 import { ClientResponseError } from 'pocketbase';
 import { SendError } from '../sync/outbox';
-import { needsRefresh, toSendError } from './server';
+import { needsRefresh, signInFailure, toSendError } from './server';
 
 const response = (status: number) => new ClientResponseError({ status });
 
@@ -30,5 +30,14 @@ describe('needsRefresh', () => {
     expect(needsRefresh({ iat: now / 1000 - day, exp: now / 1000 + 4 * day }, now)).toBe(false);
     expect(needsRefresh({ exp: now / 1000 - 1 }, now)).toBe(false);
     expect(needsRefresh({}, now)).toBe(false);
+  });
+});
+
+describe('signInFailure', () => {
+  it('tells an unreachable server and throttling apart from wrong details', () => {
+    expect(signInFailure(response(0))).toBe('unreachable');
+    expect(signInFailure(response(429))).toBe('throttled');
+    expect(signInFailure(response(400))).toBe('refused');
+    expect(signInFailure(new Error('anything else'))).toBe('refused');
   });
 });

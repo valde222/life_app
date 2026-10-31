@@ -1,16 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { ClientResponseError } from 'pocketbase';
 import { LocalStore } from '../data/local-store';
 import { Server } from '../server/server';
 import { SyncService } from '../sync/sync.service';
-
-export type SignInFailure = 'unreachable' | 'throttled' | 'refused';
-
-export class SignInError extends Error {
-  constructor(readonly failure: SignInFailure) {
-    super(failure);
-  }
-}
 
 @Injectable({ providedIn: 'root' })
 export class Session {
@@ -27,11 +18,7 @@ export class Session {
 
   async signIn(serverUrl: string, email: string, password: string): Promise<void> {
     this.server.setUrl(serverUrl);
-    try {
-      await this.server.signIn(email, password);
-    } catch (error) {
-      throw new SignInError(signInFailure(error));
-    }
+    await this.server.signIn(email, password);
     await this.store.adopt(`${this.server.url()}#${this.server.account()?.id}`);
   }
 
@@ -40,12 +27,4 @@ export class Session {
     this.server.signOut();
     await this.store.delete();
   }
-}
-
-function signInFailure(error: unknown): SignInFailure {
-  const status = error instanceof ClientResponseError ? error.status : undefined;
-  if (status === 0) {
-    return 'unreachable';
-  }
-  return status === 429 ? 'throttled' : 'refused';
 }

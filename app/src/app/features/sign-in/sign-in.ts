@@ -2,7 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { checkServerUrl } from '../../core/server/server-url';
-import { Session, SignInError, SignInFailure } from '../../core/session/session';
+import { SignInError, SignInFailure } from '../../core/server/server';
+import { Session } from '../../core/session/session';
 
 const FAILURE_MESSAGES: Record<SignInFailure, string> = {
   unreachable: "Can't reach the server",
