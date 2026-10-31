@@ -28,6 +28,6 @@ test('the content security policy blocks injected scripts and nothing the app do
     return (window as unknown as { injected?: boolean }).injected ?? false;
   });
   expect(ran).toBe(false);
+  await expect.poll(() => violations.some((text) => text.startsWith('script-src'))).toBe(true);
   expect(violations.filter((text) => !text.startsWith('script-src'))).toEqual([]);
-  expect(violations.some((text) => text.startsWith('script-src'))).toBe(true);
 });
