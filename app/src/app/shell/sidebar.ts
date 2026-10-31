@@ -39,6 +39,7 @@ export class Sidebar {
     { path: '/agenda', label: 'Agenda', icon: 'calendar' as const },
     { path: '/inbox', label: 'Inbox', icon: 'inbox' as const },
     { path: '/search', label: 'Search', icon: 'search' as const },
+    { path: '/repeating', label: 'Repeating', icon: 'repeat' as const },
   ];
 
   private readonly open = signal<string[]>(this.readOpen());

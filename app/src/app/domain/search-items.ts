@@ -1,4 +1,5 @@
 import { Note, Todo } from './models';
+import { isRepeating } from './repeat-status';
 
 export type SearchFilter = 'all' | 'todos' | 'notes';
 
@@ -9,6 +10,7 @@ export interface SearchHit {
   list: string;
   changedAt: number;
   done: boolean;
+  repeating: boolean;
 }
 
 export function matches(text: string, query: string) {
@@ -39,6 +41,7 @@ function todoHits(todos: Todo[], query: string, archived: boolean): SearchHit[] 
       list: todo.list,
       changedAt: todo.changed_at,
       done: !!todo.done_at,
+      repeating: isRepeating(todo),
     }));
 }
 
@@ -56,6 +59,7 @@ function noteHits(notes: Note[], query: string, archived: boolean): SearchHit[] 
       list: note.list,
       changedAt: note.changed_at,
       done: false,
+      repeating: false,
     }));
 }
 

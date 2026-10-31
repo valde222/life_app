@@ -1,5 +1,5 @@
 import { EMPTY_RECORDS, Todo } from './models';
-import { lastDoneLabel, repeatTargetText, usualGapText } from './repeat-labels';
+import { choresSummary, lastDoneLabel, repeatTargetText, usualGapText } from './repeat-labels';
 import { RepeatStatus } from './repeat-status';
 
 const status = (fields: Partial<RepeatStatus>): RepeatStatus => ({
@@ -36,5 +36,11 @@ describe('repeat labels', () => {
   it('averages the gaps once there are three completions', () => {
     expect(usualGapText(['2026-10-31', '2026-10-24'])).toBe('');
     expect(usualGapText(['2026-10-31', '2026-10-24', '2026-10-15'])).toBe('Usually every 8 days');
+  });
+
+  it('sums up the chores for the Lists screen', () => {
+    expect(choresSummary(0, 0)).toBe('No chores yet');
+    expect(choresSummary(1, 0)).toBe('1 chore');
+    expect(choresSummary(3, 1)).toBe('3 chores, 1 overdue');
   });
 });

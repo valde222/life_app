@@ -44,4 +44,10 @@ describe('search (R30)', () => {
       ),
     ).toEqual(['t2']);
   });
+
+  it('marks repeating items as chores', () => {
+    const chore = { ...todos[0], id: 'c1', title: 'Clean bathroom', repeat_mode: 'rough' as const };
+    const hits = search({ todos: [chore], notes: [] }, { query: 'bathroom', filter: 'todos' });
+    expect(hits.map((hit) => [hit.id, hit.repeating])).toEqual([['c1', true]]);
+  });
 });
