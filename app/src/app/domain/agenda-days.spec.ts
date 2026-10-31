@@ -35,4 +35,14 @@ describe('agendaDays (R28)', () => {
     ]);
     expect(days[2].items.map((item) => item.title)).toEqual(['Staging']);
   });
+
+  it('one-off todos can be ticked from the Agenda; events cannot', () => {
+    const meeting = todo({ title: 'Meeting', date: '2026-10-21', time: '09:00', is_event: true });
+    const days = agendaDays({ from: '2026-10-21', count: 1 }, '2026-10-21', {
+      ...sources,
+      todos: [...sources.todos, meeting],
+    });
+    const tickable = Object.fromEntries(days[0].items.map((item) => [item.title, !!item.tickable]));
+    expect(tickable).toEqual({ Meeting: false, 'Call the landlord': true, 'Pay taxes': true });
+  });
 });

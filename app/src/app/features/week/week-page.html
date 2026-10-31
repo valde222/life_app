@@ -44,16 +44,28 @@
     <h2 class="eyebrow section">Finished</h2>
     <div class="stack">
       @for (todo of week().finished; track todo.id) {
-        <a class="card finished" [routerLink]="['/todo', todo.id]">
-          <span class="check"><app-icon name="check" [size]="14" [stroke]="3" /></span>
-          <span class="text">
-            <span class="name">{{ todo.title }}</span>
-            <span class="sub">{{ finishedSub(todo.id, todo.done_at) }}</span>
-          </span>
-          @if (list(todo.list)) {
-            <app-list-label [list]="list(todo.list)" />
-          }
-        </a>
+        <div
+          class="tick-slot"
+          [animate.enter]="settled.animate('row-in')"
+          [animate.leave]="settled.animate('row-out')"
+        >
+          <a class="card finished" [routerLink]="['/todo', todo.id]">
+            <span class="check"><app-icon name="check" [size]="14" [stroke]="3" /></span>
+            <span class="text">
+              <span class="name">{{ todo.title }}</span>
+              <span class="sub">{{ finishedSub(todo.id, todo.done_at) }}</span>
+            </span>
+            @if (list(todo.list)) {
+              <app-list-label [list]="list(todo.list)" />
+            }
+          </a>
+          <button
+            type="button"
+            class="tick-over untick"
+            [attr.aria-label]="'Mark ' + todo.title + ' not done'"
+            (click)="untick(todo)"
+          ></button>
+        </div>
       }
     </div>
   }

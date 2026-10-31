@@ -12,6 +12,7 @@ export interface AgendaItem {
   list?: List;
   repeating: boolean;
   link: string[];
+  tickable?: Todo;
 }
 
 export interface AgendaDay {
@@ -88,6 +89,7 @@ function datedItemsOn(day: string, sources: AgendaSources): AgendaItem[] {
       list: sources.lists.get(todo.list),
       repeating: false,
       link: itemLink(todo),
+      ...(todo.is_event ? {} : { tickable: todo }),
     }));
 }
 

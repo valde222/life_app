@@ -126,22 +126,34 @@
         @if (day.items.length) {
           <div class="stack">
             @for (item of day.items; track item.key) {
-              <a class="row" [class.quiet]="item.repeating" [routerLink]="item.link">
-                @if (item.time) {
-                  <span class="time tabular">
-                    {{ item.time }}
-                    @if (item.timeEnd) {
-                      <span class="end">{{ item.timeEnd }}</span>
-                    }
-                  </span>
+              <div
+                class="tick-slot"
+                [animate.enter]="settled.animate('row-in')"
+                [animate.leave]="settled.animate('row-out')"
+              >
+                <a class="row" [class.quiet]="item.repeating" [routerLink]="item.link">
+                  @if (item.tickable) {
+                    <span class="box-space" aria-hidden="true"></span>
+                  }
+                  @if (item.time) {
+                    <span class="time tabular">
+                      {{ item.time }}
+                      @if (item.timeEnd) {
+                        <span class="end">{{ item.timeEnd }}</span>
+                      }
+                    </span>
+                  }
+                  <span class="title">{{ item.title }}</span>
+                  @if (item.event) {
+                    <app-list-label [event]="true" />
+                  } @else if (item.list) {
+                    <app-list-label [list]="item.list" />
+                  }
+                </a>
+                @if (item.tickable; as tickable) {
+                  <app-tick-box class="tick-over" [title]="item.title" (tick)="tick(tickable)" />
                 }
-                <span class="title">{{ item.title }}</span>
-                @if (item.event) {
-                  <app-list-label [event]="true" />
-                } @else if (item.list) {
-                  <app-list-label [list]="item.list" />
-                }
-              </a>
+              </div>
             }
           </div>
         }

@@ -7,6 +7,9 @@ import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { stepsLabel, weekSummary } from '../../domain/week-summary';
 import { parseTimestamp } from '../../domain/time/timestamps';
+import { Ticking } from '../../shared/ticking/ticking';
+import { Settled } from '../../shared/ui/motion';
+import { Todo } from '../../domain/models';
 
 const NOTES_SHOWN = 3;
 const WEEKDAY_NAMES = [
@@ -28,6 +31,8 @@ const WEEKDAY_NAMES = [
 })
 export class WeekPage {
   private readonly store = inject(Store);
+  private readonly ticking = inject(Ticking);
+  protected readonly settled = new Settled();
   protected readonly today = inject(Clock).today();
 
   protected readonly week = computed(() =>
@@ -60,6 +65,10 @@ export class WeekPage {
 
   protected dayName(timestamp: string) {
     return WEEKDAY_NAMES[parseTimestamp(timestamp).getDay()];
+  }
+
+  protected untick(todo: Todo) {
+    return this.ticking.untick(todo);
   }
 
   protected list(id: string) {

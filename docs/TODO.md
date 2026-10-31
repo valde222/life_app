@@ -90,4 +90,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 - [x] Ticking a todo shows the tick, then the row slides out (R7; `docs/plans/tick-animation.md`)
 - [ ] Micro-interactions on the everyday moments: ticking, toasts, adding, Inbox, swipes, sheets and more (`docs/plans/animations.md`)
-- [ ] Tick and untick todos on every screen that shows them (R7; `docs/plans/tick-everywhere.md`)
+- [x] Tick and untick todos on every screen that shows them (R7; `docs/plans/tick-everywhere.md`)

@@ -17,7 +17,7 @@ test('T16: Ctrl+Space opens capture and Save puts the item in the Inbox (R1, R2;
   await expect(page.getByLabel('1 in the inbox')).toBeVisible();
   await page.getByRole('link', { name: /Inbox/ }).click();
   await expect(
-    page.getByRole('button', { name: 'Email Mads about the rollback plan' }),
+    page.getByRole('button', { name: 'Email Mads about the rollback plan', exact: true }),
   ).toBeVisible();
 });
 
@@ -31,7 +31,7 @@ test('T16: the capture window page saves to the Inbox and Esc closes it', async 
   await page.getByRole('button', { name: 'Save' }).click();
 
   await expect(page).toHaveURL(/\/inbox$/);
-  await expect(page.getByRole('button', { name: 'Book a table' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Book a table', exact: true })).toBeVisible();
 });
 
 test('desktop layout opens a todo in the detail pane and shows shortcuts on ?', async ({

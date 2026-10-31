@@ -195,6 +195,21 @@ a {
   white-space: nowrap;
 }
 
+.tick-slot {
+  position: relative;
+}
+
+.tick-over {
+  position: absolute;
+  top: calc(50% - 22px);
+}
+
+.box-space {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
 .sheet-backdrop {
   background: var(--scrim);
 }
