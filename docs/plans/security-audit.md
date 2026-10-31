@@ -92,5 +92,5 @@ Severity: **High** (data readable or changeable by someone else, or code executi
 ## Wrap-up
 
 - [x] `docs/security.md`: what's protected and how, every finding with severity and status, the Pi checklist
-- [ ] `/security-review` over every change on this branch, findings fixed
-- [ ] All unit, API and end-to-end tests pass; merge and tag
+- [x] `/security-review` over every change on this branch, findings fixed
+- [x] All unit, API and end-to-end tests pass; merge and tag

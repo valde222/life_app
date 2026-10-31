@@ -80,4 +80,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Security audit (`v0.7-security`)
 
-- [ ] Security audit: every check in `docs/plans/security-audit.md` done, findings fixed, `docs/security.md` written
+- [x] Security audit: every check in `docs/plans/security-audit.md` done, findings fixed, `docs/security.md` written

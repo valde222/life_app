@@ -65,6 +65,7 @@ Severity: **High**, someone else could read or change data, or run code in the a
 | S14 | Low | Advisories in build tooling: Vite, zod, uuid, xcode, glob, minimatch | Fixed `6223bb0`, `f0e0ac2` |
 | S15 | Low | Tokens were never refreshed | Fixed `84cfd2d` |
 | S16 | Low | Signing in to another server or account kept the old local copy | Fixed `1dc4526` |
+| S17 | Low | Found by the closing `/security-review`: the public-address block matched the literal path `/api/collections/_superusers/`, so superuser sign-in still worked through the tunnel as `_SUPERUSERS` or by the collection's id (the token it gave was still refused) | Fixed `581504a` |
 | I1 | Info | The sign-in token lives in WebView storage, readable by script in the app. An offline-first client can't use an HttpOnly cookie; S1, S6 and S7 are what keep script out | Accepted |
 | I2 | Info | No MFA. PocketBase's MFA needs a second factor by email (OTP), which needs SMTP set up. Rate limits and a 16+ character password stand in | Your call (see below) |
 | I3 | Info | RustSec advisories in `glib`, `zbus_names`, `zvariant`, `zvariant_derive` and `proc-macro-error`: Tauri's Linux backend, not compiled into the Windows build. Listed with reasons in `desktop/src-tauri/osv-scanner.toml` | Accepted |
