@@ -47,7 +47,10 @@ export class SearchPage {
   }
 
   private readonly hits = computed(() =>
-    search(this.store.todos(), this.store.notes(), this.query(), this.filter()),
+    search(
+      { todos: this.store.todos(), notes: this.store.notes() },
+      { query: this.query(), filter: this.filter() },
+    ),
   );
   protected readonly sections = computed(() => {
     const hits = this.query().trim() ? this.hits() : this.hits().slice(0, RECENT_WHEN_EMPTY);

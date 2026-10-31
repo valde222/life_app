@@ -13,37 +13,48 @@ export interface WeekSummary {
 
 const dayOf = (timestamp: string) => localDate(new Date(timestamp.replace(' ', 'T')));
 
-export function weekSummary(
-  today: string,
-  todos: Todo[],
-  completions: Completion[],
-  notes: Note[],
-): WeekSummary {
+export interface WeekRecords {
+  todos: Todo[];
+  completions: Completion[];
+  notes: Note[];
+}
+
+function countByList(lists: string[]): { list: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const list of lists.filter(Boolean)) {
+    counts.set(list, (counts.get(list) ?? 0) + 1);
+  }
+  return [...counts].map(([list, count]) => ({ list, count })).sort((a, b) => b.count - a.count);
+}
+
+function notesWritten(notes: Note[], inWeek: (date: string) => boolean): Note[] {
+  return notes
+    .filter(
+      (note) => !note.deleted_at && !note.inbox && note.created && inWeek(dayOf(note.created)),
+    )
+    .sort((a, b) => (b.created ?? '').localeCompare(a.created ?? ''));
+}
+
+function weekOf(today: string): { start: string; end: string } {
   const start = addDays(today, -((parseLocalDate(today).getDay() + 6) % 7));
-  const end = addDays(start, 6);
+  return { start, end: addDays(start, 6) };
+}
+
+export function weekSummary(today: string, records: WeekRecords): WeekSummary {
+  const { start, end } = weekOf(today);
   const inWeek = (date: string) => date >= start && date <= end;
 
-  const finished = todos
+  const finished = records.todos
     .filter((todo) => todo.done_at && !todo.deleted_at && inWeek(dayOf(todo.done_at)))
     .sort((a, b) => b.done_at.localeCompare(a.done_at));
-  const repeats = completions.filter(
+  const repeats = records.completions.filter(
     (completion) => !completion.deleted_at && inWeek(completion.done_on),
   );
   const doneDays = [
     ...finished.map((todo) => dayOf(todo.done_at)),
     ...repeats.map((completion) => completion.done_on),
   ];
-
-  const repeatLists = new Map(todos.map((todo) => [todo.id, todo.list]));
-  const listCounts = new Map<string, number>();
-  for (const list of [
-    ...finished.map((todo) => todo.list),
-    ...repeats.map((completion) => repeatLists.get(completion.todo) ?? ''),
-  ]) {
-    if (list) {
-      listCounts.set(list, (listCounts.get(list) ?? 0) + 1);
-    }
-  }
+  const listOf = new Map(records.todos.map((todo) => [todo.id, todo.list]));
 
   return {
     start,
@@ -54,14 +65,11 @@ export function weekSummary(
     }),
     finished,
     doneCount: doneDays.length,
-    notes: notes
-      .filter(
-        (note) => !note.deleted_at && !note.inbox && note.created && inWeek(dayOf(note.created)),
-      )
-      .sort((a, b) => (b.created ?? '').localeCompare(a.created ?? '')),
-    byList: [...listCounts]
-      .map(([list, count]) => ({ list, count }))
-      .sort((a, b) => b.count - a.count),
+    notes: notesWritten(records.notes, inWeek),
+    byList: countByList([
+      ...finished.map((todo) => todo.list),
+      ...repeats.map((completion) => listOf.get(completion.todo) ?? ''),
+    ]),
   };
 }
 

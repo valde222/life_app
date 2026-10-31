@@ -76,7 +76,7 @@ export function repeatStatus(todo: Todo, completions: Completion[], today: strin
   const lastDone = done[0] ?? null;
   const daysSince = Math.max(0, daysBetween(lastDone ?? startDay(todo), today));
   if (todo.repeat_mode === 'schedule') {
-    return scheduleStatus(todo, done, lastDone, daysSince, today);
+    return scheduleStatus(todo, { done, lastDone, daysSince }, today);
   }
   const target = todo.repeat_every_days ?? 0;
   const choice = ROUGH_CHOICES.find((each) => each.days === target);
@@ -91,44 +91,55 @@ export function repeatStatus(todo: Todo, completions: Completion[], today: strin
   };
 }
 
-function scheduleStatus(
-  todo: Todo,
-  done: string[],
-  lastDone: string | null,
-  daysSince: number,
-  today: string,
-): RepeatStatus {
-  const doneSet = new Set(done);
+interface History {
+  done: string[];
+  lastDone: string | null;
+  daysSince: number;
+}
+
+function missedSinceLastDone(todo: Todo, lastDone: string | null, today: string): boolean {
   const start = startDay(todo);
-  let missed = false;
   for (
     let day = addDays(today, -1);
     day >= start && (!lastDone || day > lastDone);
     day = addDays(day, -1)
   ) {
     if (isScheduledOn(todo, day)) {
-      missed = true;
-      break;
+      return true;
     }
   }
-  let nextDue: string | null = null;
+  return false;
+}
+
+function nextDueDay(todo: Todo, done: Set<string>, today: string): string | null {
   for (let offset = 0; offset <= SCHEDULE_LOOKAHEAD_DAYS; offset++) {
     const day = addDays(today, offset);
-    if (isScheduledOn(todo, day) && !doneSet.has(day)) {
-      nextDue = day;
-      break;
+    if (isScheduledOn(todo, day) && !done.has(day)) {
+      return day;
     }
   }
+  return null;
+}
+
+function scheduleTag(nextDue: string | null, today: string, daysSince: number): string {
+  if (nextDue === today) {
+    return 'Today';
+  }
+  return nextDue ? weekdayName(nextDue) : dayWord(daysSince);
+}
+
+function scheduleStatus(todo: Todo, history: History, today: string): RepeatStatus {
+  const nextDue = nextDueDay(todo, new Set(history.done), today);
   const target =
     (7 * Math.max(1, todo.repeat_every_weeks || 1)) /
     Math.max(1, (todo.repeat_weekdays ?? []).length);
   return {
-    lastDone,
-    daysSince,
+    lastDone: history.lastDone,
+    daysSince: history.daysSince,
     target: Math.round(target),
-    overdue: missed,
+    overdue: missedSinceLastDone(todo, history.lastDone, today),
     nextDue,
-    tag: nextDue === today ? 'Today' : nextDue ? weekdayName(nextDue) : dayWord(daysSince),
+    tag: scheduleTag(nextDue, today, history.daysSince),
     sub: scheduleSub(todo),
   };
 }

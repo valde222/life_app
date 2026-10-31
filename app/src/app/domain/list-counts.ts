@@ -17,8 +17,11 @@ export function isFiledNote(note: Note) {
 
 export function countsByList(todos: Todo[], notes: Note[]): Map<string, ListCounts> {
   const counts = new Map<string, ListCounts>();
-  const entry = (list: string) =>
-    counts.get(list) ?? counts.set(list, { todos: 0, notes: 0 }).get(list)!;
+  const entry = (list: string) => {
+    const found = counts.get(list) ?? { todos: 0, notes: 0 };
+    counts.set(list, found);
+    return found;
+  };
   for (const todo of todos) {
     if (todo.list && isOpenTodo(todo)) {
       entry(todo.list).todos++;

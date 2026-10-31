@@ -75,10 +75,10 @@ export class AgendaPage {
 
   private readonly marked = computed(() => {
     const from = this.view() === 'month' ? mondayOf(`${this.shownMonth()}-01`) : this.week()[0];
-    return datesWithItems(from, addDays(from, 41), this.today, this.sources());
+    return datesWithItems({ from, to: addDays(from, 41) }, this.today, this.sources());
   });
   protected readonly days = computed(() =>
-    agendaDays(this.selected(), DAYS_SHOWN, this.today, this.sources()),
+    agendaDays({ from: this.selected(), count: DAYS_SHOWN }, this.today, this.sources()),
   );
 
   protected dayNumber(date: string) {

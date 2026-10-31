@@ -21,12 +21,12 @@ describe('agendaDays (R28)', () => {
   };
 
   it('lists each day with timed items first', () => {
-    const days = agendaDays('2026-10-21', 3, '2026-10-21', sources);
+    const days = agendaDays({ from: '2026-10-21', count: 3 }, '2026-10-21', sources);
     expect(days[0].items.map((item) => item.title)).toEqual(['Call the landlord', 'Pay taxes']);
   });
 
   it('folds runs of empty days into one', () => {
-    const days = agendaDays('2026-10-21', 7, '2026-10-21', sources);
+    const days = agendaDays({ from: '2026-10-21', count: 7 }, '2026-10-21', sources);
     expect(days.map((day) => [day.date, day.endDate])).toEqual([
       ['2026-10-21', undefined],
       ['2026-10-22', undefined],

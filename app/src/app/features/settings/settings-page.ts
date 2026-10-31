@@ -43,7 +43,11 @@ export class SettingsPage {
   private readonly notes = this.repository.watchAll('notes');
   private readonly lists = this.repository.watchAll('lists');
   protected readonly deletedCount = computed(
-    () => deletedItems(this.todos(), this.notes(), this.lists(), this.clock.today()).length,
+    () =>
+      deletedItems(
+        { todos: this.todos(), notes: this.notes(), lists: this.lists() },
+        this.clock.today(),
+      ).length,
   );
 
   protected syncNow() {

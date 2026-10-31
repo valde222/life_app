@@ -30,7 +30,7 @@ describe('weekSummary (R29)', () => {
   ];
 
   it('counts things done and notes written Monday to Sunday', () => {
-    const week = weekSummary(thursday, todos, completions, notes);
+    const week = weekSummary(thursday, { todos, completions, notes });
     expect([week.start, week.end]).toEqual(['2026-10-19', '2026-10-25']);
     expect(week.doneCount).toBe(3);
     expect(week.days.map((day) => day.done)).toEqual([0, 1, 2, 0, 0, 0, 0]);

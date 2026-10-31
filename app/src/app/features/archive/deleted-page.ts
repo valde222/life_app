@@ -104,7 +104,10 @@ export class DeletedPage {
   protected readonly sub = deletedSub;
 
   protected readonly items = computed(() =>
-    deletedItems(this.allTodos(), this.allNotes(), this.allLists(), this.today),
+    deletedItems(
+      { todos: this.allTodos(), notes: this.allNotes(), lists: this.allLists() },
+      this.today,
+    ),
   );
 
   protected async restore(item: DeletedItem) {

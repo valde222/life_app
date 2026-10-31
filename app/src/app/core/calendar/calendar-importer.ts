@@ -68,8 +68,8 @@ export class CalendarImporter {
   private async importEvents(now: Date) {
     const fetched = (await CapacitorCalendar.listEventsInRange(importWindow(now))).result;
     const existing = await this.repository.all('calendar_events');
-    const enabled = new Set(this.settings.enabled().map((calendar) => calendar.id));
-    const plan = planImport(existing, fetched, enabled, now);
+    const enabledCalendars = new Set(this.settings.enabled().map((calendar) => calendar.id));
+    const plan = planImport(existing, { events: fetched, enabledCalendars }, now);
     for (const upsert of plan.upserts) {
       await this.repository.save('calendar_events', upsert);
     }

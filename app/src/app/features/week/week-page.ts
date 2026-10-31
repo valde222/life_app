@@ -30,7 +30,11 @@ export class WeekPage {
   protected readonly today = inject(Clock).today();
 
   protected readonly week = computed(() =>
-    weekSummary(this.today, this.store.todos(), this.store.completions(), this.store.notes()),
+    weekSummary(this.today, {
+      todos: this.store.todos(),
+      completions: this.store.completions(),
+      notes: this.store.notes(),
+    }),
   );
   protected readonly range = computed(() => {
     const start = parseLocalDate(this.week().start);

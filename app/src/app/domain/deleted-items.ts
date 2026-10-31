@@ -13,12 +13,14 @@ export interface DeletedItem {
 
 const KIND_LABEL = { todos: 'Todo', notes: 'Note', lists: 'List' } as const;
 
-export function deletedItems(
-  todos: Todo[],
-  notes: Note[],
-  lists: List[],
-  today: string,
-): DeletedItem[] {
+export interface DeletableRecords {
+  todos: Todo[];
+  notes: Note[];
+  lists: List[];
+}
+
+export function deletedItems(records: DeletableRecords, today: string): DeletedItem[] {
+  const { todos, notes, lists } = records;
   const entries = [
     ...todos.map((record) => ({ kind: 'todos' as const, record, title: record.title })),
     ...notes.map((record) => ({

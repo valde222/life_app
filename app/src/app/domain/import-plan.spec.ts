@@ -16,8 +16,10 @@ describe('calendar import (R13)', () => {
   it('imports events from enabled calendars only, with a stable id', () => {
     const plan = planImport(
       [],
-      [device({}), device({ id: 'e2', calendarId: 'work' })],
-      new Set(['personal']),
+      {
+        events: [device({}), device({ id: 'e2', calendarId: 'work' })],
+        enabledCalendars: new Set(['personal']),
+      },
       now,
     );
     expect(plan.upserts).toHaveLength(1);
@@ -26,19 +28,33 @@ describe('calendar import (R13)', () => {
   });
 
   it('leaves unchanged events alone and removes ones gone from the calendar', () => {
-    const first = planImport([], [device({})], new Set(['personal']), now).upserts[0];
+    const first = planImport(
+      [],
+      { events: [device({})], enabledCalendars: new Set(['personal']) },
+      now,
+    ).upserts[0];
     const stored = { ...EMPTY_RECORDS.calendar_events, ...first };
     const gone = { ...EMPTY_RECORDS.calendar_events, id: 'gone00000000001' };
 
-    const plan = planImport([stored, gone], [device({})], new Set(['personal']), now);
+    const plan = planImport(
+      [stored, gone],
+      { events: [device({})], enabledCalendars: new Set(['personal']) },
+      now,
+    );
 
     expect(plan.upserts).toHaveLength(0);
     expect(plan.removals).toEqual(['gone00000000001']);
   });
 
   it('removes everything from a calendar that was switched off', () => {
-    const first = planImport([], [device({})], new Set(['personal']), now).upserts[0];
+    const first = planImport(
+      [],
+      { events: [device({})], enabledCalendars: new Set(['personal']) },
+      now,
+    ).upserts[0];
     const stored = { ...EMPTY_RECORDS.calendar_events, ...first };
-    expect(planImport([stored], [device({})], new Set(), now).removals).toEqual([stored.id]);
+    expect(
+      planImport([stored], { events: [device({})], enabledCalendars: new Set() }, now).removals,
+    ).toEqual([stored.id]);
   });
 });

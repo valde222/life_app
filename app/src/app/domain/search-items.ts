@@ -15,44 +15,55 @@ export function matches(text: string, query: string) {
   return text.toLowerCase().includes(query.toLowerCase());
 }
 
-export function search(
-  todos: Todo[],
-  notes: Note[],
-  query: string,
-  filter: SearchFilter,
-  archived = false,
-): SearchHit[] {
-  const trimmed = query.trim();
-  const keep = (record: Todo | Note) => !record.deleted_at && !!record.archived_at === archived;
-  const todoHits: SearchHit[] =
-    filter === 'notes'
-      ? []
-      : todos
-          .filter((todo) => keep(todo) && (!trimmed || matches(todo.title, trimmed)))
-          .map((todo) => ({
-            kind: 'todo',
-            id: todo.id,
-            title: todo.title,
-            list: todo.list,
-            changedAt: todo.changed_at,
-            done: !!todo.done_at,
-          }));
-  const noteHits: SearchHit[] =
-    filter === 'todos'
-      ? []
-      : notes
-          .filter(
-            (note) =>
-              keep(note) &&
-              (!trimmed || matches(note.title, trimmed) || matches(note.body, trimmed)),
-          )
-          .map((note) => ({
-            kind: 'note',
-            id: note.id,
-            title: note.title || 'Untitled',
-            list: note.list,
-            changedAt: note.changed_at,
-            done: false,
-          }));
-  return [...todoHits, ...noteHits].sort((a, b) => b.changedAt - a.changedAt);
+export interface Searchable {
+  todos: Todo[];
+  notes: Note[];
+}
+
+export interface SearchOptions {
+  query: string;
+  filter: SearchFilter;
+  archived?: boolean;
+}
+
+const inView = (record: Todo | Note, archived: boolean) =>
+  !record.deleted_at && !!record.archived_at === archived;
+
+function todoHits(todos: Todo[], query: string, archived: boolean): SearchHit[] {
+  return todos
+    .filter((todo) => inView(todo, archived) && (!query || matches(todo.title, query)))
+    .map((todo) => ({
+      kind: 'todo',
+      id: todo.id,
+      title: todo.title,
+      list: todo.list,
+      changedAt: todo.changed_at,
+      done: !!todo.done_at,
+    }));
+}
+
+function noteHits(notes: Note[], query: string, archived: boolean): SearchHit[] {
+  return notes
+    .filter(
+      (note) =>
+        inView(note, archived) &&
+        (!query || matches(note.title, query) || matches(note.body, query)),
+    )
+    .map((note) => ({
+      kind: 'note',
+      id: note.id,
+      title: note.title || 'Untitled',
+      list: note.list,
+      changedAt: note.changed_at,
+      done: false,
+    }));
+}
+
+export function search(records: Searchable, options: SearchOptions): SearchHit[] {
+  const query = options.query.trim();
+  const archived = options.archived ?? false;
+  return [
+    ...(options.filter === 'notes' ? [] : todoHits(records.todos, query, archived)),
+    ...(options.filter === 'todos' ? [] : noteHits(records.notes, query, archived)),
+  ].sort((a, b) => b.changedAt - a.changedAt);
 }

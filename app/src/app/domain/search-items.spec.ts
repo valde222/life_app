@@ -23,15 +23,25 @@ describe('search (R30)', () => {
   ];
 
   it('finds todo titles and note titles and bodies, newest first', () => {
-    expect(search(todos, notes, 'staging', 'all').map((hit) => hit.id)).toEqual(['t1', 'n1']);
+    expect(
+      search({ todos, notes }, { query: 'staging', filter: 'all' }).map((hit) => hit.id),
+    ).toEqual(['t1', 'n1']);
   });
 
   it('filters to todos or notes', () => {
-    expect(search(todos, notes, 'staging', 'notes').map((hit) => hit.id)).toEqual(['n1']);
-    expect(search(todos, notes, 'staging', 'todos').map((hit) => hit.id)).toEqual(['t1']);
+    expect(
+      search({ todos, notes }, { query: 'staging', filter: 'notes' }).map((hit) => hit.id),
+    ).toEqual(['n1']);
+    expect(
+      search({ todos, notes }, { query: 'staging', filter: 'todos' }).map((hit) => hit.id),
+    ).toEqual(['t1']);
   });
 
   it('searches the archive separately', () => {
-    expect(search(todos, notes, 'staging', 'all', true).map((hit) => hit.id)).toEqual(['t2']);
+    expect(
+      search({ todos, notes }, { query: 'staging', filter: 'all', archived: true }).map(
+        (hit) => hit.id,
+      ),
+    ).toEqual(['t2']);
   });
 });

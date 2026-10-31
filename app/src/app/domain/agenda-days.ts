@@ -32,25 +32,49 @@ const byTime = (a: AgendaItem, b: AgendaItem) =>
   (a.time || '99').localeCompare(b.time || '99') ||
   a.title.localeCompare(b.title);
 
-function repeatingOn(todo: Todo, day: string, today: string, completions: Completion[]): boolean {
-  if (day < today) {
-    return false;
+export interface DayRange {
+  from: string;
+  count: number;
+}
+
+export interface DateSpan {
+  from: string;
+  to: string;
+}
+
+interface RepeatContext {
+  today: string;
+  completions: Completion[];
+}
+
+function scheduledRepeatOn(todo: Todo, day: string, context: RepeatContext): boolean {
+  const status = repeatStatus(todo, context.completions, context.today);
+  if (status.overdue && day === context.today) {
+    return true;
   }
-  const status = repeatStatus(todo, completions, today);
-  if (todo.repeat_mode === 'schedule') {
-    return status.overdue && day === today
-      ? true
-      : isScheduledOn(todo, day) && !completionDays(todo, completions).includes(day);
-  }
+  return isScheduledOn(todo, day) && !completionDays(todo, context.completions).includes(day);
+}
+
+function roughRepeatOn(todo: Todo, day: string, context: RepeatContext): boolean {
   if (!todo.repeat_every_days) {
     return false;
   }
-  const due = addDays(status.lastDone ?? today, todo.repeat_every_days);
-  return day === (due < today ? today : due);
+  const { lastDone } = repeatStatus(todo, context.completions, context.today);
+  const due = addDays(lastDone ?? context.today, todo.repeat_every_days);
+  return day === (due < context.today ? context.today : due);
 }
 
-export function agendaItemsOn(day: string, today: string, sources: AgendaSources): AgendaItem[] {
-  const dated = [
+function repeatingOn(todo: Todo, day: string, context: RepeatContext): boolean {
+  if (day < context.today) {
+    return false;
+  }
+  return todo.repeat_mode === 'schedule'
+    ? scheduledRepeatOn(todo, day, context)
+    : roughRepeatOn(todo, day, context);
+}
+
+function datedItemsOn(day: string, sources: AgendaSources): AgendaItem[] {
+  return [
     ...sources.todos.filter((todo) => !isRepeating(todo)),
     ...sources.calendarEvents.map(calendarEventAsTodo),
   ]
@@ -65,13 +89,17 @@ export function agendaItemsOn(day: string, today: string, sources: AgendaSources
       repeating: false,
       link: itemLink(todo),
     }));
-  const repeating = sources.todos
+}
+
+function repeatingItemsOn(day: string, today: string, sources: AgendaSources): AgendaItem[] {
+  const context = { today, completions: sources.completions };
+  return sources.todos
     .filter(
       (todo) =>
         isRepeating(todo) &&
         !todo.archived_at &&
         !todo.deleted_at &&
-        repeatingOn(todo, day, today, sources.completions),
+        repeatingOn(todo, day, context),
     )
     .map((todo) => {
       const lastDone = completionDays(todo, sources.completions)[0];
@@ -86,18 +114,16 @@ export function agendaItemsOn(day: string, today: string, sources: AgendaSources
         link: ['/repeating'],
       };
     });
-  return [...dated, ...repeating].sort(byTime);
 }
 
-export function agendaDays(
-  from: string,
-  count: number,
-  today: string,
-  sources: AgendaSources,
-): AgendaDay[] {
+export function agendaItemsOn(day: string, today: string, sources: AgendaSources): AgendaItem[] {
+  return [...datedItemsOn(day, sources), ...repeatingItemsOn(day, today, sources)].sort(byTime);
+}
+
+export function agendaDays(range: DayRange, today: string, sources: AgendaSources): AgendaDay[] {
   const days: AgendaDay[] = [];
-  for (let offset = 0; offset < count; offset++) {
-    const date = addDays(from, offset);
+  for (let offset = 0; offset < range.count; offset++) {
+    const date = addDays(range.from, offset);
     const items = agendaItemsOn(date, today, sources);
     const last = days.at(-1);
     if (!items.length && last && !last.items.length) {
@@ -109,14 +135,9 @@ export function agendaDays(
   return days;
 }
 
-export function datesWithItems(
-  from: string,
-  to: string,
-  today: string,
-  sources: AgendaSources,
-): Set<string> {
+export function datesWithItems(span: DateSpan, today: string, sources: AgendaSources): Set<string> {
   const dates = new Set<string>();
-  for (let date = from; date <= to; date = addDays(date, 1)) {
+  for (let date = span.from; date <= span.to; date = addDays(date, 1)) {
     if (agendaItemsOn(date, today, sources).length) {
       dates.add(date);
     }

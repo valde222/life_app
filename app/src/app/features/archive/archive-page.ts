@@ -61,7 +61,10 @@ export class ArchivePage {
 
   protected readonly archived = computed(() =>
     byDay(
-      search(this.store.todos(), this.store.notes(), this.query(), 'all', true).map((hit) => {
+      search(
+        { todos: this.store.todos(), notes: this.store.notes() },
+        { query: this.query(), filter: 'all', archived: true },
+      ).map((hit) => {
         const record =
           hit.kind === 'todo'
             ? this.store.todos().find((todo) => todo.id === hit.id)!
@@ -102,7 +105,11 @@ export class ArchivePage {
   );
 
   protected readonly deletedCount = computed(
-    () => deletedItems(this.allTodos(), this.allNotes(), this.allLists(), this.today).length,
+    () =>
+      deletedItems(
+        { todos: this.allTodos(), notes: this.allNotes(), lists: this.allLists() },
+        this.today,
+      ).length,
   );
 
   protected closedSub(list: List) {
