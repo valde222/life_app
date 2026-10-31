@@ -26,12 +26,12 @@ import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { listColourStyle } from '../../shared/ui/list-colours';
 import { Sheets } from '../../shared/ui/sheet';
-import { Toasts } from '../../shared/ui/toast';
 import { ImagePicker } from './image-picker';
 import { ImageView, ImageViewData } from './image-view';
 import { LinkPicker, LinkPickerData, LinkPickerResult } from '../../shared/pickers/link-picker';
 import { renderMarkdown } from '../../shared/markdown/markdown';
 import { Photos } from '../../core/photos/photos';
+import { Toasts } from '../../core/toasts/toasts';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
 

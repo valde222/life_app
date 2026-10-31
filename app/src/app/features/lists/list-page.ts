@@ -12,10 +12,10 @@ import { Icon } from '../../shared/ui/icon';
 import { Segmented } from '../../shared/ui/segmented';
 import { Sheets } from '../../shared/ui/sheet';
 import { SwipeRow } from '../../shared/ui/swipe-row';
-import { Toasts } from '../../shared/ui/toast';
 import { TodoRow } from '../../shared/ui/todo-row';
 import { isFiledNote } from '../../domain/list-counts';
 import { ItemActions } from './item-actions';
+import { Toasts } from '../../core/toasts/toasts';
 
 type Tab = 'todos' | 'notes';
 

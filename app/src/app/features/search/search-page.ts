@@ -14,8 +14,8 @@ import { Actions } from '../../core/data/actions';
 import { Store } from '../../core/data/store';
 import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
-import { Toasts } from '../../shared/ui/toast';
 import { search, SearchFilter, SearchHit } from '../../domain/search-items';
+import { Toasts } from '../../core/toasts/toasts';
 
 const RECENT_MS = 7 * 86_400_000;
 const RECENT_WHEN_EMPTY = 8;

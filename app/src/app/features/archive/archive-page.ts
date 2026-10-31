@@ -10,8 +10,8 @@ import { Clock } from '../../core/time/clock';
 import { localDate, longDate, shortDate } from '../../domain/time/local-date';
 import { Icon } from '../../shared/ui/icon';
 import { Segmented } from '../../shared/ui/segmented';
-import { Toasts } from '../../shared/ui/toast';
 import { deletedItems } from '../../domain/deleted-items';
+import { Toasts } from '../../core/toasts/toasts';
 
 type Tab = 'archive' | 'done';
 

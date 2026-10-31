@@ -19,7 +19,7 @@ import { longDate } from '../../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { Segmented } from '../ui/segmented';
 import { Sheet, Sheets } from '../ui/sheet';
-import { Toasts } from '../ui/toast';
+import { Toasts } from '../../core/toasts/toasts';
 
 export type CaptureKind = 'todo' | 'note';
 

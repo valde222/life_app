@@ -16,8 +16,8 @@ import { ListColour } from '../../domain/models';
 import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
 import { Icon } from '../../shared/ui/icon';
-import { Toasts } from '../../shared/ui/toast';
 import { ColourPicker } from './colour-picker';
+import { Toasts } from '../../core/toasts/toasts';
 
 @Component({
   selector: 'app-list-settings',

@@ -21,7 +21,6 @@ import { DetailRow } from '../../shared/ui/detail-row';
 import { ListLabel } from '../../shared/ui/list-label';
 import { Segmented } from '../../shared/ui/segmented';
 import { Sheets } from '../../shared/ui/sheet';
-import { Toasts } from '../../shared/ui/toast';
 import {
   repeatStatus,
   ROUGH_CHOICES,
@@ -29,6 +28,7 @@ import {
   WEEKDAY_ORDER,
 } from '../../domain/repeat-status';
 import { StopRepeatResult, StopRepeatSheet } from './stop-repeat-sheet';
+import { Toasts } from '../../core/toasts/toasts';
 
 type Mode = Exclude<RepeatMode, 'none'>;
 const WEEKDAY_LETTERS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

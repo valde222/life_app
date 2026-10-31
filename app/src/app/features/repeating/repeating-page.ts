@@ -8,10 +8,10 @@ import { addDays } from '../../domain/time/local-date';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { Icon } from '../../shared/ui/icon';
 import { Sheets } from '../../shared/ui/sheet';
-import { Toasts } from '../../shared/ui/toast';
 import { isRepeating, repeatStatus } from '../../domain/repeat-status';
 import { RepeatRow } from '../../shared/ui/repeat-row';
 import { RepeatSheet, RepeatSheetResult } from './repeat-sheet';
+import { Toasts } from '../../core/toasts/toasts';
 
 @Component({
   selector: 'app-repeating-page',

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Toasts } from './toast';
+import { Toasts } from './toasts';
 
 describe('Toasts', () => {
   beforeEach(() => vi.useFakeTimers());

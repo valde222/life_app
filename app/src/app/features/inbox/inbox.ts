@@ -11,9 +11,9 @@ import { Icon } from '../../shared/ui/icon';
 import { listColourStyle } from '../../shared/ui/list-colours';
 import { Sheets } from '../../shared/ui/sheet';
 import { SwipeRow } from '../../shared/ui/swipe-row';
-import { Toasts } from '../../shared/ui/toast';
 import { inboxSections, InboxItem } from '../../domain/inbox-items';
 import { isTyping } from '../../shared/ui/keyboard';
+import { Toasts } from '../../core/toasts/toasts';
 
 const QUICK_LISTS = 4;
 

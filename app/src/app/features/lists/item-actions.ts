@@ -6,10 +6,10 @@ import { DatePicker, DatePickerData, DatePickerResult } from '../../shared/picke
 import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
 import { ActionSheet, ActionSheetData } from '../../shared/ui/action-sheet';
 import { Sheets } from '../../shared/ui/sheet';
-import { Toasts } from '../../shared/ui/toast';
 import { Store } from '../../core/data/store';
 import { LinkPicker, LinkPickerData, LinkPickerResult } from '../../shared/pickers/link-picker';
 import { Repository } from '../../core/data/repository';
+import { Toasts } from '../../core/toasts/toasts';
 
 type TodoAction = 'today' | 'date' | 'move' | 'repeat' | 'delete';
 type NoteAction = 'move' | 'link' | 'archive' | 'delete';

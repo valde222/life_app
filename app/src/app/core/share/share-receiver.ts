@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Actions } from '../data/actions';
-import { Toasts } from '../../shared/ui/toast';
 import { sharedNote, SharePayload } from '../../domain/shared-note';
+import { Toasts } from '../toasts/toasts';
 
 interface ShareTargetPlugin {
   takePending(): Promise<{ share: SharePayload | null }>;
