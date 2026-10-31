@@ -1,1 +1,7 @@
 src/styles/_tokens.scss
+.angular/
+android/
+dist/
+test-results/
+e2e/screenshots/
+package-lock.json
