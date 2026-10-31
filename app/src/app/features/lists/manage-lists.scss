@@ -147,5 +147,5 @@ section {
 
 .cdk-drag-animating,
 .rows.cdk-drop-list-dragging .row:not(.cdk-drag-placeholder) {
-  transition: transform 200ms ease;
+  transition: transform var(--motion-base) var(--ease-standard);
 }

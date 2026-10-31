@@ -2,9 +2,14 @@
   <div class="compact-bar">
     <span class="compact-title">Today.</span>
     @if (!nothing()) {
-      <a class="pill compact-pill tabular" routerLink="/week"
-        >{{ doneCount() }} / {{ items().total }} done</a
-      >
+      @for (count of [doneCount()]; track count) {
+        <a
+          class="pill compact-pill tabular"
+          routerLink="/week"
+          [animate.enter]="settled.animate('count-in')"
+          >{{ count }} / {{ items().total }} done</a
+        >
+      }
     }
   </div>
 }
@@ -13,12 +18,14 @@
     <span class="eyebrow date">{{ dateLabel() }}</span>
     <span class="top-actions">
       @if (!nothing()) {
-        <a class="pill tabular" routerLink="/week"
-          >{{ doneCount() }} / {{ items().total }} done<app-icon
-            name="chevron-right"
-            [size]="14"
-            [stroke]="2.6"
-        /></a>
+        @for (count of [doneCount()]; track count) {
+          <a class="pill tabular" routerLink="/week" [animate.enter]="settled.animate('count-in')"
+            >{{ count }} / {{ items().total }} done<app-icon
+              name="chevron-right"
+              [size]="14"
+              [stroke]="2.6"
+          /></a>
+        }
       }
       <a class="avatar" routerLink="/settings" aria-label="Settings">{{ initial }}</a>
     </span>
@@ -26,7 +33,11 @@
   <div class="title-row">
     <h1 class="t-display">Today.</h1>
     @if (!sync.online()) {
-      <span class="offline" role="status"
+      <span
+        class="offline"
+        role="status"
+        [animate.enter]="settled.animate('fade-in')"
+        animate.leave="fade-out"
         ><app-icon name="offline" [size]="14" [stroke]="2.2" />Offline,
         {{ sync.waiting() }} waiting</span
       >
@@ -36,7 +47,7 @@
 
 <main class="content">
   @if (allDone()) {
-    <section class="all-done">
+    <section class="all-done" [animate.enter]="settled.animate('fade-in')">
       <span class="done-mark"><app-icon name="check" [size]="40" [stroke]="2.6" /></span>
       <p class="all-done-title">All done.</p>
       <div class="all-done-actions">
@@ -76,6 +87,8 @@
         }
         @for (todo of items().scheduled; track todo.id) {
           <app-todo-row
+            [animate.enter]="settled.animate('row-in')"
+            [animate.leave]="settled.animate('row-out')"
             [class.ended]="ended(todo)"
             [title]="todo.title"
             [link]="link(todo)"
@@ -92,6 +105,8 @@
     <div class="stack">
       @for (todo of items().anytime; track todo.id) {
         <app-todo-row
+          [animate.enter]="settled.animate('row-in')"
+          [animate.leave]="settled.animate('row-out')"
           [title]="todo.title"
           [link]="link(todo)"
           [trailing]="steps(todo)"
@@ -113,14 +128,16 @@
           [attr.aria-expanded]="showDone()"
           (click)="showDone.set(!showDone())"
         >
-          <app-icon name="chevron-right" [size]="14" [stroke]="2.4" [class.open]="showDone()" />{{
-            items().done.length
-          }}
-          done
+          <app-icon name="chevron-right" [size]="14" [stroke]="2.4" [class.open]="showDone()" />
+          @for (count of [items().done.length]; track count) {
+            <span [animate.enter]="settled.animate('count-in')">{{ count }} done</span>
+          }
         </button>
         @if (showDone()) {
           @for (todo of items().done; track todo.id) {
             <app-todo-row
+              [animate.enter]="settled.animate('row-in')"
+              [animate.leave]="settled.animate('row-out')"
               [title]="todo.title"
               [link]="['/todo', todo.id]"
               [list]="list(todo)"
@@ -134,10 +151,14 @@
   }
 
   @if (overdue().length) {
-    <a class="repeating-head" routerLink="/repeating">Repeating<span>All</span></a>
+    <a class="repeating-head" routerLink="/repeating" [animate.leave]="settled.animate('fade-out')"
+      >Repeating<span>All</span></a
+    >
     <div class="stack">
       @for (item of overdue(); track item.todo.id) {
         <app-repeat-row
+          [animate.enter]="settled.animate('row-in')"
+          [animate.leave]="settled.animate('row-out')"
           [title]="item.todo.title"
           [status]="item.status"
           [checkbox]="true"

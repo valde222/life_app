@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
 
 export interface Segment<T> {
   value: T;
@@ -10,7 +10,8 @@ export interface Segment<T> {
   selector: 'app-segmented',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="track" role="tablist">
+    <div class="track" role="tablist" [style.--segments]="segments().length">
+      <span class="highlight" [style.--index]="selectedIndex()" aria-hidden="true"></span>
       @for (segment of segments(); track segment.value) {
         <button
           type="button"
@@ -29,6 +30,7 @@ export interface Segment<T> {
   `,
   styles: `
     .track {
+      position: relative;
       padding: var(--space-1);
       border-radius: var(--radius-input);
       background: var(--soft);
@@ -44,14 +46,30 @@ export interface Segment<T> {
       font-weight: 700;
       color: var(--ink-2);
     }
-    .on {
+    button {
+      position: relative;
+    }
+    .highlight {
+      position: absolute;
+      top: var(--space-1);
+      bottom: var(--space-1);
+      left: var(--space-1);
+      width: calc((100% - 2 * var(--space-1)) / var(--segments));
+      border-radius: var(--radius-chip);
       background: var(--surface);
-      color: var(--ink);
       box-shadow: var(--shadow-segment);
+      transform: translateX(calc(var(--index) * 100%));
+      transition: transform var(--motion-base) var(--ease-standard);
+    }
+    .on {
+      color: var(--ink);
     }
   `,
 })
 export class Segmented<T> {
   readonly segments = input.required<Segment<T>[]>();
   readonly value = model.required<T>();
+  protected readonly selectedIndex = computed(() =>
+    this.segments().findIndex((segment) => segment.value === this.value()),
+  );
 }

@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
+import { HapticTicks } from '../../core/platform/haptics';
 import { Icon, IconName } from './icon';
 
 export interface SwipeAction {
@@ -23,12 +32,22 @@ export function swipeOutcome(offset: number): 'right' | 'left' | null {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (offset() > 0 && right(); as action) {
-      <div class="action right" [class.quiet]="action.quiet">
+      <div
+        class="action right"
+        [class.quiet]="action.quiet"
+        [class.armed]="armed()"
+        [style.opacity]="reveal()"
+      >
         <app-icon [name]="action.icon" [size]="16" [stroke]="2.4" />{{ action.label }}
       </div>
     }
     @if (offset() < 0 && left(); as action) {
-      <div class="action left" [class.quiet]="action.quiet">
+      <div
+        class="action left"
+        [class.quiet]="action.quiet"
+        [class.armed]="armed()"
+        [style.opacity]="reveal()"
+      >
         <app-icon [name]="action.icon" [size]="16" [stroke]="2.4" />{{ action.label }}
       </div>
     }
@@ -58,7 +77,7 @@ export function swipeOutcome(offset: number): 'right' | 'left' | null {
       user-select: none;
     }
     .settling {
-      transition: transform 180ms ease-out;
+      transition: transform var(--motion-base) var(--ease-standard);
     }
     .action {
       position: absolute;
@@ -71,6 +90,12 @@ export function swipeOutcome(offset: number): 'right' | 'left' | null {
       gap: var(--space-2);
       font-size: var(--text-15);
       font-weight: 700;
+    }
+    .action app-icon {
+      transition: transform var(--motion-fast) var(--ease-standard);
+    }
+    .action.armed app-icon {
+      transform: scale(1.2);
     }
     .action.left {
       justify-content: flex-end;
@@ -88,6 +113,11 @@ export class SwipeRow {
 
   protected readonly offset = signal(0);
   protected readonly dragging = signal(false);
+  protected readonly armed = computed(() => swipeOutcome(this.offset()) !== null);
+  protected readonly reveal = computed(() =>
+    Math.min(1, Math.abs(this.offset()) / SWIPE_THRESHOLD),
+  );
+  private readonly haptics = inject(HapticTicks);
   private origin: { x: number; y: number; id: number } | null = null;
   private moved = false;
   private readonly limits = computed(() => ({
@@ -114,7 +144,11 @@ export class SwipeRow {
       (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
     }
     const { min, max } = this.limits();
+    const wasArmed = this.armed();
     this.offset.set(Math.min(max, Math.max(min, dx)));
+    if (this.armed() && !wasArmed) {
+      this.haptics.tick();
+    }
   }
 
   protected end() {

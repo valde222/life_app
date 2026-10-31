@@ -11,6 +11,7 @@ export function renderTokens(tokens) {
     ...tokens.fontSize.tokens,
     ...tokens.radius.tokens,
     ...tokens.shadow.tokens,
+    ...tokens.motion.tokens,
   ].map(({ name, value }) => `  --${name}: ${value};`);
   const families = Object.entries(tokens.type.families).map(
     ([name, value]) => `  --font-${name}: ${value};`,

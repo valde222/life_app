@@ -123,7 +123,7 @@ kbd {
 
   app-icon {
     color: var(--ink-2);
-    transition: transform 150ms;
+    transition: transform var(--motion-fast) var(--ease-standard);
   }
 
   .open {

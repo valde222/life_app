@@ -42,6 +42,10 @@ Install packages from WSL only; never run npm on the Windows side.
 
 `e2e/visual.spec.ts` screenshots every screen. It runs on demand: take a baseline on the commit to compare with (`VISUAL=1 npm run e2e:docker -- visual.spec.ts --update-snapshots`), switch commits, and run it again without the flag.
 
+## Motion
+
+Animations use only the motion tokens (`--motion-*`, `--ease-*`; `npm run lint` checks it). Rows use the shared `row-in`, `row-out`, `collapse-in` and `collapse-out` classes from `src/styles.scss` through `animate.enter` and `animate.leave`. They animate only once a screen has settled (`Settled` in `shared/ui/motion.ts`), so nothing moves while a screen first fills. With "reduce motion" on, everything finishes at once, and the end-to-end tests run that way. To see an animation, run a test with `test.use({ reducedMotion: 'no-preference' })`.
+
 ## Layouts
 
 Under 900px wide it's the phone layout with the bottom nav; from 900px the desktop layout: sidebar, content, and a detail pane for todos, notes and events. Same routes, same components.

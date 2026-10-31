@@ -63,7 +63,7 @@
   color: var(--ink-2);
 
   app-icon {
-    transition: transform 150ms;
+    transition: transform var(--motion-fast) var(--ease-standard);
   }
 
   .open {

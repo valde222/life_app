@@ -8,8 +8,7 @@ import { RepeatStatus } from '../../domain/repeat-status';
   imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.tick-out]': 'tickOut.leaving()',
-    '[style.--tick-out]': 'tickOut.duration',
+    '[class.ticked]': 'tickOut.leaving()',
   },
   template: `
     <button
@@ -21,7 +20,7 @@ import { RepeatStatus } from '../../domain/repeat-status';
       @if (checkbox()) {
         <span class="box" [class.checked]="tickOut.leaving()">
           @if (tickOut.leaving()) {
-            <app-icon name="check" [size]="14" [stroke]="3" />
+            <app-icon name="check" [size]="14" [stroke]="3" animate.enter="pop" />
           }
         </span>
       } @else {
@@ -34,7 +33,9 @@ import { RepeatStatus } from '../../domain/repeat-status';
         <span class="sub">{{ status().sub }}</span>
       }
     </button>
-    @if (status().overdue) {
+    @if (tickOut.leaving()) {
+      <span class="tag" animate.enter="fade-in">Today</span>
+    } @else if (status().overdue) {
       <span class="tag over"
         ><app-icon name="repeat" [size]="12" [stroke]="2.6" />{{ status().tag }}</span
       >
@@ -84,7 +85,19 @@ import { RepeatStatus } from '../../domain/repeat-status';
       background: var(--accent);
       border-color: var(--accent);
     }
-    :host(.tick-out) .title {
+    :host(.ticked) {
+      pointer-events: none;
+    }
+    .pop {
+      animation: pop var(--motion-fast) var(--ease-enter);
+    }
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+    }
+    :host(.ticked) .title {
       color: var(--ink-2);
       text-decoration: line-through;
     }

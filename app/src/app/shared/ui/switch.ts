@@ -21,7 +21,7 @@ import { ChangeDetectionStrategy, Component, input, model } from '@angular/core'
       border-radius: var(--radius-input);
       background: var(--control);
       display: flex;
-      transition: background 150ms;
+      transition: background var(--motion-fast) var(--ease-standard);
     }
     .knob {
       width: 24px;
@@ -29,7 +29,7 @@ import { ChangeDetectionStrategy, Component, input, model } from '@angular/core'
       border-radius: var(--radius-control);
       background: var(--surface);
       box-shadow: var(--shadow-knob);
-      transition: transform 150ms;
+      transition: transform var(--motion-fast) var(--ease-standard);
     }
     button[aria-checked='true'] {
       background: var(--accent);

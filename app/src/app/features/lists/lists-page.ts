@@ -9,6 +9,7 @@ import { Sheets } from '../../shared/ui/sheet';
 import { groupSummary, listSummary } from '../../domain/list-counts';
 import { NewGroupSheet } from './new-group-sheet';
 import { NewListData, NewListSheet } from './new-list-sheet';
+import { Settled } from '../../shared/ui/motion';
 
 const OPEN_GROUPS_KEY = 'life.lists.open';
 
@@ -25,6 +26,7 @@ function readOpen(): string[] | null {
 })
 export class ListsPage {
   private readonly store = inject(Store);
+  protected readonly settled = new Settled();
   private readonly sheets = inject(Sheets);
   private readonly router = inject(Router);
 

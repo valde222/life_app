@@ -4,7 +4,7 @@
   >
 </header>
 <h1 class="t-display title">Archive.</h1>
-<app-segmented class="tabs" [segments]="tabs" [(value)]="tab" />
+<app-segmented class="tabs" [segments]="tabs" [(value)]="tab" (valueChange)="settled.pause()" />
 <label class="search">
   <app-icon name="search" [size]="18" [stroke]="2" />
   <input
@@ -21,7 +21,11 @@
       <h2 class="eyebrow section">{{ group.label }}</h2>
       <div class="options">
         @for (row of group.items; track row.id) {
-          <div class="option row">
+          <div
+            class="option row"
+            [animate.enter]="settled.animate('collapse-in')"
+            (animate.leave)="settled.leave($event, 'collapse-out')"
+          >
             <span class="text">
               <span class="name">{{ row.title }}</span>
               @if (row.sub) {
@@ -49,7 +53,11 @@
       <h2 class="eyebrow section">Closed lists</h2>
       <div class="options">
         @for (list of closedLists(); track list.id) {
-          <div class="option row">
+          <div
+            class="option row"
+            [animate.enter]="settled.animate('collapse-in')"
+            (animate.leave)="settled.leave($event, 'collapse-out')"
+          >
             <span class="text">
               <span class="name">{{ list.name }}</span>
               <span class="sub">{{ closedSub(list) }}</span>
@@ -78,7 +86,11 @@
       <h2 class="eyebrow section">{{ group.label }}</h2>
       <div class="options">
         @for (row of group.items; track row.id) {
-          <div class="option row">
+          <div
+            class="option row"
+            [animate.enter]="settled.animate('collapse-in')"
+            (animate.leave)="settled.leave($event, 'collapse-out')"
+          >
             <span class="text">
               <span class="name">{{ row.title }}</span>
               @if (row.sub) {

@@ -6,6 +6,7 @@ import { Clock } from '../../core/time/clock';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { Icon } from '../../shared/ui/icon';
 import { DeletedItem, deletedSub } from '../../domain/deleted-items';
+import { Settled } from '../../shared/ui/motion';
 
 @Component({
   selector: 'app-deleted-page',
@@ -22,7 +23,11 @@ import { DeletedItem, deletedSub } from '../../domain/deleted-items';
       @if (items().length) {
         <div class="options">
           @for (item of items(); track item.kind + item.id) {
-            <div class="option row">
+            <div
+              class="option row"
+              [animate.enter]="settled.animate('collapse-in')"
+              [animate.leave]="settled.animate('collapse-out')"
+            >
               <span class="text">
                 <span class="name">{{ item.title }}</span>
                 <span class="sub">{{ sub(item) }}</span>
@@ -95,6 +100,7 @@ import { DeletedItem, deletedSub } from '../../domain/deleted-items';
 })
 export class DeletedPage {
   private readonly all = inject(AllRecords);
+  protected readonly settled = new Settled();
   private readonly archive = inject(ArchiveActions);
   private readonly today = inject(Clock).today();
   protected readonly confirming = signal(false);

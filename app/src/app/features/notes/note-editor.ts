@@ -30,6 +30,7 @@ import { Pickers } from '../../shared/pickers/pickers';
 import { backLabel } from '../../domain/back-labels';
 import { Selection, TextEdit, withCode, withHeading } from '../../shared/markdown/markdown-edits';
 import { noteConnections, noteDateLabel } from '../../domain/note-view';
+import { Settled } from '../../shared/ui/motion';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
 
@@ -50,6 +51,7 @@ export class NoteEditor {
   readonly id = input.required<string>();
 
   private readonly store = inject(Store);
+  protected readonly settled = new Settled();
   private readonly actions = inject(Actions);
   private readonly links = inject(LinkActions);
   private readonly pickers = inject(Pickers);

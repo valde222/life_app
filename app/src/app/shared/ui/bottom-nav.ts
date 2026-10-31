@@ -11,6 +11,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '../../core/data/store';
 import { Icon, IconName } from './icon';
+import { Settled } from './motion';
 
 interface Tab {
   path: string;
@@ -61,9 +62,14 @@ const TABS_RIGHT: Tab[] = [
         <span class="icon">
           <app-icon [name]="tab.icon" [size]="22" [stroke]="active.isActive ? 2 : 1.8" />
           @if (tab.path === '/inbox' && store.inboxCount()) {
-            <span class="badge" [attr.aria-label]="store.inboxCount() + ' in the inbox'">{{
-              store.inboxCount()
-            }}</span>
+            @for (count of [store.inboxCount()]; track count) {
+              <span
+                class="badge"
+                [attr.aria-label]="count + ' in the inbox'"
+                [animate.enter]="settled.animate('bump')"
+                >{{ count }}</span
+              >
+            }
           }
         </span>
         {{ tab.label }}
@@ -101,8 +107,8 @@ const TABS_RIGHT: Tab[] = [
       color: var(--muted);
       overflow: hidden;
       transition:
-        height 150ms,
-        margin 150ms;
+        height var(--motion-fast) var(--ease-standard),
+        margin var(--motion-fast) var(--ease-standard);
     }
     .tucked .search {
       height: 0;
@@ -159,6 +165,7 @@ const TABS_RIGHT: Tab[] = [
 })
 export class BottomNav {
   protected readonly store = inject(Store);
+  protected readonly settled = new Settled();
   protected readonly left = TABS_LEFT;
   protected readonly right = TABS_RIGHT;
   protected readonly tucked = signal(false);

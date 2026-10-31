@@ -84,6 +84,12 @@
   --shadow-nav: 0 8px 24px rgba(21, 23, 30, 0.12);
   --shadow-segment: 0 1px 2px rgba(21, 23, 30, 0.08);
   --shadow-knob: 0 1px 2px rgba(21, 23, 30, 0.2);
+  --motion-fast: 120ms;
+  --motion-base: 200ms;
+  --motion-slow: 300ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
   --font-ui: "Space Grotesk", system-ui, sans-serif;
   --font-reading: Inter, system-ui, sans-serif;
   --font-mono: ui-monospace, Menlo, monospace;

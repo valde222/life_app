@@ -65,6 +65,10 @@ Use only the steps in Typography and the radius tokens. The rule of thumb for co
 
 Spacing comes from the `space-*` steps, including the half steps (`space-half`, `space-1-5` … `space-4-5`), and font sizes outside a type style from `text-*`. Code may not write a colour, spacing, radius or font size the tokens already name; `npm run lint` checks it.
 
+## Motion
+
+Small and quick, so it still feels right the hundredth time. Three durations: `motion-fast` (120 ms) for state changes and anything leaving, `motion-base` (200 ms) for most movement, `motion-slow` (300 ms) for the largest moves; nothing runs longer than 350 ms or blocks input. Three easings: `ease-enter` for things arriving, `ease-exit` for things leaving, `ease-standard` for things that move and stay. Animate only `transform` and `opacity`, plus height when a row collapses or expands. Nothing moves when a screen first fills, only when something changes on it. When the system asks to reduce motion, every animation finishes at once. Code may only use these tokens for durations and easings; `npm run lint` checks it.
+
 ## Components
 
 The pieces every screen is built from, each shown below in Components:
