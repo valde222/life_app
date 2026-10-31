@@ -471,6 +471,34 @@ a {
   outline: none;
 }
 
+button,
+a {
+  transition:
+    transform var(--motion-fast) var(--ease-standard),
+    opacity var(--motion-fast) var(--ease-standard);
+}
+
+button:active:not(:disabled),
+a:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) {
+  .back:hover,
+  .btn-add:hover,
+  .bar-link:hover,
+  .bar-save:not(:disabled):hover,
+  .bar-action:hover,
+  .edit:hover,
+  .pill-button:hover,
+  .arrow:hover,
+  .add:hover,
+  .new:hover,
+  .link:hover {
+    opacity: 0.7;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
