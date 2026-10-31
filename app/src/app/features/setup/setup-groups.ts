@@ -41,6 +41,6 @@ export class SetupGroups {
   }
 
   protected continue() {
-    this.router.navigateByUrl('/setup/lists');
+    void this.router.navigateByUrl('/setup/lists');
   }
 }

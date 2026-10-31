@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Repository } from '../../core/data/repository';
+import { ListActions } from '../../core/data/list-actions';
 import { Icon } from '../../shared/ui/icon';
 import { ChoiceChips } from './choice-chips';
 import { Choice, SetupState } from './setup-state';
@@ -16,7 +16,7 @@ import { colourFor, LIST_SUGGESTIONS } from './suggestions';
 })
 export class SetupLists {
   private readonly state = inject(SetupState);
-  private readonly repository = inject(Repository);
+  private readonly lists = inject(ListActions);
   private readonly router = inject(Router);
 
   protected readonly heading = 'Your lists.';
@@ -60,16 +60,15 @@ export class SetupLists {
 
   protected async continue() {
     for (const [order, section] of this.sections().entries()) {
-      const group = await this.repository.save('groups', { name: section.name, order });
       const picked = section.choices.filter((choice) => choice.picked);
-      for (const [index, choice] of picked.entries()) {
-        await this.repository.save('lists', {
+      await this.lists.createGroupWithLists({
+        name: section.name,
+        order,
+        lists: picked.map((choice, index) => ({
           name: choice.name,
-          group: group.id,
           colour: colourFor(section.name, index),
-          order: order * 100 + index,
-        });
-      }
+        })),
+      });
     }
     await this.router.navigateByUrl('/');
   }

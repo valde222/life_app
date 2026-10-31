@@ -2,9 +2,11 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Store } from '../../core/data/store';
 import { Clock } from '../../core/time/clock';
-import { addDays, daysBetween, longDate, shortDate } from '../../domain/time/local-date';
+import { longDate } from '../../domain/time/local-date';
 import { Sheet } from '../../shared/ui/sheet';
-import { completionDays, repeatStatus, ROUGH_CHOICES } from '../../domain/repeat-status';
+import { completionDays, repeatStatus } from '../../domain/repeat-status';
+import { repeatTargetText, usualGapText } from '../../domain/repeat-labels';
+import { EMPTY_RECORDS } from '../../domain/models';
 
 export type RepeatSheetResult = 'today' | 'yesterday' | 'edit';
 const HISTORY = 4;
@@ -148,7 +150,13 @@ export class RepeatSheet {
   private readonly clock = inject(Clock);
   protected readonly longDate = longDate;
 
-  protected readonly todo = computed(() => this.store.todos().find((todo) => todo.id === this.id)!);
+  protected readonly todo = computed(
+    () =>
+      this.store.todos().find((todo) => todo.id === this.id) ?? {
+        ...EMPTY_RECORDS.todos,
+        id: this.id,
+      },
+  );
   protected readonly status = computed(() =>
     repeatStatus(this.todo(), this.store.completions(), this.clock.today()),
   );
@@ -161,26 +169,9 @@ export class RepeatSheet {
     completionDays(this.todo(), this.store.completions()).slice(0, HISTORY),
   );
 
-  protected readonly targetText = computed(() => {
-    const todo = this.todo();
-    if (todo.repeat_mode === 'schedule') {
-      return this.status().nextDue ? `Next ${longDate(this.status().nextDue!)}` : '';
-    }
-    const unit =
-      ROUGH_CHOICES.find((choice) => choice.days === todo.repeat_every_days)?.unit ??
-      `${todo.repeat_every_days} days`;
-    const due = this.status().lastDone
-      ? addDays(this.status().lastDone!, todo.repeat_every_days)
-      : '';
-    return due ? `About ${unit}, due ${shortDate(due)}` : `About ${unit}`;
-  });
+  protected readonly targetText = computed(() => repeatTargetText(this.todo(), this.status()));
 
-  protected readonly average = computed(() => {
-    const days = completionDays(this.todo(), this.store.completions());
-    if (days.length < 3) {
-      return '';
-    }
-    const gaps = days.slice(0, -1).map((day, index) => daysBetween(days[index + 1], day));
-    return `Usually every ${Math.round(gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length)} days`;
-  });
+  protected readonly average = computed(() =>
+    usualGapText(completionDays(this.todo(), this.store.completions())),
+  );
 }

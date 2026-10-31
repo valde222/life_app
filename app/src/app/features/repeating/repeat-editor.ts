@@ -12,8 +12,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions } from '../../core/data/actions';
-import { Draft, RepeatMode, Todo } from '../../domain/models';
-import { Repository } from '../../core/data/repository';
+import { RepeatMode, Todo } from '../../domain/models';
 import { Store } from '../../core/data/store';
 import { Clock } from '../../core/time/clock';
 import { DetailRow } from '../../shared/ui/detail-row';
@@ -29,6 +28,7 @@ import {
 import { StopRepeatResult, StopRepeatSheet } from './stop-repeat-sheet';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
+import { lastDoneLabel } from '../../domain/repeat-labels';
 
 type Mode = Exclude<RepeatMode, 'none'>;
 const WEEKDAY_LETTERS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -50,7 +50,6 @@ export class RepeatEditor {
   readonly id = input.required<string>();
 
   private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
   private readonly actions = inject(Actions);
   private readonly sheets = inject(Sheets);
   private readonly pickers = inject(Pickers);
@@ -91,15 +90,7 @@ export class RepeatEditor {
     if (!todo || !this.wasRepeating()) {
       return '';
     }
-    const status = repeatStatus(todo, this.store.completions(), this.clock.today());
-    if (!status.lastDone) {
-      return 'Never';
-    }
-    return status.daysSince === 0
-      ? 'Today'
-      : status.daysSince === 1
-        ? 'Yesterday'
-        : `${status.daysSince} days ago`;
+    return lastDoneLabel(repeatStatus(todo, this.store.completions(), this.clock.today()));
   });
   protected readonly canSave = computed(
     () => !!this.title().trim() && (this.mode() === 'rough' || this.days().length > 0),
@@ -141,25 +132,14 @@ export class RepeatEditor {
     if (!this.canSave()) {
       return;
     }
-    const fields: Draft<'todos'> = {
-      title: this.title().trim(),
+    await this.actions.saveRepeating(this.isNew() ? null : this.id(), {
+      title: this.title(),
       list: this.list(),
-      inbox: false,
-      repeat_mode: this.mode(),
-      repeat_every_days: this.mode() === 'rough' ? this.everyDays() : 0,
-      repeat_every_weeks: this.mode() === 'schedule' ? this.everyWeeks() : 0,
-      repeat_weekdays: this.mode() === 'schedule' ? [...this.days()].sort() : null,
-      date: '',
-      time: '',
-      time_end: '',
-      is_event: false,
-      done_at: '',
-    };
-    if (this.isNew()) {
-      await this.repository.save('todos', fields);
-    } else {
-      await this.repository.save('todos', { ...fields, id: this.id() });
-    }
+      mode: this.mode(),
+      everyDays: this.everyDays(),
+      everyWeeks: this.everyWeeks(),
+      weekdays: this.days(),
+    });
     await this.router.navigateByUrl(this.back);
   }
 
@@ -170,16 +150,7 @@ export class RepeatEditor {
     }
     const result = await this.sheets.open<StopRepeatResult, Todo>(StopRepeatSheet, todo).closed;
     if (result) {
-      await this.repository.save('todos', {
-        id: todo.id,
-        repeat_mode: 'none',
-        repeat_every_days: 0,
-        repeat_every_weeks: 0,
-        repeat_weekdays: null,
-        list: result.list,
-        date: result.date,
-        inbox: !result.list && !result.date,
-      });
+      await this.actions.stopRepeating(todo.id, result);
       await this.router.navigate(['/todo', todo.id], { state: { back: this.back } });
     }
   }
