@@ -38,27 +38,36 @@
     <h2 class="eyebrow section">{{ section.label }}</h2>
     <div class="stack">
       @for (hit of section.hits; track hit.kind + hit.id) {
-        <div class="tick-slot">
-          <a class="hit" [routerLink]="link(hit)" [state]="{ back: '/search' }">
-            @if (hit.kind === 'note') {
-              <app-icon name="note" [size]="20" class="kind" />
-            } @else {
-              <span class="box-space" aria-hidden="true"></span>
+        @if (hit.repeating && choreOf(hit); as chore) {
+          <app-repeat-row
+            [title]="chore.todo.title"
+            [status]="chore.status"
+            (tick)="completeChore(chore.todo)"
+            (open)="openChore(chore.todo)"
+          />
+        } @else {
+          <div class="tick-slot">
+            <a class="hit" [routerLink]="link(hit)" [state]="{ back: '/search' }">
+              @if (hit.kind === 'note') {
+                <app-icon name="note" [size]="20" class="kind" />
+              } @else {
+                <span class="box-space" aria-hidden="true"></span>
+              }
+              <span class="title">{{ hit.title }}</span>
+              @if (list(hit)) {
+                <app-list-label [list]="list(hit)" />
+              }
+            </a>
+            @if (hit.kind === 'todo') {
+              <app-tick-box
+                class="tick-over"
+                [title]="hit.title"
+                [done]="hit.done"
+                (tick)="toggleDone(hit)"
+              />
             }
-            <span class="title">{{ hit.title }}</span>
-            @if (list(hit)) {
-              <app-list-label [list]="list(hit)" />
-            }
-          </a>
-          @if (hit.kind === 'todo') {
-            <app-tick-box
-              class="tick-over"
-              [title]="hit.title"
-              [done]="hit.done"
-              (tick)="toggleDone(hit)"
-            />
-          }
-        </div>
+          </div>
+        }
       }
     </div>
   } @empty {

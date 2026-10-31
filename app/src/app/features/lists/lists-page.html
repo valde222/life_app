@@ -4,6 +4,12 @@
 </header>
 
 <main class="content">
+  <a class="box box-head repeating" routerLink="/repeating">
+    <app-icon name="repeat" [size]="18" [stroke]="2.2" />
+    <span class="group-name">Repeating</span>
+    <span class="summary">{{ chores() }}</span>
+    <app-icon name="chevron-right" [size]="16" [stroke]="2.2" />
+  </a>
   @for (entry of groups(); track entry.group.id) {
     <section class="box">
       <button

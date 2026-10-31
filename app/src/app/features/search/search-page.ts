@@ -18,13 +18,17 @@ import { search, SearchFilter, SearchHit } from '../../domain/search-items';
 import { Toasts } from '../../core/toasts/toasts';
 import { Ticking } from '../../shared/ticking/ticking';
 import { TickBox } from '../../shared/ui/tick-box';
+import { Clock } from '../../core/time/clock';
+import { RepeatingWithStatus, repeatStatus } from '../../domain/repeat-status';
+import { Todo } from '../../domain/models';
+import { RepeatRow } from '../../shared/ui/repeat-row';
 
 const RECENT_MS = 7 * 86_400_000;
 const RECENT_WHEN_EMPTY = 8;
 
 @Component({
   selector: 'app-search-page',
-  imports: [FormsModule, Icon, ListLabel, RouterLink, TickBox],
+  imports: [FormsModule, Icon, ListLabel, RepeatRow, RouterLink, TickBox],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './search-page.html',
   styleUrl: './search-page.scss',
@@ -32,6 +36,7 @@ const RECENT_WHEN_EMPTY = 8;
 export class SearchPage {
   private readonly store = inject(Store);
   private readonly ticking = inject(Ticking);
+  private readonly clock = inject(Clock);
   private readonly actions = inject(Actions);
   private readonly toasts = inject(Toasts);
   private readonly router = inject(Router);
@@ -74,6 +79,22 @@ export class SearchPage {
       return;
     }
     await (hit.done ? this.ticking.untick(todo) : this.ticking.tick(todo, '/search'));
+  }
+
+  protected choreOf(hit: SearchHit): RepeatingWithStatus | undefined {
+    const todo = this.store.todos().find((each) => each.id === hit.id);
+    return todo
+      ? { todo, status: repeatStatus(todo, this.store.completions(), this.clock.today()) }
+      : undefined;
+  }
+
+  protected async completeChore(todo: Todo) {
+    const undo = await this.actions.complete(todo);
+    this.toasts.show({ title: `${todo.title} done today`, undo });
+  }
+
+  protected async openChore(todo: Todo) {
+    await this.router.navigate(['/repeat', todo.id], { state: { back: '/search' } });
   }
 
   protected link(hit: SearchHit) {

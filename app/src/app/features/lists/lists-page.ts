@@ -10,6 +10,9 @@ import { groupSummary, listSummary } from '../../domain/list-counts';
 import { NewGroupSheet } from './new-group-sheet';
 import { NewListData, NewListSheet } from './new-list-sheet';
 import { Settled } from '../../shared/ui/motion';
+import { Clock } from '../../core/time/clock';
+import { choresSummary } from '../../domain/repeat-labels';
+import { isRepeating, overdueRepeating } from '../../domain/repeat-status';
 
 const OPEN_GROUPS_KEY = 'life.lists.open';
 
@@ -29,6 +32,14 @@ export class ListsPage {
   protected readonly settled = new Settled();
   private readonly sheets = inject(Sheets);
   private readonly router = inject(Router);
+
+  private readonly clock = inject(Clock);
+  protected readonly chores = computed(() =>
+    choresSummary(
+      this.store.todos().filter((todo) => isRepeating(todo) && !todo.archived_at).length,
+      overdueRepeating(this.store.todos(), this.store.completions(), this.clock.today()).length,
+    ),
+  );
 
   private readonly savedOpen = signal<string[] | null>(readOpen());
   protected readonly groups = computed(() =>

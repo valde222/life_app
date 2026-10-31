@@ -32,3 +32,11 @@ export function usualGapText(daysDone: readonly string[]): string {
     .map((earlier, index) => daysBetween(earlier, daysDone[index] ?? earlier));
   return `Usually every ${Math.round(gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length)} days`;
 }
+
+export function choresSummary(chores: number, overdue: number): string {
+  if (!chores) {
+    return 'No chores yet';
+  }
+  const count = `${chores} chore${chores === 1 ? '' : 's'}`;
+  return overdue ? `${count}, ${overdue} overdue` : count;
+}

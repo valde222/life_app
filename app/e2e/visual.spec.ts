@@ -154,7 +154,11 @@ async function settle(page: Page) {
 
 async function capture(page: Page, name: string) {
   await settle(page);
-  await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true, animations: 'disabled' });
+  await expect(page).toHaveScreenshot(`${name}.png`, {
+    fullPage: true,
+    animations: 'disabled',
+    threshold: 0,
+  });
 }
 
 for (const [size, viewport] of [
