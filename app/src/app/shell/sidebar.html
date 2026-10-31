@@ -17,9 +17,14 @@
       <app-icon [name]="item.icon" [size]="18" [stroke]="active.isActive ? 2 : 1.8" />
       <span class="grow">{{ item.label }}</span>
       @if (item.path === '/inbox' && store.inboxCount()) {
-        <span class="badge" [attr.aria-label]="store.inboxCount() + ' in the inbox'">{{
-          store.inboxCount()
-        }}</span>
+        @for (count of [store.inboxCount()]; track count) {
+          <span
+            class="badge"
+            [attr.aria-label]="count + ' in the inbox'"
+            [animate.enter]="settled.animate('bump')"
+            >{{ count }}</span
+          >
+        }
       }
     </a>
   }

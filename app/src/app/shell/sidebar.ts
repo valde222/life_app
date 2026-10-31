@@ -15,6 +15,7 @@ import { Sync } from '../core/sync/sync';
 import { Icon } from '../shared/ui/icon';
 import { ListSwatch } from '../shared/ui/list-swatch';
 import { Sheets } from '../shared/ui/sheet';
+import { Settled } from '../shared/ui/motion';
 
 const OPEN_KEY = 'life.sidebar.open';
 
@@ -27,6 +28,7 @@ const OPEN_KEY = 'life.sidebar.open';
 })
 export class Sidebar {
   protected readonly store = inject(Store);
+  protected readonly settled = new Settled();
   protected readonly sync = inject(Sync);
   private readonly sheets = inject(Sheets);
   readonly capture = output();
