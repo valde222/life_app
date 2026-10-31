@@ -21,7 +21,7 @@ describe('SwipeRow haptics', () => {
     fixture.componentRef.setInput('right', { icon: 'sun', label: 'Today' });
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
-    const content = host.querySelector('.content') as HTMLElement;
+    const content = host.querySelector<HTMLElement>('.content')!;
     content.setPointerCapture = () => undefined;
     const pointer = (type: string, clientX: number) =>
       content.dispatchEvent(
