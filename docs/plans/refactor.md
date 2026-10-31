@@ -80,8 +80,8 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 
 ### 1. Safety net
 
-- [ ] Visual test of every screen (mobile and desktop); baseline taken on `pre-refactor`
-- [ ] Characterisation tests: `Repository`, `Actions`, `Store`
+- [x] Visual test of every screen (mobile and desktop); baseline taken on `pre-refactor`
+- [x] Characterisation tests: `Repository`, `Actions`, `Store`
 - [ ] Characterisation tests: `SyncService` (pull, prune, live updates, failure handling), `Photos`, `CalendarImporter`
 
 ### 2. Tooling
