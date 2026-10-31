@@ -47,12 +47,26 @@
     </button>
     @if (entry.open) {
       @for (list of entry.lists; track list.id) {
-        <a class="item list" [routerLink]="['/lists', list.id]" routerLinkActive="active">
+        <a
+          class="item list"
+          [routerLink]="['/lists', list.id]"
+          routerLinkActive="active"
+          [animate.enter]="settled.animate('collapse-in')"
+          [animate.leave]="settled.animate('collapse-out')"
+        >
           <app-list-swatch [colour]="list.colour" style="--swatch-height: 18px; width: 8px" />
           <span class="grow">{{ list.name }}</span>
         </a>
       }
-      <button type="button" class="add list" (click)="newList(entry.group.id)">+ New list</button>
+      <button
+        type="button"
+        class="add list"
+        [animate.enter]="settled.animate('collapse-in')"
+        [animate.leave]="settled.animate('collapse-out')"
+        (click)="newList(entry.group.id)"
+      >
+        + New list
+      </button>
     }
   }
   <button type="button" class="add" (click)="newGroup()">+ New group</button>
@@ -62,9 +76,12 @@
   <a class="item settings" routerLink="/settings"
     ><app-icon name="settings" [size]="18" /><span>Settings</span></a
   >
-  <span class="state">{{
-    sync.online() ? 'Synced' : 'Offline, ' + sync.waiting() + ' waiting'
-  }}</span>
+  @for (
+    state of [sync.online() ? 'Synced' : 'Offline, ' + sync.waiting() + ' waiting'];
+    track state
+  ) {
+    <span class="state" [animate.enter]="settled.animate('fade-in')">{{ state }}</span>
+  }
   <button type="button" class="help" aria-label="Keyboard shortcuts" (click)="shortcuts.emit()">
     ?
   </button>
