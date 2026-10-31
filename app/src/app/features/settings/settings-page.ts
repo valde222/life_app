@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { CalendarSettings } from '../../core/calendar/calendar-settings';
 import { Repository } from '../../core/data/repository';
 import { Session } from '../../core/session/session';
-import { SyncService } from '../../core/sync/sync.service';
+import { Sync } from '../../core/sync/sync';
 import { Clock } from '../../core/time/clock';
 import { Icon } from '../../shared/ui/icon';
 import { deletedItems } from '../../domain/deleted-items';
@@ -30,7 +30,7 @@ export class SettingsPage {
   private readonly session = inject(Session);
   private readonly repository = inject(Repository);
   private readonly clock = inject(Clock);
-  protected readonly sync = inject(SyncService);
+  protected readonly sync = inject(Sync);
   protected readonly calendars = inject(CalendarSettings);
 
   protected readonly email = this.session.email();

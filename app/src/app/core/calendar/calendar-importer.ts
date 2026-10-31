@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { CalendarPermissionScope, CapacitorCalendar } from '@ebarooni/capacitor-calendar';
 import { Capacitor } from '@capacitor/core';
-import { LocalStore } from '../data/local-store';
 import { Repository } from '../data/repository';
 import { CalendarSettings } from './calendar-settings';
 import { importWindow, planImport } from '../../domain/import-plan';
@@ -13,7 +12,6 @@ const EVERY_MS = 15 * 60_000;
 export class CalendarImporter {
   private readonly settings = inject(CalendarSettings);
   private readonly repository = inject(Repository);
-  private readonly store = inject(LocalStore);
   private started = false;
   private running = false;
 
@@ -58,7 +56,7 @@ export class CalendarImporter {
       }
       const now = new Date();
       const fetched = (await CapacitorCalendar.listEventsInRange(importWindow(now))).result;
-      const existing = await this.store.records('calendar_events').toArray();
+      const existing = await this.repository.all('calendar_events');
       const plan = planImport(
         existing,
         fetched,

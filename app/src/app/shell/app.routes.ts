@@ -1,18 +1,18 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, Routes } from '@angular/router';
-import { LocalStore } from '../core/data/local-store';
+import { Repository } from '../core/data/repository';
 import { MainLayout } from './main-layout';
 import { Session } from '../core/session/session';
 import { ShareReceiver } from '../core/share/share-receiver';
 import { CalendarImporter } from '../core/calendar/calendar-importer';
 import { Reminders } from '../core/reminders/reminders';
-import { SyncService } from '../core/sync/sync.service';
+import { Sync } from '../core/sync/sync';
 
 const signedIn: CanActivateFn = () => {
   if (!inject(Session).signedIn()) {
     return inject(Router).parseUrl('/sign-in');
   }
-  inject(SyncService).start();
+  inject(Sync).start();
   inject(ShareReceiver).start();
   inject(CalendarImporter).start();
   inject(Reminders).start();
@@ -20,11 +20,10 @@ const signedIn: CanActivateFn = () => {
 };
 
 const setUp: CanActivateFn = async () => {
-  const store = inject(LocalStore);
+  const repository = inject(Repository);
   const router = inject(Router);
-  await inject(SyncService).firstSync;
-  const empty =
-    (await store.records('groups').count()) === 0 && (await store.records('todos').count()) === 0;
+  await inject(Sync).firstSync;
+  const empty = (await repository.count('groups')) === 0 && (await repository.count('todos')) === 0;
   return empty ? router.parseUrl('/setup/groups') : true;
 };
 

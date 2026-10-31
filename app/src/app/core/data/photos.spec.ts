@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { LocalStore } from './local-store';
 import { EMPTY_RECORDS, Note } from '../../domain/models';
 import { Server } from '../server/server';
-import { SyncService } from '../sync/sync.service';
+import { Sync } from '../sync/sync';
 import { Photos, THUMB } from './photos';
 
 class FakeServer {
@@ -26,7 +26,7 @@ describe('Photos', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: Server, useClass: FakeServer },
-        { provide: SyncService, useValue: { push: () => pushes++ } },
+        { provide: Sync, useValue: { push: () => pushes++ } },
       ],
     });
     store = TestBed.inject(LocalStore);

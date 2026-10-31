@@ -6,7 +6,7 @@ import { newId } from '../../domain/ids';
 import { LocalStore, PendingPhoto } from './local-store';
 import { Note } from '../../domain/models';
 import { Server } from '../server/server';
-import { SyncService } from '../sync/sync.service';
+import { Sync } from '../sync/sync';
 
 const TOKEN_LIFETIME_MS = 90_000;
 export const THUMB = '200x200';
@@ -23,7 +23,7 @@ export interface ShownPhoto {
 export class Photos {
   private readonly store = inject(LocalStore);
   private readonly server = inject(Server);
-  private readonly sync = inject(SyncService);
+  private readonly sync = inject(Sync);
   private readonly token = signal('');
   private tokenFetchedAt = 0;
   private readonly objectUrls = new Map<string, string>();

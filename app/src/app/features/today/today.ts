@@ -11,7 +11,7 @@ import { Actions } from '../../core/data/actions';
 import { Todo } from '../../domain/models';
 import { Store } from '../../core/data/store';
 import { Session } from '../../core/session/session';
-import { SyncService } from '../../core/sync/sync.service';
+import { Sync } from '../../core/sync/sync';
 import { Clock } from '../../core/time/clock';
 import { longDate } from '../../domain/time/local-date';
 import { EmptyState } from '../../shared/ui/empty-state';
@@ -41,7 +41,7 @@ export class Today {
   private readonly sheets = inject(Sheets);
   private readonly router = inject(Router);
   protected readonly clock = inject(Clock);
-  protected readonly sync = inject(SyncService);
+  protected readonly sync = inject(Sync);
 
   private readonly dayItems = computed(() => [
     ...this.store.todos(),

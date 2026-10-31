@@ -5,7 +5,7 @@ import { CollectionName, Collections, EMPTY_RECORDS, Todo } from '../../domain/m
 import { Repository } from '../data/repository';
 import { Server } from '../server/server';
 import { Page, RemoteChange } from './remote-reader';
-import { SyncService } from './sync.service';
+import { PocketBaseSync } from './pocketbase-sync';
 
 type Handler = (change: RemoteChange<CollectionName>) => void;
 
@@ -63,10 +63,10 @@ const todo = (id: string, fields: Partial<Todo> = {}): Todo => ({
   ...fields,
 });
 
-describe('SyncService', () => {
+describe('PocketBaseSync', () => {
   let store: LocalStore;
   let server: FakeServer;
-  let sync: SyncService;
+  let sync: PocketBaseSync;
 
   beforeEach(async () => {
     server = new FakeServer();
@@ -74,7 +74,7 @@ describe('SyncService', () => {
     store = TestBed.inject(LocalStore);
     await store.open();
     await Promise.all(store.tables.map((table) => table.clear()));
-    sync = TestBed.inject(SyncService);
+    sync = TestBed.inject(PocketBaseSync);
   });
 
   afterEach(() => sync.stop());

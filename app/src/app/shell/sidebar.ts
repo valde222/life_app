@@ -11,7 +11,7 @@ import { Store } from '../core/data/store';
 import { readJsonPreference, writeJsonPreference } from '../core/platform/preferences';
 import { NewGroupSheet } from '../features/lists/new-group-sheet';
 import { NewListData, NewListSheet } from '../features/lists/new-list-sheet';
-import { SyncService } from '../core/sync/sync.service';
+import { Sync } from '../core/sync/sync';
 import { Icon } from '../shared/ui/icon';
 import { ListSwatch } from '../shared/ui/list-swatch';
 import { Sheets } from '../shared/ui/sheet';
@@ -27,7 +27,7 @@ const OPEN_KEY = 'life.sidebar.open';
 })
 export class Sidebar {
   protected readonly store = inject(Store);
-  protected readonly sync = inject(SyncService);
+  protected readonly sync = inject(Sync);
   private readonly sheets = inject(Sheets);
   readonly capture = output();
   readonly shortcuts = output();

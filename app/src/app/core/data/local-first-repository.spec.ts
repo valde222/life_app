@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { LocalStore } from './local-store';
 import { Repository } from './repository';
 
-describe('Repository', () => {
+describe('LocalFirstRepository', () => {
   let store: LocalStore;
   let repository: Repository;
 
@@ -76,5 +76,17 @@ describe('Repository', () => {
 
     await vi.waitFor(() => expect(all()).toHaveLength(3));
     expect(watched().map((todo) => todo.id)).toEqual([kept.id]);
+  });
+
+  it('reads every record, deleted ones too, and counts them', async () => {
+    const kept = await repository.save('todos', { title: 'kept' });
+    const gone = await repository.save('todos', { title: 'gone' });
+    await repository.remove('todos', gone.id);
+
+    expect((await repository.all('todos')).map((todo) => todo.id).sort()).toEqual(
+      [kept.id, gone.id].sort(),
+    );
+    expect(await repository.count('todos')).toBe(2);
+    expect(await repository.count('notes')).toBe(0);
   });
 });

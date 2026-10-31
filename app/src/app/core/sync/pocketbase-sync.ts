@@ -9,12 +9,13 @@ import { applyRemote } from './merge';
 import { drainOutbox, SendError } from './outbox';
 import { drainPhotos } from './photo-uploads';
 import { logError } from '../logging/log';
+import { Sync } from './sync';
 
 const PAGE_SIZE = 500;
 const RETRY_MS = 30_000;
 
 @Injectable({ providedIn: 'root' })
-export class SyncService {
+export class PocketBaseSync implements Sync {
   private readonly store = inject(LocalStore);
   private readonly server = inject(Server);
 

@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { LocalStore } from '../data/local-store';
 import { Server } from '../server/server';
-import { SyncService } from '../sync/sync.service';
+import { Sync } from '../sync/sync';
 
 @Injectable({ providedIn: 'root' })
 export class Session {
   private readonly server = inject(Server);
   private readonly store = inject(LocalStore);
-  private readonly sync = inject(SyncService);
+  private readonly sync = inject(Sync);
 
   readonly signedIn = this.server.signedIn;
   readonly serverUrl = this.server.url;
