@@ -8,28 +8,14 @@ import {
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Actions } from '../../core/data/actions';
+import { ListActions } from '../../core/data/list-actions';
 import { Group, List } from '../../domain/models';
-import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
 import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { Sheets } from '../../shared/ui/sheet';
 import { NewGroupSheet } from './new-group-sheet';
 import { NewListData, NewListSheet } from './new-list-sheet';
-
-export function reorder(
-  lists: List[],
-  moved: List,
-  targetGroup: string,
-  targetIndex: number,
-): List[] {
-  const others = lists.filter((list) => list.id !== moved.id);
-  const inTarget = others.filter((list) => list.group === targetGroup);
-  inTarget.splice(targetIndex, 0, { ...moved, group: targetGroup });
-  const rest = others.filter((list) => list.group !== targetGroup);
-  return [...rest, ...inTarget];
-}
 
 @Component({
   selector: 'app-manage-lists',
@@ -49,8 +35,7 @@ export function reorder(
 })
 export class ManageLists {
   private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
-  private readonly actions = inject(Actions);
+  private readonly lists = inject(ListActions);
   private readonly sheets = inject(Sheets);
   protected readonly router = inject(Router);
 
@@ -66,20 +51,11 @@ export class ManageLists {
   }
 
   protected async drop(event: CdkDragDrop<string, string, List>) {
-    const ordered = reorder(
-      this.store.openLists(),
-      event.item.data,
-      event.container.data,
-      event.currentIndex,
-    );
-    const groupOrder = new Map(this.store.sortedGroups().map((group, index) => [group.id, index]));
-    ordered.sort((a, b) => groupOrder.get(a.group)! - groupOrder.get(b.group)!);
-    for (const [order, list] of ordered.entries()) {
-      const stored = this.store.list(list.id)!;
-      if (stored.order !== order || stored.group !== list.group) {
-        await this.repository.save('lists', { id: list.id, order, group: list.group });
-      }
-    }
+    await this.lists.moveList({
+      moved: event.item.data,
+      group: event.container.data,
+      index: event.currentIndex,
+    });
   }
 
   protected startRename(group: Group) {
@@ -88,10 +64,7 @@ export class ManageLists {
   }
 
   protected async rename(group: Group) {
-    const name = this.newName().trim();
-    if (name && name !== group.name) {
-      await this.repository.save('groups', { id: group.id, name });
-    }
+    await this.lists.renameGroup(group, this.newName());
     this.renaming.set(null);
   }
 
@@ -100,17 +73,7 @@ export class ManageLists {
       this.confirming.set(group.id);
       return;
     }
-    const listIds = new Set(lists.map((list) => list.id));
-    for (const todo of this.store.todos().filter((todo) => listIds.has(todo.list))) {
-      await this.actions.delete('todos', todo);
-    }
-    for (const note of this.store.notes().filter((note) => listIds.has(note.list))) {
-      await this.actions.delete('notes', note);
-    }
-    for (const list of lists) {
-      await this.repository.remove('lists', list.id);
-    }
-    await this.repository.remove('groups', group.id);
+    await this.lists.deleteGroupWithItems(group, lists);
     this.confirming.set(null);
   }
 

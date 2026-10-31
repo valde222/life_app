@@ -2,8 +2,7 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Group } from '../../domain/models';
-import { Repository } from '../../core/data/repository';
-import { Store } from '../../core/data/store';
+import { ListActions } from '../../core/data/list-actions';
 import { Sheet } from '../../shared/ui/sheet';
 
 @Component({
@@ -31,8 +30,7 @@ import { Sheet } from '../../shared/ui/sheet';
 })
 export class NewGroupSheet {
   protected readonly ref = inject(DialogRef<Group>);
-  private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
+  private readonly lists = inject(ListActions);
   protected readonly name = signal('');
 
   protected async create() {
@@ -40,7 +38,6 @@ export class NewGroupSheet {
     if (!name) {
       return;
     }
-    const order = Math.max(-1, ...this.store.groups().map((group) => group.order)) + 1;
-    this.ref.close(await this.repository.save('groups', { name, order }));
+    this.ref.close(await this.lists.createGroup(name));
   }
 }

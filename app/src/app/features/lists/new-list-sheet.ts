@@ -2,7 +2,7 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { List, ListColour } from '../../domain/models';
-import { Repository } from '../../core/data/repository';
+import { ListActions } from '../../core/data/list-actions';
 import { Store } from '../../core/data/store';
 import { LIST_COLOURS } from '../../shared/ui/list-colours';
 import { Sheet } from '../../shared/ui/sheet';
@@ -53,7 +53,7 @@ export class NewListSheet {
   protected readonly ref = inject(DialogRef<List>);
   private readonly data = inject<NewListData>(DIALOG_DATA);
   private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
+  private readonly lists = inject(ListActions);
 
   protected readonly groupName = computed(() => this.store.group(this.data.group)?.name ?? '');
   protected readonly name = signal('');
@@ -69,14 +69,8 @@ export class NewListSheet {
     if (!name) {
       return;
     }
-    const order = Math.max(-1, ...this.store.lists().map((list) => list.order)) + 1;
     this.ref.close(
-      await this.repository.save('lists', {
-        name,
-        group: this.data.group,
-        colour: this.colour(),
-        order,
-      }),
+      await this.lists.createList({ name, group: this.data.group, colour: this.colour() }),
     );
   }
 }
