@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { checkServerUrl } from '../../core/server/server-url';
@@ -14,6 +14,7 @@ const FAILURE_MESSAGES: Record<SignInFailure, string> = {
 @Component({
   selector: 'app-sign-in',
   imports: [FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.scss',
 })
