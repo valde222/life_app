@@ -250,8 +250,8 @@ export class TodoEditor {
     }
     const chosen = new Set(result.notes);
     for (const note of this.store.notes()) {
-      const has = note.todos?.includes(this.id());
-      if (chosen.has(note.id) !== !!has) {
+      const has: boolean | undefined = note.todos?.includes(this.id());
+      if (chosen.has(note.id) !== (has === true)) {
         const todos = has
           ? note.todos.filter((todo) => todo !== this.id())
           : [...(note.todos ?? []), this.id()];
@@ -279,7 +279,7 @@ export class TodoEditor {
           text: step.text,
           done: step.done,
           order,
-        } as Draft<'steps'>);
+        });
       }
     }
     await this.router.navigateByUrl(this.back);

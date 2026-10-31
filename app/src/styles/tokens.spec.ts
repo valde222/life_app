@@ -1,5 +1,4 @@
 import { readFileSync } from 'node:fs';
-// @ts-expect-error plain ES module shared with the build script
 import { outputPath, readTokens, renderTokens } from '../../scripts/tokens.mjs';
 
 describe('design tokens', () => {

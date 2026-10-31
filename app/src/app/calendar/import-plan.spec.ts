@@ -1,4 +1,4 @@
-import { CalendarEvent, EMPTY_RECORDS } from '../data/models';
+import { EMPTY_RECORDS } from '../data/models';
 import { DeviceEvent, planImport, stableId } from './import-plan';
 
 const now = new Date(2026, 9, 21, 10, 0);
@@ -27,7 +27,7 @@ describe('calendar import (R13)', () => {
 
   it('leaves unchanged events alone and removes ones gone from the calendar', () => {
     const first = planImport([], [device({})], new Set(['personal']), now).upserts[0];
-    const stored = { ...EMPTY_RECORDS.calendar_events, ...first } as CalendarEvent;
+    const stored = { ...EMPTY_RECORDS.calendar_events, ...first };
     const gone = { ...EMPTY_RECORDS.calendar_events, id: 'gone00000000001' };
 
     const plan = planImport([stored, gone], [device({})], new Set(['personal']), now);
@@ -38,7 +38,7 @@ describe('calendar import (R13)', () => {
 
   it('removes everything from a calendar that was switched off', () => {
     const first = planImport([], [device({})], new Set(['personal']), now).upserts[0];
-    const stored = { ...EMPTY_RECORDS.calendar_events, ...first } as CalendarEvent;
+    const stored = { ...EMPTY_RECORDS.calendar_events, ...first };
     expect(planImport([stored], [device({})], new Set(), now).removals).toEqual([stored.id]);
   });
 });

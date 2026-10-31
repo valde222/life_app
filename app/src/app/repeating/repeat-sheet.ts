@@ -1,6 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { Todo } from '../data/models';
 import { Store } from '../data/store';
 import { Clock } from '../time/clock';
 import { addDays, daysBetween, longDate, shortDate } from '../time/local-date';
@@ -149,9 +148,7 @@ export class RepeatSheet {
   private readonly clock = inject(Clock);
   protected readonly longDate = longDate;
 
-  protected readonly todo = computed(
-    () => this.store.todos().find((todo) => todo.id === this.id) as Todo,
-  );
+  protected readonly todo = computed(() => this.store.todos().find((todo) => todo.id === this.id)!);
   protected readonly status = computed(() =>
     repeatStatus(this.todo(), this.store.completions(), this.clock.today()),
   );

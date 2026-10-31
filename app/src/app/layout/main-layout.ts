@@ -82,7 +82,7 @@ export class MainLayout {
     ) {
       return;
     }
-    const link = (event.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
+    const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
     if (!link || link.closest('.pane')) {
       return;
     }

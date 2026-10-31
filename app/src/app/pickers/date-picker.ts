@@ -213,8 +213,8 @@ export class DatePicker {
     return `${monthName(first.getMonth(), 'long')} ${first.getFullYear()}`;
   });
 
-  protected readonly leading = computed(() =>
-    Array((parseLocalDate(this.month()).getDay() + 6) % 7),
+  protected readonly leading = computed(
+    () => new Array<undefined>((parseLocalDate(this.month()).getDay() + 6) % 7),
   );
 
   protected readonly days = computed<Day[]>(() => {

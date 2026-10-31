@@ -122,7 +122,7 @@ export class ArchivePage {
       row.kind === 'todos'
         ? this.store.todos().find((todo) => todo.id === row.id)!
         : this.store.notes().find((note) => note.id === row.id)!;
-    const undo = await this.actions.delete(row.kind, record as never);
+    const undo = await this.actions.delete(row.kind, record);
     this.toasts.show({ title: 'Deleted', undo });
   }
 

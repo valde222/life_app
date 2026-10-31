@@ -5,7 +5,16 @@ const angular = require('angular-eslint');
 const prettier = require('eslint-config-prettier');
 
 module.exports = tseslint.config(
-  { ignores: ['dist/', 'android/', '.angular/', 'test-results/', 'e2e/screenshots/'] },
+  {
+    ignores: [
+      'eslint.config.js',
+      'dist/',
+      'android/',
+      '.angular/',
+      'test-results/',
+      'e2e/screenshots/',
+    ],
+  },
   {
     files: ['**/*.ts'],
     extends: [
@@ -16,7 +25,7 @@ module.exports = tseslint.config(
     ],
     languageOptions: {
       parserOptions: {
-        projectService: { allowDefaultProject: ['playwright.config.ts', 'capacitor.config.ts'] },
+        projectService: true,
         tsconfigRootDir: __dirname,
       },
     },
@@ -35,12 +44,15 @@ module.exports = tseslint.config(
       '@angular-eslint/prefer-standalone': 'error',
       // Records in the local copy can predate fields added by later migrations, so guards on them stay.
       '@typescript-eslint/no-unnecessary-condition': 'off',
+      '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
       '@typescript-eslint/switch-exhaustiveness-check': [
         'error',
         { considerDefaultExhaustiveForUnions: true },
       ],
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
       '@typescript-eslint/no-extraneous-class': ['error', { allowWithDecorator: true }],
+      '@typescript-eslint/dot-notation': ['error', { allowIndexSignaturePropertyAccess: true }],
+      '@typescript-eslint/no-unnecessary-type-parameters': 'off',
       complexity: ['error', 8],
       'max-depth': ['error', 3],
       'max-params': ['error', 3],

@@ -67,7 +67,7 @@ export class Sidebar {
 
   private readOpen(): string[] {
     try {
-      return JSON.parse(localStorage.getItem(OPEN_KEY) ?? '[]');
+      return JSON.parse(localStorage.getItem(OPEN_KEY) ?? '[]') as string[];
     } catch {
       return [];
     }

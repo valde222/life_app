@@ -72,8 +72,8 @@ export class ListPage {
       .sort((a, b) => b.changed_at - a.changed_at),
   );
   protected readonly tabs = computed(() => [
-    { value: 'todos' as Tab, label: 'Todos', count: this.open().length },
-    { value: 'notes' as Tab, label: 'Notes', count: this.notes().length },
+    { value: 'todos', label: 'Todos', count: this.open().length },
+    { value: 'notes', label: 'Notes', count: this.notes().length },
   ]);
   protected readonly showDone = signal(false);
   protected readonly back = computed(() => `/lists/${this.id()}`);

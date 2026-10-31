@@ -59,7 +59,7 @@ export function planImport(
     }));
   const current = new Map(existing.map((event) => [event.id, event]));
   const changed = upserts.filter((upsert) => {
-    const stored = current.get(upsert.id!);
+    const stored = current.get(upsert.id);
     return (
       !stored ||
       stored.deleted_at ||

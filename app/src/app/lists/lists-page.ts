@@ -13,7 +13,7 @@ const OPEN_GROUPS_KEY = 'life.lists.open';
 
 function readOpen(): string[] | null {
   try {
-    return JSON.parse(localStorage.getItem(OPEN_GROUPS_KEY) ?? 'null');
+    return JSON.parse(localStorage.getItem(OPEN_GROUPS_KEY) ?? 'null') as string[] | null;
   } catch {
     return null;
   }

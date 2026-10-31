@@ -101,7 +101,7 @@ export class SwipeRow {
   }
 
   protected move(event: PointerEvent) {
-    if (!this.origin || event.pointerId !== this.origin.id) {
+    if (this.origin?.id !== event.pointerId) {
       return;
     }
     const dx = event.clientX - this.origin.x;

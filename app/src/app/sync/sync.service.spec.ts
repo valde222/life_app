@@ -14,7 +14,7 @@ class FakeServer {
   handlers = new Map<CollectionName, Handler>();
   unsubscribed = 0;
   signedOut = false;
-  failWith: unknown = null;
+  failWith: Error | null = null;
   filters: string[] = [];
 
   pb = {
@@ -146,7 +146,7 @@ describe('SyncService', () => {
   it('runs one sync at a time, running again once if asked meanwhile', async () => {
     let pulls = 0;
     const getList = server.pb.collection('groups').getList;
-    server.pb.collection = ((name: CollectionName) => ({
+    server.pb.collection = (name: CollectionName) => ({
       ...new FakeServer().pb.collection(name),
       getList: async (...args: Parameters<typeof getList>) => {
         if (name === 'groups') {
@@ -155,7 +155,7 @@ describe('SyncService', () => {
         return getList(...args);
       },
       subscribe: async () => async () => undefined,
-    })) as typeof server.pb.collection;
+    });
 
     await Promise.all([sync.sync(), sync.sync(), sync.sync()]);
 

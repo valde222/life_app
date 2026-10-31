@@ -68,14 +68,14 @@ export class Inbox {
       if (item.kind === 'todo') {
         this.router.navigate(['/todo', item.record.id], { state: { back: '/inbox' } });
       } else {
-        this.keep(item.record as Note);
+        this.keep(item.record);
       }
     } else if (key === 't' && item.kind === 'todo') {
-      this.putOnToday(item.record as Todo);
+      this.putOnToday(item.record);
     } else if (key === 'm' && item.kind === 'todo') {
-      this.moreLists(item.record as Todo);
+      this.moreLists(item.record);
     } else if (key === 'd' && item.kind === 'todo') {
-      this.pickDate(item.record as Todo);
+      this.pickDate(item.record);
     }
   }
 

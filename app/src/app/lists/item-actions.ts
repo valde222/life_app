@@ -39,6 +39,8 @@ export class ItemActions {
       ],
     }).closed;
     switch (action) {
+      case undefined:
+        return;
       case 'today':
         return this.putOnToday(todo);
       case 'date':
@@ -47,8 +49,10 @@ export class ItemActions {
         return this.moveTodo(todo);
       case 'repeat':
         return this.router.navigate(['/repeat', todo.id], { state: { back } });
-      case 'delete':
-        return this.done('Deleted', await this.actions.delete('todos', todo));
+      case 'delete': {
+        this.done('Deleted', await this.actions.delete('todos', todo));
+        return;
+      }
     }
   }
 
@@ -63,6 +67,8 @@ export class ItemActions {
       ],
     }).closed;
     switch (action) {
+      case undefined:
+        return;
       case 'move': {
         const list = await this.sheets.open<string, MoveToData>(MoveTo, { current: note.list })
           .closed;
@@ -89,10 +95,14 @@ export class ItemActions {
         }
         return;
       }
-      case 'archive':
-        return this.done('Moved to the archive', await this.actions.archiveNote(note));
-      case 'delete':
-        return this.done('Deleted', await this.actions.delete('notes', note));
+      case 'archive': {
+        this.done('Moved to the archive', await this.actions.archiveNote(note));
+        return;
+      }
+      case 'delete': {
+        this.done('Deleted', await this.actions.delete('notes', note));
+        return;
+      }
     }
   }
 

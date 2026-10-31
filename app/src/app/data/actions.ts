@@ -87,7 +87,7 @@ export class Actions {
     const before = Object.fromEntries(
       Object.keys(changes).map((field) => [field, record[field as keyof Collections[C]]]),
     ) as Draft<C>;
-    await this.repository.save(collection, { ...changes, id: record.id } as Draft<C>);
-    return () => this.repository.save(collection, { ...before, id: record.id } as Draft<C>);
+    await this.repository.save(collection, { ...changes, id: record.id });
+    return () => this.repository.save(collection, { ...before, id: record.id });
   }
 }

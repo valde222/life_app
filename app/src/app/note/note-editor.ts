@@ -31,7 +31,7 @@ import { ImagePicker } from './image-picker';
 import { ImageView, ImageViewData } from './image-view';
 import { LinkPicker, LinkPickerData, LinkPickerResult } from './link-picker';
 import { renderMarkdown } from './markdown';
-import { Photos, ShownPhoto } from './photos';
+import { Photos } from './photos';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
 
@@ -237,7 +237,7 @@ export class NoteEditor {
   }
 
   protected openWikiLink(event: MouseEvent) {
-    const target = (event.target as HTMLElement).closest('a.note-link') as HTMLElement | null;
+    const target = (event.target as HTMLElement).closest<HTMLElement>('a.note-link');
     if (!target) {
       if (!(event.target as HTMLElement).closest('a')) {
         this.editing.set(true);
