@@ -82,7 +82,7 @@
             [time]="todo.time"
             [event]="todo.is_event"
             [list]="list(todo)"
-            (toggle)="tick(todo)"
+            (tick)="tick(todo)"
           />
         }
       </div>
@@ -97,7 +97,7 @@
           [trailing]="steps(todo)"
           [event]="todo.is_event"
           [list]="list(todo)"
-          (toggle)="tick(todo)"
+          (tick)="tick(todo)"
         />
       }
       <button type="button" class="btn-add" (click)="openPick()">
@@ -125,7 +125,7 @@
               [link]="['/todo', todo.id]"
               [list]="list(todo)"
               [done]="true"
-              (toggle)="untick(todo)"
+              (tick)="untick(todo)"
             />
           }
         }

@@ -10,7 +10,7 @@ import { Icon } from './icon';
       type="button"
       [attr.aria-label]="label()"
       [attr.aria-pressed]="checked()"
-      (click)="toggle.emit()"
+      (click)="pressed.emit()"
     >
       <span class="box" [class.checked]="checked()">
         @if (checked()) {
@@ -50,5 +50,5 @@ import { Icon } from './icon';
 export class Checkbox {
   readonly checked = input(false);
   readonly label = input.required<string>();
-  readonly toggle = output();
+  readonly pressed = output();
 }

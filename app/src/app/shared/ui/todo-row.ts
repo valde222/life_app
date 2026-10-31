@@ -14,7 +14,7 @@ import { ListLabel } from './list-label';
       <app-checkbox
         [checked]="done()"
         [label]="done() ? 'Mark ' + title() + ' not done' : 'Mark ' + title() + ' done'"
-        (toggle)="toggle.emit()"
+        (pressed)="tick.emit()"
       />
     }
     @if (time()) {
@@ -97,5 +97,5 @@ export class TodoRow {
   readonly list = input<List | undefined>();
   readonly event = input(false);
   readonly done = input(false);
-  readonly toggle = output();
+  readonly tick = output();
 }

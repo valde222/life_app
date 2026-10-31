@@ -15,11 +15,11 @@
         <app-choice-chips
           class="small"
           [choices]="section.choices"
-          (toggle)="toggle(section.name, $event)"
+          (choose)="toggle(section.name, $event)"
         />
       </section>
     } @else {
-      <app-choice-chips [choices]="section.choices" (toggle)="toggle(section.name, $event)" />
+      <app-choice-chips [choices]="section.choices" (choose)="toggle(section.name, $event)" />
     }
   }
   <form class="add" (ngSubmit)="add()">

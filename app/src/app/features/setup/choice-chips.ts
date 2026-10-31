@@ -13,7 +13,7 @@ import { Choice } from './setup-state';
         class="choice"
         [class.on]="choice.picked"
         [attr.aria-pressed]="choice.picked"
-        (click)="toggle.emit(choice.name)"
+        (click)="choose.emit(choice.name)"
       >
         @if (choice.picked) {
           <app-icon name="check" [size]="14" [stroke]="2.6" />
@@ -51,5 +51,5 @@ import { Choice } from './setup-state';
 })
 export class ChoiceChips {
   readonly choices = input.required<Choice[]>();
-  readonly toggle = output<string>();
+  readonly choose = output<string>();
 }

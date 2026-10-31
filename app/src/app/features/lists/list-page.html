@@ -28,7 +28,7 @@
                 [trailing]="trailing(todo)"
                 [time]="todo.time"
                 [event]="todo.is_event"
-                (toggle)="tick(todo)"
+                (tick)="tick(todo)"
               />
             </app-swipe-row>
           }
@@ -57,7 +57,7 @@
                 [title]="todo.title"
                 [link]="['/todo', todo.id]"
                 [done]="true"
-                (toggle)="untick(todo)"
+                (tick)="untick(todo)"
               />
             }
           </div>

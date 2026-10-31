@@ -26,7 +26,7 @@
           class="tick"
           [checked]="!!todo.done_at"
           [label]="todo.done_at ? 'Mark not done' : 'Mark done'"
-          (toggle)="toggleDone()"
+          (pressed)="toggleDone()"
         />
       }
       <input
