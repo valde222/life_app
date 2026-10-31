@@ -100,14 +100,14 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 - [x] `shared/`: UI kit, pickers, link picker, move to, item actions, capture sheet, repeat row, markdown
 - [x] `features/`: one folder per feature
 - [x] `shell/`: root, routes, layout
-- [ ] Boundary rules switched to error
+- [x] Boundary rules switched to error
 
 ### 4. Angular code
 
-- [ ] One logger, used everywhere, with no silent catches
-- [ ] `Repository` and `Sync` as interfaces; `Server` hides the SDK
-- [ ] `Session`: sign in, sign out and the account email; no component touches `Server` or `LocalStore`
-- [ ] Setup guard and calendar import through repository methods, not Dexie
+- [x] One logger, used everywhere, with no silent catches
+- [x] `Repository` and `Sync` as interfaces; `Server` hides the SDK
+- [x] `Session`: sign in, sign out and the account email; no component touches `Server` or `LocalStore`
+- [x] Setup guard and calendar import through repository methods, not Dexie
 - [ ] Data edits moved out of components into `Actions` (steps, links, lists, groups, restore, purge)
 - [ ] Rules moved out of components into `domain` (overdue repeating, all done, step counts, labels, grouping by day)
 - [ ] Duplicates merged: back labels, link picker, date picker, toasts, the note for a todo, timestamp to day
