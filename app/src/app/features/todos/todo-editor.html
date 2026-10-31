@@ -65,20 +65,20 @@
 
     @if (!todo.is_event) {
       <h2 class="eyebrow section">
-        @if (steps().length) {
-          Steps {{ isNew() ? steps().length : doneSteps() + ' of ' + steps().length }}
+        @if (steps.all().length) {
+          Steps {{ isNew() ? steps.all().length : steps.done() + ' of ' + steps.all().length }}
         } @else {
           Steps
         }
       </h2>
       <div class="card steps">
-        @for (step of steps(); track trackStep($index, step)) {
+        @for (step of steps.all(); track steps.track($index, step)) {
           <div class="step" [class.done]="step.done">
             <button
               type="button"
               class="step-box"
               [attr.aria-label]="(step.done ? 'Mark not done: ' : 'Mark done: ') + step.text"
-              (click)="toggleStep(step, $index)"
+              (click)="steps.toggle(step, $index)"
             >
               @if (step.done) {
                 <app-icon name="check" [size]="12" [stroke]="3.2" />
@@ -89,20 +89,20 @@
               type="button"
               class="remove"
               [attr.aria-label]="'Remove ' + step.text"
-              (click)="removeStep(step, $index)"
+              (click)="steps.remove(step, $index)"
             >
               <app-icon name="close" [size]="14" [stroke]="2" />
             </button>
           </div>
         }
-        <form class="add-step" (ngSubmit)="addStep()">
+        <form class="add-step" (ngSubmit)="steps.add()">
           <app-icon name="plus" [size]="16" [stroke]="2" />
           <input
             name="step"
             aria-label="Add a step"
             placeholder="Add a step"
-            [ngModel]="newStep()"
-            (ngModelChange)="newStep.set($event)"
+            [ngModel]="steps.newText()"
+            (ngModelChange)="steps.newText.set($event)"
           />
         </form>
       </div>

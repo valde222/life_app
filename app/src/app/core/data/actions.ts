@@ -54,6 +54,10 @@ export class Actions {
     await this.repository.save('todos', { ...stoppedRepeatFields(stop), id });
   }
 
+  startNoteFor(todo: Pick<Todo, 'id' | 'list'>): Promise<Note> {
+    return this.createNote({ title: '', list: todo.list, todos: [todo.id], inbox: false });
+  }
+
   tick(todo: Todo): Promise<Undo> {
     return this.change('todos', todo, { done_at: pocketBaseTimestamp(this.clock.now()) });
   }

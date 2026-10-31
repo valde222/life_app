@@ -32,6 +32,7 @@ import { Photos } from '../../core/data/photos';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
 import { dayOfTimestamp } from '../../domain/time/timestamps';
+import { noteBackLabel } from '../../domain/back-labels';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
 
@@ -84,13 +85,9 @@ export class NoteEditor {
   protected readonly editing = signal(this.mode() !== 'edit');
 
   protected readonly listRecord = computed(() => this.store.list(this.list()));
-  protected readonly backLabel = computed(() => {
-    if (this.back.startsWith('/lists/')) {
-      return this.store.list(this.back.split('/')[2])?.name ?? 'Back';
-    }
-    const names: Record<string, string> = { '/': 'Today', '/inbox': 'Inbox', '/search': 'Search' };
-    return names[this.back] ?? 'Back';
-  });
+  protected readonly backLabel = computed(() =>
+    noteBackLabel(this.back, (id) => this.store.list(id)?.name),
+  );
   protected readonly dateLabel = computed(() => {
     const created = this.note()?.created;
     const day = created ? dayOfTimestamp(created) : this.clock.today();

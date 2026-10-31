@@ -12,8 +12,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Actions } from '../../core/data/actions';
-import { Draft, EMPTY_RECORDS, Note, Step, Todo } from '../../domain/models';
-import { Repository } from '../../core/data/repository';
+import { Draft, EMPTY_RECORDS, Note, Todo } from '../../domain/models';
+import { LinkActions } from '../../core/data/link-actions';
 import { Store } from '../../core/data/store';
 import { reminderLabel } from '../../shared/pickers/reminder-picker';
 import { Clock } from '../../core/time/clock';
@@ -25,16 +25,12 @@ import { ListLabel } from '../../shared/ui/list-label';
 import { Switch } from '../../shared/ui/switch';
 import { timeRange } from '../../domain/time/time-range';
 import { Pickers } from '../../shared/pickers/pickers';
+import { todoBackLabel } from '../../domain/back-labels';
+import { TodoSteps } from './todo-steps';
 
 export interface TodoDraftState {
   draft?: Draft<'todos'>;
   back?: string;
-}
-
-interface DraftStep {
-  id?: string;
-  text: string;
-  done: boolean;
 }
 
 @Component({
@@ -49,8 +45,8 @@ export class TodoEditor {
   readonly id = input.required<string>();
 
   private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
   private readonly actions = inject(Actions);
+  private readonly links = inject(LinkActions);
   private readonly pickers = inject(Pickers);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
@@ -58,25 +54,14 @@ export class TodoEditor {
 
   private readonly state = (history.state ?? {}) as TodoDraftState;
   protected readonly back = this.state.back ?? '/';
-  protected readonly backLabel = this.backName(this.back);
+  protected readonly backLabel = todoBackLabel(this.back);
 
   protected readonly isNew = computed(() => this.id() === 'new');
   private readonly saved = computed(() => this.store.todos().find((todo) => todo.id === this.id()));
   protected readonly draft = signal<Todo>({ ...EMPTY_RECORDS.todos, ...this.state.draft });
   protected readonly todo = computed(() => (this.isNew() ? this.draft() : this.saved()));
 
-  private readonly savedSteps = computed(() =>
-    this.store
-      .steps()
-      .filter((step) => step.todo === this.id())
-      .sort((a, b) => a.order - b.order),
-  );
-  protected readonly draftSteps = signal<DraftStep[]>([]);
-  protected readonly steps = computed<DraftStep[]>(() =>
-    this.isNew() ? this.draftSteps() : this.savedSteps(),
-  );
-  protected readonly doneSteps = computed(() => this.steps().filter((step) => step.done).length);
-  protected readonly newStep = signal('');
+  protected readonly steps = new TodoSteps(this.id, this.isNew);
 
   protected readonly linkedNotes = computed<Note[]>(() =>
     this.store.notes().filter((note) => note.todos?.includes(this.id())),
@@ -115,13 +100,13 @@ export class TodoEditor {
       this.draft.update((draft) => ({ ...draft, ...changes }));
       return;
     }
-    await this.repository.save('todos', { ...changes, id: this.id() });
+    await this.actions.updateTodo(this.id(), changes);
   }
 
   protected saveTitle() {
     const title = this.title().trim();
     if (!this.isNew() && title && title !== this.todo()?.title) {
-      this.update({ title });
+      void this.update({ title });
     }
   }
 
@@ -133,7 +118,10 @@ export class TodoEditor {
   }
 
   protected async pickDate() {
-    const todo = this.todo()!;
+    const todo = this.todo();
+    if (!todo) {
+      return;
+    }
     const result = await this.pickers.date({
       date: todo.date,
       time: todo.time,
@@ -145,7 +133,10 @@ export class TodoEditor {
   }
 
   protected async pickTime() {
-    const todo = this.todo()!;
+    const todo = this.todo();
+    if (!todo) {
+      return;
+    }
     const result = await this.pickers.time({
       time: todo.time,
       timeEnd: todo.time_end,
@@ -160,7 +151,10 @@ export class TodoEditor {
   }
 
   protected async pickReminder() {
-    const todo = this.todo()!;
+    const todo = this.todo();
+    if (!todo) {
+      return;
+    }
     const reminder = await this.pickers.reminder({
       date: todo.date,
       time: todo.time,
@@ -184,52 +178,18 @@ export class TodoEditor {
   }
 
   protected setEvent(isEvent: boolean) {
-    this.update({ is_event: isEvent });
+    void this.update({ is_event: isEvent });
   }
 
   protected async toggleDone() {
-    const todo = this.todo()!;
-    await (todo.done_at ? this.actions.untick(todo) : this.actions.tick(todo));
-  }
-
-  protected async addStep() {
-    const text = this.newStep().trim();
-    if (!text) {
-      return;
+    const todo = this.todo();
+    if (todo) {
+      await (todo.done_at ? this.actions.untick(todo) : this.actions.tick(todo));
     }
-    this.newStep.set('');
-    if (this.isNew()) {
-      this.draftSteps.update((steps) => [...steps, { text, done: false }]);
-      return;
-    }
-    await this.repository.save('steps', { todo: this.id(), text, order: this.steps().length });
-  }
-
-  protected async toggleStep(step: DraftStep, index: number) {
-    if (this.isNew()) {
-      this.draftSteps.update((steps) =>
-        steps.map((each, i) => (i === index ? { ...each, done: !each.done } : each)),
-      );
-      return;
-    }
-    await this.repository.save('steps', { id: step.id, done: !step.done });
-  }
-
-  protected async removeStep(step: DraftStep, index: number) {
-    if (this.isNew()) {
-      this.draftSteps.update((steps) => steps.filter((_, i) => i !== index));
-      return;
-    }
-    await this.repository.remove('steps', step.id!);
   }
 
   protected async writeNote() {
-    const note = await this.actions.createNote({
-      title: '',
-      list: this.todo()?.list ?? '',
-      todos: [this.id()],
-      inbox: false,
-    });
+    const note = await this.actions.startNoteFor({ id: this.id(), list: this.todo()?.list ?? '' });
     await this.router.navigate(['/note', note.id], { state: { back: `/todo/${this.id()}` } });
   }
 
@@ -240,18 +200,8 @@ export class TodoEditor {
       list: this.todo()?.list ?? '',
       notes: linked,
     });
-    if (!result) {
-      return;
-    }
-    const chosen = new Set(result.notes);
-    for (const note of this.store.notes()) {
-      const has: boolean | undefined = note.todos?.includes(this.id());
-      if (chosen.has(note.id) !== (has === true)) {
-        const todos = has
-          ? note.todos.filter((todo) => todo !== this.id())
-          : [...(note.todos ?? []), this.id()];
-        await this.repository.save('notes', { id: note.id, todos });
-      }
+    if (result) {
+      await this.links.setNotesOfTodo(this.id(), new Set(result.notes));
     }
   }
 
@@ -268,14 +218,7 @@ export class TodoEditor {
       inbox: !draft.list && !draft.date,
     });
     if (!draft.is_event) {
-      for (const [order, step] of this.draftSteps().entries()) {
-        await this.repository.save('steps', {
-          todo: todo.id,
-          text: step.text,
-          done: step.done,
-          order,
-        });
-      }
+      await this.steps.saveDrafts(todo.id);
     }
     await this.router.navigateByUrl(this.back);
   }
@@ -285,22 +228,10 @@ export class TodoEditor {
   }
 
   protected async delete() {
-    const todo = this.todo()!;
-    await this.actions.delete('todos', todo);
-    await this.router.navigateByUrl(this.back);
-  }
-
-  protected trackStep(index: number, step: DraftStep | Step) {
-    return step.id ?? index;
-  }
-
-  private backName(path: string) {
-    const names: Record<string, string> = {
-      '/': 'Today',
-      '/inbox': 'Inbox',
-      '/lists': 'Lists',
-      '/agenda': 'Agenda',
-    };
-    return names[path] ?? 'Back';
+    const todo = this.todo();
+    if (todo) {
+      await this.actions.delete('todos', todo);
+      await this.router.navigateByUrl(this.back);
+    }
   }
 }
