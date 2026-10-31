@@ -3,7 +3,7 @@
 }
 
 .bar {
-  padding: calc(44px + env(safe-area-inset-top)) 8px 0 4px;
+  padding: calc(44px + env(safe-area-inset-top)) var(--space-2) 0 var(--space-1);
 }
 
 .title {
@@ -19,12 +19,12 @@
 .search {
   margin: var(--space-2) var(--space-4) 0;
   height: 44px;
-  padding: 0 14px;
+  padding: 0 var(--space-3-5);
   border-radius: var(--radius-input);
   background: var(--surface);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   color: var(--muted);
 
   input {
@@ -33,7 +33,7 @@
     border: 0;
     outline: 0;
     background: transparent;
-    font-size: 15px;
+    font-size: var(--text-15);
     color: var(--ink);
   }
 }
@@ -62,21 +62,21 @@
 }
 
 .name {
-  font-size: 16px;
+  font-size: var(--text-16);
 }
 
 .sub {
-  font-size: 12px;
+  font-size: var(--text-12);
   color: var(--ink-2);
 }
 
 .pill-button {
   height: 36px;
-  padding: 0 12px;
+  padding: 0 var(--space-3);
   border: 0;
   border-radius: var(--radius-chip);
   background: var(--bg);
-  font-size: 14px;
+  font-size: var(--text-14);
   font-weight: 600;
 }
 
@@ -103,13 +103,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: var(--text-16);
   color: var(--ink);
 
   .count {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-1);
     color: var(--ink-2);
   }
 }

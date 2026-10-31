@@ -48,27 +48,27 @@ import { timeRange } from '../../domain/time/time-range';
       margin: 0 auto;
     }
     .bar {
-      padding: calc(44px + env(safe-area-inset-top)) 8px 0 4px;
+      padding: calc(44px + env(safe-area-inset-top)) var(--space-2) 0 var(--space-1);
     }
     .body {
       padding: var(--space-3) var(--space-4);
     }
     .title {
       min-height: 52px;
-      padding: 10px 14px;
+      padding: var(--space-2-5) var(--space-3-5);
       display: flex;
       align-items: center;
       gap: var(--space-3);
       color: var(--ink-2);
       h1 {
         margin: 0;
-        font-size: 18px;
+        font-size: var(--text-18);
         font-weight: 600;
         color: var(--ink);
       }
     }
     .details {
-      margin-top: 14px;
+      margin-top: var(--space-3-5);
       padding: 0 var(--space-4);
       border-radius: var(--radius-feature);
     }
@@ -77,7 +77,7 @@ import { timeRange } from '../../domain/time/time-range';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 16px;
+      font-size: var(--text-16);
     }
     .label {
       color: var(--ink-2);

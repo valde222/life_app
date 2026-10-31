@@ -3,7 +3,7 @@
 }
 
 .head {
-  padding: calc(52px + env(safe-area-inset-top)) 12px 0 var(--space-5);
+  padding: calc(52px + env(safe-area-inset-top)) var(--space-3) 0 var(--space-5);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -18,7 +18,7 @@
   padding: 0 var(--space-2);
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: var(--text-14);
   font-weight: 600;
   color: var(--ink-2);
 }
@@ -45,7 +45,7 @@
   background: transparent;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   text-align: left;
   color: var(--ink);
 
@@ -61,19 +61,19 @@
 
 .group-name {
   flex: 1;
-  font-size: 18px;
+  font-size: var(--text-18);
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
 .summary,
 .counts {
-  font-size: 13px;
+  font-size: var(--text-13);
   color: var(--ink-2);
 }
 
 .rows {
-  padding: 0 var(--space-4) 6px;
+  padding: 0 var(--space-4) var(--space-1-5);
 }
 
 .row {
@@ -93,13 +93,13 @@
 .name {
   flex: 1;
   min-width: 0;
-  font-size: 16px;
+  font-size: var(--text-16);
   font-weight: 500;
 }
 
 .add {
   min-height: 48px;
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 600;
   color: var(--ink-2);
 }

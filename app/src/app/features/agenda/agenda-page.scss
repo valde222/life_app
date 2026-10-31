@@ -10,13 +10,13 @@
   }
 
   h1 {
-    margin: 6px 0 0;
+    margin: var(--space-1-5) 0 0;
   }
 }
 
 .strip {
   margin: var(--space-4) var(--space-4) 0;
-  padding: 10px 8px 4px;
+  padding: var(--space-2-5) var(--space-2) var(--space-1);
   display: flex;
   flex-direction: column;
 }
@@ -36,16 +36,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: var(--space-half);
   color: var(--ink-2);
 
   .wd {
-    font-size: 11px;
+    font-size: var(--text-11);
     font-weight: 600;
   }
 
   .n {
-    font-size: 17px;
+    font-size: var(--text-17);
     font-weight: 600;
     color: var(--ink);
   }
@@ -71,7 +71,7 @@
 .dot {
   width: 4px;
   height: 4px;
-  border-radius: 2px;
+  border-radius: var(--radius-hairline);
   background: transparent;
 
   &.shown {
@@ -83,7 +83,7 @@
   align-self: center;
   width: 36px;
   height: 14px;
-  margin-top: 2px;
+  margin-top: var(--space-half);
   border: 0;
   background: transparent;
   position: relative;
@@ -95,7 +95,7 @@
     right: 0;
     top: 5px;
     height: 4px;
-    border-radius: 2px;
+    border-radius: var(--radius-hairline);
     background: var(--control);
   }
 }
@@ -104,7 +104,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 4px 8px;
+  padding: 0 var(--space-1) var(--space-2);
 }
 
 .arrow {
@@ -123,15 +123,15 @@
   background: transparent;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 17px;
+  gap: var(--space-1);
+  font-size: var(--text-17);
   font-weight: 700;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  row-gap: 2px;
+  row-gap: var(--space-half);
 }
 
 .grid-wd {
@@ -139,7 +139,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: var(--text-11);
   font-weight: 600;
   color: var(--ink-2);
 }
@@ -153,8 +153,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  font-size: 16px;
+  gap: var(--space-half);
+  font-size: var(--text-16);
   font-weight: 500;
   color: var(--ink);
 
@@ -179,8 +179,8 @@
 .months {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 6px;
-  padding-bottom: 8px;
+  gap: var(--space-1-5);
+  padding-bottom: var(--space-2);
 }
 
 .month {
@@ -188,7 +188,7 @@
   border: 0;
   border-radius: var(--radius-control);
   background: var(--bg);
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 600;
 
   &.on {
@@ -211,13 +211,13 @@
 .free {
   letter-spacing: 0;
   text-transform: none;
-  font-size: 14px;
+  font-size: var(--text-14);
   font-weight: 400;
 }
 
 .row {
   min-height: 56px;
-  padding: 8px 14px;
+  padding: var(--space-2) var(--space-3-5);
   border-radius: var(--radius-row);
   background: var(--surface);
   display: flex;
@@ -229,7 +229,7 @@
     background: var(--quiet);
 
     .time {
-      font-size: 13px;
+      font-size: var(--text-13);
       font-weight: 500;
       color: var(--ink-2);
     }
@@ -239,13 +239,13 @@
 .time {
   width: 64px;
   flex-shrink: 0;
-  font-size: 17px;
+  font-size: var(--text-17);
   font-weight: 700;
 }
 
 .end {
   display: block;
-  font-size: 12px;
+  font-size: var(--text-12);
   font-weight: 500;
   color: var(--ink-2);
 }
@@ -253,6 +253,6 @@
 .title {
   flex: 1;
   min-width: 0;
-  font-size: 17px;
+  font-size: var(--text-17);
   font-weight: 500;
 }

@@ -26,7 +26,7 @@ function seen(): boolean {
       bottom: calc(150px + env(safe-area-inset-bottom));
       max-width: 292px;
       margin: 0 auto;
-      padding: 14px 16px;
+      padding: var(--space-3-5) var(--space-4);
       border-radius: var(--radius-feature);
       background: var(--ink);
       color: var(--on-accent);
@@ -44,19 +44,19 @@ function seen(): boolean {
     }
     p {
       margin: 0;
-      font-size: 15px;
+      font-size: var(--text-15);
       font-weight: 600;
       line-height: 1.35;
     }
     button {
-      margin-top: 12px;
+      margin-top: var(--space-3);
       height: 34px;
-      padding: 0 12px;
+      padding: 0 var(--space-3);
       border: 0;
       border-radius: var(--radius-chip);
-      background: rgba(255, 255, 255, 0.14);
+      background: var(--on-accent-faint);
       color: var(--on-accent);
-      font-size: 14px;
+      font-size: var(--text-14);
       font-weight: 700;
     }
   `,

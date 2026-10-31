@@ -32,7 +32,7 @@ const NAMES: Record<ListColour, string> = {
   styles: `
     :host {
       display: flex;
-      gap: 6px;
+      gap: var(--space-1-5);
       flex-wrap: wrap;
     }
     button {

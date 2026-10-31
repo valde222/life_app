@@ -37,15 +37,15 @@ import { ListLabel } from './list-label';
   styles: `
     :host {
       min-height: 56px;
-      padding: 0 14px 0 6px;
+      padding: 0 var(--space-3-5) 0 var(--space-1-5);
       border-radius: var(--radius-row);
       background: var(--surface);
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: var(--space-1);
     }
     :host(.event) {
-      padding-left: 16px;
+      padding-left: var(--space-4);
       gap: 0;
     }
     :host(.done) {
@@ -54,15 +54,15 @@ import { ListLabel } from './list-label';
     }
     .time {
       width: 52px;
-      font-size: 17px;
+      font-size: var(--text-17);
       font-weight: 700;
       flex-shrink: 0;
     }
     .title {
       flex: 1;
       min-width: 0;
-      padding: 8px 0;
-      font-size: 17px;
+      padding: var(--space-2) 0;
+      font-size: var(--text-17);
       font-weight: 500;
       line-height: 1.3;
       color: var(--ink);
@@ -72,18 +72,18 @@ import { ListLabel } from './list-label';
       overflow: hidden;
     }
     :host(.done) .title {
-      font-size: 16px;
+      font-size: var(--text-16);
       color: var(--ink-2);
       text-decoration: line-through;
     }
     .trailing {
-      margin-right: 8px;
-      font-size: 13px;
+      margin-right: var(--space-2);
+      font-size: var(--text-13);
       color: var(--ink-2);
       flex-shrink: 0;
     }
     .done-list {
-      font-size: 12px;
+      font-size: var(--text-12);
       font-weight: 600;
       color: var(--ink-2);
     }

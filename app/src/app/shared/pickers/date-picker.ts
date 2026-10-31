@@ -95,7 +95,7 @@ interface Day {
     .quick {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: var(--space-1-5);
     }
     .quick .chip {
       height: 36px;
@@ -112,13 +112,13 @@ interface Day {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 4px 8px;
-      font-size: 16px;
+      padding: 0 var(--space-1) var(--space-2);
+      font-size: var(--text-16);
       font-weight: 700;
     }
     .nav {
       display: flex;
-      gap: 4px;
+      gap: var(--space-1);
     }
     .nav button {
       width: 36px;
@@ -130,14 +130,14 @@ interface Day {
     .grid {
       display: grid;
       grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 2px;
+      gap: var(--space-half);
     }
     .weekday {
       height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: var(--text-11);
       font-weight: 600;
       color: var(--ink-2);
     }
@@ -146,7 +146,7 @@ interface Day {
       border: 0;
       border-radius: var(--radius-control);
       background: transparent;
-      font-size: 15px;
+      font-size: var(--text-15);
       font-weight: 500;
       color: var(--ink);
     }
@@ -170,7 +170,7 @@ interface Day {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 16px;
+      font-size: var(--text-16);
     }
     .label {
       color: var(--ink-2);

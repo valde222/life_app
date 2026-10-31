@@ -74,16 +74,16 @@ const clock = (date: Date) =>
   styles: `
     .name {
       flex: 1;
-      font-size: 16px;
+      font-size: var(--text-16);
     }
     .at {
-      font-size: 13px;
+      font-size: var(--text-13);
       color: var(--muted);
     }
     .radio {
       width: 20px;
       height: 20px;
-      border-radius: 10px;
+      border-radius: var(--radius-chip);
       border: 2px solid var(--control);
       flex-shrink: 0;
     }

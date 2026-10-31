@@ -49,14 +49,14 @@ export interface ImageViewData {
       border: 0;
       background: transparent;
       color: var(--on-accent);
-      font-size: 15px;
+      font-size: var(--text-15);
       font-weight: 600;
     }
     .bar button:last-child {
       justify-self: end;
     }
     .count {
-      font-size: 13px;
+      font-size: var(--text-13);
       color: var(--viewer-text);
     }
     .stage {
@@ -82,7 +82,7 @@ export interface ImageViewData {
       border: 0;
       background: transparent;
       color: var(--viewer-danger);
-      font-size: 15px;
+      font-size: var(--text-15);
       font-weight: 600;
     }
   `,

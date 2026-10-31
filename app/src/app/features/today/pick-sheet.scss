@@ -1,6 +1,6 @@
 :host {
   height: calc(100dvh - 96px);
-  padding-top: 10px;
+  padding-top: var(--space-2-5);
   display: flex;
   flex-direction: column;
 }
@@ -9,12 +9,12 @@
   align-self: center;
   width: 36px;
   height: 4px;
-  border-radius: 2px;
+  border-radius: var(--radius-hairline);
   background: var(--control);
 }
 
 .head {
-  margin-top: 14px;
+  margin-top: var(--space-3-5);
   padding: 0 var(--space-5);
   display: flex;
   align-items: center;
@@ -27,24 +27,24 @@
 
 .done {
   height: 44px;
-  padding: 0 18px;
+  padding: 0 var(--space-4-5);
   border: 0;
   border-radius: var(--radius-input);
   background: var(--accent);
   color: var(--on-accent);
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 700;
 }
 
 .search {
-  margin: 14px var(--space-4) 0;
+  margin: var(--space-3-5) var(--space-4) 0;
   height: 44px;
-  padding: 0 14px;
+  padding: 0 var(--space-3-5);
   border-radius: var(--radius-input);
   background: var(--surface);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   color: var(--muted);
 
   input {
@@ -53,16 +53,16 @@
     border: 0;
     outline: 0;
     background: transparent;
-    font-size: 15px;
+    font-size: var(--text-15);
     color: var(--ink);
   }
 }
 
 .filters {
-  margin-top: 10px;
+  margin-top: var(--space-2-5);
   padding: 0 var(--space-4);
   display: flex;
-  gap: 6px;
+  gap: var(--space-1-5);
   overflow-x: auto;
   scrollbar-width: none;
   flex-shrink: 0;
@@ -90,12 +90,12 @@
 
 .item {
   min-height: 60px;
-  padding: 8px 6px 8px 16px;
+  padding: var(--space-2) var(--space-1-5) var(--space-2) var(--space-4);
   border-radius: var(--radius-row);
   background: var(--surface);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   flex-shrink: 0;
 }
 
@@ -105,19 +105,19 @@
 }
 
 .title {
-  font-size: 17px;
+  font-size: var(--text-17);
   font-weight: 500;
 }
 
 .sub {
-  margin-top: 4px;
+  margin-top: var(--space-1);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .meta {
-  font-size: 12px;
+  font-size: var(--text-12);
   color: var(--ink-2);
 }
 

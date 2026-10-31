@@ -18,13 +18,13 @@
 
 .done {
   height: 40px;
-  padding: 0 16px;
+  padding: 0 var(--space-4);
   border-radius: var(--radius-control);
   background: var(--accent);
   color: var(--on-accent);
   display: flex;
   align-items: center;
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 700;
 }
 
@@ -68,7 +68,7 @@ section {
   height: 36px;
   border: 0;
   background: transparent;
-  font-size: 13px;
+  font-size: var(--text-13);
   font-weight: 700;
 }
 
@@ -79,7 +79,7 @@ section {
   border: 0;
   border-radius: var(--radius-control);
   background: var(--surface);
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 700;
 }
 
@@ -92,7 +92,7 @@ section {
 
 .row {
   min-height: 56px;
-  padding: 0 4px 0 6px;
+  padding: 0 var(--space-1) 0 var(--space-1-5);
   border-radius: var(--radius-row);
   background: var(--surface);
   display: flex;
@@ -116,7 +116,7 @@ section {
 }
 
 .count {
-  font-size: 15px;
+  font-size: var(--text-15);
   color: var(--ink-2);
 }
 
@@ -140,7 +140,7 @@ section {
   padding: 0 var(--space-1);
   border: 0;
   background: transparent;
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 600;
   color: var(--accent);
 }

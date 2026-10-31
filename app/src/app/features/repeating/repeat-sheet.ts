@@ -73,17 +73,17 @@ const HISTORY = 4;
       }
     }
     .sub {
-      margin-top: 2px;
-      font-size: 13px;
+      margin-top: var(--space-half);
+      font-size: var(--text-13);
       color: var(--ink-2);
     }
     .edit {
       height: 36px;
-      padding: 0 12px;
+      padding: 0 var(--space-3);
       border: 0;
       border-radius: var(--radius-chip);
       background: var(--surface);
-      font-size: 14px;
+      font-size: var(--text-14);
       font-weight: 600;
     }
     .big {
@@ -95,7 +95,7 @@ const HISTORY = 4;
       gap: var(--space-2);
     }
     .number {
-      font-size: 44px;
+      font-size: var(--text-44);
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1;
@@ -104,7 +104,7 @@ const HISTORY = 4;
       color: var(--overdue-fg);
     }
     .unit {
-      font-size: 15px;
+      font-size: var(--text-15);
       color: var(--ink-2);
     }
     .bar {
@@ -125,17 +125,17 @@ const HISTORY = 4;
     }
     .target {
       margin-top: var(--space-2);
-      font-size: 13px;
+      font-size: var(--text-13);
       color: var(--ink-2);
     }
     .history {
       min-height: 44px;
-      font-size: 15px;
+      font-size: var(--text-15);
     }
     .average {
       margin: 0;
       padding: 0 var(--space-1);
-      font-size: 13px;
+      font-size: var(--text-13);
       color: var(--ink-2);
     }
     .btn-primary {

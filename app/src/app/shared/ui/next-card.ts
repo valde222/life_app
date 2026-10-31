@@ -24,16 +24,16 @@ import { untilText } from '../../domain/time/until';
   `,
   styles: `
     .card {
-      padding: 14px 16px;
+      padding: var(--space-3-5) var(--space-4);
       border-radius: var(--radius-feature);
       background: var(--accent);
       color: var(--on-accent);
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: var(--space-3-5);
     }
     .time {
-      font-size: 24px;
+      font-size: var(--text-24);
       font-weight: 700;
       line-height: 1;
       letter-spacing: -0.02em;
@@ -45,25 +45,25 @@ import { untilText } from '../../domain/time/until';
       flex-direction: column;
     }
     .title {
-      font-size: 17px;
+      font-size: var(--text-17);
       font-weight: 600;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
     .soon {
-      font-size: 12px;
+      font-size: var(--text-12);
       color: var(--on-accent-2);
     }
     .label {
       height: 24px;
       padding: 0 9px;
       border-radius: var(--radius-label);
-      background: rgba(255, 255, 255, 0.18);
+      background: var(--on-accent-soft);
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-size: 12px;
+      font-size: var(--text-12);
       font-weight: 600;
       white-space: nowrap;
     }

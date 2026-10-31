@@ -19,12 +19,12 @@
 
 .title-card {
   min-height: 52px;
-  padding: 6px 14px;
+  padding: var(--space-1-5) var(--space-3-5);
   border-radius: var(--radius-input);
   background: var(--surface);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
 }
 
 .box {
@@ -51,12 +51,12 @@
   border: 0;
   outline: 0;
   background: transparent;
-  font-size: 18px;
+  font-size: var(--text-18);
   font-weight: 600;
 }
 
 .details {
-  margin-top: 14px;
+  margin-top: var(--space-3-5);
   padding: 0 var(--space-4);
   border-radius: var(--radius-feature);
 
@@ -70,7 +70,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: var(--text-16);
   color: var(--ink-2);
   font-weight: 500;
 }
@@ -81,7 +81,7 @@
 }
 
 .steps {
-  padding: 4px 6px 4px 16px;
+  padding: var(--space-1) var(--space-1-5) var(--space-1) var(--space-4);
   border-radius: var(--radius-feature);
 }
 
@@ -89,7 +89,7 @@
   min-height: 46px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .step-box {
@@ -114,7 +114,7 @@
 .step-text {
   flex: 1;
   min-width: 0;
-  font-size: 16px;
+  font-size: var(--text-16);
 }
 
 .done .step-text {
@@ -137,7 +137,7 @@
   min-height: 46px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   color: var(--muted);
 
   input {
@@ -145,25 +145,25 @@
     border: 0;
     outline: 0;
     background: transparent;
-    font-size: 16px;
+    font-size: var(--text-16);
   }
 }
 
 .note {
-  padding: 12px var(--space-4);
+  padding: var(--space-3) var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-half);
   color: var(--ink);
 }
 
 .note-title {
-  font-size: 16px;
+  font-size: var(--text-16);
   font-weight: 600;
 }
 
 .note-body {
-  font-size: 13px;
+  font-size: var(--text-13);
   color: var(--ink-2);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -177,7 +177,7 @@
   padding: 0 var(--space-1);
   border: 0;
   background: transparent;
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 600;
   color: var(--overdue-icon);
 }

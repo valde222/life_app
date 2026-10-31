@@ -6,7 +6,7 @@
 }
 
 .page-bar {
-  padding: calc(44px + env(safe-area-inset-top)) 8px 0 4px;
+  padding: calc(44px + env(safe-area-inset-top)) var(--space-2) 0 var(--space-1);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,16 +18,16 @@
 
 .bar-action {
   height: 44px;
-  padding: 0 10px;
+  padding: 0 var(--space-2-5);
   border: 0;
   background: transparent;
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 600;
   color: var(--accent);
 }
 
 .body {
-  padding: 4px var(--space-4) 48px;
+  padding: var(--space-1) var(--space-4) 48px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -35,20 +35,20 @@
 
 .title {
   height: 46px;
-  padding: 0 14px;
+  padding: 0 var(--space-3-5);
   border: 0;
   outline: 0;
   border-radius: var(--radius-input);
-  font-size: 18px;
+  font-size: var(--text-18);
   font-weight: 600;
 }
 
 .meta {
-  margin-top: 10px;
+  margin-top: var(--space-2-5);
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: 13px;
+  font-size: var(--text-13);
   color: var(--ink-2);
 }
 
@@ -62,15 +62,15 @@
   align-self: flex-start;
   margin-top: var(--space-2);
   height: 30px;
-  padding: 0 10px;
+  padding: 0 var(--space-2-5);
   border: 0;
   border-radius: var(--radius-label);
   background: var(--pair-bg);
   color: var(--pair-fg);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 13px;
+  gap: var(--space-1);
+  font-size: var(--text-13);
   font-weight: 600;
 }
 
@@ -90,7 +90,7 @@
   padding: var(--space-2);
   border-bottom: 1px solid var(--divider);
   display: flex;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .tool {
@@ -101,8 +101,8 @@
   background: var(--bg);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 13px;
+  gap: var(--space-1);
+  font-size: var(--text-13);
   font-weight: 600;
   color: var(--ink-2);
 }
@@ -116,7 +116,7 @@
   background: transparent;
   resize: vertical;
   font-family: var(--font-reading);
-  font-size: 16px;
+  font-size: var(--text-16);
   line-height: 1.6;
   color: var(--ink);
 }
@@ -124,7 +124,7 @@
 .rendered {
   padding: var(--space-5);
   font-family: var(--font-reading);
-  font-size: 16px;
+  font-size: var(--text-16);
   line-height: 1.6;
   cursor: text;
 }
@@ -137,7 +137,7 @@
   margin-top: var(--space-3);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
+  gap: var(--space-1-5);
 }
 
 .photo {
@@ -169,13 +169,13 @@
 
 .linked-item {
   height: 36px;
-  padding: 0 4px 0 12px;
+  padding: 0 var(--space-1) 0 var(--space-3);
   border-radius: var(--radius-control);
   background: var(--surface);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: var(--space-2);
+  font-size: var(--text-14);
   font-weight: 600;
 
   a {
@@ -203,18 +203,18 @@
 
 .link-add {
   height: 36px;
-  padding: 0 12px;
+  padding: 0 var(--space-3);
   border: 1.5px dashed var(--dashed);
   border-radius: var(--radius-control);
   background: transparent;
-  font-size: 14px;
+  font-size: var(--text-14);
   font-weight: 600;
   color: var(--accent);
 }
 
 .from {
   min-height: 56px;
-  padding: 8px 14px 8px 16px;
+  padding: var(--space-2) var(--space-3-5) var(--space-2) var(--space-4);
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -228,12 +228,12 @@
 }
 
 .from-title {
-  font-size: 16px;
+  font-size: var(--text-16);
   font-weight: 600;
 }
 
 .from-kind {
-  font-size: 13px;
+  font-size: var(--text-13);
   color: var(--ink-2);
 }
 
@@ -243,7 +243,7 @@
   height: 44px;
   border: 0;
   background: transparent;
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 600;
   color: var(--overdue-icon);
 }

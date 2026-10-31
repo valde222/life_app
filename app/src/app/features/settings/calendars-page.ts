@@ -51,7 +51,7 @@ import { CalendarSettings } from '../../core/calendar/calendar-settings';
       margin: 0 auto;
     }
     .bar {
-      padding: calc(44px + env(safe-area-inset-top)) 8px 0 4px;
+      padding: calc(44px + env(safe-area-inset-top)) var(--space-2) 0 var(--space-1);
     }
     .body {
       padding: 0 var(--space-4) 48px;
@@ -70,7 +70,7 @@ import { CalendarSettings } from '../../core/calendar/calendar-settings';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 16px;
+      font-size: var(--text-16);
     }
     .state {
       color: var(--muted);

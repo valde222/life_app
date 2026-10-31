@@ -16,9 +16,9 @@ import { ChangeDetectionStrategy, Component, input, model } from '@angular/core'
     button {
       width: 48px;
       height: 28px;
-      padding: 2px;
+      padding: var(--space-half);
       border: 0;
-      border-radius: 14px;
+      border-radius: var(--radius-input);
       background: var(--control);
       display: flex;
       transition: background 150ms;
@@ -26,9 +26,9 @@ import { ChangeDetectionStrategy, Component, input, model } from '@angular/core'
     .knob {
       width: 24px;
       height: 24px;
-      border-radius: 12px;
+      border-radius: var(--radius-control);
       background: var(--surface);
-      box-shadow: 0 1px 2px rgba(21, 23, 30, 0.2);
+      box-shadow: var(--shadow-knob);
       transition: transform 150ms;
     }
     button[aria-checked='true'] {

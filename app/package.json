@@ -12,10 +12,11 @@
     "e2e:docker": "./e2e/run-in-docker.sh",
     "build:android": "npm run build && npx cap sync android && cd android && cmd.exe /c \"gradlew.bat assembleDebug\"",
     "build:desktop": "npm run build && cd ../desktop && cmd.exe /c \"cargo tauri build\"",
-    "lint": "npm run lint:ts && npm run lint:deps && npm run lint:format",
+    "lint": "npm run lint:ts && npm run lint:deps && npm run lint:styles && npm run lint:format",
     "lint:ts": "eslint .",
     "lint:format": "prettier --check .",
-    "lint:deps": "depcruise src --config .dependency-cruiser.cjs"
+    "lint:deps": "depcruise src --config .dependency-cruiser.cjs",
+    "lint:styles": "node scripts/check-styles.mjs"
   },
   "private": true,
   "packageManager": "npm@12.1.0",
@@ -53,8 +54,6 @@
     "fake-indexeddb": "6.2.5",
     "jsdom": "30.1.2",
     "prettier": "^3.8.1",
-    "stylelint": "17.16.0",
-    "stylelint-config-standard-scss": "17.0.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "8.71.2",
     "vitest": "5.0.4"

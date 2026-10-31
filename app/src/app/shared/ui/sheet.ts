@@ -50,7 +50,7 @@ export class Sheets {
       display: flex;
       flex-direction: column;
       gap: var(--space-3);
-      padding: 10px var(--space-4) 32px;
+      padding: var(--space-2-5) var(--space-4) 32px;
       max-height: 92dvh;
       overflow-y: auto;
     }
@@ -58,7 +58,7 @@ export class Sheets {
       align-self: center;
       width: 36px;
       height: 4px;
-      border-radius: 2px;
+      border-radius: var(--radius-hairline);
       background: var(--control);
       margin-bottom: var(--space-2);
       flex-shrink: 0;

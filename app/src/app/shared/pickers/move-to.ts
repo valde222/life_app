@@ -63,19 +63,19 @@ const INBOX = 'Inbox';
       margin: 0 calc(-1 * var(--space-4));
       padding: 0 var(--space-4);
       display: flex;
-      gap: 6px;
+      gap: var(--space-1-5);
       overflow-x: auto;
       scrollbar-width: none;
     }
     .tab {
       flex-shrink: 0;
       height: 38px;
-      padding: 0 16px;
+      padding: 0 var(--space-4);
       border: 0;
       border-radius: var(--radius-control);
       background: var(--surface);
       color: var(--accent);
-      font-size: 15px;
+      font-size: var(--text-15);
       font-weight: 600;
     }
     .tab.on {
@@ -96,16 +96,16 @@ const INBOX = 'Inbox';
     }
     .name {
       flex: 1;
-      font-size: 16px;
+      font-size: var(--text-16);
     }
     .count {
-      font-size: 13px;
+      font-size: var(--text-13);
       color: var(--muted);
     }
     .cancel {
       height: 48px;
       border-radius: var(--radius-input);
-      font-size: 15px;
+      font-size: var(--text-15);
     }
   `,
 })

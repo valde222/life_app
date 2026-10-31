@@ -8,7 +8,7 @@
   border: 0;
   outline: 0;
   background: transparent;
-  font-size: 20px;
+  font-size: var(--text-20);
   font-weight: 500;
 
   &::placeholder {
@@ -20,17 +20,17 @@
   margin-top: var(--space-3);
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--space-1-5);
 }
 
 .chip.quiet {
-  padding: 0 10px;
+  padding: 0 var(--space-2-5);
   background: var(--bg);
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .chip.date {
-  padding: 0 4px 0 10px;
+  padding: 0 var(--space-1) 0 var(--space-2-5);
 }
 
 .date-pick {
@@ -41,7 +41,7 @@
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1-5);
 }
 
 .remove {
@@ -57,7 +57,7 @@
 }
 
 .actions {
-  margin-top: 2px;
+  margin-top: var(--space-half);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-2);

@@ -22,7 +22,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
       align-items: center;
       justify-content: space-between;
       gap: var(--space-3);
-      font-size: 16px;
+      font-size: var(--text-16);
     }
     .label {
       color: var(--ink-2);

@@ -118,11 +118,11 @@ const pad = (value: number) => String(value).padStart(2, '0');
     .ends,
     .presets {
       display: grid;
-      gap: 8px;
+      gap: var(--space-2);
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .presets {
-      gap: 6px;
+      gap: var(--space-1-5);
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
     .end,
@@ -134,7 +134,7 @@ const pad = (value: number) => String(value).padStart(2, '0');
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: var(--space-half);
     }
     .end {
       height: 64px;
@@ -148,20 +148,20 @@ const pad = (value: number) => String(value).padStart(2, '0');
     }
     .end-label,
     .preset-name {
-      font-size: 12px;
+      font-size: var(--text-12);
       font-weight: 600;
       color: var(--ink-2);
     }
     .end-time {
-      font-size: 22px;
+      font-size: var(--text-22);
       font-weight: 700;
     }
     .preset-time {
-      font-size: 15px;
+      font-size: var(--text-15);
       font-weight: 700;
     }
     .wheels {
-      padding: 8px 12px;
+      padding: var(--space-2) var(--space-3);
       display: grid;
       grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr);
       align-items: center;
@@ -169,31 +169,31 @@ const pad = (value: number) => String(value).padStart(2, '0');
     .wheel {
       display: grid;
       grid-template-rows: repeat(5, 40px);
-      gap: 2px;
+      gap: var(--space-half);
     }
     .wheel button {
       border: 0;
       border-radius: var(--radius-control);
       background: transparent;
-      font-size: 18px;
+      font-size: var(--text-18);
       font-weight: 500;
       color: var(--ink-2);
     }
     .wheel button.on {
       background: var(--soft);
       color: var(--ink);
-      font-size: 22px;
+      font-size: var(--text-22);
       font-weight: 700;
     }
     .colon {
       text-align: center;
-      font-size: 24px;
+      font-size: var(--text-24);
       font-weight: 700;
     }
     .quiet-cancel {
       height: 48px;
       border-radius: var(--radius-input);
-      font-size: 15px;
+      font-size: var(--text-15);
     }
   `,
 })

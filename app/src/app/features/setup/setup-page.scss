@@ -17,20 +17,20 @@
   height: 44px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 15px;
+  gap: var(--space-1);
+  font-size: var(--text-15);
   font-weight: 600;
   color: var(--accent);
 }
 
 .steps {
   display: flex;
-  gap: 6px;
+  gap: var(--space-1-5);
 
   span {
     width: 24px;
     height: 4px;
-    border-radius: 2px;
+    border-radius: var(--radius-hairline);
     background: var(--control);
   }
 
@@ -59,7 +59,7 @@
 
   h2 {
     margin: 0;
-    font-size: 18px;
+    font-size: var(--text-18);
     font-weight: 700;
   }
 }
@@ -85,7 +85,7 @@
     border: 0;
     outline: 0;
     background: transparent;
-    font-size: 16px;
+    font-size: var(--text-16);
   }
 }
 

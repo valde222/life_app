@@ -3,7 +3,7 @@
 }
 
 .bar {
-  padding: calc(44px + env(safe-area-inset-top)) 8px 0 4px;
+  padding: calc(44px + env(safe-area-inset-top)) var(--space-2) 0 var(--space-1);
 }
 
 .title {
@@ -14,7 +14,7 @@
   }
 
   h1 {
-    margin: 6px 0 0;
+    margin: var(--space-1-5) 0 0;
   }
 }
 
@@ -37,16 +37,16 @@
   background: var(--surface);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 
   .number {
-    font-size: 30px;
+    font-size: var(--text-30);
     font-weight: 700;
     line-height: 1;
   }
 
   .label {
-    font-size: 13px;
+    font-size: var(--text-13);
     color: var(--ink-2);
   }
 
@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 600;
   color: var(--ink);
 }
@@ -86,7 +86,7 @@
   height: 120px;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .bar-cell {
@@ -94,12 +94,12 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-end;
-  gap: 4px;
+  gap: var(--space-1);
   text-align: center;
 }
 
 .bar-value {
-  font-size: 12px;
+  font-size: var(--text-12);
   font-weight: 700;
 }
 
@@ -113,7 +113,7 @@
 }
 
 .bar-day {
-  font-size: 12px;
+  font-size: var(--text-12);
   color: var(--ink-2);
 }
 
@@ -128,7 +128,7 @@
 
 .finished {
   min-height: 60px;
-  padding: 8px 14px;
+  padding: var(--space-2) var(--space-3-5);
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -155,12 +155,12 @@
 }
 
 .name {
-  font-size: 16px;
+  font-size: var(--text-16);
   font-weight: 600;
 }
 
 .sub {
-  font-size: 13px;
+  font-size: var(--text-13);
   color: var(--ink-2);
 }
 
@@ -177,12 +177,12 @@
   align-items: flex-start;
   justify-content: center;
   gap: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
 }
 
 .more {
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 600;
   color: var(--accent);
 }

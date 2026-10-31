@@ -66,8 +66,8 @@ const QUICK_LISTS = 2;
   `,
   styles: `
     .name {
-      padding: 12px var(--space-4);
-      font-size: 17px;
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-17);
       font-weight: 600;
     }
     .eyebrow {
@@ -76,11 +76,11 @@ const QUICK_LISTS = 2;
     .chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: var(--space-1-5);
     }
     .chip {
       height: 38px;
-      font-size: 15px;
+      font-size: var(--text-15);
     }
     .btn-primary {
       margin-top: var(--space-2);

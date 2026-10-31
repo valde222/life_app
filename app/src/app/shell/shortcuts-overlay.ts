@@ -81,14 +81,14 @@ const GROUPS = [
     }
     .close {
       height: 36px;
-      padding: 0 6px 0 12px;
+      padding: 0 var(--space-1-5) 0 var(--space-3);
       border: 0;
       border-radius: var(--radius-control);
       background: var(--bg);
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
+      gap: var(--space-2);
+      font-size: var(--text-14);
       font-weight: 600;
     }
     .groups {
@@ -106,20 +106,20 @@ const GROUPS = [
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 15px;
+      font-size: var(--text-15);
     }
     .keys {
       display: flex;
-      gap: 4px;
+      gap: var(--space-1);
     }
     kbd {
       min-width: 24px;
       height: 24px;
-      padding: 0 6px;
+      padding: 0 var(--space-1-5);
       border-radius: var(--radius-check);
       background: var(--soft);
       font-family: inherit;
-      font-size: 13px;
+      font-size: var(--text-13);
       font-weight: 700;
       display: flex;
       align-items: center;

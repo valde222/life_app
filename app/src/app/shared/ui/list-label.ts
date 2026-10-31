@@ -25,7 +25,7 @@ import { listColourStyle } from './list-colours';
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-size: 12px;
+      font-size: var(--text-12);
       font-weight: 600;
       line-height: 1;
       white-space: nowrap;

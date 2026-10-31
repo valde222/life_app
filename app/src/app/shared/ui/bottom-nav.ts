@@ -81,7 +81,7 @@ const TABS_RIGHT: Tab[] = [
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       align-items: center;
-      padding: 8px 6px 6px;
+      padding: var(--space-2) var(--space-1-5) var(--space-1-5);
       border-radius: var(--radius-nav);
       background: var(--surface);
       box-shadow: var(--shadow-nav);
@@ -89,15 +89,15 @@ const TABS_RIGHT: Tab[] = [
     }
     .search {
       grid-column: 1 / -1;
-      margin: 0 0 4px;
+      margin: 0 0 var(--space-1);
       height: 40px;
-      padding: 0 14px;
-      border-radius: 20px;
+      padding: 0 var(--space-3-5);
+      border-radius: var(--radius-modal);
       background: var(--bg);
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 15px;
+      gap: var(--space-2);
+      font-size: var(--text-15);
       color: var(--muted);
       overflow: hidden;
       transition:
@@ -115,7 +115,7 @@ const TABS_RIGHT: Tab[] = [
       align-items: center;
       justify-content: center;
       gap: 3px;
-      font-size: 11px;
+      font-size: var(--text-11);
       font-weight: 500;
       color: var(--ink-2);
     }
@@ -133,11 +133,11 @@ const TABS_RIGHT: Tab[] = [
       right: -8px;
       min-width: 16px;
       height: 16px;
-      padding: 0 4px;
-      border-radius: 8px;
+      padding: 0 var(--space-1);
+      border-radius: var(--radius-label);
       background: var(--accent);
       color: var(--on-accent);
-      font-size: 10px;
+      font-size: var(--text-10);
       font-weight: 700;
       display: flex;
       align-items: center;

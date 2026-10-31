@@ -44,7 +44,7 @@ import { DeletedItem, deletedSub } from '../../domain/deleted-items';
       display: block;
     }
     .bar {
-      padding: calc(44px + env(safe-area-inset-top)) 8px 0 4px;
+      padding: calc(44px + env(safe-area-inset-top)) var(--space-2) 0 var(--space-1);
     }
     .title {
       margin: 0;
@@ -66,25 +66,25 @@ import { DeletedItem, deletedSub } from '../../domain/deleted-items';
       flex-direction: column;
     }
     .name {
-      font-size: 16px;
+      font-size: var(--text-16);
     }
     .sub {
-      font-size: 12px;
+      font-size: var(--text-12);
       color: var(--ink-2);
     }
     .restore {
       height: 36px;
-      padding: 0 12px;
+      padding: 0 var(--space-3);
       border: 0;
       border-radius: var(--radius-chip);
       background: var(--bg);
-      font-size: 14px;
+      font-size: var(--text-14);
       font-weight: 600;
     }
     .empty-now {
       min-height: 52px;
       border: 0;
-      font-size: 16px;
+      font-size: var(--text-16);
       font-weight: 600;
       color: var(--overdue-icon);
     }

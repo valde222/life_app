@@ -44,10 +44,10 @@ export interface ActionSheetData<T extends string = string> {
       margin: 0 var(--space-1) var(--space-1);
     }
     .option {
-      font-size: 16px;
+      font-size: var(--text-16);
     }
     .btn {
-      font-size: 15px;
+      font-size: var(--text-15);
     }
   `,
 })

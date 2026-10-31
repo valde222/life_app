@@ -29,7 +29,7 @@ export interface Segment<T> {
   `,
   styles: `
     .track {
-      padding: 4px;
+      padding: var(--space-1);
       border-radius: var(--radius-input);
       background: var(--soft);
       display: flex;
@@ -40,14 +40,14 @@ export interface Segment<T> {
       border: 0;
       border-radius: var(--radius-chip);
       background: transparent;
-      font-size: 14px;
+      font-size: var(--text-14);
       font-weight: 700;
       color: var(--ink-2);
     }
     .on {
       background: var(--surface);
       color: var(--ink);
-      box-shadow: 0 1px 2px rgba(21, 23, 30, 0.08);
+      box-shadow: var(--shadow-segment);
     }
   `,
 })

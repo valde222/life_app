@@ -68,8 +68,8 @@ export function swipeOutcome(offset: number): 'right' | 'left' | null {
       color: var(--on-accent);
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 15px;
+      gap: var(--space-2);
+      font-size: var(--text-15);
       font-weight: 700;
     }
     .action.left {

@@ -37,11 +37,11 @@ import { Choice } from './setup-state';
       border-radius: var(--radius-input);
       background: var(--chip-off, var(--surface));
       color: var(--ink);
-      font-size: var(--chip-font, 17px);
+      font-size: var(--chip-font, var(--text-17));
       font-weight: 600;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: var(--space-1-5);
     }
     .on {
       background: var(--accent);

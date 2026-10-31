@@ -45,7 +45,7 @@ import { Toasts } from '../../core/toasts/toasts';
       display: block;
     }
     .bar {
-      padding: calc(44px + env(safe-area-inset-top)) 8px 0 4px;
+      padding: calc(44px + env(safe-area-inset-top)) var(--space-2) 0 var(--space-1);
     }
     .title {
       padding: 0 var(--space-4) 0 var(--space-5);
@@ -58,11 +58,11 @@ import { Toasts } from '../../core/toasts/toasts';
     }
     .new {
       height: 38px;
-      padding: 0 12px;
+      padding: 0 var(--space-3);
       border-radius: var(--radius-control);
       background: var(--surface);
       color: var(--ink);
-      font-size: 15px;
+      font-size: var(--text-15);
       font-weight: 600;
       display: flex;
       align-items: center;

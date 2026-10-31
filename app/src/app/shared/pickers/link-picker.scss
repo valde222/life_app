@@ -1,6 +1,6 @@
 :host {
   height: calc(100dvh - 96px);
-  padding-top: 10px;
+  padding-top: var(--space-2-5);
   display: flex;
   flex-direction: column;
 }
@@ -9,12 +9,12 @@
   align-self: center;
   width: 36px;
   height: 4px;
-  border-radius: 2px;
+  border-radius: var(--radius-hairline);
   background: var(--control);
 }
 
 .head {
-  margin-top: 14px;
+  margin-top: var(--space-3-5);
   padding: 0 var(--space-5);
   display: flex;
   align-items: center;
@@ -27,24 +27,24 @@
 
 .done {
   height: 44px;
-  padding: 0 18px;
+  padding: 0 var(--space-4-5);
   border: 0;
   border-radius: var(--radius-input);
   background: var(--accent);
   color: var(--on-accent);
-  font-size: 15px;
+  font-size: var(--text-15);
   font-weight: 700;
 }
 
 .search {
-  margin: 14px var(--space-4) 0;
+  margin: var(--space-3-5) var(--space-4) 0;
   height: 44px;
-  padding: 0 14px;
+  padding: 0 var(--space-3-5);
   border-radius: var(--radius-input);
   background: var(--surface);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
   color: var(--muted);
 
   input {
@@ -53,14 +53,14 @@
     border: 0;
     outline: 0;
     background: transparent;
-    font-size: 15px;
+    font-size: var(--text-15);
     color: var(--ink);
   }
 }
 
 .filters {
   display: block;
-  margin: 10px var(--space-4) 0;
+  margin: var(--space-2-5) var(--space-4) 0;
 }
 
 .items {
@@ -79,7 +79,7 @@
 
 .item {
   min-height: 56px;
-  padding: 8px 14px;
+  padding: var(--space-2) var(--space-3-5);
   border: 0;
   border-radius: var(--radius-row);
   background: var(--surface);
@@ -96,7 +96,7 @@
   padding: 0 7px;
   border-radius: var(--radius-check);
   background: var(--soft);
-  font-size: 11px;
+  font-size: var(--text-11);
   font-weight: 700;
   color: var(--ink-2);
   display: flex;
@@ -111,12 +111,12 @@
 }
 
 .title {
-  font-size: 16px;
+  font-size: var(--text-16);
   font-weight: 600;
 }
 
 .meta {
-  font-size: 12px;
+  font-size: var(--text-12);
   color: var(--ink-2);
 }
 

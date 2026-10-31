@@ -36,12 +36,12 @@ import { RepeatStatus } from '../../domain/repeat-status';
   styles: `
     :host {
       min-height: 60px;
-      padding: 0 14px 0 6px;
+      padding: 0 var(--space-3-5) 0 var(--space-1-5);
       border-radius: var(--radius-row);
       background: var(--surface);
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: var(--space-1);
     }
     button {
       border: 0;
@@ -77,15 +77,15 @@ import { RepeatStatus } from '../../domain/repeat-status';
       text-align: left;
     }
     .title {
-      font-size: 17px;
+      font-size: var(--text-17);
       font-weight: 500;
     }
     .sub {
-      font-size: 12px;
+      font-size: var(--text-12);
       color: var(--ink-2);
     }
     .tag {
-      font-size: 13px;
+      font-size: var(--text-13);
       font-weight: 500;
       color: var(--ink-2);
       white-space: nowrap;
@@ -96,11 +96,11 @@ import { RepeatStatus } from '../../domain/repeat-status';
       border-radius: var(--radius-label);
       background: var(--overdue-bg);
       color: var(--overdue-fg);
-      font-size: 12px;
+      font-size: var(--text-12);
       font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: var(--space-1);
     }
   `,
 })
