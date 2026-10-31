@@ -89,3 +89,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Polish
 
 - [x] Ticking a todo shows the tick, then the row slides out (R7; `docs/plans/tick-animation.md`)
+- [ ] Micro-interactions on the everyday moments: ticking, toasts, adding, Inbox, swipes, sheets and more (`docs/plans/animations.md`)
