@@ -6,6 +6,7 @@ import { Server, toSendError } from '../server/server';
 import { applyRemote } from './merge';
 import { drainOutbox, SendError } from './outbox';
 import { drainPhotos } from './photos';
+import { logError } from '../logging/log';
 
 const PAGE_SIZE = 500;
 const RETRY_MS = 30_000;
@@ -104,7 +105,7 @@ export class SyncService {
       this.retryTimer = setTimeout(() => this.sync(), RETRY_MS);
       return;
     }
-    console.error('Sync failed', error);
+    logError('Sync failed', error);
   }
 
   private goOffline() {

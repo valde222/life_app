@@ -5,6 +5,7 @@ import { LocalStore } from '../data/local-store';
 import { Repository } from '../data/repository';
 import { CalendarSettings } from './calendar-settings';
 import { importWindow, planImport } from '../../domain/import-plan';
+import { logError } from '../logging/log';
 
 const EVERY_MS = 15 * 60_000;
 
@@ -71,7 +72,7 @@ export class CalendarImporter {
         await this.repository.remove('calendar_events', id);
       }
     } catch (error) {
-      console.error('Calendar import failed', error);
+      logError('Calendar import failed', error);
     } finally {
       this.running = false;
     }

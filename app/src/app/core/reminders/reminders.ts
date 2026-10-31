@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Todo } from '../../domain/models';
 import { Store } from '../data/store';
+import { logError } from '../logging/log';
 
 const MAX_SCHEDULED = 60;
 const DEBOUNCE_MS = 2000;
@@ -81,7 +82,7 @@ export class Reminders {
         });
       }
     } catch (error) {
-      console.error('Scheduling reminders failed', error);
+      logError('Scheduling reminders failed', error);
     }
   }
 }

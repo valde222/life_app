@@ -1,5 +1,6 @@
 import { LocalStore, OutboxEntry } from '../data/local-store';
 import { CollectionName, Collections } from '../../domain/models';
+import { logError } from '../logging/log';
 
 export interface RemoteWriter {
   upsert<C extends CollectionName>(collection: C, record: Collections[C]): Promise<Collections[C]>;
@@ -54,7 +55,7 @@ export async function drainOutbox(
         if (!(error instanceof SendError) || error.failure !== 'rejected') {
           throw error;
         }
-        console.error(`Dropped ${entry.key}: the server rejected it`, error.cause);
+        logError(`Dropped ${entry.key}: the server rejected it`, error.cause);
       }
     }
     await removeIfUnchanged(store, entry);

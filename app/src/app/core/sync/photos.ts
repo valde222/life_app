@@ -2,6 +2,7 @@ import { LocalStore } from '../data/local-store';
 import { Note } from '../../domain/models';
 import { applyRemote } from './merge';
 import { SendError } from './outbox';
+import { logError } from '../logging/log';
 
 export interface PhotoWriter {
   addPhoto(note: string, file: Blob, name: string): Promise<Note>;
@@ -28,6 +29,6 @@ async function send(write: () => Promise<Note>, store: LocalStore) {
     if (!(error instanceof SendError) || error.failure !== 'rejected') {
       throw error;
     }
-    console.error('Dropped a photo change the server rejected', error.cause);
+    logError('Dropped a photo change the server rejected', error.cause);
   }
 }

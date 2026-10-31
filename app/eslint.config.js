@@ -74,6 +74,10 @@ module.exports = tseslint.config(
     },
   },
   {
+    files: ['src/app/core/logging/log.ts'],
+    rules: { 'no-console': 'off' },
+  },
+  {
     files: ['**/*.html'],
     extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
     rules: {},
