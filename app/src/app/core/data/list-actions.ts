@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { pocketBaseTimestamp } from '../../domain/ids';
 import { ListDrop, nextOrder, reorderLists } from '../../domain/list-order';
 import { Group, List, ListColour } from '../../domain/models';
 import { Actions, Undo } from './actions';
 import { Repository } from './repository';
 import { Store } from './store';
+import { pocketBaseTimestamp } from '../../domain/time/timestamps';
 
 export interface ListFields {
   name: string;

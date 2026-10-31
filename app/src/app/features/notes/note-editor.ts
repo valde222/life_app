@@ -20,7 +20,7 @@ import { Draft, EMPTY_RECORDS, Note } from '../../domain/models';
 import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
 import { Clock } from '../../core/time/clock';
-import { localDate, shortDate } from '../../domain/time/local-date';
+import { shortDate } from '../../domain/time/local-date';
 import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { listColourStyle } from '../../shared/ui/list-colours';
@@ -31,6 +31,7 @@ import { renderMarkdown } from '../../shared/markdown/markdown';
 import { Photos } from '../../core/data/photos';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
+import { dayOfTimestamp } from '../../domain/time/timestamps';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
 
@@ -92,7 +93,7 @@ export class NoteEditor {
   });
   protected readonly dateLabel = computed(() => {
     const created = this.note()?.created;
-    const day = created ? localDate(new Date(created.replace(' ', 'T'))) : this.clock.today();
+    const day = created ? dayOfTimestamp(created) : this.clock.today();
     return day === this.clock.today() ? 'Today' : shortDate(day);
   });
   protected readonly rendered = computed(() =>

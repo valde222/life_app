@@ -1,6 +1,6 @@
-import { pocketBaseTimestamp } from './ids';
 import { CalendarEvent, Draft } from './models';
 import { addDays, localDate, parseLocalDate } from './time/local-date';
+import { pocketBaseTimestamp } from './time/timestamps';
 
 export const WINDOW_DAYS_BACK = 14;
 export const WINDOW_DAYS_AHEAD = 92;

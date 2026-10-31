@@ -1,8 +1,8 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { pocketBaseTimestamp } from '../../domain/ids';
 import { startOf } from '../../domain/time/until';
 import { Sheet } from '../ui/sheet';
+import { parseTimestamp, pocketBaseTimestamp } from '../../domain/time/timestamps';
 
 export interface ReminderPickerData {
   date: string;
@@ -37,7 +37,7 @@ export function reminderLabel(reminder: string, date: string, time: string): str
   if (!reminder) {
     return '';
   }
-  const at = new Date(reminder.replace(' ', 'T')).getTime();
+  const at = parseTimestamp(reminder).getTime();
   const match = reminderOptions(date, time).find((option) => option.at?.getTime() === at);
   return match?.label ?? clock(new Date(at));
 }

@@ -6,6 +6,7 @@ import { monthName, parseLocalDate, weekdayName } from '../../domain/time/local-
 import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { stepsLabel, weekSummary } from '../../domain/week-summary';
+import { parseTimestamp } from '../../domain/time/timestamps';
 
 const NOTES_SHOWN = 3;
 const WEEKDAY_NAMES = [
@@ -58,7 +59,7 @@ export class WeekPage {
   }
 
   protected dayName(timestamp: string) {
-    return WEEKDAY_NAMES[new Date(timestamp.replace(' ', 'T')).getDay()];
+    return WEEKDAY_NAMES[parseTimestamp(timestamp).getDay()];
   }
 
   protected list(id: string) {

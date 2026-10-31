@@ -1,5 +1,6 @@
 import { CalendarEvent, EMPTY_RECORDS, Todo } from './models';
 import { localDate } from './time/local-date';
+import { parseTimestamp } from './time/timestamps';
 
 export const CALENDAR_PREFIX = 'cal:';
 
@@ -7,13 +8,9 @@ function clock(date: Date) {
   return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 }
 
-export function parseInstant(value: string): Date {
-  return new Date(value.replace(' ', 'T'));
-}
-
 export function calendarEventAsTodo(event: CalendarEvent): Todo {
-  const start = parseInstant(event.start);
-  const end = event.end ? parseInstant(event.end) : null;
+  const start = parseTimestamp(event.start);
+  const end = event.end ? parseTimestamp(event.end) : null;
   const sameDay = end && localDate(end) === localDate(start);
   return {
     ...EMPTY_RECORDS.todos,

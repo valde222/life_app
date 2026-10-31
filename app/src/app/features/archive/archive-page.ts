@@ -7,11 +7,12 @@ import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
 import { search } from '../../domain/search-items';
 import { Clock } from '../../core/time/clock';
-import { localDate, longDate, shortDate } from '../../domain/time/local-date';
+import { longDate, shortDate } from '../../domain/time/local-date';
 import { Icon } from '../../shared/ui/icon';
 import { Segmented } from '../../shared/ui/segmented';
 import { deletedItems } from '../../domain/deleted-items';
 import { Toasts } from '../../core/toasts/toasts';
+import { dayOfTimestamp } from '../../domain/time/timestamps';
 
 type Tab = 'archive' | 'done';
 
@@ -22,8 +23,6 @@ interface Row {
   sub: string;
   day: string;
 }
-
-const dayOf = (timestamp: string) => localDate(new Date(timestamp.replace(' ', 'T')));
 
 function byDay(rows: Row[]) {
   const groups = new Map<string, Row[]>();
@@ -74,7 +73,7 @@ export class ArchivePage {
           id: hit.id,
           title: hit.title,
           sub: this.store.list(hit.list)?.name ?? '',
-          day: dayOf(record.archived_at),
+          day: dayOfTimestamp(record.archived_at),
         };
       }),
     ),
@@ -99,7 +98,7 @@ export class ArchivePage {
           id: todo.id,
           title: todo.title,
           sub: this.store.list(todo.list)?.name ?? '',
-          day: dayOf(todo.done_at),
+          day: dayOfTimestamp(todo.done_at),
         })),
     ),
   );
@@ -116,7 +115,7 @@ export class ArchivePage {
     const notes = this.allNotes().filter(
       (note) => note.list === list.id && !note.deleted_at,
     ).length;
-    return `Closed ${shortDate(dayOf(list.archived_at))}${notes ? `, ${notes} note${notes === 1 ? '' : 's'}` : ''}`;
+    return `Closed ${shortDate(dayOfTimestamp(list.archived_at))}${notes ? `, ${notes} note${notes === 1 ? '' : 's'}` : ''}`;
   }
 
   protected async restore(row: Row) {

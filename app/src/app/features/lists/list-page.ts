@@ -6,7 +6,6 @@ import { Store } from '../../core/data/store';
 import { CaptureData, CaptureSheet } from '../../shared/capture/capture-sheet';
 import { Clock } from '../../core/time/clock';
 import { relativeDay, shortDate, weekdayName, daysBetween } from '../../domain/time/local-date';
-import { localDate } from '../../domain/time/local-date';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { Icon } from '../../shared/ui/icon';
 import { Segmented } from '../../shared/ui/segmented';
@@ -16,6 +15,7 @@ import { TodoRow } from '../../shared/ui/todo-row';
 import { isFiledNote } from '../../domain/list-counts';
 import { ItemActions } from './item-actions';
 import { Toasts } from '../../core/toasts/toasts';
+import { dayOfTimestamp } from '../../domain/time/timestamps';
 
 type Tab = 'todos' | 'notes';
 
@@ -96,9 +96,7 @@ export class ListPage {
   }
 
   protected noteDate(note: Note) {
-    const day = note.created
-      ? localDate(new Date(note.created.replace(' ', 'T')))
-      : this.clock.today();
+    const day = note.created ? dayOfTimestamp(note.created) : this.clock.today();
     return day === this.clock.today() ? 'Today' : shortDate(day);
   }
 

@@ -1,5 +1,6 @@
 import { Completion, Note, Step, Todo } from './models';
-import { addDays, localDate, parseLocalDate } from './time/local-date';
+import { addDays, parseLocalDate } from './time/local-date';
+import { dayOfTimestamp } from './time/timestamps';
 
 export interface WeekSummary {
   start: string;
@@ -10,8 +11,6 @@ export interface WeekSummary {
   notes: Note[];
   byList: { list: string; count: number }[];
 }
-
-const dayOf = (timestamp: string) => localDate(new Date(timestamp.replace(' ', 'T')));
 
 export interface WeekRecords {
   todos: Todo[];
@@ -30,7 +29,8 @@ function countByList(lists: string[]): { list: string; count: number }[] {
 function notesWritten(notes: Note[], inWeek: (date: string) => boolean): Note[] {
   return notes
     .filter(
-      (note) => !note.deleted_at && !note.inbox && note.created && inWeek(dayOf(note.created)),
+      (note) =>
+        !note.deleted_at && !note.inbox && note.created && inWeek(dayOfTimestamp(note.created)),
     )
     .sort((a, b) => (b.created ?? '').localeCompare(a.created ?? ''));
 }
@@ -45,13 +45,13 @@ export function weekSummary(today: string, records: WeekRecords): WeekSummary {
   const inWeek = (date: string) => date >= start && date <= end;
 
   const finished = records.todos
-    .filter((todo) => todo.done_at && !todo.deleted_at && inWeek(dayOf(todo.done_at)))
+    .filter((todo) => todo.done_at && !todo.deleted_at && inWeek(dayOfTimestamp(todo.done_at)))
     .sort((a, b) => b.done_at.localeCompare(a.done_at));
   const repeats = records.completions.filter(
     (completion) => !completion.deleted_at && inWeek(completion.done_on),
   );
   const doneDays = [
-    ...finished.map((todo) => dayOf(todo.done_at)),
+    ...finished.map((todo) => dayOfTimestamp(todo.done_at)),
     ...repeats.map((completion) => completion.done_on),
   ];
   const listOf = new Map(records.todos.map((todo) => [todo.id, todo.list]));

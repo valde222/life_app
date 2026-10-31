@@ -4,6 +4,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import { Todo } from '../../domain/models';
 import { Store } from '../data/store';
 import { logError } from '../logging/log';
+import { parseTimestamp } from '../../domain/time/timestamps';
 
 const MAX_SCHEDULED = 60;
 const DEBOUNCE_MS = 2000;
@@ -25,7 +26,7 @@ export function dueReminders(
     .map((todo) => ({
       id: notificationId(todo.id),
       title: todo.title,
-      at: new Date(todo.reminder.replace(' ', 'T')),
+      at: parseTimestamp(todo.reminder),
       todo: todo.id,
     }))
     .filter((reminder) => reminder.at > now)

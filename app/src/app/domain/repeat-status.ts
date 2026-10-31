@@ -1,5 +1,6 @@
 import { Completion, Draft, RepeatMode, Todo } from './models';
 import { addDays, daysBetween, localDate, weekday, weekdayName } from './time/local-date';
+import { dayOfTimestamp } from './time/timestamps';
 
 export const ROUGH_CHOICES = [
   { label: 'Every few days', days: 3, sub: 'about every few days', unit: 'a few days' },
@@ -40,7 +41,7 @@ export function completionDays(todo: Todo, completions: Completion[]): string[] 
 
 function startDay(todo: Todo): string {
   return todo.created
-    ? localDate(new Date(todo.created.replace(' ', 'T')))
+    ? dayOfTimestamp(todo.created)
     : localDate(new Date(todo.changed_at || Date.now()));
 }
 

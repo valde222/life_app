@@ -1,5 +1,6 @@
 import { List, Note, Todo } from './models';
-import { daysBetween, localDate } from './time/local-date';
+import { daysBetween } from './time/local-date';
+import { dayOfTimestamp } from './time/timestamps';
 
 export const KEEP_DELETED_DAYS = 30;
 
@@ -37,9 +38,7 @@ export function deletedItems(records: DeletableRecords, today: string): DeletedI
       id: record.id,
       title,
       deletedAt: record.deleted_at,
-      daysLeft:
-        KEEP_DELETED_DAYS -
-        daysBetween(localDate(new Date(record.deleted_at.replace(' ', 'T'))), today),
+      daysLeft: KEEP_DELETED_DAYS - daysBetween(dayOfTimestamp(record.deleted_at), today),
     }))
     .filter((item) => item.daysLeft > 0)
     .sort((a, b) => b.deletedAt.localeCompare(a.deletedAt));

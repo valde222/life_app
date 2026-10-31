@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { Clock } from '../time/clock';
-import { pocketBaseTimestamp } from '../../domain/ids';
 import { CollectionName, Collections, Draft, Note, Todo } from '../../domain/models';
 import {
   repeatFields,
@@ -9,6 +8,7 @@ import {
   stoppedRepeatFields,
 } from '../../domain/repeat-status';
 import { Repository } from './repository';
+import { pocketBaseTimestamp } from '../../domain/time/timestamps';
 
 export type Undo = () => Promise<unknown>;
 

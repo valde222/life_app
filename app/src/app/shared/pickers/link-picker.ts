@@ -6,9 +6,10 @@ import { Actions } from '../../core/data/actions';
 import { Note, Todo } from '../../domain/models';
 import { Store } from '../../core/data/store';
 import { Clock } from '../../core/time/clock';
-import { localDate, relativeDay, shortDate } from '../../domain/time/local-date';
+import { relativeDay, shortDate } from '../../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { Segmented } from '../ui/segmented';
+import { dayOfTimestamp } from '../../domain/time/timestamps';
 
 export interface LinkPickerData {
   self?: string;
@@ -129,9 +130,7 @@ export class LinkPicker {
   }
 
   private fromNote(note: Note): Candidate {
-    const day = note.created
-      ? localDate(new Date(note.created.replace(' ', 'T')))
-      : this.clock.today();
+    const day = note.created ? dayOfTimestamp(note.created) : this.clock.today();
     return {
       kind: 'note',
       id: note.id,

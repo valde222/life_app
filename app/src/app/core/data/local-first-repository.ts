@@ -3,10 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { liveQuery } from 'dexie';
 import { from } from 'rxjs';
 import { enqueue } from '../sync/outbox';
-import { newId, pocketBaseTimestamp } from '../../domain/ids';
+import { newId } from '../../domain/ids';
 import { LocalStore } from './local-store';
 import { Repository } from './repository';
 import { CollectionName, Collections, Draft, EMPTY_RECORDS } from '../../domain/models';
+import { pocketBaseTimestamp } from '../../domain/time/timestamps';
 
 @Injectable({ providedIn: 'root' })
 export class LocalFirstRepository implements Repository {

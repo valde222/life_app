@@ -1,5 +1,6 @@
 import { Note, Todo } from './models';
 import { localDate } from './time/local-date';
+import { dayOfTimestamp, parseTimestamp } from './time/timestamps';
 
 export type InboxItem = { kind: 'todo'; record: Todo } | { kind: 'note'; record: Note };
 
@@ -9,15 +10,13 @@ export interface InboxSection {
 }
 
 export function capturedOn(record: Todo | Note): string {
-  return record.created
-    ? localDate(new Date(record.created.replace(' ', 'T')))
-    : localDate(new Date(record.changed_at));
+  return record.created ? dayOfTimestamp(record.created) : localDate(new Date(record.changed_at));
 }
 
 const newestFirst = (a: InboxItem, b: InboxItem) => capturedAt(b.record) - capturedAt(a.record);
 
 function capturedAt(record: Todo | Note) {
-  return record.created ? new Date(record.created.replace(' ', 'T')).getTime() : record.changed_at;
+  return record.created ? parseTimestamp(record.created).getTime() : record.changed_at;
 }
 
 export function inboxSections(todos: Todo[], notes: Note[], today: string): InboxSection[] {
