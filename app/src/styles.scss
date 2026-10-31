@@ -442,6 +442,18 @@ a {
   }
 }
 
+.expand-in {
+  transform-origin: top;
+  animation: expand-in var(--motion-base) var(--ease-enter);
+}
+
+@keyframes expand-in {
+  from {
+    opacity: 0;
+    transform: scaleY(0.9);
+  }
+}
+
 .count-in {
   display: inline-block;
   animation: count-in var(--motion-fast) var(--ease-enter);

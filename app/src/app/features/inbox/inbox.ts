@@ -13,6 +13,7 @@ import { inboxSections, InboxItem } from '../../domain/inbox-items';
 import { isTyping } from '../../shared/ui/keyboard';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
+import { Settled } from '../../shared/ui/motion';
 
 const QUICK_LISTS = 4;
 
@@ -26,6 +27,7 @@ const QUICK_LISTS = 4;
 })
 export class Inbox {
   private readonly store = inject(Store);
+  protected readonly settled = new Settled();
   private readonly actions = inject(Actions);
   private readonly toasts = inject(Toasts);
   private readonly sheets = inject(Sheets);

@@ -17,6 +17,8 @@
         <div class="stack">
           @for (todo of open(); track todo.id) {
             <app-swipe-row
+              [animate.enter]="settled.animate('row-in')"
+              [animate.leave]="settled.animate('row-out')"
               [right]="todoSwipe.right"
               [left]="todoSwipe.left"
               (swipedRight)="putOnToday(todo)"
@@ -45,15 +47,18 @@
           [attr.aria-expanded]="showDone()"
           (click)="showDone.set(!showDone())"
         >
-          <app-icon name="chevron-right" [size]="14" [stroke]="2.4" [class.open]="showDone()" />{{
-            done().length
-          }}
+          <app-icon name="chevron-right" [size]="14" [stroke]="2.4" [class.open]="showDone()" />
+          @for (count of [done().length]; track count) {
+            <span [animate.enter]="settled.animate('count-in')">{{ count }}</span>
+          }
           done
         </button>
         @if (showDone()) {
           <div class="stack">
             @for (todo of done(); track todo.id) {
               <app-todo-row
+                [animate.enter]="settled.animate('row-in')"
+                [animate.leave]="settled.animate('row-out')"
                 [title]="todo.title"
                 [link]="['/todo', todo.id]"
                 [done]="true"
@@ -67,7 +72,12 @@
       @if (notes().length) {
         <div class="stack">
           @for (note of notes(); track note.id) {
-            <app-swipe-row [left]="noteSwipe" (swipedLeft)="noteActions(note)">
+            <app-swipe-row
+              [animate.enter]="settled.animate('row-in')"
+              [animate.leave]="settled.animate('row-out')"
+              [left]="noteSwipe"
+              (swipedLeft)="noteActions(note)"
+            >
               <a class="note" [routerLink]="['/note', note.id]" [state]="{ back: back() }">
                 <span class="note-head">
                   <span class="note-title">{{ note.title || 'Untitled' }}</span>

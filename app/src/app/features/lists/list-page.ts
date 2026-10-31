@@ -16,6 +16,7 @@ import { isFiledNote } from '../../domain/list-counts';
 import { ItemActions } from './item-actions';
 import { Toasts } from '../../core/toasts/toasts';
 import { dayOfTimestamp } from '../../domain/time/timestamps';
+import { Settled } from '../../shared/ui/motion';
 
 type Tab = 'todos' | 'notes';
 
@@ -30,6 +31,7 @@ export class ListPage {
   readonly id = input.required<string>();
 
   private readonly store = inject(Store);
+  protected readonly settled = new Settled();
   private readonly actions = inject(Actions);
   private readonly itemActions = inject(ItemActions);
   private readonly sheets = inject(Sheets);
