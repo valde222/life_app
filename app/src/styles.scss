@@ -236,6 +236,90 @@ a {
   height: 100%;
 }
 
+.sheet-backdrop {
+  transition: opacity var(--motion-base) var(--ease-standard);
+}
+
+.sheet-backdrop.sheet-backdrop-closing {
+  opacity: 0;
+  transition-duration: var(--motion-fast);
+}
+
+.sheet-panel .cdk-dialog-container {
+  animation: sheet-in var(--motion-base) var(--ease-enter);
+}
+
+.sheet-panel .cdk-dialog-container:not(.sheet-dragging) {
+  transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+.sheet-closing {
+  pointer-events: none;
+}
+
+.sheet-closing .cdk-dialog-container {
+  animation: sheet-out var(--motion-fast) var(--ease-exit) forwards;
+}
+
+.sheet-panel .handle {
+  position: relative;
+  touch-action: none;
+}
+
+.sheet-panel .handle::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--space-4)) calc(-1 * var(--space-6));
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes sheet-out {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes dialog-out {
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes zoom-out {
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.sheet-full .cdk-dialog-container {
+  animation-name: zoom-in;
+}
+
+.sheet-closing.sheet-full .cdk-dialog-container {
+  animation-name: zoom-out;
+}
+
 .cdk-drag-preview {
   box-shadow: var(--shadow-nav);
 }
@@ -361,6 +445,11 @@ a {
   .sheet-panel:not(.sheet-full) .cdk-dialog-container {
     border-radius: var(--radius-modal);
     box-shadow: var(--shadow-nav);
+    animation-name: dialog-in;
+  }
+
+  .sheet-closing:not(.sheet-full) .cdk-dialog-container {
+    animation-name: dialog-out;
   }
 
   .cdk-overlay-pane.sheet-tall {

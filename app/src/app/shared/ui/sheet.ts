@@ -2,6 +2,7 @@ import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { ChangeDetectionStrategy, Component, inject, Injectable, input } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { closeWithMotion, SheetDrag } from './sheet-motion';
 
 @Injectable({ providedIn: 'root' })
 export class Sheets {
@@ -19,6 +20,14 @@ export class Sheets {
       autoFocus: 'first-tabbable',
       ...config,
     });
+    closeWithMotion(ref);
+    const container =
+      ref.overlayRef.overlayElement.querySelector<HTMLElement>('.cdk-dialog-container');
+    if (container) {
+      new SheetDrag(container, () => {
+        ref.close();
+      });
+    }
     return { ref, closed: firstValueFrom(ref.closed) };
   }
 
