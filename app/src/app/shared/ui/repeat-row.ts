@@ -1,20 +1,29 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Icon } from './icon';
+import { TickOut } from './tick-out';
 import { RepeatStatus } from '../../domain/repeat-status';
 
 @Component({
   selector: 'app-repeat-row',
   imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.tick-out]': 'tickOut.leaving()',
+    '[style.--tick-out]': 'tickOut.duration',
+  },
   template: `
     <button
       type="button"
       class="done"
       [attr.aria-label]="'Mark ' + title() + ' done today'"
-      (click)="tick.emit()"
+      (click)="press()"
     >
       @if (checkbox()) {
-        <span class="box"></span>
+        <span class="box" [class.checked]="tickOut.leaving()">
+          @if (tickOut.leaving()) {
+            <app-icon name="check" [size]="14" [stroke]="3" />
+          }
+        </span>
       } @else {
         <app-icon name="repeat" [size]="22" [stroke]="2.2" [class.over]="status().overdue" />
       }
@@ -66,6 +75,18 @@ import { RepeatStatus } from '../../domain/repeat-status';
       height: 22px;
       border-radius: var(--radius-check);
       border: 2px solid var(--control);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--on-accent);
+    }
+    .box.checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    :host(.tick-out) .title {
+      color: var(--ink-2);
+      text-decoration: line-through;
     }
     .body {
       flex: 1;
@@ -110,4 +131,16 @@ export class RepeatRow {
   readonly checkbox = input(false);
   readonly tick = output();
   readonly open = output();
+
+  protected readonly tickOut = new TickOut();
+
+  protected press() {
+    if (!this.checkbox()) {
+      this.tick.emit();
+      return;
+    }
+    this.tickOut.start(() => {
+      this.tick.emit();
+    });
+  }
 }

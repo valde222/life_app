@@ -88,4 +88,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Polish
 
-- [ ] Ticking a todo shows the tick, then the row slides out (R7; `docs/plans/tick-animation.md`)
+- [x] Ticking a todo shows the tick, then the row slides out (R7; `docs/plans/tick-animation.md`)

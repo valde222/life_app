@@ -381,3 +381,24 @@ a {
 .dialog-panel .cdk-dialog-container {
   outline: none;
 }
+
+.tick-out {
+  interpolate-size: allow-keywords;
+  overflow: hidden;
+  pointer-events: none;
+  animation: tick-out calc(var(--tick-out) * 0.75) ease-in calc(var(--tick-out) * 0.25) forwards;
+}
+
+@keyframes tick-out {
+  45% {
+    opacity: 0;
+    transform: translateX(var(--space-6));
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--space-6));
+    height: 0;
+    min-height: 0;
+    margin-bottom: calc(-1 * var(--space-2));
+  }
+}
