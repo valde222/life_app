@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Actions } from '../../core/data/actions';
 import { Note, Todo } from '../../domain/models';
 import { Store } from '../../core/data/store';
 import { CaptureData, CaptureSheet } from '../../shared/capture/capture-sheet';
@@ -14,9 +13,9 @@ import { SwipeRow } from '../../shared/ui/swipe-row';
 import { TodoRow } from '../../shared/ui/todo-row';
 import { isFiledNote } from '../../domain/list-counts';
 import { ItemActions } from './item-actions';
-import { Toasts } from '../../core/toasts/toasts';
 import { dayOfTimestamp } from '../../domain/time/timestamps';
 import { Settled } from '../../shared/ui/motion';
+import { Ticking } from '../../shared/ticking/ticking';
 
 type Tab = 'todos' | 'notes';
 
@@ -32,10 +31,9 @@ export class ListPage {
 
   private readonly store = inject(Store);
   protected readonly settled = new Settled();
-  private readonly actions = inject(Actions);
+  private readonly ticking = inject(Ticking);
   private readonly itemActions = inject(ItemActions);
   private readonly sheets = inject(Sheets);
-  private readonly toasts = inject(Toasts);
   private readonly clock = inject(Clock);
 
   protected readonly list = computed(() => this.store.list(this.id()));
@@ -111,13 +109,12 @@ export class ListPage {
     );
   }
 
-  protected async tick(todo: Todo) {
-    const undo = await this.actions.tick(todo);
-    this.toasts.show({ title: `${todo.title} done`, undo });
+  protected tick(todo: Todo) {
+    return this.ticking.tick(todo, this.back());
   }
 
-  protected async untick(todo: Todo) {
-    await this.actions.untick(todo);
+  protected untick(todo: Todo) {
+    return this.ticking.untick(todo);
   }
 
   protected putOnToday(todo: Todo) {

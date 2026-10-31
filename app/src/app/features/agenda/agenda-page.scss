@@ -256,3 +256,7 @@
   font-size: var(--text-17);
   font-weight: 500;
 }
+
+.tick-over {
+  left: calc(var(--space-3-5) - 11px);
+}

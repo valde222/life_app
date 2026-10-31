@@ -76,15 +76,22 @@
               (swipedRight)="putOnToday(asTodo(item))"
               (swipedLeft)="moreLists(asTodo(item))"
             >
-              <button
-                type="button"
-                class="row"
-                [class.focused]="isFocused(item)"
-                (click)="toggle(item)"
-              >
-                <span class="box" aria-label="Todo"></span>
-                <span class="row-title">{{ item.record.title }}</span>
-              </button>
+              <div class="tick-slot">
+                <button
+                  type="button"
+                  class="row"
+                  [class.focused]="isFocused(item)"
+                  (click)="toggle(item)"
+                >
+                  <span class="box-space" aria-hidden="true"></span>
+                  <span class="row-title">{{ item.record.title }}</span>
+                </button>
+                <app-tick-box
+                  class="tick-over"
+                  [title]="item.record.title"
+                  (tick)="tick(asTodo(item))"
+                />
+              </div>
             </app-swipe-row>
           } @else {
             <app-swipe-row

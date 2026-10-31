@@ -14,6 +14,9 @@ import { ListLabel } from '../../shared/ui/list-label';
 import { agendaDays, AgendaSources, datesWithItems } from '../../domain/agenda-days';
 import { isTyping } from '../../shared/ui/keyboard';
 import { Settled } from '../../shared/ui/motion';
+import { Ticking } from '../../shared/ticking/ticking';
+import { TickBox } from '../../shared/ui/tick-box';
+import { Todo } from '../../domain/models';
 
 type View = 'week' | 'month' | 'year';
 const DAYS_SHOWN = 21;
@@ -25,7 +28,7 @@ function mondayOf(date: string) {
 
 @Component({
   selector: 'app-agenda-page',
-  imports: [Icon, ListLabel, RouterLink],
+  imports: [Icon, ListLabel, RouterLink, TickBox],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './agenda-page.html',
   host: { '(document:keydown)': 'onKey($event)' },
@@ -33,6 +36,7 @@ function mondayOf(date: string) {
 })
 export class AgendaPage {
   private readonly store = inject(Store);
+  private readonly ticking = inject(Ticking);
   private readonly clock = inject(Clock);
   protected readonly today = this.clock.today();
   protected readonly weekdays = WEEKDAYS;
@@ -103,6 +107,10 @@ export class AgendaPage {
       return `${label} – ${longDate(endDate)}`;
     }
     return date === this.today ? `Today, ${label}` : label;
+  }
+
+  protected tick(todo: Todo) {
+    return this.ticking.tick(todo, '/agenda');
   }
 
   protected pick(date: string) {

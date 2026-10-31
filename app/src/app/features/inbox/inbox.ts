@@ -14,12 +14,14 @@ import { isTyping } from '../../shared/ui/keyboard';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
 import { motionMs, Settled } from '../../shared/ui/motion';
+import { Ticking } from '../../shared/ticking/ticking';
+import { TickBox } from '../../shared/ui/tick-box';
 
 const QUICK_LISTS = 4;
 
 @Component({
   selector: 'app-inbox',
-  imports: [EmptyState, Icon, RouterLink, SwipeRow],
+  imports: [EmptyState, Icon, RouterLink, SwipeRow, TickBox],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './inbox.html',
   host: { '(document:keydown)': 'onKey($event)' },
@@ -27,6 +29,7 @@ const QUICK_LISTS = 4;
 })
 export class Inbox {
   private readonly store = inject(Store);
+  private readonly ticking = inject(Ticking);
   protected readonly settled = new Settled();
   private readonly actions = inject(Actions);
   private readonly toasts = inject(Toasts);
@@ -125,6 +128,10 @@ export class Inbox {
       const undo = await this.actions.setDate(todo, result.date);
       this.done('Dated', undo);
     }
+  }
+
+  protected tick(todo: Todo) {
+    return this.ticking.tick(todo, '/inbox');
   }
 
   protected async delete(todo: Todo) {

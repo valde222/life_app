@@ -16,19 +16,22 @@ import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { search, SearchFilter, SearchHit } from '../../domain/search-items';
 import { Toasts } from '../../core/toasts/toasts';
+import { Ticking } from '../../shared/ticking/ticking';
+import { TickBox } from '../../shared/ui/tick-box';
 
 const RECENT_MS = 7 * 86_400_000;
 const RECENT_WHEN_EMPTY = 8;
 
 @Component({
   selector: 'app-search-page',
-  imports: [FormsModule, Icon, ListLabel, RouterLink],
+  imports: [FormsModule, Icon, ListLabel, RouterLink, TickBox],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './search-page.html',
   styleUrl: './search-page.scss',
 })
 export class SearchPage {
   private readonly store = inject(Store);
+  private readonly ticking = inject(Ticking);
   private readonly actions = inject(Actions);
   private readonly toasts = inject(Toasts);
   private readonly router = inject(Router);
@@ -63,6 +66,14 @@ export class SearchPage {
 
   protected list(hit: SearchHit) {
     return this.store.list(hit.list);
+  }
+
+  protected async toggleDone(hit: SearchHit) {
+    const todo = this.store.todos().find((each) => each.id === hit.id);
+    if (!todo) {
+      return;
+    }
+    await (hit.done ? this.ticking.untick(todo) : this.ticking.tick(todo, '/search'));
   }
 
   protected link(hit: SearchHit) {
