@@ -17,7 +17,11 @@
         <app-icon name="chevron-right" [size]="16" [stroke]="2.2" [class.open]="entry.open" />
       </button>
       @if (entry.open) {
-        <div class="rows">
+        <div
+          class="rows"
+          [animate.enter]="settled.animate('collapse-in')"
+          [animate.leave]="settled.animate('collapse-out')"
+        >
           @for (list of entry.lists; track list.id) {
             <a class="row" [routerLink]="['/lists', list.id]">
               <app-list-swatch [colour]="list.colour" />
