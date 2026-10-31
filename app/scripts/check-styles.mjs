@@ -11,6 +11,9 @@ const RADII = pixels(tokens.radius);
 const COLOUR = /#[0-9a-f]{3,8}\b|\b(?:rgb|hsl)a?\(/i;
 const PIXEL = /(?<![-\w.])(\d+(?:\.\d+)?px)/g;
 const DECLARATION = /^\s*([a-z-]+)\s*:\s*([^;{]+);/;
+const DURATION = /(?<![\w.-])(?!0m?s\b)\d*\.?\d+m?s\b/;
+const EASING =
+  /(?<![\w-])(?:ease|ease-in|ease-out|ease-in-out|linear)(?![\w-])|cubic-bezier\(|steps\(/;
 const RULES = [
   { test: (property) => property === 'font-size', bad: () => true, hint: 'var(--text-…)' },
   {
@@ -40,9 +43,27 @@ function* files(dir) {
   }
 }
 
+function joinContinuations(lines) {
+  return lines.map((line, index) => {
+    if (!/^\s*[a-z-]+:\s*$/.test(line)) {
+      return line;
+    }
+    const end = lines.findIndex((next, at) => at > index && next.includes(';'));
+    return end === -1
+      ? line
+      : [line.trimEnd(), ...lines.slice(index + 1, end + 1).map((part) => part.trim())].join(' ');
+  });
+}
+
 function problems(property, value) {
   if (COLOUR.test(value)) {
     return ['colour literal: use a colour token'];
+  }
+  if (/^(transition|animation)(-|$)/.test(property)) {
+    return [
+      ...(DURATION.test(value) ? ['duration literal: use var(--motion-…)'] : []),
+      ...(EASING.test(value) ? ['easing literal: use var(--ease-…)'] : []),
+    ];
   }
   const rule = RULES.find(({ test }) => test(property));
   const literals = rule ? [...value.matchAll(PIXEL)].map((match) => match[1]).filter(rule.bad) : [];
@@ -52,17 +73,15 @@ function problems(property, value) {
 const found = [];
 for (const path of files('src')) {
   const isScript = path.endsWith('.ts');
-  readFileSync(path, 'utf8')
-    .split('\n')
-    .forEach((line, index) => {
-      const declaration = DECLARATION.exec(line);
-      if (!declaration || (isScript && !/^\s{4,}[a-z-]+\s*:/.test(line))) {
-        return;
-      }
-      for (const problem of problems(declaration[1], declaration[2])) {
-        found.push(`${relative('.', path)}:${index + 1}  ${declaration[1]}  ${problem}`);
-      }
-    });
+  joinContinuations(readFileSync(path, 'utf8').split('\n')).forEach((line, index) => {
+    const declaration = DECLARATION.exec(line);
+    if (!declaration || (isScript && !/^\s{4,}[a-z-]+\s*:/.test(line))) {
+      return;
+    }
+    for (const problem of problems(declaration[1], declaration[2])) {
+      found.push(`${relative('.', path)}:${index + 1}  ${declaration[1]}  ${problem}`);
+    }
+  });
 }
 
 if (found.length) {
