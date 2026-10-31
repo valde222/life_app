@@ -14,6 +14,6 @@ Same for overdue repeating chores on Today, which also leave the list when done.
 
 ## Steps
 
-- [ ] `TickOut` in `shared/ui`: the leaving state, the timing, reduced motion; unit tests
+- [x] `TickOut` in `shared/ui`: the leaving state, the timing, reduced motion; unit tests
 - [ ] TodoRow and RepeatRow (checkbox mode) use it; one shared keyframe in the global styles
 - [ ] Tests pass (unit, e2e, visual unchanged), lint clean; merge to `main`
