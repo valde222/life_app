@@ -328,12 +328,14 @@ describe('superuser access through the public address', () => {
     assert.notEqual(page.status, 200);
   });
 
-  test('superusers cannot sign in', async () => {
-    const auth = await call('POST', '/api/collections/_superusers/auth-with-password', {
-      body: { identity: admin.email, password: admin.password },
-      headers: forwarded,
-    });
-    assert.ok(auth.status >= 400, `refused (${auth.status})`);
+  test('superusers cannot sign in, however the collection is named', async () => {
+    for (const name of ['_superusers', '_SUPERUSERS', '_Superusers', superusersId]) {
+      const auth = await call('POST', `/api/collections/${name}/auth-with-password`, {
+        body: { identity: admin.email, password: admin.password },
+        headers: forwarded,
+      });
+      assert.ok(auth.status >= 400, `${name}: refused (${auth.status})`);
+    }
   });
 
   test('a superuser token is refused', async () => {
