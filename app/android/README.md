@@ -38,7 +38,7 @@ The APK lands in `app/build/outputs/apk/debug/app-debug.apk`. Install it with th
 | `@ebarooni/capacitor-calendar` | Read-only calendar access; the app imports enabled calendars from 2 weeks back to 3 months ahead every 15 minutes and on resume |
 | `@capacitor/local-notifications` | Todo reminders, rescheduled whenever todos change |
 
-Permissions: `READ_CALENDAR`, `POST_NOTIFICATIONS`, both asked for when first needed.
+Permissions: `READ_CALENDAR`, `POST_NOTIFICATIONS`, both asked for when first needed. `VIBRATE` comes with `@capacitor/haptics`, for the light tick when a swipe arms (granted at install, never asked for).
 
 ## Talks to
 

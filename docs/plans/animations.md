@@ -65,9 +65,38 @@ Considered and left out: animated route changes (a view transition would hold in
 ## Steps
 
 - [x] This plan, and a `TODO.md` line
-- [ ] Motion tokens in `tokens.json`, generated into `_tokens.scss`; Motion section in the design-system README; the reduce-motion rule; the lint check
-- [ ] Shared pieces: `Settled`, row enter/leave keyframes, `TickOut` on the new timings
-- [ ] Moments 1–14, one commit each
-- [ ] End-to-end tests run with reduced motion; tests for the motion-specific code
-- [ ] Checked by eye: phone and desktop layouts, and once with reduced motion; both apps build
-- [ ] Pull request (or, without a remote, the branch and its description ready)
+- [x] Motion tokens in `tokens.json`, generated into `_tokens.scss`; Motion section in the design-system README; the reduce-motion rule; the lint check
+- [x] Shared pieces: `Settled`, row enter/leave keyframes, `TickOut` on the new timings
+- [x] Moments 1–14, one commit each
+- [x] End-to-end tests run with reduced motion; tests for the motion-specific code
+- [x] Checked by eye: phone and desktop layouts, and once with reduced motion; both apps build
+- [ ] Pull request: the repo has no GitHub remote, so the branch is ready and the description is below
+
+## Checked
+
+- **Frames:** every moment was captured frame by frame (about every 45 ms) at phone size and on desktop with motion on, and again with reduced motion. That check found three rough edges, fixed in `fix(motion)`: row exits playing on tab switches, an Inbox card snapping shut before leaving, and the Repeating heading vanishing early.
+- **Tests:** 157 unit tests and 23 end-to-end tests pass; the end-to-end tests run with reduced motion, apart from one tick test with motion on. Lint is clean, and every screen still matches the pre-motion screenshots pixel for pixel.
+- **Builds:** the APK builds with the Haptics plugin inside, the Android tests pass, the Windows build starts.
+- **Not checked by hand:** the haptic tick on a real phone, and the feel on a mid-range device. Both need someone holding one.
+
+## Pull request description
+
+Small, quick motion on the everyday moments. Behaviour, layout and wording are unchanged; every screen is pixel-identical at rest. All timings come from three duration tokens (120, 200 and 300 ms) and three easings; nothing runs over 350 ms, nothing blocks input, and with reduce motion on nothing moves.
+
+Moments animated:
+1. Ticking a todo: the box fills, the tick pops, the title is struck through, the row collapses away; the done count and pill change gently; Undo expands it back.
+2. Toasts slide up above the nav and down when they go.
+3. New items expand in where they land; the Inbox badge bumps.
+4. Inbox: Keep, Make todo and Archive collapse the card away; opening an item grows it in place.
+5. Swipe rows reveal their action with the drag, the icon grows when armed, a haptic tick on Android.
+6. Sheets slide up and down (dialogs scale on desktop), and drag the handle down to dismiss.
+7. The Event switch collapses the steps and cross-fades the heading.
+8. Overdue chores on Today turn their tag to Today, then leave.
+9. List groups expand and collapse; segmented controls slide their highlight.
+10. Agenda grows into the month and slides between days, weeks and months.
+11. Photos zoom in from 90% and back out.
+12. Archive and Recently deleted rows collapse out and expand back.
+13. The Offline line fades in and out (Today and the sidebar).
+14. Pressed state on everything tappable; a quiet hover on desktop text buttons.
+
+Found along the way (judge separately): F1 All done fades in; F2 steps expand in and collapse out; F3 Inbox zero fades in; F4 new photos grow in, deleted ones fade out.
