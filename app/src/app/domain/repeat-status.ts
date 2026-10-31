@@ -1,4 +1,4 @@
-import { Completion, Todo } from './models';
+import { Completion, Draft, RepeatMode, Todo } from './models';
 import { addDays, daysBetween, localDate, weekday, weekdayName } from './time/local-date';
 
 export const ROUGH_CHOICES = [
@@ -149,4 +149,47 @@ export function dayWord(days: number): string {
     return 'Today';
   }
   return days === 1 ? '1 day' : `${days} days`;
+}
+
+export interface RepeatSettings {
+  title: string;
+  list: string;
+  mode: Exclude<RepeatMode, 'none'>;
+  everyDays: number;
+  everyWeeks: number;
+  weekdays: number[];
+}
+
+export interface StopRepeating {
+  list: string;
+  date: string;
+}
+
+export function repeatFields(settings: RepeatSettings): Draft<'todos'> {
+  return {
+    title: settings.title.trim(),
+    list: settings.list,
+    inbox: false,
+    repeat_mode: settings.mode,
+    repeat_every_days: settings.mode === 'rough' ? settings.everyDays : 0,
+    repeat_every_weeks: settings.mode === 'schedule' ? settings.everyWeeks : 0,
+    repeat_weekdays: settings.mode === 'schedule' ? [...settings.weekdays].sort() : null,
+    date: '',
+    time: '',
+    time_end: '',
+    is_event: false,
+    done_at: '',
+  };
+}
+
+export function stoppedRepeatFields(stop: StopRepeating): Draft<'todos'> {
+  return {
+    repeat_mode: 'none',
+    repeat_every_days: 0,
+    repeat_every_weeks: 0,
+    repeat_weekdays: null,
+    list: stop.list,
+    date: stop.date,
+    inbox: !stop.list && !stop.date,
+  };
 }

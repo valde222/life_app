@@ -145,4 +145,38 @@ describe('Actions', () => {
       '2026-10-29',
     );
   });
+
+  it('updates a todo, and edits a note only when something changed', async () => {
+    const created = await actions.createTodo({ title: 'a' });
+    await actions.updateTodo(created.id, { date: '2026-11-01' });
+    expect((await todo(created.id)).date).toBe('2026-11-01');
+
+    const kept = await actions.createNote({ title: 'x', body: 'y' });
+    const before = (await note(kept.id)).changed_at;
+    await actions.editNote(kept, { title: 'x', body: 'y', list: '' });
+    expect((await note(kept.id)).changed_at).toBe(before);
+    await actions.editNote(kept, { title: 'x', body: 'y', list: 'l1' });
+    expect(await note(kept.id)).toMatchObject({ list: 'l1', inbox: false });
+  });
+
+  it('saves repeat settings and stops repeating', async () => {
+    const settings = {
+      title: 'Clean',
+      list: '',
+      mode: 'rough' as const,
+      everyDays: 7,
+      everyWeeks: 1,
+      weekdays: [],
+    };
+    await actions.saveRepeating(null, settings);
+    const [created] = await store.records('todos').toArray();
+    expect(created).toMatchObject({ title: 'Clean', repeat_mode: 'rough', repeat_every_days: 7 });
+
+    await actions.stopRepeating(created.id, { list: '', date: '2026-11-02' });
+    expect(await todo(created.id)).toMatchObject({
+      repeat_mode: 'none',
+      date: '2026-11-02',
+      inbox: false,
+    });
+  });
 });

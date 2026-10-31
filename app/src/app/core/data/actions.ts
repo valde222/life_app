@@ -2,9 +2,21 @@ import { inject, Injectable } from '@angular/core';
 import { Clock } from '../time/clock';
 import { pocketBaseTimestamp } from '../../domain/ids';
 import { CollectionName, Collections, Draft, Note, Todo } from '../../domain/models';
+import {
+  repeatFields,
+  RepeatSettings,
+  StopRepeating,
+  stoppedRepeatFields,
+} from '../../domain/repeat-status';
 import { Repository } from './repository';
 
 export type Undo = () => Promise<unknown>;
+
+export interface NoteEdit {
+  title: string;
+  body: string;
+  list: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class Actions {
@@ -17,6 +29,29 @@ export class Actions {
 
   createNote(draft: Draft<'notes'>) {
     return this.repository.save('notes', { inbox: !draft.list, ...draft });
+  }
+
+  async updateTodo(id: string, changes: Draft<'todos'>): Promise<void> {
+    await this.repository.save('todos', { ...changes, id });
+  }
+
+  async editNote(note: Note, edit: NoteEdit): Promise<void> {
+    if (edit.title !== note.title || edit.body !== note.body || edit.list !== note.list) {
+      await this.repository.save('notes', {
+        ...edit,
+        id: note.id,
+        inbox: note.inbox && !edit.list,
+      });
+    }
+  }
+
+  async saveRepeating(id: string | null, settings: RepeatSettings): Promise<void> {
+    const fields = repeatFields(settings);
+    await this.repository.save('todos', id ? { ...fields, id } : fields);
+  }
+
+  async stopRepeating(id: string, stop: StopRepeating): Promise<void> {
+    await this.repository.save('todos', { ...stoppedRepeatFields(stop), id });
   }
 
   tick(todo: Todo): Promise<Undo> {

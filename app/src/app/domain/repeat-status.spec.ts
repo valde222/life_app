@@ -1,5 +1,11 @@
 import { Completion, EMPTY_RECORDS, Todo } from './models';
-import { isScheduledOn, repeatStatus, weekdayList } from './repeat-status';
+import {
+  isScheduledOn,
+  repeatFields,
+  repeatStatus,
+  stoppedRepeatFields,
+  weekdayList,
+} from './repeat-status';
 
 const created = '2026-10-01 08:00:00.000Z';
 const rough = (days: number): Todo => ({
@@ -91,5 +97,40 @@ describe('repeatStatus, on a schedule (R20)', () => {
   it('names weekdays Monday first', () => {
     expect(weekdayList([4, 1])).toBe('Mon and Thu');
     expect(weekdayList([0, 2, 6])).toBe('Tue, Sat and Sun');
+  });
+});
+
+describe('repeat fields', () => {
+  const settings = {
+    title: ' Water plants ',
+    list: 'l1',
+    everyDays: 7,
+    everyWeeks: 2,
+    weekdays: [4, 1],
+  };
+
+  it('keeps only the fields of the chosen mode and clears any date', () => {
+    expect(repeatFields({ ...settings, mode: 'rough' })).toMatchObject({
+      title: 'Water plants',
+      repeat_mode: 'rough',
+      repeat_every_days: 7,
+      repeat_every_weeks: 0,
+      repeat_weekdays: null,
+      date: '',
+      inbox: false,
+    });
+    expect(repeatFields({ ...settings, mode: 'schedule' })).toMatchObject({
+      repeat_every_days: 0,
+      repeat_every_weeks: 2,
+      repeat_weekdays: [1, 4],
+    });
+  });
+
+  it('a stopped repeat goes to the Inbox only with neither list nor date', () => {
+    expect(stoppedRepeatFields({ list: '', date: '' })).toMatchObject({
+      repeat_mode: 'none',
+      inbox: true,
+    });
+    expect(stoppedRepeatFields({ list: 'l1', date: '' }).inbox).toBe(false);
   });
 });
