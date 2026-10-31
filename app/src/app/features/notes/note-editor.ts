@@ -199,8 +199,7 @@ export class NoteEditor {
     const target = (event.target as HTMLElement).closest<HTMLElement>('a.note-link');
     if (!target) {
       if (!(event.target as HTMLElement).closest('a')) {
-        this.editing.set(true);
-        setTimeout(() => this.bodyField()?.nativeElement.focus());
+        this.startEditing();
       }
       return;
     }
@@ -211,6 +210,13 @@ export class NoteEditor {
       void this.router.navigate(['/note', linked.id], {
         state: { back: `/note/${this.noteId()}` },
       });
+    }
+  }
+
+  protected editFromKeyboard(event: Event) {
+    if (event.target === event.currentTarget) {
+      event.preventDefault();
+      this.startEditing();
     }
   }
 
@@ -240,6 +246,11 @@ export class NoteEditor {
       await this.actions.delete('notes', saved);
       await this.router.navigateByUrl(this.back);
     }
+  }
+
+  private startEditing() {
+    this.editing.set(true);
+    setTimeout(() => this.bodyField()?.nativeElement.focus());
   }
 
   private fields(): NoteEdit {

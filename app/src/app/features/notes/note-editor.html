@@ -87,7 +87,13 @@
         ></textarea>
       </div>
     } @else {
-      <article class="card rendered" aria-label="Note text" (click)="openWikiLink($event)">
+      <article
+        class="card rendered"
+        aria-label="Note text"
+        tabindex="0"
+        (click)="openWikiLink($event)"
+        (keydown.enter)="editFromKeyboard($event)"
+      >
         @if (body()) {
           <div class="markdown" [innerHTML]="rendered()"></div>
         } @else {
