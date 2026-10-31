@@ -27,6 +27,7 @@ import { overdueRepeating } from '../../domain/repeat-status';
 import { RepeatRow } from '../../shared/ui/repeat-row';
 import { Toasts } from '../../core/toasts/toasts';
 import { Settled } from '../../shared/ui/motion';
+import { Ticking } from '../../shared/ticking/ticking';
 
 @Component({
   selector: 'app-today',
@@ -38,6 +39,7 @@ import { Settled } from '../../shared/ui/motion';
 export class Today {
   private readonly store = inject(Store);
   private readonly actions = inject(Actions);
+  private readonly ticking = inject(Ticking);
   private readonly toasts = inject(Toasts);
   private readonly sheets = inject(Sheets);
   private readonly router = inject(Router);
@@ -83,18 +85,12 @@ export class Today {
     return stepProgress(todo, this.store.steps());
   }
 
-  protected async tick(todo: Todo) {
-    const undo = await this.actions.tick(todo);
-    this.toasts.show({
-      title: `${todo.title} done`,
-      action: { label: 'Add note', run: () => this.addNote(todo) },
-      undo,
-    });
+  protected tick(todo: Todo) {
+    return this.ticking.tick(todo, '/');
   }
 
-  protected async untick(todo: Todo) {
-    const undo = await this.actions.untick(todo);
-    this.toasts.show({ title: `${todo.title} is back on Today`, undo });
+  protected untick(todo: Todo) {
+    return this.ticking.untick(todo, `${todo.title} is back on Today`);
   }
 
   protected async completeRepeating(todo: Todo) {
@@ -108,10 +104,5 @@ export class Today {
 
   protected openPick() {
     this.sheets.open(PickSheet, undefined, { panelClass: ['sheet-panel', 'sheet-tall'] });
-  }
-
-  private async addNote(todo: Todo) {
-    const note = await this.actions.startNoteFor(todo);
-    await this.router.navigate(['/note', note.id], { state: { back: '/' } });
   }
 }

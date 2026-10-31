@@ -17,6 +17,6 @@ Bug: todos could only be ticked on Today, a list page and the todo editor. The I
 
 ## Steps
 
-- [ ] `Ticking` and `TickBox`, with tests; Today and lists use `Ticking`
+- [x] `Ticking` and `TickBox`, with tests; Today and lists use `Ticking`
 - [ ] Inbox, Agenda, Search, This week
 - [ ] End-to-end test that ticks and unticks on each screen; tests, lint and visual check pass; merge to `main`
