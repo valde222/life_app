@@ -3,18 +3,24 @@ import { RouterLink } from '@angular/router';
 import { List } from '../../domain/models';
 import { Checkbox } from './checkbox';
 import { ListLabel } from './list-label';
+import { TickOut } from './tick-out';
 
 @Component({
   selector: 'app-todo-row',
   imports: [Checkbox, ListLabel, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { '[class.event]': 'event()', '[class.done]': 'done()' },
+  host: {
+    '[class.event]': 'event()',
+    '[class.done]': 'done()',
+    '[class.tick-out]': 'tickOut.leaving()',
+    '[style.--tick-out]': 'tickOut.duration',
+  },
   template: `
     @if (!event()) {
       <app-checkbox
-        [checked]="done()"
+        [checked]="done() || tickOut.leaving()"
         [label]="done() ? 'Mark ' + title() + ' not done' : 'Mark ' + title() + ' done'"
-        (pressed)="tick.emit()"
+        (pressed)="press()"
       />
     }
     @if (time()) {
@@ -71,7 +77,8 @@ import { ListLabel } from './list-label';
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    :host(.done) .title {
+    :host(.done) .title,
+    :host(.tick-out) .title {
       font-size: var(--text-16);
       color: var(--ink-2);
       text-decoration: line-through;
@@ -98,4 +105,16 @@ export class TodoRow {
   readonly event = input(false);
   readonly done = input(false);
   readonly tick = output();
+
+  protected readonly tickOut = new TickOut();
+
+  protected press() {
+    if (this.done()) {
+      this.tick.emit();
+      return;
+    }
+    this.tickOut.start(() => {
+      this.tick.emit();
+    });
+  }
 }

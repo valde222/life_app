@@ -39,3 +39,41 @@ test('T2: ticking shows a toast with Add note and Undo (R7, R25)', async ({ page
   await expect(page.getByRole('heading', { name: 'Linked' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Pay taxes' })).toBeVisible();
 });
+
+test('T2: a ticked todo shows its tick, then slides out before it is saved (R7)', async ({
+  page,
+}) => {
+  const { api } = await freshAccount();
+  const todo = await api.todo('Water the basil', { date: localDate() });
+  await signIn(page);
+
+  const row = page.locator('app-todo-row', { hasText: 'Water the basil' });
+  await row.getByRole('button', { name: 'Mark Water the basil done' }).click();
+
+  await expect(row).toHaveClass(/tick-out/);
+  await expect(row.getByRole('button')).toHaveAttribute('aria-pressed', 'true');
+  await page.screenshot({ path: 'test-results/tick-animation-1.png' });
+  await page.waitForTimeout(350);
+  await page.screenshot({ path: 'test-results/tick-animation-2.png' });
+
+  await expect(row).toHaveCount(0);
+  await expect(page.getByRole('status')).toContainText('Water the basil done');
+  await expect
+    .poll(async () => (await api.list('todos', `id = "${todo.id}"`))[0]?.['done_at'])
+    .not.toBe('');
+});
+
+test('T2: with reduced motion a ticked todo is saved at once (R7)', async ({ browser }) => {
+  const context = await browser.newContext({ reducedMotion: 'reduce' });
+  const page = await context.newPage();
+  const { api } = await freshAccount();
+  await api.todo('Water the basil', { date: localDate() });
+  await signIn(page);
+
+  await page.getByRole('button', { name: 'Mark Water the basil done' }).click();
+
+  await expect(page.locator('app-todo-row', { hasText: 'Water the basil' })).toHaveCount(0, {
+    timeout: 300,
+  });
+  await context.close();
+});

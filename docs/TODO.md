@@ -85,3 +85,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Refactor (`refactor/clean-code`, pull request)
 
 - [x] Clean, modular structure with enforced boundaries and lint, behaviour and UI unchanged (`docs/plans/refactor.md`)
+
+## Polish
+
+- [x] Ticking a todo shows the tick, then the row slides out (R7; `docs/plans/tick-animation.md`)
