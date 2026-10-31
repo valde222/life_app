@@ -1,7 +1,9 @@
 package dk.ottes.life;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -39,4 +41,20 @@ public class SharedContentTest {
         assertEquals("short", SharedContent.cappedText("short"));
         assertEquals(SharedContent.MAX_TEXT_CHARS, SharedContent.cappedText("x".repeat(SharedContent.MAX_TEXT_CHARS + 5)).length());
     }
+
+    @Test
+    public void readsImagesUpToTheCap() throws java.io.IOException {
+        byte[] small = new byte[10];
+        assertArrayEquals(small, SharedContent.readCapped(new java.io.ByteArrayInputStream(small), 10));
+        assertNull(SharedContent.readCapped(new java.io.ByteArrayInputStream(new byte[11]), 10));
+    }
+
+    @Test
+    public void onlySendIntentsAreShares() {
+        assertTrue(SharedContent.isShareAction("android.intent.action.SEND"));
+        assertTrue(SharedContent.isShareAction("android.intent.action.SEND_MULTIPLE"));
+        assertFalse(SharedContent.isShareAction("android.intent.action.MAIN"));
+        assertFalse(SharedContent.isShareAction(null));
+    }
 }
+

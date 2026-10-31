@@ -61,7 +61,9 @@ Use tabular figures wherever times or counts line up. The scale is the one in Ty
 
 ## Sizes and corners
 
-Use only the steps in Typography and the radius tokens. The rule of thumb for corners: the bigger the thing, the rounder: `radius-tiny` for bars and dots, `radius-check` for checkboxes, `radius-label` and `radius-chip` for labels and chips, `radius-control` and `radius-input` for buttons and fields, `radius-row` and `radius-feature` for cards, `radius-modal`, `radius-sheet` and `radius-nav` for panels. Grab handles are fully round (2px on a 4px bar).
+Use only the steps in Typography and the radius tokens. The rule of thumb for corners: the bigger the thing, the rounder: `radius-tiny` for bars and dots, `radius-check` for checkboxes, `radius-label` and `radius-chip` for labels and chips, `radius-control` and `radius-input` for buttons and fields, `radius-row` and `radius-feature` for cards, `radius-modal`, `radius-sheet` and `radius-nav` for panels. Grab handles are fully round (`radius-hairline` on a 4px bar).
+
+Spacing comes from the `space-*` steps, including the half steps (`space-half`, `space-1-5` … `space-4-5`), and font sizes outside a type style from `text-*`. Code may not write a colour, spacing, radius or font size the tokens already name; `npm run lint` checks it.
 
 ## Components
 

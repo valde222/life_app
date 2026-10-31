@@ -55,3 +55,6 @@ desktop.ini
 
 # Production data on the Pi
 /data/
+
+# Visual baselines are taken locally on the commit being compared against
+app/e2e/screenshots/

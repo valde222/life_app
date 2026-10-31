@@ -1,0 +1,70 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Store } from '../core/data/store';
+import { readJsonPreference, writeJsonPreference } from '../core/platform/preferences';
+import { NewGroupSheet } from '../features/lists/new-group-sheet';
+import { NewListData, NewListSheet } from '../features/lists/new-list-sheet';
+import { Sync } from '../core/sync/sync';
+import { Icon } from '../shared/ui/icon';
+import { ListSwatch } from '../shared/ui/list-swatch';
+import { Sheets } from '../shared/ui/sheet';
+
+const OPEN_KEY = 'life.sidebar.open';
+
+@Component({
+  selector: 'app-sidebar',
+  imports: [Icon, ListSwatch, RouterLink, RouterLinkActive],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './sidebar.html',
+  styleUrl: './sidebar.scss',
+})
+export class Sidebar {
+  protected readonly store = inject(Store);
+  protected readonly sync = inject(Sync);
+  private readonly sheets = inject(Sheets);
+  readonly capture = output();
+  readonly shortcuts = output();
+
+  protected readonly nav = [
+    { path: '/', label: 'Today', icon: 'sun' as const },
+    { path: '/agenda', label: 'Agenda', icon: 'calendar' as const },
+    { path: '/inbox', label: 'Inbox', icon: 'inbox' as const },
+    { path: '/search', label: 'Search', icon: 'search' as const },
+  ];
+
+  private readonly open = signal<string[]>(this.readOpen());
+  protected readonly groups = computed(() =>
+    this.store.sortedGroups().map((group) => ({
+      group,
+      open: this.open().includes(group.id),
+      lists: this.store.listsIn(group.id),
+    })),
+  );
+
+  protected toggle(id: string) {
+    const next = this.open().includes(id)
+      ? this.open().filter((each) => each !== id)
+      : [...this.open(), id];
+    this.open.set(next);
+    writeJsonPreference(OPEN_KEY, next);
+  }
+
+  protected newList(group: string) {
+    this.sheets.open<unknown, NewListData>(NewListSheet, { group }, { autoFocus: 'input' });
+  }
+
+  protected newGroup() {
+    this.sheets.open(NewGroupSheet, undefined, { autoFocus: 'input' });
+  }
+
+  private readOpen(): string[] {
+    return readJsonPreference<string[]>(OPEN_KEY, []);
+  }
+}

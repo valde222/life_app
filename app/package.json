@@ -11,7 +11,12 @@
     "e2e": "playwright test",
     "e2e:docker": "./e2e/run-in-docker.sh",
     "build:android": "npm run build && npx cap sync android && cd android && cmd.exe /c \"gradlew.bat assembleDebug\"",
-    "build:desktop": "npm run build && cd ../desktop && cmd.exe /c \"cargo tauri build\""
+    "build:desktop": "npm run build && cd ../desktop && cmd.exe /c \"cargo tauri build\"",
+    "lint": "npm run lint:ts && npm run lint:deps && npm run lint:styles && npm run lint:format",
+    "lint:ts": "eslint .",
+    "lint:format": "prettier --check .",
+    "lint:deps": "depcruise src --config .dependency-cruiser.cjs",
+    "lint:styles": "node scripts/check-styles.mjs"
   },
   "private": true,
   "packageManager": "npm@12.1.0",
@@ -39,17 +44,24 @@
     "@angular/cli": "22.2.5",
     "@angular/compiler-cli": "22.2.4",
     "@capacitor/cli": "8.6.0",
+    "@eslint/js": "10.0.1",
     "@playwright/test": "1.64.1",
     "@types/node": "26.6.6",
+    "angular-eslint": "22.6.0",
+    "dependency-cruiser": "18.6.0",
+    "eslint": "10.13.0",
+    "eslint-config-prettier": "10.1.8",
     "fake-indexeddb": "6.2.5",
     "jsdom": "30.1.2",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
+    "typescript-eslint": "8.71.2",
     "vitest": "5.0.4"
   },
   "overrides": {
     "rimraf": {
       "glob": "14.0.3"
-    }
+    },
+    "minimatch": "11.0.3"
   }
 }

@@ -1,0 +1,181 @@
+import { Location } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Actions } from '../../core/data/actions';
+import { RepeatMode, Todo } from '../../domain/models';
+import { Store } from '../../core/data/store';
+import { Clock } from '../../core/time/clock';
+import { DetailRow } from '../../shared/ui/detail-row';
+import { ListLabel } from '../../shared/ui/list-label';
+import { Segmented } from '../../shared/ui/segmented';
+import { Sheets } from '../../shared/ui/sheet';
+import {
+  repeatStatus,
+  ROUGH_CHOICES,
+  WEEK_CHOICES,
+  WEEKDAY_ORDER,
+} from '../../domain/repeat-status';
+import { StopRepeatResult, StopRepeatSheet } from './stop-repeat-sheet';
+import { Toasts } from '../../core/toasts/toasts';
+import { Pickers } from '../../shared/pickers/pickers';
+import { lastDoneLabel } from '../../domain/repeat-labels';
+
+type Mode = Exclude<RepeatMode, 'none'>;
+const WEEKDAY_LETTERS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+export interface RepeatEditorState {
+  back?: string;
+  title?: string;
+  list?: string;
+}
+
+@Component({
+  selector: 'app-repeat-editor',
+  imports: [DetailRow, FormsModule, ListLabel, Segmented],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './repeat-editor.html',
+  styleUrl: './repeat-editor.scss',
+})
+export class RepeatEditor {
+  readonly id = input.required<string>();
+
+  private readonly store = inject(Store);
+  private readonly actions = inject(Actions);
+  private readonly sheets = inject(Sheets);
+  private readonly pickers = inject(Pickers);
+  private readonly toasts = inject(Toasts);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly clock = inject(Clock);
+
+  private readonly state = (history.state ?? {}) as RepeatEditorState;
+  private readonly back = this.state.back ?? '/repeating';
+  protected readonly isNew = computed(() => this.id() === 'new');
+  protected readonly todo = computed(() =>
+    this.store.todos().find((todo) => todo.id === this.id()),
+  );
+  protected readonly wasRepeating = computed(() => {
+    const todo = this.todo();
+    return !!todo && todo.repeat_mode !== 'none' && !!todo.repeat_mode;
+  });
+
+  protected readonly modes = [
+    { value: 'rough' as Mode, label: 'Roughly' },
+    { value: 'schedule' as Mode, label: 'On a schedule' },
+  ];
+  protected readonly roughChoices = ROUGH_CHOICES;
+  protected readonly weekChoices = WEEK_CHOICES;
+  protected readonly weekdays = WEEKDAY_ORDER.map((day) => ({ day, label: WEEKDAY_LETTERS[day] }));
+
+  protected readonly title = signal(this.state.title ?? '');
+  protected readonly mode = signal<Mode>('rough');
+  protected readonly everyDays = signal(7);
+  protected readonly everyWeeks = signal(1);
+  protected readonly days = signal<number[]>([]);
+  protected readonly list = signal(this.state.list ?? '');
+
+  protected readonly listRecord = computed(() => this.store.list(this.list()));
+  protected readonly lastDone = computed(() => {
+    const todo = this.todo();
+    if (!todo || !this.wasRepeating()) {
+      return '';
+    }
+    return lastDoneLabel(repeatStatus(todo, this.store.completions(), this.clock.today()));
+  });
+  protected readonly canSave = computed(
+    () => !!this.title().trim() && (this.mode() === 'rough' || this.days().length > 0),
+  );
+
+  constructor() {
+    let loaded = false;
+    effect(() => {
+      const todo = this.todo();
+      if (todo && !loaded) {
+        loaded = true;
+        untracked(() => this.load(todo));
+      }
+    });
+  }
+
+  protected toggleDay(day: number) {
+    this.days.update((days) =>
+      days.includes(day) ? days.filter((each) => each !== day) : [...days, day],
+    );
+  }
+
+  protected async pickList() {
+    const list = await this.pickers.list(this.list());
+    if (list !== undefined) {
+      this.list.set(list);
+    }
+  }
+
+  protected async doneToday() {
+    const todo = this.todo();
+    if (todo) {
+      const undo = await this.actions.complete(todo);
+      this.toasts.show({ title: `${todo.title} done today`, undo });
+    }
+  }
+
+  protected async save() {
+    if (!this.canSave()) {
+      return;
+    }
+    await this.actions.saveRepeating(this.isNew() ? null : this.id(), {
+      title: this.title(),
+      list: this.list(),
+      mode: this.mode(),
+      everyDays: this.everyDays(),
+      everyWeeks: this.everyWeeks(),
+      weekdays: this.days(),
+    });
+    await this.router.navigateByUrl(this.back);
+  }
+
+  protected async stopRepeating() {
+    const todo = this.todo();
+    if (!todo) {
+      return;
+    }
+    const result = await this.sheets.open<StopRepeatResult, Todo>(StopRepeatSheet, todo).closed;
+    if (result) {
+      await this.actions.stopRepeating(todo.id, result);
+      await this.router.navigate(['/todo', todo.id], { state: { back: this.back } });
+    }
+  }
+
+  protected async delete() {
+    const todo = this.todo();
+    if (todo) {
+      await this.actions.delete('todos', todo);
+    }
+    await this.router.navigateByUrl(this.back);
+  }
+
+  protected cancel() {
+    this.location.back();
+  }
+
+  private load(todo: Todo) {
+    this.title.set(todo.title);
+    this.list.set(todo.list);
+    if (todo.repeat_mode === 'schedule') {
+      this.mode.set('schedule');
+      this.everyWeeks.set(todo.repeat_every_weeks || 1);
+      this.days.set(todo.repeat_weekdays ?? []);
+    } else if (todo.repeat_mode === 'rough') {
+      this.everyDays.set(todo.repeat_every_days ?? 7);
+    }
+  }
+}

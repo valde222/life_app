@@ -1,0 +1,181 @@
+@if (note(); as note) {
+  @if (mode() === 'edit') {
+    <header class="page-bar">
+      <a class="back" [routerLink]="back" (click)="persist()"
+        ><app-icon name="chevron-left" [size]="18" [stroke]="2.2" />{{ backLabel() }}</a
+      >
+      <span class="bar-actions">
+        <button type="button" class="bar-action" (click)="photos.add()">+ Photo</button>
+        <button type="button" class="bar-action" (click)="addLink()">+ Link…</button>
+      </span>
+    </header>
+  } @else {
+    <header class="sheet-bar">
+      <button type="button" class="bar-link" (click)="cancel()">Cancel</button>
+      <h1 class="bar-title">{{ heading() }}</h1>
+      <button type="button" class="bar-save" (click)="save()">Save</button>
+    </header>
+  }
+
+  <main class="body">
+    <input
+      class="card title"
+      aria-label="Title"
+      placeholder="Title"
+      [ngModel]="title()"
+      (ngModelChange)="title.set($event)"
+      (blur)="persist()"
+    />
+
+    @if (mode() === 'edit') {
+      <div class="meta">
+        <button type="button" class="list-button" (click)="pickList()">
+          @if (listRecord()) {
+            <app-list-label [list]="listRecord()" />
+          } @else {
+            <span class="list-chip none"
+              >Add to a list<app-icon name="chevron-down" [size]="14" [stroke]="2.4"
+            /></span>
+          }
+        </button>
+        <span>{{ dateLabel() }}</span>
+      </div>
+    } @else {
+      <button
+        type="button"
+        class="list-chip"
+        [style]="swatch(listRecord()?.colour)"
+        [class.none]="!listRecord()"
+        (click)="pickList()"
+      >
+        {{ listRecord()?.name ?? 'Add to a list' }}
+        <app-icon name="chevron-down" [size]="14" [stroke]="2.4" />
+      </button>
+    }
+
+    @if (editing()) {
+      <div class="card editor">
+        <div class="toolbar">
+          <button
+            type="button"
+            class="tool"
+            (mousedown)="$event.preventDefault()"
+            (click)="insertHeading()"
+          >
+            <strong>H</strong> Heading
+          </button>
+          <button
+            type="button"
+            class="tool"
+            (mousedown)="$event.preventDefault()"
+            (click)="insertCode()"
+          >
+            <app-icon name="code" [size]="14" [stroke]="2.2" />Code
+          </button>
+          <button type="button" class="tool" (click)="photos.add()">
+            <app-icon name="image" [size]="14" [stroke]="2.2" />Photo
+          </button>
+        </div>
+        <textarea
+          #bodyField
+          class="body-text"
+          aria-label="Note text"
+          placeholder="Write more"
+          [ngModel]="body()"
+          (ngModelChange)="body.set($event)"
+          (blur)="stopEditing()"
+        ></textarea>
+      </div>
+    } @else {
+      <article
+        class="card rendered"
+        aria-label="Note text"
+        tabindex="0"
+        (click)="openWikiLink($event)"
+        (keydown.enter)="editFromKeyboard($event)"
+      >
+        @if (body()) {
+          <div class="markdown" [innerHTML]="rendered()"></div>
+        } @else {
+          <span class="placeholder">Write more</span>
+        }
+      </article>
+    }
+
+    @if (photos.shown().length) {
+      <div class="photos">
+        @for (photo of photos.shown(); track photo.key) {
+          <button
+            type="button"
+            class="photo"
+            [attr.aria-label]="'Open photo ' + ($index + 1)"
+            (click)="photos.open($index)"
+          >
+            <img [src]="photo.thumb" alt="" />
+          </button>
+        }
+      </div>
+    }
+
+    @if (connections().notes.length || connections().todos.length || mode() !== 'edit') {
+      <h2 class="eyebrow section">Linked</h2>
+      <div class="linked">
+        @for (linked of connections().notes; track linked.id) {
+          <span class="linked-item">
+            <a [routerLink]="['/note', linked.id]" [state]="{ back: '/note/' + noteId() }">{{
+              linked.title || 'Untitled'
+            }}</a>
+            <button
+              type="button"
+              class="unlink"
+              [attr.aria-label]="'Remove link to ' + linked.title"
+              (click)="unlinkNote(linked.id)"
+            >
+              <app-icon name="close" [size]="12" [stroke]="2.2" />
+            </button>
+          </span>
+        }
+        @for (todo of connections().todos; track todo.id) {
+          <span class="linked-item">
+            <span class="mini-box"></span>
+            <a [routerLink]="['/todo', todo.id]">{{ todo.title }}</a>
+            <button
+              type="button"
+              class="unlink"
+              [attr.aria-label]="'Remove link to ' + todo.title"
+              (click)="unlinkTodo(todo.id)"
+            >
+              <app-icon name="close" [size]="12" [stroke]="2.2" />
+            </button>
+          </span>
+        }
+        @if (mode() !== 'edit') {
+          <button type="button" class="link-add" (click)="addLink()">+ Link…</button>
+        }
+      </div>
+    }
+
+    @if (connections().linkedFrom.length) {
+      <h2 class="eyebrow section">Linked from</h2>
+      <div class="stack">
+        @for (from of connections().linkedFrom; track from.id) {
+          <a
+            class="card from"
+            [routerLink]="['/note', from.id]"
+            [state]="{ back: '/note/' + noteId() }"
+          >
+            <span class="from-text">
+              <span class="from-title">{{ from.title || 'Untitled' }}</span>
+              <span class="from-kind">Note</span>
+            </span>
+            <app-icon name="chevron-right" [size]="16" [stroke]="2.2" />
+          </a>
+        }
+      </div>
+    }
+
+    @if (mode() === 'edit') {
+      <button type="button" class="delete" (click)="delete()">Delete</button>
+    }
+  </main>
+}

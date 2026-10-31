@@ -26,6 +26,8 @@ export function todayAt(time: string) {
   return new Date(`${localDate()}T${time}:00`);
 }
 
+export type ApiRecord = { id: string } & Record<string, unknown>;
+
 export class Api {
   private constructor(private readonly token: string) {}
 
@@ -35,7 +37,8 @@ export class Api {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ identity: E2E_USER.email, password: E2E_USER.password }),
     });
-    return new Api((await response.json()).token);
+    const { token } = (await response.json()) as { token: string };
+    return new Api(token);
   }
 
   async create(collection: string, fields: Record<string, unknown>) {
@@ -47,19 +50,19 @@ export class Api {
     if (!response.ok) {
       throw new Error(`create ${collection}: ${await response.text()}`);
     }
-    return response.json();
+    return (await response.json()) as ApiRecord;
   }
 
   async list(collection: string, filter = '') {
     const query = new URLSearchParams({ perPage: '500', filter });
     const response = await this.call('GET', `/api/collections/${collection}/records?${query}`);
-    return (await response.json()).items as Record<string, unknown>[];
+    return ((await response.json()) as { items: ApiRecord[] }).items;
   }
 
   async clear() {
     for (const collection of COLLECTIONS_CHILDREN_FIRST) {
       for (const record of await this.list(collection)) {
-        await this.call('DELETE', `/api/collections/${collection}/records/${record['id']}`);
+        await this.call('DELETE', `/api/collections/${collection}/records/${record.id}`);
       }
     }
   }
@@ -95,7 +98,7 @@ export async function longLivedTokens() {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ identity: E2E_ADMIN.email, password: E2E_ADMIN.password }),
   });
-  const { token } = await auth.json();
+  const { token } = (await auth.json()) as { token: string };
   const response = await fetch(`${E2E_SERVER}/api/collections/users`, {
     method: 'PATCH',
     headers: { 'content-type': 'application/json', authorization: token },

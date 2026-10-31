@@ -1,0 +1,68 @@
+.entry {
+  padding: var(--space-4);
+  border-radius: var(--radius-feature);
+}
+
+.what {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: var(--text-20);
+  font-weight: 500;
+
+  &::placeholder {
+    color: var(--muted);
+  }
+}
+
+.chips {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1-5);
+}
+
+.chip.quiet {
+  padding: 0 var(--space-2-5);
+  background: var(--bg);
+  gap: var(--space-1);
+}
+
+.chip.date {
+  padding: 0 var(--space-1) 0 var(--space-2-5);
+}
+
+.date-pick {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+}
+
+.remove {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radius-label);
+  background: transparent;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actions {
+  margin-top: var(--space-half);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-2);
+}
+
+.save {
+  font-weight: 700;
+}

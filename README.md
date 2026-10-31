@@ -28,4 +28,4 @@ The seed is dated around the day it first ran. To throw the data away and reseed
 
 ## Docs
 
-`docs/build-plan.md` is the brief, `docs/TODO.md` the checklist, `docs/plans/` one plan per feature, `docs/screens/` and `docs/design-system/` the look. `docs/security.md` says what protects the data, every audit finding, and what to do on the Pi yourself.
+`docs/build-plan.md` is the brief, `docs/TODO.md` the checklist, `docs/plans/` one plan per feature, `docs/screens/` and `docs/design-system/` the look. `docs/security.md` says what protects the data, every audit finding, and what to do on the Pi yourself. `docs/plans/refactor.md` describes the code's layers and the checks CI enforces.

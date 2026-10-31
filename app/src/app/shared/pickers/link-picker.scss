@@ -1,0 +1,137 @@
+:host {
+  height: calc(100dvh - 96px);
+  padding-top: var(--space-2-5);
+  display: flex;
+  flex-direction: column;
+}
+
+.handle {
+  align-self: center;
+  width: 36px;
+  height: 4px;
+  border-radius: var(--radius-hairline);
+  background: var(--control);
+}
+
+.head {
+  margin-top: var(--space-3-5);
+  padding: 0 var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.done {
+  height: 44px;
+  padding: 0 var(--space-4-5);
+  border: 0;
+  border-radius: var(--radius-input);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: var(--text-15);
+  font-weight: 700;
+}
+
+.search {
+  margin: var(--space-3-5) var(--space-4) 0;
+  height: 44px;
+  padding: 0 var(--space-3-5);
+  border-radius: var(--radius-input);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2-5);
+  color: var(--muted);
+
+  input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: var(--text-15);
+    color: var(--ink);
+  }
+}
+
+.filters {
+  display: block;
+  margin: var(--space-2-5) var(--space-4) 0;
+}
+
+.items {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-3) var(--space-4) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  .eyebrow {
+    margin-top: var(--space-2);
+  }
+}
+
+.item {
+  min-height: 56px;
+  padding: var(--space-2) var(--space-3-5);
+  border: 0;
+  border-radius: var(--radius-row);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: left;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.kind {
+  height: 22px;
+  padding: 0 7px;
+  border-radius: var(--radius-check);
+  background: var(--soft);
+  font-size: var(--text-11);
+  font-weight: 700;
+  color: var(--ink-2);
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: var(--text-16);
+  font-weight: 600;
+}
+
+.meta {
+  font-size: var(--text-12);
+  color: var(--ink-2);
+}
+
+.tick {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-label);
+  border: 2px solid var(--control);
+  color: var(--on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tick.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
