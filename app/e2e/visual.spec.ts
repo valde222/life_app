@@ -58,7 +58,12 @@ async function seed(api: Api, life: { id: string }): Promise<Fixture> {
     time: '10:00',
     reminder: at(1, '09:30'),
   });
-  await api.create('steps', { todo: invoice.id, text: 'Hours from timesheet', done: true, order: 0 });
+  await api.create('steps', {
+    todo: invoice.id,
+    text: 'Hours from timesheet',
+    done: true,
+    order: 0,
+  });
   await api.create('steps', { todo: invoice.id, text: 'Attach the PDF', done: false, order: 1 });
 
   const bathroom = await api.todo('Clean bathroom', {

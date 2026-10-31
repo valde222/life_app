@@ -6,15 +6,15 @@ The Angular app behind both the Android and desktop apps: every screen, the loca
 
 From WSL, in `app/`:
 
-| Command | What it does |
-| --- | --- |
-| `npm start` | Dev server on http://localhost:4200 (the dev Compose file runs it for you) |
-| `npm test` | Unit tests (Vitest) |
-| `npm run e2e` | End-to-end tests (Playwright) against a throwaway PocketBase on port 8091 |
-| `npm run e2e:docker` | The same inside Playwright's Docker image, for WSL without Chromium's libraries |
-| `npm run build` | Production web files in `dist/app/browser`, used by both shells |
-| `npm run build:android` / `build:desktop` | Web build, then the APK or Windows installer (see the shell READMEs) |
-| `npm run tokens` | Regenerates `src/styles/_tokens.scss` from `docs/design-system/tokens.json` |
+| Command                                   | What it does                                                                    |
+| ----------------------------------------- | ------------------------------------------------------------------------------- |
+| `npm start`                               | Dev server on http://localhost:4200 (the dev Compose file runs it for you)      |
+| `npm test`                                | Unit tests (Vitest)                                                             |
+| `npm run e2e`                             | End-to-end tests (Playwright) against a throwaway PocketBase on port 8091       |
+| `npm run e2e:docker`                      | The same inside Playwright's Docker image, for WSL without Chromium's libraries |
+| `npm run build`                           | Production web files in `dist/app/browser`, used by both shells                 |
+| `npm run build:android` / `build:desktop` | Web build, then the APK or Windows installer (see the shell READMEs)            |
+| `npm run tokens`                          | Regenerates `src/styles/_tokens.scss` from `docs/design-system/tokens.json`     |
 
 Install packages from WSL only; never run npm on the Windows side.
 
