@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CalendarSettings } from '../../core/calendar/calendar-settings';
 import { Repository } from '../../core/data/repository';
-import { LocalStore } from '../../core/data/local-store';
-import { Server } from '../../core/server/server';
+import { Session } from '../../core/session/session';
 import { SyncService } from '../../core/sync/sync.service';
 import { Clock } from '../../core/time/clock';
 import { Icon } from '../../shared/ui/icon';
@@ -28,18 +27,15 @@ export function syncedLabel(last: Date | null, now: Date, online: boolean): stri
   styleUrl: './settings-page.scss',
 })
 export class SettingsPage {
-  private readonly server = inject(Server);
-  private readonly router = inject(Router);
-  private readonly store = inject(LocalStore);
+  private readonly session = inject(Session);
   private readonly repository = inject(Repository);
   private readonly clock = inject(Clock);
   protected readonly sync = inject(SyncService);
   protected readonly calendars = inject(CalendarSettings);
 
-  protected readonly email =
-    (this.server.pb.authStore.record?.['email'] as string | undefined) ?? '';
+  protected readonly email = this.session.email();
   protected readonly name = this.email.split('@')[0];
-  protected readonly serverUrl = this.server.url;
+  protected readonly serverUrl = this.session.serverUrl;
   protected readonly synced = computed(() =>
     syncedLabel(this.sync.lastSynced(), this.clock.now(), this.sync.online()),
   );
@@ -55,9 +51,7 @@ export class SettingsPage {
   }
 
   protected async signOut() {
-    await this.sync.stop();
-    this.server.signOut();
-    await this.store.delete();
+    await this.session.signOut();
     location.assign('/sign-in');
   }
 }

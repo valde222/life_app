@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Actions } from '../../core/data/actions';
 import { Todo } from '../../domain/models';
 import { Store } from '../../core/data/store';
-import { Server } from '../../core/server/server';
+import { Session } from '../../core/session/session';
 import { SyncService } from '../../core/sync/sync.service';
 import { Clock } from '../../core/time/clock';
 import { longDate } from '../../domain/time/local-date';
@@ -75,9 +75,7 @@ export class Today {
   );
   protected readonly showDone = signal(false);
   protected readonly compact = signal(false);
-  protected readonly initial =
-    (inject(Server).pb.authStore.record?.['email'] as string | undefined)?.[0]?.toUpperCase() ??
-    'V';
+  protected readonly initial = inject(Session).email()[0]?.toUpperCase() ?? 'V';
 
   constructor() {
     const onScroll = () => this.compact.set(window.scrollY > 90);

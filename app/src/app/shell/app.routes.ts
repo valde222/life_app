@@ -2,14 +2,14 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router, Routes } from '@angular/router';
 import { LocalStore } from '../core/data/local-store';
 import { MainLayout } from './main-layout';
-import { Server } from '../core/server/server';
+import { Session } from '../core/session/session';
 import { ShareReceiver } from '../core/share/share-receiver';
 import { CalendarImporter } from '../core/calendar/calendar-importer';
 import { Reminders } from '../core/reminders/reminders';
 import { SyncService } from '../core/sync/sync.service';
 
 const signedIn: CanActivateFn = () => {
-  if (!inject(Server).signedIn()) {
+  if (!inject(Session).signedIn()) {
     return inject(Router).parseUrl('/sign-in');
   }
   inject(SyncService).start();
