@@ -2,5 +2,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-  life_lib::run();
+    if let Err(error) = life_lib::run() {
+        eprintln!("Life could not start: {error}");
+        std::process::exit(1);
+    }
 }
