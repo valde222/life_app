@@ -14,13 +14,12 @@ import {
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
-import { Actions } from '../../core/data/actions';
+import { Actions, NoteEdit } from '../../core/data/actions';
+import { LinkActions, NoteLinks } from '../../core/data/link-actions';
 import { newId } from '../../domain/ids';
 import { Draft, EMPTY_RECORDS, Note } from '../../domain/models';
-import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
 import { Clock } from '../../core/time/clock';
-import { shortDate } from '../../domain/time/local-date';
 import { Icon } from '../../shared/ui/icon';
 import { ListLabel } from '../../shared/ui/list-label';
 import { listColourStyle } from '../../shared/ui/list-colours';
@@ -31,8 +30,9 @@ import { renderMarkdown } from '../../shared/markdown/markdown';
 import { Photos } from '../../core/data/photos';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
-import { dayOfTimestamp } from '../../domain/time/timestamps';
 import { noteBackLabel } from '../../domain/back-labels';
+import { Selection, TextEdit, withCode, withHeading } from '../../shared/markdown/markdown-edits';
+import { noteConnections, noteDateLabel } from '../../domain/note-view';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
 
@@ -53,8 +53,8 @@ export class NoteEditor {
   readonly id = input.required<string>();
 
   private readonly store = inject(Store);
-  private readonly repository = inject(Repository);
   private readonly actions = inject(Actions);
+  private readonly links = inject(LinkActions);
   private readonly sheets = inject(Sheets);
   private readonly pickers = inject(Pickers);
   private readonly toasts = inject(Toasts);
@@ -88,30 +88,19 @@ export class NoteEditor {
   protected readonly backLabel = computed(() =>
     noteBackLabel(this.back, (id) => this.store.list(id)?.name),
   );
-  protected readonly dateLabel = computed(() => {
-    const created = this.note()?.created;
-    const day = created ? dayOfTimestamp(created) : this.clock.today();
-    return day === this.clock.today() ? 'Today' : shortDate(day);
-  });
+  protected readonly dateLabel = computed(() =>
+    noteDateLabel(this.note()?.created, this.clock.today()),
+  );
   protected readonly rendered = computed(() =>
     this.sanitizer.bypassSecurityTrustHtml(renderMarkdown(this.body())),
   );
   protected readonly photos = this.photosService.shown(this.note);
 
-  protected readonly linkedNotes = computed(() => {
-    const ids = new Set(this.note()?.links ?? []);
-    return this.store.notes().filter((note) => ids.has(note.id));
-  });
-  protected readonly linkedTodos = computed(() => {
-    const ids = new Set(this.note()?.todos ?? []);
-    return this.store.todos().filter((todo) => ids.has(todo.id));
-  });
-  protected readonly linkedFrom = computed(() =>
-    this.store
-      .notes()
-      .filter(
-        (note) => note.links?.includes(this.noteId()) && !this.note()?.links?.includes(note.id),
-      ),
+  protected readonly connections = computed(() =>
+    noteConnections(this.note(), this.noteId(), {
+      notes: this.store.notes(),
+      todos: this.store.todos(),
+    }),
   );
   protected readonly heading = computed(() => (this.mode() === 'keep' ? 'Keep note' : 'Note'));
   protected readonly swatch = listColourStyle;
@@ -143,21 +132,9 @@ export class NoteEditor {
   }
 
   protected async persist() {
-    if (this.mode() !== 'edit' || !this.saved()) {
-      return;
-    }
-    const note = this.saved()!;
-    const changes: Draft<'notes'> = {
-      title: this.title().trim(),
-      body: this.body(),
-      list: this.list(),
-    };
-    if (changes.title !== note.title || changes.body !== note.body || changes.list !== note.list) {
-      await this.repository.save('notes', {
-        ...changes,
-        id: note.id,
-        inbox: note.inbox && !changes.list,
-      });
+    const note = this.saved();
+    if (this.mode() === 'edit' && note) {
+      await this.actions.editNote(note, this.fields());
     }
   }
 
@@ -169,23 +146,11 @@ export class NoteEditor {
   }
 
   protected insertHeading() {
-    this.edit((text, start) => {
-      const lineStart = text.lastIndexOf('\n', start - 1) + 1;
-      return { text: `${text.slice(0, lineStart)}## ${text.slice(lineStart)}`, cursor: start + 3 };
-    });
+    this.edit(withHeading);
   }
 
   protected insertCode() {
-    this.edit((text, start, end) => {
-      const selected = text.slice(start, end);
-      const wrapped = selected.includes('\n')
-        ? `\n\`\`\`\n${selected}\n\`\`\`\n`
-        : `\`${selected}\``;
-      return {
-        text: text.slice(0, start) + wrapped + text.slice(end),
-        cursor: start + (selected ? wrapped.length : 1),
-      };
-    });
+    this.edit(withCode);
   }
 
   protected async addPhoto() {
@@ -200,38 +165,34 @@ export class NoteEditor {
       photos: this.photos(),
       index,
     }).closed;
-    if (result?.startsWith('delete:')) {
-      await this.photosService.remove(this.note()!, this.photos()[Number(result.slice(7))]);
+    const note = this.note();
+    const photo = result?.startsWith('delete:')
+      ? this.photos()[Number(result.slice(7))]
+      : undefined;
+    if (note && photo) {
+      await this.photosService.remove(note, photo);
     }
   }
 
   protected async addLink() {
-    const note = this.note()!;
     const result = await this.pickers.links({
       self: this.noteId(),
       list: this.list(),
-      notes: note.links ?? [],
-      todos: note.todos ?? [],
+      ...this.currentLinks(),
     });
     if (result) {
-      await this.setLinks(result.notes, result.todos);
+      await this.setLinks(result);
     }
   }
 
   protected unlinkNote(id: string) {
-    const note = this.note()!;
-    return this.setLinks(
-      (note.links ?? []).filter((each) => each !== id),
-      note.todos ?? [],
-    );
+    const { notes, todos } = this.currentLinks();
+    return this.setLinks({ notes: notes.filter((each) => each !== id), todos });
   }
 
   protected unlinkTodo(id: string) {
-    const note = this.note()!;
-    return this.setLinks(
-      note.links ?? [],
-      (note.todos ?? []).filter((each) => each !== id),
-    );
+    const { notes, todos } = this.currentLinks();
+    return this.setLinks({ notes, todos: todos.filter((each) => each !== id) });
   }
 
   protected openWikiLink(event: MouseEvent) {
@@ -247,20 +208,18 @@ export class NoteEditor {
     const title = target.dataset['note']?.toLowerCase();
     const linked = this.store.notes().find((note) => note.title.toLowerCase() === title);
     if (linked) {
-      this.router.navigate(['/note', linked.id], { state: { back: `/note/${this.noteId()}` } });
+      void this.router.navigate(['/note', linked.id], {
+        state: { back: `/note/${this.noteId()}` },
+      });
     }
   }
 
   protected async save() {
-    const fields: Draft<'notes'> = {
-      title: this.title().trim(),
-      body: this.body(),
-      list: this.list(),
-    };
+    const saved = this.saved();
     if (this.mode() === 'new') {
-      await this.actions.createNote({ ...this.draft(), ...fields });
-    } else if (this.mode() === 'keep') {
-      const undo = await this.actions.keepNote(this.saved()!, fields);
+      await this.actions.createNote({ ...this.draft(), ...this.fields() });
+    } else if (this.mode() === 'keep' && saved) {
+      const undo = await this.actions.keepNote(saved, this.fields());
       this.toasts.show({ title: 'Kept as a note', undo });
     }
     await this.router.navigateByUrl(this.back);
@@ -276,25 +235,34 @@ export class NoteEditor {
   }
 
   protected async delete() {
-    await this.actions.delete('notes', this.saved()!);
-    await this.router.navigateByUrl(this.back);
+    const saved = this.saved();
+    if (saved) {
+      await this.actions.delete('notes', saved);
+      await this.router.navigateByUrl(this.back);
+    }
   }
 
-  private async setLinks(links: string[], todos: string[]) {
+  private fields(): NoteEdit {
+    return { title: this.title().trim(), body: this.body(), list: this.list() };
+  }
+
+  private currentLinks(): NoteLinks {
+    const note = this.note();
+    return { notes: note?.links ?? [], todos: note?.todos ?? [] };
+  }
+
+  private async setLinks(links: NoteLinks) {
     if (this.id() === 'new') {
-      this.draft.update((draft) => ({ ...draft, links, todos }));
+      this.draft.update((draft) => ({ ...draft, links: links.notes, todos: links.todos }));
       return;
     }
-    await this.repository.save('notes', { id: this.id(), links, todos });
+    await this.links.setNoteLinks(this.id(), links);
   }
 
-  private edit(
-    change: (text: string, start: number, end: number) => { text: string; cursor: number },
-  ) {
+  private edit(change: (text: string, selection: Selection) => TextEdit) {
     const field = this.bodyField()?.nativeElement;
     const start = field?.selectionStart ?? this.body().length;
-    const end = field?.selectionEnd ?? start;
-    const result = change(this.body(), start, end);
+    const result = change(this.body(), { start, end: field?.selectionEnd ?? start });
     this.body.set(result.text);
     setTimeout(() => {
       field?.focus();

@@ -131,7 +131,8 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 
 ## Bugs found (fixed separately afterwards)
 
-None yet.
+- [ ] B1. The rendered note text opens the editor on click, but it's a plain `<article>`: keyboard users can't reach or open it (no focus, no key handler). Found by angular-eslint's template accessibility rules.
+- [ ] B2. The back label differs between the editors: a todo opened from Search says "Back", a note opened from Search says "Search"; a note opened from Lists or Agenda says "Back". Kept as is in the refactor (`domain/back-labels.ts`); worth one map.
 
 ## Summary
 

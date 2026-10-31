@@ -111,10 +111,10 @@
       </div>
     }
 
-    @if (linkedNotes().length || linkedTodos().length || mode() !== 'edit') {
+    @if (connections().notes.length || connections().todos.length || mode() !== 'edit') {
       <h2 class="eyebrow section">Linked</h2>
       <div class="linked">
-        @for (linked of linkedNotes(); track linked.id) {
+        @for (linked of connections().notes; track linked.id) {
           <span class="linked-item">
             <a [routerLink]="['/note', linked.id]" [state]="{ back: '/note/' + noteId() }">{{
               linked.title || 'Untitled'
@@ -129,7 +129,7 @@
             </button>
           </span>
         }
-        @for (todo of linkedTodos(); track todo.id) {
+        @for (todo of connections().todos; track todo.id) {
           <span class="linked-item">
             <span class="mini-box"></span>
             <a [routerLink]="['/todo', todo.id]">{{ todo.title }}</a>
@@ -149,10 +149,10 @@
       </div>
     }
 
-    @if (linkedFrom().length) {
+    @if (connections().linkedFrom.length) {
       <h2 class="eyebrow section">Linked from</h2>
       <div class="stack">
-        @for (from of linkedFrom(); track from.id) {
+        @for (from of connections().linkedFrom; track from.id) {
           <a
             class="card from"
             [routerLink]="['/note', from.id]"
