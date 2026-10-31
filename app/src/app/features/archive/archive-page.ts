@@ -14,6 +14,7 @@ import { matches, search } from '../../domain/search-items';
 import { dayOfTimestamp } from '../../domain/time/timestamps';
 import { Icon } from '../../shared/ui/icon';
 import { Segmented } from '../../shared/ui/segmented';
+import { Settled } from '../../shared/ui/motion';
 
 type Tab = 'archive' | 'done';
 
@@ -35,6 +36,7 @@ interface Row {
 export class ArchivePage {
   private readonly store = inject(Store);
   private readonly all = inject(AllRecords);
+  protected readonly settled = new Settled();
   private readonly actions = inject(Actions);
   private readonly archive = inject(ArchiveActions);
   private readonly lists = inject(ListActions);
