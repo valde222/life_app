@@ -56,6 +56,11 @@ Moments not on the list, added under the same rules. Each one is listed here bef
 | # | Moment | What moves | Time | Easing |
 | --- | --- | --- | --- | --- |
 | F1 | Today's "All done." panel | Fades in when the last todo of the day is ticked, instead of appearing all at once | base | enter |
+| F2 | Steps in the todo editor | A step you add expands in; a step you remove collapses out | base | enter / exit |
+| F3 | "Inbox zero." | Fades in when the last item leaves the Inbox | base | enter |
+| F4 | Note photo thumbnails | A photo you add fades and scales in from 90%; a deleted one fades out | base, fast | enter, exit |
+
+Considered and left out: animated route changes (a view transition would hold input for its length), and rows animating as you type in Search (it would fire on every key).
 
 ## Steps
 
