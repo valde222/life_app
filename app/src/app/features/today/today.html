@@ -2,12 +2,14 @@
   <div class="compact-bar">
     <span class="compact-title">Today.</span>
     @if (!nothing()) {
-      <a class="pill compact-pill tabular" routerLink="/week">
-        @for (count of [doneCount()]; track count) {
-          <span [animate.enter]="settled.animate('count-in')">{{ count }}</span>
-        }
-        / {{ items().total }} done</a
-      >
+      @for (count of [doneCount()]; track count) {
+        <a
+          class="pill compact-pill tabular"
+          routerLink="/week"
+          [animate.enter]="settled.animate('count-in')"
+          >{{ count }} / {{ items().total }} done</a
+        >
+      }
     }
   </div>
 }
@@ -16,12 +18,14 @@
     <span class="eyebrow date">{{ dateLabel() }}</span>
     <span class="top-actions">
       @if (!nothing()) {
-        <a class="pill tabular" routerLink="/week">
-          @for (count of [doneCount()]; track count) {
-            <span [animate.enter]="settled.animate('count-in')">{{ count }}</span>
-          }
-          / {{ items().total }} done<app-icon name="chevron-right" [size]="14" [stroke]="2.6"
-        /></a>
+        @for (count of [doneCount()]; track count) {
+          <a class="pill tabular" routerLink="/week" [animate.enter]="settled.animate('count-in')"
+            >{{ count }} / {{ items().total }} done<app-icon
+              name="chevron-right"
+              [size]="14"
+              [stroke]="2.6"
+          /></a>
+        }
       }
       <a class="avatar" routerLink="/settings" aria-label="Settings">{{ initial }}</a>
     </span>
@@ -126,9 +130,8 @@
         >
           <app-icon name="chevron-right" [size]="14" [stroke]="2.4" [class.open]="showDone()" />
           @for (count of [items().done.length]; track count) {
-            <span [animate.enter]="settled.animate('count-in')">{{ count }}</span>
+            <span [animate.enter]="settled.animate('count-in')">{{ count }} done</span>
           }
-          done
         </button>
         @if (showDone()) {
           @for (todo of items().done; track todo.id) {

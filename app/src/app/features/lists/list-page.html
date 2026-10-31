@@ -49,9 +49,8 @@
         >
           <app-icon name="chevron-right" [size]="14" [stroke]="2.4" [class.open]="showDone()" />
           @for (count of [done().length]; track count) {
-            <span [animate.enter]="settled.animate('count-in')">{{ count }}</span>
+            <span [animate.enter]="settled.animate('count-in')">{{ count }} done</span>
           }
-          done
         </button>
         @if (showDone()) {
           <div class="stack">
