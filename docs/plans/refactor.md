@@ -91,7 +91,7 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 - [x] Prettier check over the app and e2e
 - [x] Style check: colours, spacing, radius and font sizes from tokens only (`scripts/check-styles.mjs`, reading `tokens.json`; simpler than a Stylelint plugin and exact about which values a token names)
 - [x] dependency-cruiser with the rules above (run in report mode until step 3 is done)
-- [ ] `npm run lint` running all of them, in CI
+- [x] `npm run lint` running all of them, in CI
 
 ### 3. Angular layers (one move per commit, imports updated, no code changes)
 
@@ -117,10 +117,10 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 
 ### 5. Rust, Android, PocketBase, Docker, CI
 
-- [ ] Tauri: modules, typed errors, no `expect`, tested menu handling; rustfmt and clippy `-D warnings` in CI
-- [ ] Android: share intent parsing split from the plugin; tests kept
-- [ ] PocketBase: one list of synced collections for the hooks and tests; hooks tidied
-- [ ] Docker and CI: one way to start the test PocketBase; shared steps deduplicated
+- [x] Tauri: modules, typed errors, no `expect`, tested menu handling; rustfmt and clippy `-D warnings` in CI
+- [x] Android: share intent parsing split from the plugin; tests kept and two added
+- [x] PocketBase: one list of synced collections for the hooks (migrations keep theirs: they record history)
+- [x] Docker and CI: one way to start the test PocketBase; shared steps deduplicated (Compose already shares its hardening through an anchor; each Dockerfile keeps its own pinned base, which Dependabot updates)
 
 ### 6. Finish
 
