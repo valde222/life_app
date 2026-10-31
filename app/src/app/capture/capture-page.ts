@@ -6,7 +6,7 @@ import {
   inject,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { DesktopShell } from '../desktop/desktop-shell';
+import { DesktopShell } from '../core/platform/desktop-shell';
 import { CaptureSheet } from './capture-sheet';
 
 @Component({

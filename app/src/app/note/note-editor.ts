@@ -14,13 +14,13 @@ import {
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
-import { Actions } from '../data/actions';
+import { Actions } from '../core/data/actions';
 import { newId } from '../domain/ids';
 import { EMPTY_RECORDS, Note } from '../domain/models';
-import { Draft, Repository } from '../data/repository';
-import { Store } from '../data/store';
+import { Draft, Repository } from '../core/data/repository';
+import { Store } from '../core/data/store';
 import { MoveTo, MoveToData } from '../pickers/move-to';
-import { Clock } from '../time/clock';
+import { Clock } from '../core/time/clock';
 import { localDate, shortDate } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { ListLabel } from '../ui/list-label';
@@ -31,7 +31,7 @@ import { ImagePicker } from './image-picker';
 import { ImageView, ImageViewData } from './image-view';
 import { LinkPicker, LinkPickerData, LinkPickerResult } from './link-picker';
 import { renderMarkdown } from './markdown';
-import { Photos } from './photos';
+import { Photos } from '../core/photos/photos';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
 

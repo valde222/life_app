@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { DesktopShell } from './desktop/desktop-shell';
+import { DesktopShell } from './core/platform/desktop-shell';
 
 @Component({
   imports: [RouterOutlet],

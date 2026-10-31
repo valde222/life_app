@@ -1,15 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, Undo } from '../data/actions';
+import { Actions, Undo } from '../core/data/actions';
 import { Note, Todo } from '../domain/models';
 import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
 import { MoveTo, MoveToData } from '../pickers/move-to';
 import { ActionSheet, ActionSheetData } from '../ui/action-sheet';
 import { Sheets } from '../ui/sheet';
 import { Toasts } from '../ui/toast';
-import { Store } from '../data/store';
+import { Store } from '../core/data/store';
 import { LinkPicker, LinkPickerData, LinkPickerResult } from '../note/link-picker';
-import { Repository } from '../data/repository';
+import { Repository } from '../core/data/repository';
 
 type TodoAction = 'today' | 'date' | 'move' | 'repeat' | 'delete';
 type NoteAction = 'move' | 'link' | 'archive' | 'delete';

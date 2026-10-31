@@ -10,11 +10,11 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Actions } from '../data/actions';
+import { Actions } from '../core/data/actions';
 import { pocketBaseTimestamp } from '../domain/ids';
 import { ListColour } from '../domain/models';
-import { Repository } from '../data/repository';
-import { Store } from '../data/store';
+import { Repository } from '../core/data/repository';
+import { Store } from '../core/data/store';
 import { Icon } from '../ui/icon';
 import { Toasts } from '../ui/toast';
 import { ColourPicker } from './colour-picker';

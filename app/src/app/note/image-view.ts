@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { ShownPhoto } from './photos';
+import { ShownPhoto } from '../core/photos/photos';
 
 export interface ImageViewData {
   photos: ShownPhoto[];

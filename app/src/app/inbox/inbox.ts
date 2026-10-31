@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Actions, Undo } from '../data/actions';
+import { Actions, Undo } from '../core/data/actions';
 import { Note, Todo } from '../domain/models';
-import { Store } from '../data/store';
+import { Store } from '../core/data/store';
 import { DatePicker, DatePickerData, DatePickerResult } from '../pickers/date-picker';
 import { MoveTo, MoveToData } from '../pickers/move-to';
-import { Clock } from '../time/clock';
+import { Clock } from '../core/time/clock';
 import { EmptyState } from '../ui/empty-state';
 import { Icon } from '../ui/icon';
 import { listColourStyle } from '../ui/list-colours';

@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { LocalStore } from '../data/local-store';
-import { COLLECTIONS_IN_DEPENDENCY_ORDER, CollectionName, Collections } from '../domain/models';
+import { COLLECTIONS_IN_DEPENDENCY_ORDER, CollectionName, Collections } from '../../domain/models';
 import { Repository } from '../data/repository';
 import { Server, toSendError } from '../server/server';
 import { applyRemote } from './merge';

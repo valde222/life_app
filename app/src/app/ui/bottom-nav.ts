@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Store } from '../data/store';
+import { Store } from '../core/data/store';
 import { Icon, IconName } from './icon';
 
 interface Tab {

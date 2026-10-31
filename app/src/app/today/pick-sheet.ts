@@ -1,10 +1,10 @@
 import { DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Actions, Undo } from '../data/actions';
+import { Actions, Undo } from '../core/data/actions';
 import { Todo } from '../domain/models';
-import { Store } from '../data/store';
-import { Clock } from '../time/clock';
+import { Store } from '../core/data/store';
+import { Clock } from '../core/time/clock';
 import { addDays, relativeDay } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { ListLabel } from '../ui/list-label';

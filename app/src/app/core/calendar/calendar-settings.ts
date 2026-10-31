@@ -1,5 +1,5 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { CalendarChoice } from '../domain/models';
+import { CalendarChoice } from '../../domain/models';
 import { Repository } from '../data/repository';
 import { Store } from '../data/store';
 

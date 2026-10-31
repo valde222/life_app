@@ -2,9 +2,9 @@ import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { liveQuery } from 'dexie';
 import { from } from 'rxjs';
-import { newId } from '../domain/ids';
+import { newId } from '../../domain/ids';
 import { LocalStore, PendingPhoto } from '../data/local-store';
-import { Note } from '../domain/models';
+import { Note } from '../../domain/models';
 import { Server } from '../server/server';
 import { SyncService } from '../sync/sync.service';
 

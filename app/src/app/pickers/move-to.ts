@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { Store } from '../data/store';
+import { Store } from '../core/data/store';
 import { Icon } from '../ui/icon';
 import { listColourStyle } from '../ui/list-colours';
 import { Sheet } from '../ui/sheet';

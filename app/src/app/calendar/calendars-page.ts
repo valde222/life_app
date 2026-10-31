@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { Icon } from '../ui/icon';
 import { Switch } from '../ui/switch';
-import { CalendarImporter } from './calendar-importer';
-import { CalendarSettings } from './calendar-settings';
+import { CalendarImporter } from '../core/calendar/calendar-importer';
+import { CalendarSettings } from '../core/calendar/calendar-settings';
 
 @Component({
   selector: 'app-calendars-page',

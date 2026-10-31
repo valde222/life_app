@@ -1,4 +1,4 @@
-import { EMPTY_RECORDS, Todo } from '../domain/models';
+import { EMPTY_RECORDS, Todo } from '../../domain/models';
 import { dueReminders, notificationId } from './reminders';
 
 const todo = (fields: Partial<Todo>): Todo => ({

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LocalStore } from '../data/local-store';
-import { EMPTY_RECORDS, Todo } from '../domain/models';
+import { EMPTY_RECORDS, Todo } from '../../domain/models';
 import { applyRemote, isAtLeastAsNew } from './merge';
 
 const todo = (fields: Partial<Todo>): Todo => ({

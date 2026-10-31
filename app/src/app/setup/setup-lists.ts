@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Repository } from '../data/repository';
+import { Repository } from '../core/data/repository';
 import { Icon } from '../ui/icon';
 import { ChoiceChips } from './choice-chips';
 import { Choice, SetupState } from './setup-state';

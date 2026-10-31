@@ -1,5 +1,5 @@
 import { LocalStore } from '../data/local-store';
-import { CollectionName, Collections } from '../domain/models';
+import { CollectionName, Collections } from '../../domain/models';
 
 const SERVER_ONLY_FIELDS = ['collectionId', 'collectionName', 'expand'];
 const SERVER_OWNED_FIELDS: Partial<Record<CollectionName, string[]>> = { notes: ['photos'] };

@@ -1,5 +1,5 @@
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
-import { localDate } from '../domain/time/local-date';
+import { localDate } from '../../domain/time/local-date';
 
 const MINUTE = 60_000;
 

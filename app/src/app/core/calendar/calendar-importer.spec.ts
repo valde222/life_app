@@ -1,10 +1,10 @@
 import { computed, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { LocalStore } from '../data/local-store';
-import { CalendarChoice, EMPTY_RECORDS } from '../domain/models';
+import { CalendarChoice, EMPTY_RECORDS } from '../../domain/models';
 import { CalendarImporter } from './calendar-importer';
 import { CalendarSettings } from './calendar-settings';
-import { stableId } from '../domain/import-plan';
+import { stableId } from '../../domain/import-plan';
 
 const device = vi.hoisted(() => ({
   permission: 'granted',

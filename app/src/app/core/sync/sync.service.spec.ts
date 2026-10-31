@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ClientResponseError } from 'pocketbase';
 import { LocalStore } from '../data/local-store';
-import { CollectionName, Collections, EMPTY_RECORDS, Todo } from '../domain/models';
+import { CollectionName, Collections, EMPTY_RECORDS, Todo } from '../../domain/models';
 import { Repository } from '../data/repository';
 import { Server } from '../server/server';
 import { SyncService } from './sync.service';

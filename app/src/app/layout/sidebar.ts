@@ -7,10 +7,10 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Store } from '../data/store';
+import { Store } from '../core/data/store';
 import { NewGroupSheet } from '../lists/new-group-sheet';
 import { NewListData, NewListSheet } from '../lists/new-list-sheet';
-import { SyncService } from '../sync/sync.service';
+import { SyncService } from '../core/sync/sync.service';
 import { Icon } from '../ui/icon';
 import { ListSwatch } from '../ui/list-swatch';
 import { Sheets } from '../ui/sheet';

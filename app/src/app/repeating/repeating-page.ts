@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Actions } from '../data/actions';
+import { Actions } from '../core/data/actions';
 import { Todo } from '../domain/models';
-import { Store } from '../data/store';
-import { Clock } from '../time/clock';
+import { Store } from '../core/data/store';
+import { Clock } from '../core/time/clock';
 import { addDays } from '../domain/time/local-date';
 import { EmptyState } from '../ui/empty-state';
 import { Icon } from '../ui/icon';

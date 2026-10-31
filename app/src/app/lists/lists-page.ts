@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Group, List } from '../domain/models';
-import { Store } from '../data/store';
+import { Store } from '../core/data/store';
 import { Icon } from '../ui/icon';
 import { ListSwatch } from '../ui/list-swatch';
 import { Sheets } from '../ui/sheet';

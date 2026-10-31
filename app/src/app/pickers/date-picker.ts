@@ -1,6 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { Clock } from '../time/clock';
+import { Clock } from '../core/time/clock';
 import {
   addDays,
   localDate,

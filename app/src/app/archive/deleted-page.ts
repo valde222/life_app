@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Repository } from '../data/repository';
-import { Store } from '../data/store';
-import { Clock } from '../time/clock';
+import { Repository } from '../core/data/repository';
+import { Store } from '../core/data/store';
+import { Clock } from '../core/time/clock';
 import { EmptyState } from '../ui/empty-state';
 import { Icon } from '../ui/icon';
 import { DeletedItem, deletedItems, deletedSub } from '../domain/deleted-items';

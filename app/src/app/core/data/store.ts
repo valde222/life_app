@@ -1,6 +1,6 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { countsByList } from '../domain/list-counts';
-import { List, Note, Todo } from '../domain/models';
+import { countsByList } from '../../domain/list-counts';
+import { List, Note, Todo } from '../../domain/models';
 import { Repository } from './repository';
 
 @Injectable({ providedIn: 'root' })

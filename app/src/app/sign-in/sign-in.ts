@@ -2,9 +2,9 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClientResponseError } from 'pocketbase';
-import { LocalStore } from '../data/local-store';
-import { Server } from '../server/server';
-import { checkServerUrl } from '../server/server-url';
+import { LocalStore } from '../core/data/local-store';
+import { Server } from '../core/server/server';
+import { checkServerUrl } from '../core/server/server-url';
 
 @Component({
   selector: 'app-sign-in',

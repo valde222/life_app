@@ -1,7 +1,7 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { Store } from '../data/store';
-import { Clock } from '../time/clock';
+import { Store } from '../core/data/store';
+import { Clock } from '../core/time/clock';
 import { addDays, daysBetween, longDate, shortDate } from '../domain/time/local-date';
 import { Sheet } from '../ui/sheet';
 import { completionDays, repeatStatus, ROUGH_CHOICES } from '../domain/repeat-status';

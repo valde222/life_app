@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Store } from '../data/store';
-import { Clock } from '../time/clock';
+import { Store } from '../core/data/store';
+import { Clock } from '../core/time/clock';
 import { relativeDay } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { calendarEventAsTodo } from '../domain/calendar-items';
-import { CalendarSettings } from './calendar-settings';
+import { CalendarSettings } from '../core/calendar/calendar-settings';
 
 @Component({
   selector: 'app-event-page',

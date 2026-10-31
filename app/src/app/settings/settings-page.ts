@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CalendarSettings } from '../calendar/calendar-settings';
-import { Repository } from '../data/repository';
-import { LocalStore } from '../data/local-store';
-import { Server } from '../server/server';
-import { SyncService } from '../sync/sync.service';
-import { Clock } from '../time/clock';
+import { CalendarSettings } from '../core/calendar/calendar-settings';
+import { Repository } from '../core/data/repository';
+import { LocalStore } from '../core/data/local-store';
+import { Server } from '../core/server/server';
+import { SyncService } from '../core/sync/sync.service';
+import { Clock } from '../core/time/clock';
 import { Icon } from '../ui/icon';
 import { deletedItems } from '../domain/deleted-items';
 

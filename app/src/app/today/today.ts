@@ -7,12 +7,12 @@ import {
   signal,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Actions } from '../data/actions';
+import { Actions } from '../core/data/actions';
 import { Todo } from '../domain/models';
-import { Store } from '../data/store';
-import { Server } from '../server/server';
-import { SyncService } from '../sync/sync.service';
-import { Clock } from '../time/clock';
+import { Store } from '../core/data/store';
+import { Server } from '../core/server/server';
+import { SyncService } from '../core/sync/sync.service';
+import { Clock } from '../core/time/clock';
 import { longDate } from '../domain/time/local-date';
 import { EmptyState } from '../ui/empty-state';
 import { Icon } from '../ui/icon';

@@ -1,4 +1,4 @@
-import { Draft } from '../data/repository';
+import { Draft } from '../core/data/repository';
 
 export interface SharedImage {
   mimeType: string;

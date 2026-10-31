@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Store } from '../data/store';
-import { Clock } from '../time/clock';
+import { Store } from '../core/data/store';
+import { Clock } from '../core/time/clock';
 import { monthName, parseLocalDate, weekdayName } from '../domain/time/local-date';
 import { Icon } from '../ui/icon';
 import { ListLabel } from '../ui/list-label';

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Clock } from '../time/clock';
 import { Actions } from './actions';
 import { LocalStore } from './local-store';
-import { Note, Todo } from '../domain/models';
+import { Note, Todo } from '../../domain/models';
 
 const NOW = new Date('2026-10-31T10:00:00');
 

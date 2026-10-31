@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Actions } from '../data/actions';
-import { Store } from '../data/store';
+import { Actions } from '../core/data/actions';
+import { Store } from '../core/data/store';
 import { Icon } from '../ui/icon';
 import { ListLabel } from '../ui/list-label';
 import { Toasts } from '../ui/toast';

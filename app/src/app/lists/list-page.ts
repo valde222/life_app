@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Actions } from '../data/actions';
+import { Actions } from '../core/data/actions';
 import { Note, Todo } from '../domain/models';
-import { Store } from '../data/store';
+import { Store } from '../core/data/store';
 import { CaptureData, CaptureSheet } from '../capture/capture-sheet';
-import { Clock } from '../time/clock';
+import { Clock } from '../core/time/clock';
 import { relativeDay, shortDate, weekdayName, daysBetween } from '../domain/time/local-date';
 import { localDate } from '../domain/time/local-date';
 import { EmptyState } from '../ui/empty-state';

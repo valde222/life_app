@@ -11,12 +11,12 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Actions } from '../data/actions';
+import { Actions } from '../core/data/actions';
 import { RepeatMode, Todo } from '../domain/models';
-import { Draft, Repository } from '../data/repository';
-import { Store } from '../data/store';
+import { Draft, Repository } from '../core/data/repository';
+import { Store } from '../core/data/store';
 import { MoveTo, MoveToData } from '../pickers/move-to';
-import { Clock } from '../time/clock';
+import { Clock } from '../core/time/clock';
 import { DetailRow } from '../ui/detail-row';
 import { ListLabel } from '../ui/list-label';
 import { Segmented } from '../ui/segmented';
