@@ -1,9 +1,25 @@
 {
-  "TCP": { "443": { "HTTPS": true } },
-  "Web": {
-    "${TS_CERT_DOMAIN}:443": {
-      "Handlers": { "/": { "Proxy": "http://pocketbase:8090" } }
+  "TCP": {
+    "443": {
+      "HTTPS": true
     }
   },
-  "AllowFunnel": { "${TS_CERT_DOMAIN}:443": true }
+  "Web": {
+    "${TS_CERT_DOMAIN}:443": {
+      "Handlers": {
+        "/": {
+          "Proxy": "http://pocketbase:8090"
+        },
+        "/_": {
+          "Text": "Not found"
+        },
+        "/api/collections/_superusers/": {
+          "Text": "Not found"
+        }
+      }
+    }
+  },
+  "AllowFunnel": {
+    "${TS_CERT_DOMAIN}:443": true
+  }
 }

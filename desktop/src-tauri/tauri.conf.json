@@ -22,7 +22,7 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https: http://localhost:* http://127.0.0.1:* http://10.0.2.2:*; connect-src 'self' ipc: http://ipc.localhost https: wss: http://localhost:* http://127.0.0.1:* http://10.0.2.2:* ws://localhost:*; object-src 'none'; base-uri 'self'; form-action 'none'; frame-src 'none'; worker-src 'self' blob:"
     },
     "withGlobalTauri": true
   },

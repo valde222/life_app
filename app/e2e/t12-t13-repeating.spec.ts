@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { freshAccount, localDate, signIn } from './support';
+import { freshAccount, localDate, longLivedTokens, signIn } from './support';
 
 function daysAgo(days: number, from = new Date()) {
   return localDate(from, -days);
@@ -38,12 +38,13 @@ test('T13: a Mon and Thu chore shows Thu on a Tuesday and is red on Friday if no
     repeat_weekdays: [1, 4],
   });
   const now = new Date();
-  const thisMonday = localDate(now, -((now.getDay() + 6) % 7));
-  await api.create('completions', { todo: plants.id, done_on: thisMonday });
-  const [year, month, day] = thisMonday.split('-').map(Number);
+  const nextMonday = localDate(now, 7 - ((now.getDay() + 6) % 7));
+  await api.create('completions', { todo: plants.id, done_on: nextMonday });
+  const [year, month, day] = nextMonday.split('-').map(Number);
   const tuesday = new Date(year, month - 1, day + 1, 10, 0);
   const friday = new Date(year, month - 1, day + 4, 10, 0);
 
+  await longLivedTokens();
   await page.clock.setFixedTime(tuesday);
   await signIn(page);
   await page.goto('/repeating');

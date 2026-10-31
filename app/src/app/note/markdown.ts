@@ -10,25 +10,48 @@ export function escapeHtml(text: string): string {
   return text.replace(/[&<>"']/g, (char) => ESCAPES[char]);
 }
 
-function inline(text: string): string {
-  const codeSpans: string[] = [];
-  let html = escapeHtml(text).replace(/`([^`]+)`/g, (_, code: string) => {
-    codeSpans.push(`<code>${code}</code>`);
-    return `\u0000${codeSpans.length - 1}\u0000`;
-  });
-  html = html
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/(^|[^*])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>')
-    .replace(/\[\[([^\]]+)\]\]/g, '<a class="note-link" data-note="$1">$1</a>')
-    .replace(
-      /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener">$1</a>',
-    )
-    .replace(
-      /(^|[\s(])(https?:\/\/[^\s<)]+)/g,
-      '$1<a href="$2" target="_blank" rel="noopener">$2</a>',
-    );
-  return html.replace(/\u0000(\d+)\u0000/g, (_, index: string) => codeSpans[Number(index)]);
+const LINK_URL = String.raw`https?:\/\/[^\s<>"')]+`;
+const INLINE = new RegExp(
+  [
+    '`([^`]+)`',
+    String.raw`\[\[([^\]]+)\]\]`,
+    String.raw`\[([^\]]+)\]\((${LINK_URL})\)`,
+    String.raw`\*\*([^*]+)\*\*`,
+    String.raw`\*([^*\s][^*]*)\*`,
+    `(${LINK_URL})`,
+  ].join('|'),
+  'g',
+);
+
+function link(href: string, content: string): string {
+  return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${content}</a>`;
+}
+
+function inline(text: string, links = true): string {
+  let html = '';
+  let last = 0;
+  for (const match of text.matchAll(INLINE)) {
+    const [whole, code, note, label, href, strong, em, bare] = match;
+    const before = text[match.index - 1];
+    html += escapeHtml(text.slice(last, match.index));
+    last = match.index + whole.length;
+    if (code !== undefined) {
+      html += `<code>${escapeHtml(code)}</code>`;
+    } else if (note !== undefined && links) {
+      html += `<a class="note-link" data-note="${escapeHtml(note)}">${escapeHtml(note)}</a>`;
+    } else if (label !== undefined && links) {
+      html += link(href, inline(label, false));
+    } else if (strong !== undefined) {
+      html += `<strong>${inline(strong, links)}</strong>`;
+    } else if (em !== undefined) {
+      html += `<em>${inline(em, links)}</em>`;
+    } else if (bare !== undefined && links && (before === undefined || /[\s(]/.test(before))) {
+      html += link(bare, escapeHtml(bare));
+    } else {
+      html += escapeHtml(whole);
+    }
+  }
+  return html + escapeHtml(text.slice(last));
 }
 
 type Block =
@@ -95,7 +118,7 @@ export function renderMarkdown(markdown: string): string {
         case 'ol':
           return `<${block.kind}>${block.lines.map((line) => `<li>${inline(line)}</li>`).join('')}</${block.kind}>`;
         case 'p':
-          return `<p>${block.lines.map(inline).join('<br>')}</p>`;
+          return `<p>${block.lines.map((line) => inline(line)).join('<br>')}</p>`;
       }
     })
     .join('');

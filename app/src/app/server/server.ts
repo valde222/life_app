@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import PocketBase, { ClientResponseError } from 'pocketbase';
+import PocketBase, { ClientResponseError, getTokenPayload } from 'pocketbase';
 import { CollectionName, Collections } from '../data/models';
 import { RemoteWriter, SendError } from '../sync/outbox';
 import { PhotoWriter } from '../sync/photos';
@@ -7,6 +7,7 @@ import { Note } from '../data/models';
 
 export const DEFAULT_SERVER_URL = 'http://localhost:8090';
 const SERVER_URL_KEY = 'life.serverUrl';
+const DEFAULT_TOKEN_SECONDS = 5 * 86_400;
 const READ_ONLY_FIELDS = [
   'created',
   'updated',
@@ -14,6 +15,7 @@ const READ_ONLY_FIELDS = [
   'collectionName',
   'expand',
   'photos',
+  'owner',
 ];
 
 @Injectable({ providedIn: 'root' })
@@ -36,6 +38,15 @@ export class Server implements RemoteWriter, PhotoWriter {
   async signIn(email: string, password: string) {
     await this.pb.collection('users').authWithPassword(email, password);
     this.signedIn.set(true);
+  }
+
+  async refreshIfStale() {
+    if (
+      this.pb.authStore.isValid &&
+      needsRefresh(getTokenPayload(this.pb.authStore.token), Date.now())
+    ) {
+      await this.pb.collection('users').authRefresh({ requestKey: null });
+    }
   }
 
   signOut() {
@@ -109,11 +120,19 @@ export class Server implements RemoteWriter, PhotoWriter {
   }
 }
 
+export function needsRefresh(claims: { iat?: number; exp?: number }, now: number): boolean {
+  if (!claims.exp || claims.exp * 1000 <= now) {
+    return false;
+  }
+  const lifetime = claims.exp - (claims.iat ?? claims.exp - DEFAULT_TOKEN_SECONDS);
+  return claims.exp * 1000 - now < (lifetime * 1000) / 2;
+}
+
 export function toSendError(error: unknown): unknown {
   if (!(error instanceof ClientResponseError)) {
     return error;
   }
-  if (error.status === 0 || error.status >= 500) {
+  if (error.status === 0 || error.status === 429 || error.status >= 500) {
     return new SendError('offline', error);
   }
   if (error.status === 401 || error.status === 403) {

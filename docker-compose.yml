@@ -1,16 +1,24 @@
 name: life
 
+x-hardened: &hardened
+  read_only: true
+  tmpfs: [/tmp]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+
 services:
   pocketbase:
+    <<: *hardened
     build: ./pocketbase
     image: life-pocketbase:latest
     platform: linux/arm64
     restart: always
     environment:
-      PB_USER_EMAIL: ${PB_USER_EMAIL}
-      PB_USER_PASSWORD: ${PB_USER_PASSWORD}
-      PB_ADMIN_EMAIL: ${PB_ADMIN_EMAIL}
-      PB_ADMIN_PASSWORD: ${PB_ADMIN_PASSWORD}
+      PB_ENV: production
+      PB_USER_EMAIL: ${PB_USER_EMAIL:?set PB_USER_EMAIL in .env}
+      PB_USER_PASSWORD: ${PB_USER_PASSWORD:?set PB_USER_PASSWORD in .env}
+      PB_ADMIN_EMAIL: ${PB_ADMIN_EMAIL:?set PB_ADMIN_EMAIL in .env}
+      PB_ADMIN_PASSWORD: ${PB_ADMIN_PASSWORD:?set PB_ADMIN_PASSWORD in .env}
     volumes:
       - ./data/pb_data:/pb/pb_data
     ports:
@@ -21,6 +29,7 @@ services:
       retries: 3
 
   backup:
+    <<: *hardened
     build: ./deploy/backup
     platform: linux/arm64
     restart: always
@@ -31,20 +40,29 @@ services:
       PB_URL: http://pocketbase:8090
       PB_ADMIN_EMAIL: ${PB_ADMIN_EMAIL}
       PB_ADMIN_PASSWORD: ${PB_ADMIN_PASSWORD}
+      BACKUP_AGE_RECIPIENT: ${BACKUP_AGE_RECIPIENT:?set BACKUP_AGE_RECIPIENT in .env; backups are always encrypted}
       BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
     volumes:
-      - ./data/pb_data/backups:/backups:ro
+      - ./data/pb_data:/pb_data:ro
       - ${BACKUP_TARGET:-./data/offsite}:/target
 
   tunnel:
-    image: tailscale/tailscale:v1.104.1
+    image: tailscale/tailscale:v1.104.1@sha256:87c55d6be56ad85b3d8bceca5f87f73de288c609131460dd1be1874c250cc41d
     profiles: ["tunnel"]
     restart: always
     hostname: life
+    security_opt: ["no-new-privileges:true"]
     environment:
       TS_AUTHKEY: ${TS_AUTHKEY}
       TS_STATE_DIR: /var/lib/tailscale
       TS_SERVE_CONFIG: /config/serve.json
+      TS_USERSPACE: "true"
+      TS_ENABLE_HEALTH_CHECK: "true"
+      TS_LOCAL_ADDR_PORT: 127.0.0.1:9002
     volumes:
       - ./data/tailscale:/var/lib/tailscale
       - ./deploy/tailscale/serve.json:/config/serve.json:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:9002/healthz"]
+      interval: 60s
+      retries: 3

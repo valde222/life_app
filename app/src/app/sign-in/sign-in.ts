@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ClientResponseError } from 'pocketbase';
 import { LocalStore } from '../data/local-store';
 import { Server } from '../server/server';
+import { checkServerUrl } from '../server/server-url';
 
 @Component({
   selector: 'app-sign-in',
@@ -23,6 +24,11 @@ export class SignIn {
   protected readonly error = signal('');
 
   protected async signIn() {
+    const urlProblem = checkServerUrl(this.serverUrl);
+    if (urlProblem) {
+      this.error.set(urlProblem);
+      return;
+    }
     this.busy.set(true);
     this.error.set('');
     try {
@@ -31,8 +37,14 @@ export class SignIn {
       await this.store.adopt(`${this.server.url()}#${this.server.pb.authStore.record?.id}`);
       await this.router.navigateByUrl('/');
     } catch (error) {
-      const unreachable = error instanceof ClientResponseError && error.status === 0;
-      this.error.set(unreachable ? "Can't reach the server" : 'Wrong email or password');
+      const status = error instanceof ClientResponseError ? error.status : undefined;
+      this.error.set(
+        status === 0
+          ? "Can't reach the server"
+          : status === 429
+            ? 'Too many tries. Wait a minute'
+            : 'Wrong email or password',
+      );
     } finally {
       this.busy.set(false);
     }

@@ -3,13 +3,10 @@ import { Injectable } from '@angular/core';
 interface TauriWindow {
   label: string;
   hide(): Promise<void>;
-  show(): Promise<void>;
-  setFocus(): Promise<void>;
 }
 
 interface TauriGlobal {
   window: { getCurrentWindow(): TauriWindow };
-  event: { listen(event: string, handler: () => void): Promise<() => void> };
 }
 
 const CAPTURE_WINDOW = 'capture';
@@ -26,9 +23,5 @@ export class DesktopShell {
 
   async hideWindow() {
     await this.tauri?.window.getCurrentWindow().hide();
-  }
-
-  onEvent(name: string, handler: () => void) {
-    this.tauri?.event.listen(name, handler);
   }
 }

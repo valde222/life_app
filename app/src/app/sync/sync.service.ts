@@ -49,6 +49,7 @@ export class SyncService {
 
   sync(): Promise<void> {
     return this.run(async () => {
+      await this.server.refreshIfStale();
       await this.pull();
       await this.pruneDeleted();
       await this.subscribe();
