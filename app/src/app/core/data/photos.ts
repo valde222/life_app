@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { liveQuery } from 'dexie';
 import { from } from 'rxjs';
-import { newId } from '../../domain/ids';
+import { newId, orderedId } from '../../domain/ids';
 import { LocalStore, PendingPhoto } from './local-store';
 import { Note } from '../../domain/models';
 import { Server } from '../server/server';
@@ -26,6 +26,7 @@ export class Photos {
   private readonly sync = inject(Sync);
   private readonly token = signal('');
   private tokenFetchedAt = 0;
+  private queued = 0;
   private readonly objectUrls = new Map<string, string>();
 
   private readonly pending = toSignal(from(liveQuery(() => this.store.pendingPhotos.toArray())), {
@@ -39,7 +40,7 @@ export class Photos {
   async add(note: string, files: Iterable<File>) {
     for (const file of files) {
       await this.store.pendingPhotos.add({
-        id: newId(),
+        id: orderedId(Date.now(), this.queued++),
         note,
         file,
         name: file.name || 'photo.jpg',
