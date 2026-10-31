@@ -5,10 +5,9 @@ cd "$(dirname "$0")/.."
 repo="$(cd .. && pwd)"
 . ./e2e/user.env
 
-docker build -q -t life-pocketbase:e2e ../pocketbase >/dev/null
-docker rm -f life-e2e-pocketbase >/dev/null 2>&1 || true
-docker run -d --rm --name life-e2e-pocketbase -p 8091:8090 \
-  -e PB_USER_EMAIL="$E2E_EMAIL" -e PB_USER_PASSWORD="$E2E_PASSWORD" -e PB_ADMIN_EMAIL="$E2E_ADMIN_EMAIL" -e PB_ADMIN_PASSWORD="$E2E_ADMIN_PASSWORD" -e PB_RATE_LIMITS=off life-pocketbase:e2e >/dev/null
+PB_USER_EMAIL="$E2E_EMAIL" PB_USER_PASSWORD="$E2E_PASSWORD" PB_ADMIN_EMAIL="$E2E_ADMIN_EMAIL" \
+  PB_ADMIN_PASSWORD="$E2E_ADMIN_PASSWORD" PB_RATE_LIMITS=off \
+  ../pocketbase/tests/start-server.sh life-e2e-pocketbase 8091
 trap 'docker stop life-e2e-pocketbase >/dev/null' EXIT
 
 docker run --rm --network host --ipc host --user "$(id -u):$(id -g)" -e HOME=/tmp \

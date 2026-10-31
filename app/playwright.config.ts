@@ -29,12 +29,15 @@ export default defineConfig({
 });
 
 function pocketBaseServer() {
+  const env = [
+    `PB_USER_EMAIL=${E2E_USER.email}`,
+    `PB_USER_PASSWORD=${E2E_USER.password}`,
+    `PB_ADMIN_EMAIL=${E2E_ADMIN.email}`,
+    `PB_ADMIN_PASSWORD=${E2E_ADMIN.password}`,
+    'PB_RATE_LIMITS=off',
+  ].join(' ');
   return {
-    command:
-      'docker build -q -t life-pocketbase:e2e ../pocketbase && ' +
-      `docker run --rm --name life-e2e-pocketbase -p 8091:8090 -e PB_USER_EMAIL=${E2E_USER.email} ` +
-      `-e PB_USER_PASSWORD=${E2E_USER.password} -e PB_ADMIN_EMAIL=${E2E_ADMIN.email} ` +
-      `-e PB_ADMIN_PASSWORD=${E2E_ADMIN.password} -e PB_RATE_LIMITS=off life-pocketbase:e2e`,
+    command: `${env} ../pocketbase/tests/start-server.sh life-e2e-pocketbase 8091 && docker attach life-e2e-pocketbase`,
     url: `${E2E_SERVER}/api/health`,
     timeout: 180_000,
     reuseExistingServer: !process.env['CI'],

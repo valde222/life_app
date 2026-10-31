@@ -34,13 +34,9 @@ jobs:
           PB_ADMIN_EMAIL: admin@example.com
           PB_ADMIN_PASSWORD: ci-admin-password-for-tests
         run: |
-          docker build -q -t life-pocketbase:ci .
-          docker run -d --name pb --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges \
-            -v pb_ci_data:/pb/pb_data -p 8090:8090 \
-            -e PB_USER_EMAIL -e PB_USER_PASSWORD -e PB_ADMIN_EMAIL -e PB_ADMIN_PASSWORD life-pocketbase:ci
-          timeout 60 sh -c 'until wget -q --spider http://localhost:8090/api/health; do sleep 1; done'
+          tests/start-server.sh life-ci-pocketbase 8090
           node --test --test-concurrency=1 tests/*.test.mjs
-          docker rm -f pb
+          docker stop life-ci-pocketbase
       - name: Encrypted backup and restore
         working-directory: .
         run: ./deploy/backup/test.sh
