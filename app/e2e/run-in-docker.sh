@@ -12,5 +12,5 @@ docker run -d --rm --name life-e2e-pocketbase -p 8091:8090 \
 trap 'docker stop life-e2e-pocketbase >/dev/null' EXIT
 
 docker run --rm --network host --ipc host --user "$(id -u):$(id -g)" -e HOME=/tmp \
-  -e E2E_POCKETBASE_RUNNING=1 -v "$repo":/repo -w /repo/app \
+  -e E2E_POCKETBASE_RUNNING=1 -e VISUAL -v "$repo":/repo -w /repo/app \
   mcr.microsoft.com/playwright:v1.64.1-noble npx playwright test "$@"

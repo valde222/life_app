@@ -6,6 +6,7 @@ export const E2E_ADMIN = { email: 'e2e-admin@example.com', password: 'e2e-admin-
 
 export default defineConfig({
   testDir: './e2e',
+  snapshotPathTemplate: '{testDir}/screenshots/{arg}{ext}',
   fullyParallel: false,
   workers: 1,
   forbidOnly: !!process.env['CI'],
