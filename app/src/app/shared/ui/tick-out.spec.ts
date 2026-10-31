@@ -1,48 +1,47 @@
 import { TestBed } from '@angular/core/testing';
-import { TICK_OUT_MS, TickOut } from './tick-out';
+import { TickOut } from './tick-out';
 
 describe('TickOut', () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
 
-  const make = (reducedMotion = false) =>
-    TestBed.runInInjectionContext(() => new TickOut(() => reducedMotion));
+  const make = (duration: number) =>
+    TestBed.runInInjectionContext(() => new TickOut(() => duration));
 
-  it('shows the row leaving, then saves once the animation is over', () => {
-    const tickOut = make();
+  it('shows the tick, then saves once it has played', () => {
+    const tickOut = make(120);
     const done = vi.fn();
 
     tickOut.start(done);
     expect(tickOut.leaving()).toBe(true);
-    vi.advanceTimersByTime(TICK_OUT_MS - 1);
+    vi.advanceTimersByTime(119);
     expect(done).not.toHaveBeenCalled();
     vi.advanceTimersByTime(1);
     expect(done).toHaveBeenCalledOnce();
   });
 
   it('ignores a second press while leaving', () => {
-    const tickOut = make();
+    const tickOut = make(120);
     const done = vi.fn();
 
     tickOut.start(done);
     tickOut.start(done);
-    vi.advanceTimersByTime(TICK_OUT_MS);
+    vi.advanceTimersByTime(120);
     expect(done).toHaveBeenCalledOnce();
   });
 
-  it('saves at once when the system asks for reduced motion', () => {
-    const tickOut = make(true);
+  it('saves at once with no motion (reduced motion)', () => {
+    const tickOut = make(0);
     const done = vi.fn();
 
     tickOut.start(done);
     expect(done).toHaveBeenCalledOnce();
-    expect(tickOut.leaving()).toBe(false);
   });
 
-  it('brings the row back if it is still there after saving', () => {
-    const tickOut = make();
+  it('brings the row back if it is still there a while after saving', () => {
+    const tickOut = make(120);
     tickOut.start(() => undefined);
-    vi.advanceTimersByTime(TICK_OUT_MS);
+    vi.advanceTimersByTime(120);
     expect(tickOut.leaving()).toBe(true);
     vi.advanceTimersByTime(1500);
     expect(tickOut.leaving()).toBe(false);

@@ -101,8 +101,8 @@ const TABS_RIGHT: Tab[] = [
       color: var(--muted);
       overflow: hidden;
       transition:
-        height 150ms,
-        margin 150ms;
+        height var(--motion-fast) var(--ease-standard),
+        margin var(--motion-fast) var(--ease-standard);
     }
     .tucked .search {
       height: 0;

@@ -16,6 +16,7 @@ export default defineConfig({
     baseURL: 'http://localhost:4300',
     trace: 'retain-on-failure',
     ...devices['Pixel 7'],
+    reducedMotion: 'reduce',
   },
   webServer: [
     ...(process.env['E2E_POCKETBASE_RUNNING'] ? [] : [pocketBaseServer()]),

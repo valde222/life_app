@@ -382,23 +382,84 @@ a {
   outline: none;
 }
 
-.tick-out {
-  interpolate-size: allow-keywords;
-  overflow: hidden;
-  pointer-events: none;
-  animation: tick-out calc(var(--tick-out) * 0.75) ease-in calc(var(--tick-out) * 0.25) forwards;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
 }
 
-@keyframes tick-out {
-  45% {
+.row-in,
+.row-out {
+  interpolate-size: allow-keywords;
+  overflow: hidden;
+}
+
+.row-in {
+  animation: row-in var(--motion-base) var(--ease-enter);
+}
+
+.row-out {
+  pointer-events: none;
+  animation: row-out var(--motion-base) var(--ease-exit) forwards;
+}
+
+@keyframes row-in {
+  from {
     opacity: 0;
-    transform: translateX(var(--space-6));
+    transform: translateY(calc(-1 * var(--space-2)));
+    height: 0;
+    min-height: 0;
+    margin-bottom: calc(-1 * var(--space-2));
   }
-  100% {
+}
+
+@keyframes row-out {
+  to {
     opacity: 0;
     transform: translateX(var(--space-6));
     height: 0;
     min-height: 0;
     margin-bottom: calc(-1 * var(--space-2));
+  }
+}
+
+.fade-in {
+  animation: fade-in var(--motion-base) var(--ease-enter);
+}
+
+.fade-out {
+  animation: fade-in var(--motion-fast) var(--ease-exit) reverse forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.count-in {
+  display: inline-block;
+  animation: count-in var(--motion-fast) var(--ease-enter);
+}
+
+@keyframes count-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-1));
+  }
+}
+
+.bump {
+  animation: bump var(--motion-fast) var(--ease-standard);
+}
+
+@keyframes bump {
+  50% {
+    transform: scale(1.25);
   }
 }

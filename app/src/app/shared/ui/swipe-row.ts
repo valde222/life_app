@@ -58,7 +58,7 @@ export function swipeOutcome(offset: number): 'right' | 'left' | null {
       user-select: none;
     }
     .settling {
-      transition: transform 180ms ease-out;
+      transition: transform var(--motion-base) var(--ease-standard);
     }
     .action {
       position: absolute;

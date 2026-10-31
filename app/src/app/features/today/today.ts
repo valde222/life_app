@@ -26,6 +26,7 @@ import { calendarEventAsTodo, hasEnded, itemLink } from '../../domain/calendar-i
 import { overdueRepeating } from '../../domain/repeat-status';
 import { RepeatRow } from '../../shared/ui/repeat-row';
 import { Toasts } from '../../core/toasts/toasts';
+import { Settled } from '../../shared/ui/motion';
 
 @Component({
   selector: 'app-today',
@@ -60,6 +61,7 @@ export class Today {
     () => this.store.todos().length === 0 && this.store.notes().length === 0,
   );
   protected readonly showDone = signal(false);
+  protected readonly settled = new Settled();
   protected readonly compact = signal(false);
   protected readonly initial = inject(Session).email()[0]?.toUpperCase() ?? 'V';
 

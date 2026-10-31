@@ -12,9 +12,9 @@ import { Icon } from './icon';
       [attr.aria-pressed]="checked()"
       (click)="pressed.emit()"
     >
-      <span class="box" [class.checked]="checked()">
+      <span class="box" [class.checked]="checked()" [class.filling]="pop()">
         @if (checked()) {
-          <app-icon name="check" [size]="14" [stroke]="3" />
+          <app-icon name="check" [size]="14" [stroke]="3" [animate.enter]="pop() ? 'pop' : ''" />
         }
       </span>
     </button>
@@ -45,10 +45,28 @@ import { Icon } from './icon';
       background: var(--accent);
       border-color: var(--accent);
     }
+    .filling {
+      animation: fill var(--motion-fast) var(--ease-enter);
+    }
+    .pop {
+      animation: pop var(--motion-fast) var(--ease-enter);
+    }
+    @keyframes fill {
+      from {
+        transform: scale(0.85);
+      }
+    }
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+    }
   `,
 })
 export class Checkbox {
   readonly checked = input(false);
+  readonly pop = input(false);
   readonly label = input.required<string>();
   readonly pressed = output();
 }

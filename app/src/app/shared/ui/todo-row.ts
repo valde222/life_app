@@ -12,13 +12,13 @@ import { TickOut } from './tick-out';
   host: {
     '[class.event]': 'event()',
     '[class.done]': 'done()',
-    '[class.tick-out]': 'tickOut.leaving()',
-    '[style.--tick-out]': 'tickOut.duration',
+    '[class.ticked]': 'tickOut.leaving()',
   },
   template: `
     @if (!event()) {
       <app-checkbox
         [checked]="done() || tickOut.leaving()"
+        [pop]="tickOut.leaving()"
         [label]="done() ? 'Mark ' + title() + ' not done' : 'Mark ' + title() + ' done'"
         (pressed)="press()"
       />
@@ -77,9 +77,15 @@ import { TickOut } from './tick-out';
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    :host(.done) .title,
-    :host(.tick-out) .title {
+    :host(.ticked) {
+      pointer-events: none;
+    }
+    :host(.done) .title {
       font-size: var(--text-16);
+      color: var(--ink-2);
+      text-decoration: line-through;
+    }
+    :host(.ticked) .title {
       color: var(--ink-2);
       text-decoration: line-through;
     }
