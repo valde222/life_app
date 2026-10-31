@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { LocalStore } from '../data/local-store';
+import { LocalStore } from './local-store';
 import { EMPTY_RECORDS, Note } from '../../domain/models';
 import { Server } from '../server/server';
 import { SyncService } from '../sync/sync.service';

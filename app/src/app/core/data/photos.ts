@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { liveQuery } from 'dexie';
 import { from } from 'rxjs';
 import { newId } from '../../domain/ids';
-import { LocalStore, PendingPhoto } from '../data/local-store';
+import { LocalStore, PendingPhoto } from './local-store';
 import { Note } from '../../domain/models';
 import { Server } from '../server/server';
 import { SyncService } from '../sync/sync.service';

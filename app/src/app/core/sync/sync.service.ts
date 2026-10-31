@@ -5,7 +5,7 @@ import { Repository } from '../data/repository';
 import { Server, toSendError } from '../server/server';
 import { applyRemote } from './merge';
 import { drainOutbox, SendError } from './outbox';
-import { drainPhotos } from './photos';
+import { drainPhotos } from './photo-uploads';
 import { logError } from '../logging/log';
 
 const PAGE_SIZE = 500;

@@ -3,7 +3,7 @@ import PocketBase, { ClientResponseError, getTokenPayload } from 'pocketbase';
 import { CollectionName, Collections } from '../../domain/models';
 import { RemoteWriter, SendError } from '../sync/outbox';
 import { Page, RemoteChange, RemoteReader } from '../sync/remote-reader';
-import { PhotoWriter } from '../sync/photos';
+import { PhotoWriter } from '../sync/photo-uploads';
 import { Note } from '../../domain/models';
 
 export interface Account {

@@ -30,7 +30,7 @@ import { ImagePicker } from './image-picker';
 import { ImageView, ImageViewData } from './image-view';
 import { LinkPicker, LinkPickerData, LinkPickerResult } from '../../shared/pickers/link-picker';
 import { renderMarkdown } from '../../shared/markdown/markdown';
-import { Photos } from '../../core/photos/photos';
+import { Photos } from '../../core/data/photos';
 import { Toasts } from '../../core/toasts/toasts';
 
 export type NoteMode = 'edit' | 'keep' | 'new';
