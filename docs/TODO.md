@@ -84,4 +84,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Refactor (`refactor/clean-code`, pull request)
 
-- [ ] Clean, modular structure with enforced boundaries and lint, behaviour and UI unchanged (`docs/plans/refactor.md`)
+- [x] Clean, modular structure with enforced boundaries and lint, behaviour and UI unchanged (`docs/plans/refactor.md`)

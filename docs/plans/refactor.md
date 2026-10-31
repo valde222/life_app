@@ -124,10 +124,10 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 
 ### 6. Finish
 
-- [ ] All tests pass, lint is clean, desktop and Android build
-- [ ] READMEs updated to the new structure
-- [ ] Summary below
-- [ ] Pull request opened (not merged)
+- [x] All tests pass, lint is clean, desktop and Android build
+- [x] READMEs updated to the new structure
+- [x] Summary below
+- [ ] Pull request opened (not merged): the repo has no GitHub remote yet ("local only for now"), so the branch is ready and the description is below
 
 ## Bugs found (fixed separately afterwards)
 
@@ -137,4 +137,61 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 
 ## Summary
 
-To be written at the end.
+**What changed.** 57 commits on `refactor/clean-code` after `pre-refactor`: 39 refactors, 3 bug fixes, plus tests, tooling and docs. Behaviour and looks are unchanged: every screen, phone and desktop, is pixel-identical to `pre-refactor` (`e2e/visual.spec.ts`).
+
+**Structure.**
+- `domain/`: models and every rule as pure, tested functions (no Angular). New: timestamps, time ranges, list order, repeat fields and labels, archive rows, back labels, note view, Today summary rules.
+- `core/`:
+  - `Repository` and `Sync` are interfaces (`LocalFirstRepository`, `PocketBaseSync`) bound by `provideCore()`.
+  - Task services hold every edit: `Actions`, `ListActions`, `StepActions`, `LinkActions`, `ArchiveActions`.
+  - `Session` signs in and out. `Server` hides the PocketBase SDK. `AllRecords` watches everything, deleted records included.
+  - Errors are logged in one place (`logError`), and stored preferences live in one place.
+- `shared/`: the UI kit, one `Pickers` service for every picker sheet, the capture sheet, markdown (the renderer, plus the toolbar edits as pure functions).
+- `features/<name>/`: each screen area. Components hold state and call services; none touch Dexie, PocketBase or another feature.
+- `shell/`: root, routes, layout.
+- Desktop:
+  - `lib.rs` only wires the app; `hotkey.rs`, `tray.rs` and `windows.rs` each own one part.
+  - Errors are a typed `AppError`, with no `unwrap` or `expect`.
+  - The tray actions have tests.
+- Android: `ShareTargetPlugin` turns intents into shares, `SharedImages` reads them, and `SharedContent` holds the tested rules.
+- PocketBase: the hooks share `collections.js`.
+- CI and tests:
+  - One script starts every test server.
+  - One composite action sets up Node.
+
+**Enforced in CI** (`npm run lint` and the `desktop` job):
+- ESLint, with angular-eslint and typescript-eslint strict type-checked rules:
+  - no `any`, no non-null assertions, no floating promises;
+  - exhaustive switches;
+  - OnPush;
+  - functions up to 30 lines, complexity 8, 3 parameters, nesting 3, files up to 250 lines;
+  - no `console` outside the logger.
+- dependency-cruiser:
+  - the layer rules above;
+  - storage stays in `core`;
+  - no cycles.
+- A token check: colours, spacing, radii and font sizes must use `tokens.json` (decision 19 named the values the screens already used).
+- Prettier.
+- For the desktop shell: rustfmt, clippy with warnings as errors, and the unit tests.
+
+**Not done, on purpose.**
+- `noUncheckedIndexedAccess` stays off (see step 2).
+- Component widths and heights (tap targets, bar heights) are still literal pixels; the token file has no size scale and inventing one wasn't asked for.
+- The Tauri shell still has no custom commands, because the app needs none.
+
+**Tests.**
+- 152 unit tests, up from 78. The added ones include characterisation tests for every core service.
+- 33 PocketBase API tests.
+- 21 end-to-end tests: one new for B1, plus the on-demand visual test.
+- 10 Android tests, up from 8, and 3 Rust tests.
+- Both apps build: the Windows installer and the debug APK.
+- Two flaky end-to-end tests:
+  - The CSP test raced the browser's violation report; it now waits for it.
+  - T16 (Ctrl+Space capture) failed once in about six full runs and passed in every run after. Not reproduced.
+
+**Bugs found and fixed separately.**
+- B1: the note text was unreachable by keyboard.
+- B2: the two editors gave different back labels.
+- B3: photo upload order. This was also the cause of T11's occasional failure.
+
+**Pull request description** (for when the remote exists): the text above, plus "Merging this is safe to roll back: `pre-refactor` tags the commit before it."
