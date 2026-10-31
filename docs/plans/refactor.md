@@ -86,20 +86,20 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 
 ### 2. Tooling
 
-- [ ] `strict` explicit in `tsconfig.json`, plus `noUncheckedIndexedAccess`; fix what it finds without changing behaviour
-- [ ] ESLint with angular-eslint and typescript-eslint strict, plus limits on function length, complexity, parameters and nesting; fix what it finds
-- [ ] Prettier check over the app and e2e
+- [x] `strict` explicit in `tsconfig.json`. `noUncheckedIndexedAccess` was tried and left off: its 78 findings are fixed-format parsing (dates, times, regex groups) where any fallback value would change what malformed input does
+- [x] ESLint with angular-eslint and typescript-eslint strict, plus limits on function length, complexity, parameters and nesting; findings fixed in step 4
+- [x] Prettier check over the app and e2e
 - [ ] Stylelint: colours, spacing, radius and font sizes from tokens only
-- [ ] dependency-cruiser with the rules above (run in report mode until step 3 is done)
+- [x] dependency-cruiser with the rules above (run in report mode until step 3 is done)
 - [ ] `npm run lint` running all of them, in CI
 
 ### 3. Angular layers (one move per commit, imports updated, no code changes)
 
-- [ ] `domain/`: models, ids, time and the pure rules
-- [ ] `core/`: data, sync, server, photos, calendar, reminders, share, platform
-- [ ] `shared/`: UI kit, pickers, link picker, move to, item actions, capture sheet, repeat row, markdown
-- [ ] `features/`: one folder per feature
-- [ ] `shell/`: root, routes, layout
+- [x] `domain/`: models, ids, time and the pure rules
+- [x] `core/`: data, sync, server, photos, calendar, reminders, share, platform
+- [x] `shared/`: UI kit, pickers, link picker, move to, item actions, capture sheet, repeat row, markdown
+- [x] `features/`: one folder per feature
+- [x] `shell/`: root, routes, layout
 - [ ] Boundary rules switched to error
 
 ### 4. Angular code
