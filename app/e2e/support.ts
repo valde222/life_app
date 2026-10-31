@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { E2E_SERVER, E2E_USER } from '../playwright.config';
+import { E2E_ADMIN, E2E_SERVER, E2E_USER } from '../playwright.config';
 
 const COLLECTIONS_CHILDREN_FIRST = [
   'steps',
@@ -87,6 +87,21 @@ export class Api {
       body: body === undefined ? undefined : JSON.stringify(body),
     });
   }
+}
+
+export async function longLivedTokens() {
+  const auth = await fetch(`${E2E_SERVER}/api/collections/_superusers/auth-with-password`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ identity: E2E_ADMIN.email, password: E2E_ADMIN.password }),
+  });
+  const { token } = await auth.json();
+  const response = await fetch(`${E2E_SERVER}/api/collections/users`, {
+    method: 'PATCH',
+    headers: { 'content-type': 'application/json', authorization: token },
+    body: JSON.stringify({ authToken: { duration: 30 * 86_400 } }),
+  });
+  expect(response.ok).toBe(true);
 }
 
 export async function freshAccount() {
