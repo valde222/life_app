@@ -517,6 +517,40 @@ a {
   }
 }
 
+.collapse-in,
+.collapse-out {
+  interpolate-size: allow-keywords;
+  overflow: hidden;
+}
+
+.collapse-in {
+  animation: expand var(--motion-base) var(--ease-enter);
+}
+
+.collapse-out {
+  animation: collapse var(--motion-base) var(--ease-exit) forwards;
+}
+
+@keyframes expand {
+  from {
+    opacity: 0;
+    height: 0;
+    min-height: 0;
+    margin-block: 0;
+    padding-block: 0;
+  }
+}
+
+@keyframes collapse {
+  to {
+    opacity: 0;
+    height: 0;
+    min-height: 0;
+    margin-block: 0;
+    padding-block: 0;
+  }
+}
+
 .fade-in {
   animation: fade-in var(--motion-base) var(--ease-enter);
 }

@@ -27,6 +27,7 @@ import { timeRange } from '../../domain/time/time-range';
 import { Pickers } from '../../shared/pickers/pickers';
 import { backLabel } from '../../domain/back-labels';
 import { TodoSteps } from './todo-steps';
+import { Settled } from '../../shared/ui/motion';
 
 export interface TodoDraftState {
   draft?: Draft<'todos'>;
@@ -64,6 +65,7 @@ export class TodoEditor {
   protected readonly todo = computed(() => (this.isNew() ? this.draft() : this.saved()));
 
   protected readonly steps = new TodoSteps(this.id, this.isNew);
+  protected readonly settled = new Settled();
 
   protected readonly linkedNotes = computed<Note[]>(() =>
     this.store.notes().filter((note) => note.todos?.includes(this.id())),

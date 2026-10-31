@@ -2,7 +2,9 @@
   @if (isNew()) {
     <header class="sheet-bar">
       <button type="button" class="bar-link" (click)="cancel()">Cancel</button>
-      <h1 class="bar-title">{{ heading() }}</h1>
+      @for (text of [heading()]; track text) {
+        <h1 class="bar-title" [animate.enter]="settled.animate('fade-in')">{{ text }}</h1>
+      }
       <button type="button" class="bar-save" [disabled]="!title().trim()" (click)="save()">
         Save
       </button>
@@ -18,12 +20,15 @@
   <main class="body">
     <div class="title-card">
       @if (todo.is_event) {
-        <span class="event-icon"><app-icon name="calendar" [size]="20" /></span>
+        <span class="event-icon" [animate.enter]="settled.animate('fade-in')"
+          ><app-icon name="calendar" [size]="20"
+        /></span>
       } @else if (isNew()) {
-        <span class="box"></span>
+        <span class="box" [animate.enter]="settled.animate('fade-in')"></span>
       } @else {
         <app-checkbox
           class="tick"
+          [animate.enter]="settled.animate('fade-in')"
           [checked]="!!todo.done_at"
           [label]="todo.done_at ? 'Mark not done' : 'Mark done'"
           (pressed)="toggleDone()"
@@ -64,14 +69,22 @@
     </div>
 
     @if (!todo.is_event) {
-      <h2 class="eyebrow section">
+      <h2
+        class="eyebrow section"
+        [animate.enter]="settled.animate('collapse-in')"
+        [animate.leave]="settled.animate('collapse-out')"
+      >
         @if (steps.all().length) {
           Steps {{ isNew() ? steps.all().length : steps.done() + ' of ' + steps.all().length }}
         } @else {
           Steps
         }
       </h2>
-      <div class="card steps">
+      <div
+        class="card steps"
+        [animate.enter]="settled.animate('collapse-in')"
+        [animate.leave]="settled.animate('collapse-out')"
+      >
         @for (step of steps.all(); track steps.track($index, step)) {
           <div class="step" [class.done]="step.done">
             <button
