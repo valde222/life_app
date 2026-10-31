@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ClientResponseError } from 'pocketbase';
 import { LocalStore } from '../data/local-store';
 import { Server } from '../server/server';
+import { checkServerUrl } from '../server/server-url';
 
 @Component({
   selector: 'app-sign-in',
@@ -23,6 +24,11 @@ export class SignIn {
   protected readonly error = signal('');
 
   protected async signIn() {
+    const urlProblem = checkServerUrl(this.serverUrl);
+    if (urlProblem) {
+      this.error.set(urlProblem);
+      return;
+    }
     this.busy.set(true);
     this.error.set('');
     try {
