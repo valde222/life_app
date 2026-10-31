@@ -29,11 +29,14 @@ const setUp: CanActivateFn = async () => {
 };
 
 export const routes: Routes = [
-  { path: 'sign-in', loadComponent: () => import('./sign-in/sign-in').then((m) => m.SignIn) },
+  {
+    path: 'sign-in',
+    loadComponent: () => import('./features/sign-in/sign-in').then((m) => m.SignIn),
+  },
   {
     path: 'capture',
     canActivate: [signedIn],
-    loadComponent: () => import('./capture/capture-page').then((m) => m.CapturePage),
+    loadComponent: () => import('./features/capture/capture-page').then((m) => m.CapturePage),
   },
   {
     path: 'setup',
@@ -41,11 +44,11 @@ export const routes: Routes = [
     children: [
       {
         path: 'groups',
-        loadComponent: () => import('./setup/setup-groups').then((m) => m.SetupGroups),
+        loadComponent: () => import('./features/setup/setup-groups').then((m) => m.SetupGroups),
       },
       {
         path: 'lists',
-        loadComponent: () => import('./setup/setup-lists').then((m) => m.SetupLists),
+        loadComponent: () => import('./features/setup/setup-lists').then((m) => m.SetupLists),
       },
     ],
   },
@@ -56,68 +59,78 @@ export const routes: Routes = [
     children: [
       {
         path: 'lists/edit',
-        loadComponent: () => import('./lists/manage-lists').then((m) => m.ManageLists),
+        loadComponent: () => import('./features/lists/manage-lists').then((m) => m.ManageLists),
       },
       {
         path: 'lists/:id/settings',
-        loadComponent: () => import('./lists/list-settings').then((m) => m.ListSettings),
+        loadComponent: () => import('./features/lists/list-settings').then((m) => m.ListSettings),
       },
       {
         path: 'repeat/:id',
-        loadComponent: () => import('./repeating/repeat-editor').then((m) => m.RepeatEditor),
+        loadComponent: () =>
+          import('./features/repeating/repeat-editor').then((m) => m.RepeatEditor),
       },
       {
         path: 'event/:id',
-        loadComponent: () => import('./calendar/event-page').then((m) => m.EventPage),
+        loadComponent: () => import('./features/agenda/event-page').then((m) => m.EventPage),
       },
       {
         path: 'settings',
-        loadComponent: () => import('./settings/settings-page').then((m) => m.SettingsPage),
+        loadComponent: () =>
+          import('./features/settings/settings-page').then((m) => m.SettingsPage),
       },
       {
         path: 'settings/calendars',
-        loadComponent: () => import('./calendar/calendars-page').then((m) => m.CalendarsPage),
+        loadComponent: () =>
+          import('./features/settings/calendars-page').then((m) => m.CalendarsPage),
       },
       {
         path: 'note/:id',
-        loadComponent: () => import('./note/note-editor').then((m) => m.NoteEditor),
+        loadComponent: () => import('./features/notes/note-editor').then((m) => m.NoteEditor),
       },
       {
         path: 'todo/:id',
-        loadComponent: () => import('./todo/todo-editor').then((m) => m.TodoEditor),
+        loadComponent: () => import('./features/todos/todo-editor').then((m) => m.TodoEditor),
       },
       {
         path: '',
         pathMatch: 'full',
         canActivate: [setUp],
-        loadComponent: () => import('./today/today').then((m) => m.Today),
+        loadComponent: () => import('./features/today/today').then((m) => m.Today),
       },
       {
         path: 'repeating',
-        loadComponent: () => import('./repeating/repeating-page').then((m) => m.RepeatingPage),
+        loadComponent: () =>
+          import('./features/repeating/repeating-page').then((m) => m.RepeatingPage),
       },
-      { path: 'inbox', loadComponent: () => import('./inbox/inbox').then((m) => m.Inbox) },
-      { path: 'lists', loadComponent: () => import('./lists/lists-page').then((m) => m.ListsPage) },
+      { path: 'inbox', loadComponent: () => import('./features/inbox/inbox').then((m) => m.Inbox) },
+      {
+        path: 'lists',
+        loadComponent: () => import('./features/lists/lists-page').then((m) => m.ListsPage),
+      },
       {
         path: 'lists/:id',
-        loadComponent: () => import('./lists/list-page').then((m) => m.ListPage),
+        loadComponent: () => import('./features/lists/list-page').then((m) => m.ListPage),
       },
       {
         path: 'agenda',
-        loadComponent: () => import('./agenda/agenda-page').then((m) => m.AgendaPage),
+        loadComponent: () => import('./features/agenda/agenda-page').then((m) => m.AgendaPage),
       },
       {
         path: 'search',
-        loadComponent: () => import('./search/search-page').then((m) => m.SearchPage),
+        loadComponent: () => import('./features/search/search-page').then((m) => m.SearchPage),
       },
-      { path: 'week', loadComponent: () => import('./week/week-page').then((m) => m.WeekPage) },
+      {
+        path: 'week',
+        loadComponent: () => import('./features/week/week-page').then((m) => m.WeekPage),
+      },
       {
         path: 'archive',
-        loadComponent: () => import('./archive/archive-page').then((m) => m.ArchivePage),
+        loadComponent: () => import('./features/archive/archive-page').then((m) => m.ArchivePage),
       },
       {
         path: 'archive/deleted',
-        loadComponent: () => import('./archive/deleted-page').then((m) => m.DeletedPage),
+        loadComponent: () => import('./features/archive/deleted-page').then((m) => m.DeletedPage),
       },
     ],
   },

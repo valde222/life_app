@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '../core/data/store';
-import { NewGroupSheet } from '../lists/new-group-sheet';
-import { NewListData, NewListSheet } from '../lists/new-list-sheet';
+import { NewGroupSheet } from '../features/lists/new-group-sheet';
+import { NewListData, NewListSheet } from '../features/lists/new-list-sheet';
 import { SyncService } from '../core/sync/sync.service';
 import { Icon } from '../shared/ui/icon';
 import { ListSwatch } from '../shared/ui/list-swatch';
