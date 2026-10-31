@@ -7,5 +7,5 @@ onRecordCreateRequest(
     }
     e.next();
   },
-  "groups", "lists", "todos", "steps", "completions", "notes", "calendar_events", "settings",
+  ...require(`${__hooks}/collections.js`).synced,
 );
