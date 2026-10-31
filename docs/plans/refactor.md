@@ -89,7 +89,7 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 - [x] `strict` explicit in `tsconfig.json`. `noUncheckedIndexedAccess` was tried and left off: its 78 findings are fixed-format parsing (dates, times, regex groups) where any fallback value would change what malformed input does
 - [x] ESLint with angular-eslint and typescript-eslint strict, plus limits on function length, complexity, parameters and nesting; findings fixed in step 4
 - [x] Prettier check over the app and e2e
-- [ ] Stylelint: colours, spacing, radius and font sizes from tokens only
+- [x] Style check: colours, spacing, radius and font sizes from tokens only (`scripts/check-styles.mjs`, reading `tokens.json`; simpler than a Stylelint plugin and exact about which values a token names)
 - [x] dependency-cruiser with the rules above (run in report mode until step 3 is done)
 - [ ] `npm run lint` running all of them, in CI
 
@@ -108,12 +108,12 @@ Rust: `tray.rs`, `hotkey.rs`, `windows.rs`, `error.rs`, with `lib.rs` only wirin
 - [x] `Repository` and `Sync` as interfaces; `Server` hides the SDK
 - [x] `Session`: sign in, sign out and the account email; no component touches `Server` or `LocalStore`
 - [x] Setup guard and calendar import through repository methods, not Dexie
-- [ ] Data edits moved out of components into `Actions` (steps, links, lists, groups, restore, purge)
-- [ ] Rules moved out of components into `domain` (overdue repeating, all done, step counts, labels, grouping by day)
-- [ ] Duplicates merged: back labels, link picker, date picker, toasts, the note for a todo, timestamp to day
-- [ ] OnPush on the last two components; non-null assertions removed or given a reason
-- [ ] Long components split into a page and presentational parts where it clears the lint limits (todo editor, note editor)
-- [ ] Styles use tokens only (extend the token file with the off-scale values the screens use)
+- [x] Data edits moved out of components into `Actions`, `ListActions`, `StepActions`, `LinkActions`, `ArchiveActions`
+- [x] Rules moved out of components into `domain` (overdue repeating, all done, step counts, labels, grouping by day)
+- [x] Duplicates merged: pickers, toasts, the note for a todo, timestamps, time ranges, the all-records watchers
+- [x] OnPush on the last two components; non-null assertions removed
+- [x] Long components brought under the lint limits (todo editor: `TodoSteps`; note editor: pure edits and connections)
+- [x] Styles use tokens only (decision 19 extends the token file with the values the screens use)
 
 ### 5. Rust, Android, PocketBase, Docker, CI
 
