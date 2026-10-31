@@ -22,14 +22,16 @@ export class ShareReceiver {
       return;
     }
     this.started = true;
-    window.addEventListener(SHARE_EVENT, (event) =>
-      this.receive((event as CustomEvent<SharePayload>).detail),
-    );
+    window.addEventListener(SHARE_EVENT, (event) => {
+      void this.receive((event as CustomEvent<SharePayload>).detail);
+    });
     if (!Capacitor.isNativePlatform()) {
       return;
     }
     const plugin = registerPlugin<ShareTargetPlugin>('ShareTarget');
-    await plugin.addListener('shared', (share) => this.receive(share));
+    await plugin.addListener('shared', (share) => {
+      void this.receive(share);
+    });
     const { share } = await plugin.takePending();
     if (share) {
       await this.receive(share);

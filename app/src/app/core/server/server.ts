@@ -5,6 +5,7 @@ import { RemoteWriter, SendError } from '../sync/outbox';
 import { Page, RemoteChange, RemoteReader } from '../sync/remote-reader';
 import { PhotoWriter } from '../sync/photo-uploads';
 import { Note } from '../../domain/models';
+import { omitFields } from '../../domain/records';
 
 export interface Account {
   id: string;
@@ -17,6 +18,11 @@ export class SignInError extends Error {
   constructor(readonly failure: SignInFailure) {
     super(failure);
   }
+}
+
+export interface PhotoAccess {
+  token: string;
+  thumb?: string;
 }
 
 export const DEFAULT_SERVER_URL = 'http://localhost:8090';
@@ -115,10 +121,7 @@ export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
     collection: C,
     record: Collections[C],
   ): Promise<Collections[C]> {
-    const body = { ...record } as Record<string, unknown>;
-    for (const field of READ_ONLY_FIELDS) {
-      delete body[field];
-    }
+    const body = omitFields(record, READ_ONLY_FIELDS);
     const records = this.pb.collection(collection);
     try {
       try {
@@ -161,10 +164,10 @@ export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
     return this.pb.files.getToken({ requestKey: null });
   }
 
-  photoUrl(note: Note, filename: string, token: string, thumb?: string): string {
+  photoUrl(note: Note, filename: string, access: PhotoAccess): string {
     return this.pb.files.getURL({ ...note, collectionName: 'notes' }, filename, {
-      token,
-      ...(thumb ? { thumb } : {}),
+      token: access.token,
+      ...(access.thumb ? { thumb: access.thumb } : {}),
     });
   }
 

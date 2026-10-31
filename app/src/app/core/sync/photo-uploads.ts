@@ -1,8 +1,7 @@
 import { LocalStore } from '../data/local-store';
 import { Note } from '../../domain/models';
 import { applyRemote } from './merge';
-import { SendError } from './outbox';
-import { logError } from '../logging/log';
+import { skipIfRejected } from './outbox';
 
 export interface PhotoWriter {
   addPhoto(note: string, file: Blob, name: string): Promise<Note>;
@@ -26,9 +25,6 @@ async function send(write: () => Promise<Note>, store: LocalStore) {
   try {
     await applyRemote(store, 'notes', [await write()]);
   } catch (error) {
-    if (!(error instanceof SendError) || error.failure !== 'rejected') {
-      throw error;
-    }
-    logError('Dropped a photo change the server rejected', error.cause);
+    skipIfRejected(error, 'a photo change');
   }
 }

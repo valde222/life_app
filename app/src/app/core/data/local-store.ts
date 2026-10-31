@@ -3,13 +3,15 @@ import Dexie, { Table } from 'dexie';
 import { CollectionName, Collections } from '../../domain/models';
 
 export interface OutboxEntry {
-  seq?: number;
+  seq: number;
   key: string;
   collection: CollectionName;
   id: string;
   changed_at: number;
   op?: 'purge';
 }
+
+export type NewOutboxEntry = Omit<OutboxEntry, 'seq'>;
 
 export interface PendingPhoto {
   id: string;
@@ -33,7 +35,7 @@ export interface MetaEntry {
 
 @Injectable({ providedIn: 'root' })
 export class LocalStore extends Dexie {
-  outbox!: Table<OutboxEntry, number>;
+  outbox!: Table<OutboxEntry, number, NewOutboxEntry>;
   meta!: Table<MetaEntry, string>;
   pendingPhotos!: Table<PendingPhoto, string>;
   photoRemovals!: Table<PhotoRemoval, string>;

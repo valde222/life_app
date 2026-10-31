@@ -39,12 +39,16 @@ export class PocketBaseSync implements Sync {
       return;
     }
     this.started = true;
-    window.addEventListener('online', () => this.sync());
+    window.addEventListener('online', () => {
+      void this.sync();
+    });
     window.addEventListener('offline', () => this.goOffline());
     this.store.outbox.hook('creating', () => {
-      setTimeout(() => this.push());
+      setTimeout(() => void this.push());
     });
-    this.sync().finally(() => this.resolveFirstSync());
+    void this.sync().finally(() => {
+      this.resolveFirstSync();
+    });
   }
 
   async stop() {
@@ -115,7 +119,7 @@ export class PocketBaseSync implements Sync {
 
   private goOffline() {
     this.online.set(false);
-    this.unsubscribe();
+    void this.unsubscribe();
   }
 
   private async pull() {
@@ -164,11 +168,9 @@ export class PocketBaseSync implements Sync {
     }
     for (const collection of COLLECTIONS_IN_DEPENDENCY_ORDER) {
       const unsubscribe = await this.server.subscribe(collection, ({ deleted, record }) => {
-        if (deleted) {
-          this.store.records(collection).delete(record.id);
-        } else {
-          applyRemote(this.store, collection, [record]);
-        }
+        void (deleted
+          ? this.store.records(collection).delete(record.id)
+          : applyRemote(this.store, collection, [record]));
       });
       this.unsubscribers.push(unsubscribe);
     }

@@ -22,9 +22,13 @@ export class CalendarImporter {
       return;
     }
     this.started = true;
-    setTimeout(() => this.run(), 3000);
-    setInterval(() => this.run(), EVERY_MS);
-    document.addEventListener('visibilitychange', () => document.hidden || this.run());
+    setTimeout(() => void this.run(), 3000);
+    setInterval(() => void this.run(), EVERY_MS);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        void this.run();
+      }
+    });
   }
 
   async loadCalendars(): Promise<boolean> {
@@ -51,28 +55,26 @@ export class CalendarImporter {
       const { result: permission } = await CapacitorCalendar.checkPermission({
         scope: CalendarPermissionScope.READ_CALENDAR,
       });
-      if (permission !== 'granted') {
-        return;
-      }
-      const now = new Date();
-      const fetched = (await CapacitorCalendar.listEventsInRange(importWindow(now))).result;
-      const existing = await this.repository.all('calendar_events');
-      const plan = planImport(
-        existing,
-        fetched,
-        new Set(this.settings.enabled().map((calendar) => calendar.id)),
-        now,
-      );
-      for (const upsert of plan.upserts) {
-        await this.repository.save('calendar_events', upsert);
-      }
-      for (const id of plan.removals) {
-        await this.repository.remove('calendar_events', id);
+      if (permission === 'granted') {
+        await this.importEvents(new Date());
       }
     } catch (error) {
       logError('Calendar import failed', error);
     } finally {
       this.running = false;
+    }
+  }
+
+  private async importEvents(now: Date) {
+    const fetched = (await CapacitorCalendar.listEventsInRange(importWindow(now))).result;
+    const existing = await this.repository.all('calendar_events');
+    const enabled = new Set(this.settings.enabled().map((calendar) => calendar.id));
+    const plan = planImport(existing, fetched, enabled, now);
+    for (const upsert of plan.upserts) {
+      await this.repository.save('calendar_events', upsert);
+    }
+    for (const id of plan.removals) {
+      await this.repository.remove('calendar_events', id);
     }
   }
 }

@@ -45,7 +45,7 @@ export class Photos {
         name: file.name || 'photo.jpg',
       });
     }
-    this.sync.push();
+    void this.sync.push();
   }
 
   async remove(note: Note, photo: ShownPhoto) {
@@ -56,12 +56,12 @@ export class Photos {
         .records('notes')
         .update(note.id, { photos: note.photos.filter((name) => name !== photo.filename) });
       await this.store.photoRemovals.add({ id: newId(), note: note.id, filename: photo.filename });
-      this.sync.push();
+      void this.sync.push();
     }
   }
 
   shown(note: Signal<Note | undefined>): Signal<ShownPhoto[]> {
-    this.refreshToken();
+    void this.refreshToken();
     return computed(() => {
       const current = note();
       if (!current) {
@@ -71,8 +71,8 @@ export class Photos {
       const uploaded = (current.photos ?? []).map((filename) => ({
         key: filename,
         filename,
-        thumb: this.server.photoUrl(current, filename, token, THUMB),
-        full: this.server.photoUrl(current, filename, token),
+        thumb: this.server.photoUrl(current, filename, { token, thumb: THUMB }),
+        full: this.server.photoUrl(current, filename, { token }),
       }));
       const waiting = this.pending()
         .filter((photo) => photo.note === current.id)

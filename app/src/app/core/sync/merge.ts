@@ -1,5 +1,6 @@
 import { LocalStore } from '../data/local-store';
 import { CollectionName, Collections } from '../../domain/models';
+import { omitFields } from '../../domain/records';
 
 const SERVER_ONLY_FIELDS = ['collectionId', 'collectionName', 'expand'];
 const SERVER_OWNED_FIELDS: Partial<Record<CollectionName, string[]>> = { notes: ['photos'] };
@@ -12,11 +13,7 @@ export function isAtLeastAsNew(
 }
 
 export function withoutServerFields<T extends object>(record: T): T {
-  const copy = { ...record } as Record<string, unknown>;
-  for (const field of SERVER_ONLY_FIELDS) {
-    delete copy[field];
-  }
-  return copy as T;
+  return omitFields(record, SERVER_ONLY_FIELDS);
 }
 
 export async function applyRemote<C extends CollectionName>(

@@ -24,7 +24,7 @@ export class LocalFirstRepository implements Repository {
         changed_at: Math.max(Date.now(), (existing?.changed_at ?? 0) + 1),
       } as Collections[C];
       await table.put(record);
-      await enqueue(this.store, collection, record.id, record.changed_at);
+      await enqueue(this.store, { collection, id: record.id, changedAt: record.changed_at });
       return record;
     });
   }
@@ -37,7 +37,7 @@ export class LocalFirstRepository implements Repository {
     const table = this.store.records(collection);
     await this.store.transaction('rw', table, this.store.outbox, async () => {
       await table.delete(id);
-      await enqueue(this.store, collection, id, Date.now(), 'purge');
+      await enqueue(this.store, { collection, id, changedAt: Date.now(), op: 'purge' });
     });
   }
 

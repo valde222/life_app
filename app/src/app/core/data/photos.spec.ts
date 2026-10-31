@@ -2,7 +2,7 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { LocalStore } from './local-store';
 import { EMPTY_RECORDS, Note } from '../../domain/models';
-import { Server } from '../server/server';
+import { PhotoAccess, Server } from '../server/server';
 import { Sync } from '../sync/sync';
 import { Photos, THUMB } from './photos';
 
@@ -10,8 +10,8 @@ class FakeServer {
   async fileToken() {
     return 'token';
   }
-  photoUrl(note: Note, filename: string, token: string, thumb?: string) {
-    return `${note.id}/${filename}?${token}${thumb ? `&${thumb}` : ''}`;
+  photoUrl(note: Note, filename: string, access: PhotoAccess) {
+    return `${note.id}/${filename}?${access.token}${access.thumb ? `&${access.thumb}` : ''}`;
   }
 }
 

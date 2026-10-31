@@ -18,55 +18,77 @@ export class SendError extends Error {
   }
 }
 
-export async function enqueue(
-  store: LocalStore,
-  collection: CollectionName,
-  id: string,
-  changedAt: number,
-  op?: 'purge',
-) {
-  const key = `${collection}/${id}`;
+export interface QueuedChange {
+  collection: CollectionName;
+  id: string;
+  changedAt: number;
+  op?: 'purge';
+}
+
+export async function enqueue(store: LocalStore, change: QueuedChange) {
+  const key = `${change.collection}/${change.id}`;
   const existing = await store.outbox.where('key').equals(key).first();
   if (existing) {
-    await store.outbox.update(existing.seq!, { changed_at: changedAt, op });
+    await store.outbox.update(existing.seq, { changed_at: change.changedAt, op: change.op });
   } else {
-    await store.outbox.add({ key, collection, id, changed_at: changedAt, ...(op ? { op } : {}) });
+    await store.outbox.add({
+      key,
+      collection: change.collection,
+      id: change.id,
+      changed_at: change.changedAt,
+      ...(change.op ? { op: change.op } : {}),
+    });
   }
+}
+
+type OnSent = (collection: CollectionName, saved: Collections[CollectionName]) => Promise<void>;
+
+interface Drain {
+  store: LocalStore;
+  remote: RemoteWriter;
+  onSent: OnSent;
 }
 
 export async function drainOutbox(
   store: LocalStore,
   remote: RemoteWriter,
-  onSent: (collection: CollectionName, saved: Collections[CollectionName]) => Promise<void>,
+  onSent: OnSent,
 ): Promise<void> {
-  for (
-    let entry = await store.outbox.orderBy('seq').first();
-    entry;
-    entry = await store.outbox.orderBy('seq').first()
-  ) {
-    const record =
-      entry.op === 'purge' ? undefined : await store.records(entry.collection).get(entry.id);
-    if (entry.op === 'purge') {
-      await remote.purge(entry.collection, entry.id);
-    } else if (record) {
-      try {
-        await onSent(entry.collection, await remote.upsert(entry.collection, record));
-      } catch (error) {
-        if (!(error instanceof SendError) || error.failure !== 'rejected') {
-          throw error;
-        }
-        logError(`Dropped ${entry.key}: the server rejected it`, error.cause);
-      }
-    }
+  const oldest = () => store.outbox.orderBy('seq').first();
+  for (let entry = await oldest(); entry; entry = await oldest()) {
+    await send(entry, { store, remote, onSent });
     await removeIfUnchanged(store, entry);
+  }
+}
+
+export function skipIfRejected(error: unknown, dropped: string): void {
+  if (!(error instanceof SendError) || error.failure !== 'rejected') {
+    throw error;
+  }
+  logError(`Dropped ${dropped}: the server rejected it`, error.cause);
+}
+
+async function send(entry: OutboxEntry, drain: Drain) {
+  if (entry.op === 'purge') {
+    await drain.remote.purge(entry.collection, entry.id);
+    return;
+  }
+  const record = await drain.store.records(entry.collection).get(entry.id);
+  if (!record) {
+    return;
+  }
+  try {
+    await drain.onSent(entry.collection, await drain.remote.upsert(entry.collection, record));
+  } catch (error) {
+    skipIfRejected(error, entry.key);
   }
 }
 
 async function removeIfUnchanged(store: LocalStore, sent: OutboxEntry) {
   await store.transaction('rw', store.outbox, async () => {
-    const current = await store.outbox.get(sent.seq!);
+    const current = await store.outbox.get(sent.seq);
     if (current?.changed_at === sent.changed_at) {
-      await store.outbox.delete(sent.seq!);
+      await store.outbox.delete(sent.seq);
     }
   });
 }
