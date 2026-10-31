@@ -12,8 +12,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Actions } from '../../core/data/actions';
-import { RepeatMode, Todo } from '../../domain/models';
-import { Draft, Repository } from '../../core/data/repository';
+import { Draft, RepeatMode, Todo } from '../../domain/models';
+import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
 import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
 import { Clock } from '../../core/time/clock';

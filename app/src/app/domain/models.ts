@@ -96,6 +96,8 @@ export interface Collections {
 
 export type CollectionName = keyof Collections;
 
+export type Draft<C extends CollectionName> = Partial<Collections[C]>;
+
 export const COLLECTIONS_IN_DEPENDENCY_ORDER: readonly CollectionName[] = [
   'groups',
   'lists',

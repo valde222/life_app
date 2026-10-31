@@ -5,9 +5,7 @@ import { from } from 'rxjs';
 import { enqueue } from '../sync/outbox';
 import { newId, pocketBaseTimestamp } from '../../domain/ids';
 import { LocalStore } from './local-store';
-import { CollectionName, Collections, EMPTY_RECORDS } from '../../domain/models';
-
-export type Draft<C extends CollectionName> = Partial<Collections[C]>;
+import { CollectionName, Collections, Draft, EMPTY_RECORDS } from '../../domain/models';
 
 @Injectable({ providedIn: 'root' })
 export class Repository {

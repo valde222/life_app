@@ -12,8 +12,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Actions } from '../../core/data/actions';
-import { EMPTY_RECORDS, Note, Step, Todo } from '../../domain/models';
-import { Draft, Repository } from '../../core/data/repository';
+import { Draft, EMPTY_RECORDS, Note, Step, Todo } from '../../domain/models';
+import { Repository } from '../../core/data/repository';
 import { Store } from '../../core/data/store';
 import { DatePicker, DatePickerData, DatePickerResult } from '../../shared/pickers/date-picker';
 import { MoveTo, MoveToData } from '../../shared/pickers/move-to';
