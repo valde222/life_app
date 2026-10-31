@@ -8,6 +8,7 @@ export function renderTokens(tokens) {
   const variables = [
     ...tokens.color.tokens,
     ...tokens.spacing.tokens,
+    ...tokens.fontSize.tokens,
     ...tokens.radius.tokens,
     ...tokens.shadow.tokens,
   ].map(({ name, value }) => `  --${name}: ${value};`);
