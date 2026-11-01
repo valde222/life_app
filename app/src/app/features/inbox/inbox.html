@@ -55,7 +55,7 @@
                   </button>
                 </div>
               } @else {
-                <span class="expanded-title">{{ item.record.title }}</span>
+                <span class="expanded-title">{{ item.record.title || 'Untitled' }}</span>
                 <div class="note-actions">
                   <button type="button" class="act primary" (click)="keep(asNote(item))">
                     Keep
@@ -113,7 +113,7 @@
                 (click)="toggle(item)"
               >
                 <app-icon name="note" [size]="20" class="note-icon" />
-                <span class="row-title">{{ item.record.title }}</span>
+                <span class="row-title">{{ item.record.title || 'Untitled' }}</span>
               </button>
             </app-swipe-row>
           }

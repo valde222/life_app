@@ -58,3 +58,16 @@ test('T8: left over todos are counted and Pick opens on them (R8, R9)', async ({
   await expect(page.getByRole('link', { name: 'Book the dentist' })).toBeVisible();
   await expect(page.getByRole('button', { name: /Pick for today/ })).toContainText('1 left over');
 });
+
+test('a quick note without a title shows as Untitled in the Inbox, like everywhere else', async ({
+  page,
+}) => {
+  const { api } = await freshAccount();
+  await api.note('', { inbox: true, body: 'Something to look at later' });
+  await signIn(page);
+
+  await page.goto('/inbox');
+  await expect(page.getByRole('button', { name: 'Untitled' })).toBeVisible();
+  await page.getByRole('button', { name: 'Untitled' }).click();
+  await expect(page.locator('.expanded-title')).toHaveText('Untitled');
+});
