@@ -1,5 +1,6 @@
 import { CalendarEvent, EMPTY_RECORDS, Todo } from './models';
 import { localDate } from './time/local-date';
+import { startOf } from './time/until';
 import { parseTimestamp } from './time/timestamps';
 
 export const CALENDAR_PREFIX = 'cal:';
@@ -39,8 +40,6 @@ export function hasEnded(todo: Todo, now: Date): boolean {
   if (!todo.time || todo.date !== localDate(now)) {
     return false;
   }
-  const [hours, minutes] = (todo.time_end || todo.time).split(':').map(Number);
-  const end = new Date(now);
-  end.setHours(hours, minutes, 0, 0);
-  return end <= now;
+  const endsTomorrow = !!todo.time_end && todo.time_end < todo.time;
+  return !endsTomorrow && startOf(todo.date, todo.time_end || todo.time) <= now;
 }
