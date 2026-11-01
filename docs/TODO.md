@@ -92,3 +92,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 - [ ] Micro-interactions on the everyday moments: ticking, toasts, adding, Inbox, swipes, sheets and more (`docs/plans/animations.md`)
 - [x] Tick and untick todos on every screen that shows them (R7; `docs/plans/tick-everywhere.md`)
 - [x] Chores can be found: in Search, on Lists and in the sidebar (`docs/plans/find-chores.md`)
+
+## Bug sweep (`fix/bug-sweep`, pull request)
+
+- [ ] Sweep against R1–R30, T1–T16 and the sync rules; every bug fixed with a test; report written (`docs/plans/bug-sweep.md`)
