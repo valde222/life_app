@@ -102,11 +102,12 @@ export class DeletedPage {
   private readonly all = inject(AllRecords);
   protected readonly settled = new Settled();
   private readonly archive = inject(ArchiveActions);
-  private readonly today = inject(Clock).today();
+  private readonly clock = inject(Clock);
+  private readonly today = computed(() => this.clock.today());
   protected readonly confirming = signal(false);
   protected readonly sub = deletedSub;
 
-  protected readonly items = computed(() => this.all.deletedOn(this.today));
+  protected readonly items = computed(() => this.all.deletedOn(this.today()));
 
   protected async restore(item: DeletedItem) {
     await this.archive.undelete(item);

@@ -41,7 +41,8 @@ export class ArchivePage {
   private readonly archive = inject(ArchiveActions);
   private readonly lists = inject(ListActions);
   private readonly toasts = inject(Toasts);
-  private readonly today = inject(Clock).today();
+  private readonly clock = inject(Clock);
+  private readonly today = computed(() => this.clock.today());
 
   protected readonly tabs = [
     { value: 'archive' as Tab, label: 'Archive' },
@@ -96,7 +97,7 @@ export class ArchivePage {
     ),
   );
 
-  protected readonly deletedCount = computed(() => this.all.deletedOn(this.today).length);
+  protected readonly deletedCount = computed(() => this.all.deletedOn(this.today()).length);
 
   protected closedSub(list: List) {
     return closedListSub(list, this.all.notes());

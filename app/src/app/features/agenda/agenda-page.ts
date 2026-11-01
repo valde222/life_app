@@ -38,15 +38,15 @@ export class AgendaPage {
   private readonly store = inject(Store);
   private readonly ticking = inject(Ticking);
   private readonly clock = inject(Clock);
-  protected readonly today = this.clock.today();
+  protected readonly today = computed(() => this.clock.today());
   protected readonly weekdays = WEEKDAYS;
   protected readonly months = Array.from({ length: 12 }, (_, month) => month);
   protected readonly monthName = monthName;
 
-  protected readonly selected = signal(this.today);
+  protected readonly selected = signal(this.today());
   protected readonly view = signal<View>('week');
-  protected readonly shownMonth = signal(this.today.slice(0, 7));
-  protected readonly shownYear = signal(Number(this.today.slice(0, 4)));
+  protected readonly shownMonth = signal(this.today().slice(0, 7));
+  protected readonly shownYear = signal(Number(this.today().slice(0, 4)));
   protected readonly settled = new Settled();
   private readonly travel = signal<'next' | 'prev'>('next');
   protected readonly slide = computed(() => this.settled.animate(`slide-${this.travel()}`));
@@ -87,10 +87,10 @@ export class AgendaPage {
 
   private readonly marked = computed(() => {
     const from = this.view() === 'month' ? mondayOf(`${this.shownMonth()}-01`) : this.week()[0];
-    return datesWithItems({ from, to: addDays(from, 41) }, this.today, this.sources());
+    return datesWithItems({ from, to: addDays(from, 41) }, this.today(), this.sources());
   });
   protected readonly days = computed(() =>
-    agendaDays({ from: this.selected(), count: DAYS_SHOWN }, this.today, this.sources()),
+    agendaDays({ from: this.selected(), count: DAYS_SHOWN }, this.today(), this.sources()),
   );
 
   protected dayNumber(date: string) {
@@ -106,7 +106,7 @@ export class AgendaPage {
     if (endDate) {
       return `${label} – ${longDate(endDate)}`;
     }
-    return date === this.today ? `Today, ${label}` : label;
+    return date === this.today() ? `Today, ${label}` : label;
   }
 
   protected tick(todo: Todo) {
@@ -157,7 +157,7 @@ export class AgendaPage {
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       this.pick(addDays(this.selected(), event.key === 'ArrowLeft' ? -1 : 1));
     } else if (event.key.toLowerCase() === 't') {
-      this.pick(this.today);
+      this.pick(this.today());
     }
   }
 

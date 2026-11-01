@@ -33,10 +33,11 @@ export class WeekPage {
   private readonly store = inject(Store);
   private readonly ticking = inject(Ticking);
   protected readonly settled = new Settled();
-  protected readonly today = inject(Clock).today();
+  private readonly clock = inject(Clock);
+  protected readonly today = computed(() => this.clock.today());
 
   protected readonly week = computed(() =>
-    weekSummary(this.today, {
+    weekSummary(this.today(), {
       todos: this.store.todos(),
       completions: this.store.completions(),
       notes: this.store.notes(),

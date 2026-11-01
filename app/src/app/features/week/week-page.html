@@ -31,7 +31,7 @@
     <h2 class="eyebrow">Done per day</h2>
     <div class="bars">
       @for (day of week().days; track day.date) {
-        <div class="bar-cell" [class.today]="day.date === today">
+        <div class="bar-cell" [class.today]="day.date === today()">
           <span class="bar-value tabular">{{ day.done || '' }}</span>
           <span class="column" [style.height.px]="6 + (day.done / maxDone()) * 66"></span>
           <span class="bar-day">{{ letter(day.date) }}</span>
