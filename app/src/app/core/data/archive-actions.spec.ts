@@ -54,4 +54,20 @@ describe('ArchiveActions', () => {
       inbox: false,
     });
   });
+
+  it('brings a list whose group was deleted back into the first group left', async () => {
+    const gone = await repository.save('groups', { name: 'Old', order: 0, deleted_at: 'x' });
+    const work = await repository.save('groups', { name: 'Work', order: 2 });
+    const life = await repository.save('groups', { name: 'Life', order: 1 });
+    const list = await repository.save('lists', {
+      name: 'Garden',
+      group: gone.id,
+      deleted_at: 'x',
+    });
+
+    await archive.undelete({ kind: 'lists', id: list.id });
+
+    expect((await local.records('lists').get(list.id))?.group).toBe(life.id);
+    expect(work.id).not.toBe(life.id);
+  });
 });

@@ -23,7 +23,9 @@ export class ArchiveActions {
 
   async undelete(item: ItemRef<DeletedKind>): Promise<void> {
     const rehome =
-      item.kind === 'lists' ? {} : await this.homeless({ kind: item.kind, id: item.id });
+      item.kind === 'lists'
+        ? await this.groupless(item.id)
+        : await this.homeless({ kind: item.kind, id: item.id });
     await this.repository.save(item.kind, { id: item.id, deleted_at: '', ...rehome });
   }
 
@@ -41,5 +43,16 @@ export class ArchiveActions {
     }
     const home = (await this.repository.all('lists')).find((each) => each.id === list);
     return home && !home.deleted_at ? {} : { list: '', inbox: true };
+  }
+
+  private async groupless(id: string): Promise<{ group?: string }> {
+    const group = (await this.repository.all('lists')).find((list) => list.id === id)?.group;
+    const groups = (await this.repository.all('groups'))
+      .filter((each) => !each.deleted_at)
+      .sort((a, b) => a.order - b.order);
+    if (!groups.length || groups.some((each) => each.id === group)) {
+      return {};
+    }
+    return { group: groups[0]?.id };
   }
 }
