@@ -53,9 +53,15 @@
 }
 
 .list-button {
+  min-width: 0;
   padding: 0;
   border: 0;
   background: transparent;
+  display: flex;
+
+  app-list-label {
+    max-width: 100%;
+  }
 }
 
 .list-chip {

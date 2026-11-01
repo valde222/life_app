@@ -12,7 +12,7 @@ import { listColourStyle } from './list-colours';
     @if (event()) {
       <app-icon name="calendar" [size]="12" [stroke]="2.4" />Event
     } @else {
-      {{ list()?.name }}
+      <span class="name">{{ list()?.name }}</span>
     }
   `,
   styles: `
@@ -29,7 +29,12 @@ import { listColourStyle } from './list-colours';
       font-weight: 600;
       line-height: 1;
       white-space: nowrap;
-      flex-shrink: 0;
+      min-width: 0;
+      max-width: 60%;
+    }
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   `,
 })
