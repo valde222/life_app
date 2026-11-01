@@ -42,3 +42,16 @@ describe('weekSummary (R29)', () => {
     ]);
   });
 });
+
+describe('This week boundaries (R29)', () => {
+  it('runs Monday to Sunday, also across the DST change and a year end', () => {
+    expect([weekSummary('2026-10-25', { todos: [], completions: [], notes: [] }).start]).toEqual([
+      '2026-10-19',
+    ]);
+    expect(weekSummary('2026-10-26', { todos: [], completions: [], notes: [] }).start).toBe(
+      '2026-10-26',
+    );
+    const yearEnd = weekSummary('2026-12-31', { todos: [], completions: [], notes: [] });
+    expect([yearEnd.start, yearEnd.end]).toEqual(['2026-12-28', '2027-01-03']);
+  });
+});
