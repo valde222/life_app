@@ -33,4 +33,17 @@ describe('list counts (R22)', () => {
     expect(groupSummary(life, lists, counts)).toBe('2 lists, 3 todos');
     expect(groupSummary(life, lists, new Map())).toBe('2 lists');
   });
+
+  it('counts the todos a list page shows, so chores in a list are not counted (R22)', () => {
+    const counts = countsByList(
+      [
+        todo('a'),
+        todo('a', { repeat_mode: 'rough', repeat_every_days: 7 }),
+        todo('a', { repeat_mode: 'schedule', repeat_weekdays: [1] }),
+      ],
+      [],
+    );
+    expect(counts.get('a')?.todos).toBe(1);
+    expect(groupSummary(life, lists, counts)).toBe('2 lists, 1 todo');
+  });
 });

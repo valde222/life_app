@@ -1,4 +1,5 @@
 import { Group, List, Note, Todo } from './models';
+import { isRepeating } from './repeat-status';
 
 export interface ListCounts {
   todos: number;
@@ -8,7 +9,7 @@ export interface ListCounts {
 const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
 
 export function isOpenTodo(todo: Todo) {
-  return !todo.done_at && !todo.archived_at && !todo.deleted_at;
+  return !todo.done_at && !todo.archived_at && !todo.deleted_at && !isRepeating(todo);
 }
 
 export function isFiledNote(note: Note) {
