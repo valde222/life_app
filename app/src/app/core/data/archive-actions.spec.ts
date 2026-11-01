@@ -32,4 +32,26 @@ describe('ArchiveActions', () => {
     expect(await local.records('todos').count()).toBe(0);
     expect(await local.records('notes').count()).toBe(0);
   });
+
+  it('brings an item whose list was deleted back into the Inbox, not into the deleted list', async () => {
+    const list = await repository.save('lists', { name: 'Garden', deleted_at: 'x' });
+    const todo = await repository.save('todos', { title: 'Prune', list: list.id, deleted_at: 'x' });
+    const note = await repository.save('notes', { title: 'Plan', list: list.id, archived_at: 'x' });
+
+    await archive.undelete({ kind: 'todos', id: todo.id });
+    await archive.unarchive({ kind: 'notes', id: note.id });
+
+    expect(await local.records('todos').get(todo.id)).toMatchObject({ list: '', inbox: true });
+    expect(await local.records('notes').get(note.id)).toMatchObject({ list: '', inbox: true });
+  });
+
+  it('leaves an item whose list still exists in that list', async () => {
+    const list = await repository.save('lists', { name: 'Garden' });
+    const todo = await repository.save('todos', { title: 'Prune', list: list.id, deleted_at: 'x' });
+    await archive.undelete({ kind: 'todos', id: todo.id });
+    expect(await local.records('todos').get(todo.id)).toMatchObject({
+      list: list.id,
+      inbox: false,
+    });
+  });
 });
