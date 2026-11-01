@@ -493,9 +493,18 @@ a {
     opacity var(--motion-fast) var(--ease-standard);
 }
 
-button:active:not(:disabled),
-a:active {
-  transform: scale(0.97);
+@media (hover: none) {
+  button:active:not(:disabled),
+  a:active {
+    transform: scale(0.97);
+  }
+}
+
+@media (hover: hover) {
+  button:active:hover:not(:disabled),
+  a:active:hover {
+    transform: scale(0.97);
+  }
 }
 
 @media (hover: hover) {
