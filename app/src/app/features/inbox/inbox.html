@@ -83,14 +83,20 @@
                   [class.focused]="isFocused(item)"
                   (click)="toggle(item)"
                 >
-                  <span class="box-space" aria-hidden="true"></span>
+                  @if (item.record.is_event) {
+                    <app-icon name="calendar" [size]="20" class="note-icon" />
+                  } @else {
+                    <span class="box-space" aria-hidden="true"></span>
+                  }
                   <span class="row-title">{{ item.record.title }}</span>
                 </button>
-                <app-tick-box
-                  class="tick-over"
-                  [title]="item.record.title"
-                  (tick)="tick(asTodo(item))"
-                />
+                @if (!item.record.is_event) {
+                  <app-tick-box
+                    class="tick-over"
+                    [title]="item.record.title"
+                    (tick)="tick(asTodo(item))"
+                  />
+                }
               </div>
             </app-swipe-row>
           } @else {

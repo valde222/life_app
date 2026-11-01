@@ -50,6 +50,8 @@
             <a class="hit" [routerLink]="link(hit)" [state]="{ back: '/search' }">
               @if (hit.kind === 'note') {
                 <app-icon name="note" [size]="20" class="kind" />
+              } @else if (hit.event) {
+                <app-icon name="calendar" [size]="20" class="kind" />
               } @else {
                 <span class="box-space" aria-hidden="true"></span>
               }
@@ -58,7 +60,7 @@
                 <app-list-label [list]="list(hit)" />
               }
             </a>
-            @if (hit.kind === 'todo') {
+            @if (hit.kind === 'todo' && !hit.event) {
               <app-tick-box
                 class="tick-over"
                 [title]="hit.title"

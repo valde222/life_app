@@ -55,3 +55,17 @@ test('R7: ticking on a list page offers Add note, like Today, and the done fold 
   await page.getByRole('button', { name: 'Mark Fix the shelf not done' }).click();
   await expect.poll(() => doneAt(api, shelf.id)).toBe('');
 });
+
+test('R12: events never get a tick box, in the Inbox or in Search', async ({ page }) => {
+  const { api } = await freshAccount();
+  await api.todo('Dentist', { inbox: true, is_event: true, date: localDate(), time: '14:00' });
+  await signIn(page);
+
+  await page.goto('/inbox');
+  await expect(page.getByText('Dentist', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Mark Dentist done' })).toHaveCount(0);
+
+  await page.goto('/search?q=dentist');
+  await expect(page.getByText('Dentist', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Mark Dentist done' })).toHaveCount(0);
+});

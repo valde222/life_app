@@ -11,6 +11,7 @@ export interface SearchHit {
   changedAt: number;
   done: boolean;
   repeating: boolean;
+  event: boolean;
 }
 
 export function matches(text: string, query: string) {
@@ -42,6 +43,7 @@ function todoHits(todos: Todo[], query: string, archived: boolean): SearchHit[] 
       changedAt: todo.changed_at,
       done: !!todo.done_at,
       repeating: isRepeating(todo),
+      event: todo.is_event,
     }));
 }
 
@@ -60,6 +62,7 @@ function noteHits(notes: Note[], query: string, archived: boolean): SearchHit[] 
       changedAt: note.changed_at,
       done: false,
       repeating: false,
+      event: false,
     }));
 }
 
