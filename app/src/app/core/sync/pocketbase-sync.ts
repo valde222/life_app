@@ -106,7 +106,7 @@ export class PocketBaseSync implements Sync {
   private handleFailure(error: unknown) {
     const failure = toSendError(error);
     if (failure instanceof SendError && failure.failure === 'unauthorised') {
-      this.server.signOut();
+      this.server.expire();
       return;
     }
     if (failure instanceof SendError && failure.failure === 'offline') {

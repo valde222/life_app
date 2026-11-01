@@ -22,7 +22,7 @@ export class App {
       void this.router.navigateByUrl('/capture');
     }
     effect(() => {
-      if (!this.session.signedIn() && !this.router.url.startsWith(SIGN_IN)) {
+      if (this.session.expired() && !this.router.url.startsWith(SIGN_IN)) {
         void this.router.navigateByUrl(SIGN_IN);
       }
     });

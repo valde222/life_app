@@ -49,7 +49,7 @@ class FakeServer {
 
   async purge() {}
 
-  signOut() {
+  expire() {
     this.signedOut = true;
   }
 }

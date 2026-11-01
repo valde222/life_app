@@ -20,4 +20,9 @@ test('when the server stops accepting the login mid-session, the app goes to sig
 
   await expect(page).toHaveURL(/\/sign-in$/);
   await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();
+
+  await page.unrouteAll();
+  await signIn(page);
+  await page.waitForTimeout(500);
+  await expect(page).toHaveURL(/\/$/);
 });

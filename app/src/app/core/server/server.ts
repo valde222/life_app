@@ -43,6 +43,7 @@ export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
   readonly url = signal(localStorage.getItem(SERVER_URL_KEY) ?? DEFAULT_SERVER_URL);
   private pb = new PocketBase(this.url());
   readonly signedIn = signal(this.pb.authStore.isValid);
+  readonly expired = signal(false);
 
   account(): Account | null {
     const record = this.pb.authStore.record;
@@ -66,6 +67,7 @@ export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
     } catch (error) {
       throw new SignInError(signInFailure(error));
     }
+    this.expired.set(false);
     this.signedIn.set(true);
   }
 
@@ -81,6 +83,11 @@ export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
   signOut() {
     this.pb.authStore.clear();
     this.signedIn.set(false);
+  }
+
+  expire() {
+    this.signOut();
+    this.expired.set(true);
   }
 
   async changedSince<C extends CollectionName>(

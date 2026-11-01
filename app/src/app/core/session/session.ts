@@ -10,6 +10,7 @@ export class Session {
   private readonly sync = inject(Sync);
 
   readonly signedIn = this.server.signedIn;
+  readonly expired = this.server.expired;
   readonly serverUrl = this.server.url;
 
   email(): string {
