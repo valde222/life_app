@@ -179,4 +179,18 @@ describe('Actions', () => {
       inbox: false,
     });
   });
+
+  it('marking a chore done twice on one day keeps one completion, and that Undo keeps it (R10)', async () => {
+    const chore = await actions.createTodo({ title: 'Clean', repeat_mode: 'rough' });
+    const live = async () =>
+      (await store.records('completions').toArray())
+        .filter((each) => !each.deleted_at)
+        .map((each) => each.done_on);
+    await actions.complete(chore);
+    const undoSecond = await actions.complete(chore);
+    expect(await live()).toEqual(['2026-10-31']);
+
+    await undoSecond();
+    expect(await live()).toEqual(['2026-10-31']);
+  });
 });

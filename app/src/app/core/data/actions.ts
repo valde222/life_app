@@ -114,6 +114,13 @@ export class Actions {
   }
 
   async complete(todo: Todo, day = this.clock.today()): Promise<Undo> {
+    const completions = await this.repository.all('completions');
+    const already = completions.some(
+      (each) => each.todo === todo.id && each.done_on === day && !each.deleted_at,
+    );
+    if (already) {
+      return () => Promise.resolve();
+    }
     const completion = await this.repository.save('completions', { todo: todo.id, done_on: day });
     return () => this.repository.remove('completions', completion.id);
   }
