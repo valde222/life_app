@@ -26,7 +26,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 - [x] 5. Sync: offline change to the other device (`05a-sync-offline-change.md`)
 - [x] 5. Sync: conflicts (`05b-sync-conflict.md`)
 - [x] 6. Sign-in: logging in and token refresh (`06a-sign-in.md`)
-- [ ] 6. Sign-in: expired token (`06b-expired-token.md`)
+- [x] 6. Sign-in: expired token (`06b-expired-token.md`)
 - [ ] 7. Lifecycles: todo (`07a-todo-lifecycle.md`)
 - [ ] 7. Lifecycles: open todo (`07b-todo-open-states.md`)
 - [ ] 7. Lifecycles: quick note (`07c-note-lifecycle.md`)
