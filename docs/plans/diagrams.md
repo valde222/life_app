@@ -12,7 +12,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 ## Diagrams
 
 - [x] 1. System overview (`01-system-overview.md`)
-- [ ] 2. Deployment: production (`02a-deployment-production.md`)
+- [x] 2. Deployment: production (`02a-deployment-production.md`)
 - [ ] 2. Deployment: dev environment (`02b-deployment-dev.md`)
 - [ ] 3. Code structure: script that generates the Angular graphs from the real imports (`npm run diagrams`)
 - [ ] 3. Code structure: Angular layers (`03a-code-layers.md`, generated)
