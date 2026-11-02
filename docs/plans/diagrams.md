@@ -20,7 +20,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 - [x] 3. Code structure: features to core (`03c-features-to-core.md`, generated)
 - [x] 3. Code structure: inside core (`03d-inside-core.md`, generated)
 - [x] 3. Code structure: shared to core (`03e-shared-to-core.md`, generated)
-- [ ] 3. Code structure: Tauri modules (`03f-tauri-modules.md`)
+- [x] 3. Code structure: Tauri modules (`03f-tauri-modules.md`)
 - [ ] 3. Code structure: Android native parts (`03g-android-native.md`)
 - [ ] 4. Data model (`04-data-model.md`)
 - [ ] 5. Sync: offline change to the other device (`05a-sync-offline-change.md`)
