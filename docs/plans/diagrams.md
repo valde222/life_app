@@ -40,7 +40,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 ## READMEs
 
 - [x] Top-level `README.md`
-- [ ] `app/README.md`
+- [x] `app/README.md`
 - [ ] `app/android/README.md`
 - [ ] `desktop/README.md`
 - [ ] `pocketbase/README.md`
