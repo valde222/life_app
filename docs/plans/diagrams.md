@@ -39,7 +39,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 
 ## READMEs
 
-- [ ] Top-level `README.md`
+- [x] Top-level `README.md`
 - [ ] `app/README.md`
 - [ ] `app/android/README.md`
 - [ ] `desktop/README.md`

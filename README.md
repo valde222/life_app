@@ -2,19 +2,17 @@
 
 A personal todo, notes and repeating-chores app for one person: an Android app and a desktop app, both from one Angular codebase, backed by a self-hosted PocketBase on a Raspberry Pi.
 
-## How the pieces fit
-
-| Piece | Folder | Notes |
+| Service | Folder | |
 | --- | --- | --- |
-| Angular app | `app/` | Every screen, the local copy and sync. [README](app/README.md) |
-| Android shell | `app/android/` | Capacitor wrapper, share sheet, calendars. [README](app/android/README.md) |
-| Desktop shell | `desktop/` | Tauri wrapper, tray icon, Ctrl+Space capture. [README](desktop/README.md) |
-| Backend | `pocketbase/` | Schema, hooks, seed data. [README](pocketbase/README.md) |
-| Deployment | `deploy/`, `docker-compose.yml` | The Pi: PocketBase, nightly backups, tunnel. [README](deploy/README.md) |
+| Angular app | `app/` | [README](app/README.md) |
+| Android shell | `app/android/` | [README](app/android/README.md) |
+| Desktop shell | `desktop/` | [README](desktop/README.md) |
+| Backend | `pocketbase/` | [README](pocketbase/README.md) |
+| Deployment | `deploy/`, `docker-compose.yml` | [README](deploy/README.md) |
 
-Each app keeps a local copy of everything and an outbox of changes, so it works offline; it syncs with PocketBase over HTTPS when it can.
+How they fit together: [system overview](docs/diagrams/01-system-overview.md), and [every diagram](docs/diagrams/README.md).
 
-## Start the dev environment
+## Run in development
 
 From WSL, in the repo folder:
 
@@ -22,10 +20,14 @@ From WSL, in the repo folder:
 docker compose -f docker-compose.dev.yml up
 ```
 
-Then open http://localhost:4200 and sign in with `me@example.com` / `lifeapp-dev`. The data matches the design canvas, dated around today. PocketBase's admin UI is at http://localhost:8090/_/ (`admin@example.com` / `lifeapp-admin`).
+Then open http://localhost:4200 and sign in with `me@example.com` / `lifeapp-dev`. PocketBase's admin UI is at http://localhost:8090/_/ (`admin@example.com` / `lifeapp-admin`). See the [dev environment](docs/diagrams/02b-deployment-dev.md).
 
-The seed is dated around the day it first ran. To throw the data away and reseed for today: `./scripts/dev-reset.sh`. After pulling new code, recreate the containers (`docker compose -f docker-compose.dev.yml up -d --force-recreate`) so the dev server and PocketBase pick it up.
+The seed data matches the design canvas, dated around the day it first ran. `./scripts/dev-reset.sh` throws the data away and reseeds for today. After pulling new code, `docker compose -f docker-compose.dev.yml up -d --force-recreate` picks it up.
 
-## Docs
+## Run in production
 
-`docs/build-plan.md` is the brief, `docs/TODO.md` the checklist, `docs/plans/` one plan per feature, `docs/screens/` and `docs/design-system/` the look. `docs/security.md` says what protects the data, every audit finding, and what to do on the Pi yourself. `docs/plans/refactor.md` describes the code's layers and the checks CI enforces.
+See the [deployment README](deploy/README.md).
+
+## Config
+
+The dev Compose file needs no setup: its values are fixed, for development only. `CHOKIDAR_USEPOLLING` makes the dev server poll, because files on `/mnt/c` are slow to watch; the rest are explained in the [PocketBase README](pocketbase/README.md). Production settings go in `.env`, from `.env.example`: see the [deployment README](deploy/README.md).
