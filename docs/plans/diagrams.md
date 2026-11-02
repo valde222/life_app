@@ -23,7 +23,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 - [x] 3. Code structure: Tauri modules (`03f-tauri-modules.md`)
 - [x] 3. Code structure: Android native parts (`03g-android-native.md`)
 - [x] 4. Data model (`04-data-model.md`)
-- [ ] 5. Sync: offline change to the other device (`05a-sync-offline-change.md`)
+- [x] 5. Sync: offline change to the other device (`05a-sync-offline-change.md`)
 - [ ] 5. Sync: conflicts (`05b-sync-conflict.md`)
 - [ ] 6. Sign-in: logging in and token refresh (`06a-sign-in.md`)
 - [ ] 6. Sign-in: expired token (`06b-expired-token.md`)
