@@ -22,6 +22,7 @@ A personal todo, notes and repeating-chores app for one user: an Android app and
 - Each phase: branch, tests pass, merge to `main`, tag (`v0.1-foundations`, …).
 - Keep `.gitignore` up to date as tools are added (a starter is in the repo). Commit `.env.example`, never `.env`. Check `git status` before every commit.
 - Docs at service level, one short README per service, updated in the same commit as the code.
+- When a change affects a diagram in `docs/diagrams/` or a README, update it in the same commit.
 - Docker Compose for production (`docker-compose.yml`, arm64 for the Pi) and development (`docker-compose.dev.yml` with seed data matching the screens).
 - No comments that explain code; rewrite the code instead. Only a why the code can't say, with a link.
 

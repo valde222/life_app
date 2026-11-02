@@ -99,4 +99,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Diagrams and README review (`docs/diagrams`, pull request)
 
-- [ ] Diagrams of how the app works, from the code; every README checked against the code; render check in CI (`docs/plans/diagrams.md`)
+- [x] Diagrams of how the app works, from the code; every README checked against the code; render check in CI (`docs/plans/diagrams.md`)
