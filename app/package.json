@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false",
     "tokens": "node scripts/tokens.mjs",
+    "diagrams": "node scripts/dependency-diagrams.mjs",
     "e2e": "playwright test",
     "e2e:docker": "./e2e/run-in-docker.sh",
     "build:android": "npm run build && npx cap sync android && cd android && cmd.exe /c \"gradlew.bat assembleDebug\"",
