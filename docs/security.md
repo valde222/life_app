@@ -90,7 +90,7 @@ None of this is in the repo, and none of it was done for you.
   - Turn on two-factor sign-in for your Tailscale identity provider and for GitHub.
   - After starting the tunnel, check from outside that `https://life.<tailnet>.ts.net/_/` doesn't show the dashboard and `/api/health` answers.
 - [ ] **Secrets.** `chmod 600 .env`. Generate both passwords with `openssl rand -base64 24`. Make the age key and the Android keystore on your PC, and keep both in your password manager, never on the Pi.
-- [ ] **Data folders.** `sudo chown 10001:10001 data/pb_data "$BACKUP_TARGET"` before the first start (`deploy/README.md`).
+- [ ] **Data folders.** Give them to the containers' user before the first start: step 3 of the first deploy in `deploy/README.md`.
 - [ ] **Backup restore test.** Right after the first nightly backup, then every few months:
   - Copy the latest `life-*.zip.age` to your PC and decrypt it with `age -d -i life-backup.key`.
   - Check it unzips and holds `data.db`.
