@@ -32,7 +32,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 - [x] 7. Lifecycles: quick note (`07c-note-lifecycle.md`)
 - [x] 7. Lifecycles: repeating item (`07d-repeating-lifecycle.md`)
 - [x] 8. Capture (`08-capture.md`)
-- [ ] 9. Screen map: phone (`09a-screens-phone.md`)
+- [x] 9. Screen map: phone (`09a-screens-phone.md`)
 - [ ] 9. Screen map: detail screens (`09b-screens-details.md`)
 - [ ] 9. Screen map: desktop (`09c-screens-desktop.md`)
 - [ ] 10. CI/CD (`10-ci-cd.md`)
