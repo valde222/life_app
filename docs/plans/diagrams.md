@@ -16,7 +16,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 - [x] 2. Deployment: dev environment (`02b-deployment-dev.md`)
 - [x] 3. Code structure: script that generates the Angular graphs from the real imports (`npm run diagrams`)
 - [x] 3. Code structure: Angular layers (`03a-code-layers.md`, generated)
-- [ ] 3. Code structure: features to shared (`03b-features-to-shared.md`, generated)
+- [x] 3. Code structure: features to shared (`03b-features-to-shared.md`, generated)
 - [ ] 3. Code structure: features to core (`03c-features-to-core.md`, generated)
 - [ ] 3. Code structure: inside core (`03d-inside-core.md`, generated)
 - [ ] 3. Code structure: shared to core (`03e-shared-to-core.md`, generated)
