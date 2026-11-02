@@ -49,6 +49,6 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 
 ## Finish
 
-- [ ] `docs/diagrams/README.md`: one line per diagram, in order
+- [x] `docs/diagrams/README.md`: one line per diagram, in order
 - [ ] Every diagram renders; `scripts/check-diagrams.sh` runs in CI, so a broken diagram fails the build
 - [ ] `CLAUDE.md`: a change that affects a diagram or a README updates it in the same commit
