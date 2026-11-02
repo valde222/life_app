@@ -35,7 +35,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 - [x] 9. Screen map: phone (`09a-screens-phone.md`)
 - [x] 9. Screen map: detail screens (`09b-screens-details.md`)
 - [x] 9. Screen map: desktop (`09c-screens-desktop.md`)
-- [ ] 10. CI/CD (`10-ci-cd.md`)
+- [x] 10. CI/CD (`10-ci-cd.md`)
 
 ## READMEs
 
