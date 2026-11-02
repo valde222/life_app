@@ -28,7 +28,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 - [x] 6. Sign-in: logging in and token refresh (`06a-sign-in.md`)
 - [x] 6. Sign-in: expired token (`06b-expired-token.md`)
 - [x] 7. Lifecycles: todo (`07a-todo-lifecycle.md`)
-- [ ] 7. Lifecycles: open todo (`07b-todo-open-states.md`)
+- [x] 7. Lifecycles: open todo (`07b-todo-open-states.md`)
 - [ ] 7. Lifecycles: quick note (`07c-note-lifecycle.md`)
 - [ ] 7. Lifecycles: repeating item (`07d-repeating-lifecycle.md`)
 - [ ] 8. Capture (`08-capture.md`)
