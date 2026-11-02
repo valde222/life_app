@@ -96,3 +96,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Bug sweep (`fix/bug-sweep`, pull request)
 
 - [ ] Sweep against R1–R30, T1–T16 and the sync rules; every bug fixed with a test; report written (`docs/plans/bug-sweep.md`)
+
+## Diagrams and README review (`docs/diagrams`, pull request)
+
+- [ ] Diagrams of how the app works, from the code; every README checked against the code; render check in CI (`docs/plans/diagrams.md`)
