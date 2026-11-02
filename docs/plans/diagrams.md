@@ -42,7 +42,7 @@ Diagrams that explain how the app works, drawn from the code as it is today, and
 - [x] Top-level `README.md`
 - [x] `app/README.md`
 - [x] `app/android/README.md`
-- [ ] `desktop/README.md`
+- [x] `desktop/README.md`
 - [ ] `pocketbase/README.md`
 - [ ] `deploy/README.md`
 - [ ] Every variable in `.env.example` and the Compose files documented; nothing documented that no longer exists

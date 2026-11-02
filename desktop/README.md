@@ -1,41 +1,39 @@
 # Desktop shell
 
-Tauri 2 wrapping the Angular app as the Windows app "Life": a tray icon keeps it running when the window is closed, and Ctrl+Space anywhere opens a small capture window (R1).
+Tauri 2 wrapping the Angular app as the Windows app "Life": a tray icon keeps it running when the window is closed, and Ctrl+Space anywhere opens a small capture window. See the [Tauri modules](../docs/diagrams/03f-tauri-modules.md).
 
-## Build
+## Run in development
 
-Build the web files in WSL, then package them on Windows (Windows needs no Node):
+Start the [dev environment](../README.md), then from WSL, in `desktop/`:
 
 ```sh
-cd app && npm run build:desktop
+cmd.exe /c "cargo tauri dev"
 ```
 
-That runs `npm run build`, then `cargo tauri build` in `desktop/` through `cmd.exe`. The installer lands in `src-tauri/target/release/bundle/nsis/`.
+Tests, from WSL in `desktop/src-tauri/`: `cmd.exe /c "cargo fmt --check"`, `cmd.exe /c "cargo clippy --all-targets -- -D warnings"` and `cmd.exe /c "cargo test"`. They need the web files from `npm run build` in `app/`.
 
-For a window on the dev server instead: start the dev environment, then `cmd.exe /c "cargo tauri dev"` in `desktop/`.
+## Run in production
+
+Build the web files in WSL, then package them on Windows, which needs no Node. From WSL, in `app/`:
+
+```sh
+npm run build:desktop
+```
+
+The installer lands in `desktop/src-tauri/target/release/bundle/nsis/`; a `v*` tag also attaches one to a GitHub release ([CI/CD](../docs/diagrams/10-ci-cd.md)). Set the server address to the Funnel address on the sign-in screen. To start the app with Windows, put a shortcut to `Life.exe` in `shell:startup`.
 
 ## Config
 
+No environment variables.
+
 | Setting | Where |
 | --- | --- |
-| Web files | `frontendDist` in `src-tauri/tauri.conf.json` → `app/dist/app/browser`. `beforeBuildCommand` stays empty |
+| Web files | `frontendDist` in `src-tauri/tauri.conf.json`, pointing at `app/dist/app/browser`. `beforeBuildCommand` stays empty |
 | App id, window size | `src-tauri/tauri.conf.json` |
 | Icons | Generated from `docs/brand/icon.svg` with `cargo tauri icon` |
+| Content Security Policy | `app.security.csp` in `src-tauri/tauri.conf.json`, the same policy as `app/src/index.html` |
+| IPC permissions | `src-tauri/capabilities/default.json` |
 | Server address | Sign-in screen, kept on the device |
-| Content Security Policy | `app.security.csp` in `src-tauri/tauri.conf.json`, the same policy as `app/src/index.html`: scripts only from the app, network only to HTTPS (or plain HTTP on localhost) |
-| IPC permissions | `src-tauri/capabilities/default.json`: only the capture window, and it may only hide itself. The main window gets no IPC; there are no custom commands |
-
-## Native parts
-
-| Part | What it does |
-| --- | --- |
-| Tray icon | Show Life, Capture, Quit. Closing a window hides it; Quit ends the app |
-| `tauri-plugin-global-shortcut` | Ctrl+Space anywhere shows the always-on-top capture window (`/capture` in the app), which hides itself after Save or Esc |
-| `tauri-plugin-single-instance` | A second launch brings the running app forward |
-
-The Rust side is `src-tauri/src/`: `lib.rs` wires the app, `hotkey.rs`, `tray.rs` and `windows.rs` each own one part, and `error.rs` is the one error type. Clippy refuses `unwrap` and `expect`; CI runs `cargo fmt --check`, `cargo clippy -- -D warnings` and `cargo test`.
-
-To start it with Windows, put a shortcut to `Life.exe` in `shell:startup`.
 
 ## Talks to
 
