@@ -30,6 +30,7 @@ Life holds personal notes, photos and work data for one person, on a PocketBase 
 - The apps only accept an `https://` server, or plain HTTP to `localhost`. Release APKs refuse cleartext at the OS level.
 - Android keeps app data out of cloud backups and device transfers.
 - Releases are signed release builds, never debuggable debug builds, with the keystore only in GitHub secrets.
+- The desktop app installs an update only if its installer is signed by the updater key, whose private half lives only in GitHub secrets and your password manager. It fetches over HTTPS from GitHub and asks before installing.
 - Signing in to a different server or account empties the local copy.
 
 **On the Pi.**
@@ -97,4 +98,4 @@ None of this is in the repo, and none of it was done for you.
   - Run `deploy/backup/test.sh`.
   - Keep one backup somewhere other than the Pi's own disks.
 - [ ] **MFA (optional, I2).** If you want a second factor: set up SMTP in the admin UI (Settings → Mail), then enable OTP and MFA on the `users` collection. Test it in a private window before signing out of the apps.
-- [ ] **GitHub, when you add the remote.** Turn on secret scanning and push protection, Dependabot alerts and the CodeQL workflow's code scanning (Settings → Code security). Add the four `ANDROID_KEYSTORE_*` secrets. Protect `main`.
+- [ ] **GitHub, when you add the remote.** Turn on secret scanning and push protection, Dependabot alerts and the CodeQL workflow's code scanning (Settings → Code security). Add the four `ANDROID_KEYSTORE_*` secrets and the two `TAURI_SIGNING_PRIVATE_KEY*` secrets. Protect `main`.

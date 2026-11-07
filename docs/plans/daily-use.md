@@ -10,7 +10,7 @@ What the app needs before Valdemar deploys it and relies on it: no silent loss o
   - Web: `ng build --define` sets `LIFE_VERSION`; Settings shows it as Version. Local builds say `dev`.
   - Android: `LIFE_VERSION` sets `versionName`, and `versionCode` is `MAJOR*10000 + MINOR*100 + PATCH`, so every release installs over the last. Local builds stay `1` / `dev`.
   - Desktop: the workflow passes the version to `cargo tauri build --config`.
-- **Desktop updates:** Tauri's updater plugin, run from Rust so the main window keeps no IPC. On start and every six hours it reads `latest.json` from the newest GitHub release. If there's a newer version, a native dialog asks "Install and restart" or "Later"; Later leaves a tray item "Install update X". Installing downloads the signed installer, runs it passively and restarts. The local copy lives in WebView2's folder for `dk.ottes.life`, which the installer leaves alone.
+- **Desktop updates:** Tauri's updater plugin, run from Rust so the main window keeps no IPC. On start and every six hours it reads `latest.json` from the newest GitHub release. If there's a newer version, a native dialog asks "Install and restart" or "Later"; Later asks again at the next check. (A tray item for a postponed update was dropped: more code for little gain.) Installing downloads the signed installer, runs it passively and restarts. The local copy lives in WebView2's folder for `dk.ottes.life`, which the installer leaves alone.
 - **Android updates:** no code. Obtainium on the phone watches the GitHub releases and installs each new APK over the old one; same signing key, so the local copy stays.
 - **Server updates:** the deploy README takes a backup by hand before `docker compose up -d --build`, so a rollback across a migration has something to restore.
 
@@ -25,7 +25,7 @@ What the app needs before Valdemar deploys it and relies on it: no silent loss o
 - [x] Sign out asks again when changes are waiting
 - [x] Error log: kept on the device, uncaught errors included, shown in Settings
 - [x] Version from the tag: web, Android, desktop; shown in Settings; release workflow checks the tag
-- [ ] Desktop updater: plugin, check on start and every six hours, dialog and tray item, signed `latest.json` in the release
+- [x] Desktop updater: plugin, check on start and every six hours, dialog, signed `latest.json` in the release
 - [ ] Docs: deploy README (update with a backup first, `age` on the PC, installing the apps), Android README (Obtainium), desktop README (updates), diagrams
 - [ ] `docs/deploy-checklist.md`: every manual step before and after the first deploy
 - [ ] Tests, lint, clippy pass; merge to `main`; tag `v1.0.0`

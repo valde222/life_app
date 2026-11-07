@@ -24,13 +24,13 @@ flowchart LR
   codeql["CodeQL<br/>JS and TS, Java, Rust, Actions"] --> alerts[/"Code scanning alerts"/]
 
   subgraph release["Release"]
-    web["web<br/>version from the tag, Angular build"] --> windows["windows<br/>cargo tauri build"]
+    web["web<br/>version from the tag, Angular build"] --> windows["windows<br/>signed cargo tauri build, update manifest"]
     web --> apk["android<br/>signed, verified APK"]
   end
-  windows --> gh[/"GitHub Release:<br/>NSIS .exe and life-tag.apk"/]
+  windows --> gh[/"GitHub Release:<br/>signed NSIS .exe, latest.json, life-tag.apk"/]
   apk --> gh
 ```
 
 - A push to a tag runs CI too, because CI's `push` has no filter. Release doesn't wait for it.
-- Only a `vMAJOR.MINOR.PATCH` tag starts a release; MINOR and PATCH stay under 100. The version goes into the web build (Settings › Version), the APK's `versionName` and `versionCode`, and the desktop installer. A release fails if the Android signing secrets are missing.
+- Only a `vMAJOR.MINOR.PATCH` tag starts a release; MINOR and PATCH stay under 100. The version goes into the web build (Settings › Version), the APK's `versionName` and `versionCode`, and the desktop installer. A release fails if the Android or updater signing secrets are missing. `latest.json` on the newest release is what installed desktop apps check for updates.
 - Nothing deploys to the Pi. Dependabot opens weekly pull requests for npm, Cargo, Gradle, Docker and Actions.

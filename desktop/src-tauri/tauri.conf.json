@@ -38,5 +38,13 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDg5M0ZEODJBNzhBMkY0NkUKUldSdTlLSjRLdGcvaVNBYWNFaFRoelFIVGJBcUo5bW01bERGNVhabktJOG83ZWdzZy9JY1NFQ3oK",
+      "windows": {
+        "installMode": "passive"
+      }
+    }
   }
 }
