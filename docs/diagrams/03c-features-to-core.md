@@ -37,6 +37,7 @@ flowchart LR
   features_repeating --> core_toasts
   features_search --> core_toasts
   features_settings --> core_calendar
+  features_settings --> core_logging
   features_settings --> core_session
   features_settings --> core_sync
   features_sign_in --> core_server

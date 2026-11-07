@@ -25,6 +25,7 @@ flowchart TD
   core_data --> core_time
   core_platform --> core_logging
   core_provide_core --> core_data
+  core_provide_core --> core_logging
   core_provide_core --> core_sync
   core_reminders --> core_data
   core_reminders --> core_logging

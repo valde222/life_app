@@ -7,6 +7,8 @@ flowchart LR
   main["main.rs<br/>starts the app"] --> lib["lib.rs: wires everything<br/>plugin: single-instance<br/>plugin: log, debug builds only"]
   lib --> hotkey["hotkey.rs: Ctrl+Space<br/>plugin: global-shortcut"]
   lib --> tray["tray.rs<br/>Show Life, Capture, Quit"]
+  lib --> updater["updater.rs: on start and every 6 h<br/>plugins: updater, dialog"]
+  updater -- "HTTPS: latest.json, signed installer" --> gh[/"GitHub Releases"/]
   hotkey --> windows["windows.rs<br/>show, hide, build capture"]
   tray --> windows
   lib --> windows
@@ -15,3 +17,4 @@ flowchart LR
 
 - There are no custom commands: the only IPC is the capture window hiding itself (`capabilities/default.json`). `error.rs` holds `AppError`, used by `lib`, `hotkey` and `tray`.
 - Closing a window hides it; only Tray › Quit ends the app.
+- `updater.rs` runs in release builds only. It reads `latest.json` from the newest GitHub release, asks in a native dialog, and on "Install and restart" checks the installer against the public key in `tauri.conf.json`, runs it passively and restarts. All of it is in Rust, so the main window still has no IPC.

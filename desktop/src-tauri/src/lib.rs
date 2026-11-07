@@ -1,6 +1,7 @@
 mod error;
 mod hotkey;
 mod tray;
+mod updater;
 mod windows;
 
 use tauri::WindowEvent;
@@ -14,6 +15,8 @@ pub fn run() -> Result<(), AppError> {
             windows::show_main(app)
         }))
         .plugin(hotkey::plugin()?)
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(
@@ -23,6 +26,7 @@ pub fn run() -> Result<(), AppError> {
                 )?;
             }
             tray::build(app)?;
+            updater::watch(app.handle());
             Ok(())
         })
         .on_window_event(|window, event| {

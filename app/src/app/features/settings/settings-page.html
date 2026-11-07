@@ -44,5 +44,18 @@
     </a>
   </div>
 
-  <button type="button" class="card sign-out" (click)="signOut()">Sign out</button>
+  <h2 class="eyebrow section">This app</h2>
+  <div class="options">
+    <div class="option row">
+      <span class="label">Version</span><span class="value">{{ version }}</span>
+    </div>
+    <a class="option row" routerLink="/settings/errors">
+      <span class="label">Error log</span><span class="value">{{ errorCount || '' }}</span
+      ><app-icon name="chevron-right" [size]="16" [stroke]="2.2" />
+    </a>
+  </div>
+
+  <button type="button" class="card sign-out" (click)="signOut()">
+    {{ signOutText() }}
+  </button>
 </main>

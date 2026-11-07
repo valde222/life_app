@@ -20,7 +20,7 @@ flowchart LR
   target[("BACKUP_TARGET<br/>age-encrypted zips")]
   subgraph github["GitHub"]
     actions["GitHub Actions"]
-    release["Releases<br/>APK and .exe"]
+    release["Releases<br/>APK, .exe and latest.json"]
   end
   you(["Valdemar"])
 
@@ -31,12 +31,12 @@ flowchart LR
   tunnel -- "HTTP" --> pb
   backup -- "HTTP: make and delete a backup" --> pb
   backup -- "file: encrypted copy" --> target
-  actions -- "builds on v* tags" --> release
-  release -. "installed by hand" .-> apk
-  release -. "installed by hand" .-> exe
+  actions -- "builds on vMAJOR.MINOR.PATCH tags" --> release
+  release -. "HTTPS: Obtainium installs new APKs" .-> apk
+  release -. "HTTPS: the app updates itself" .-> exe
   you -. "SSH: git checkout, compose up, admin UI" .-> pi
 ```
 
 - The build plan (decision 6) calls this online first, but the screens only ever read the local copy; the network is used by sync alone.
 - The tunnel is still an open question in the build plan; the code ships Tailscale Funnel, in its own container so it can be swapped.
-- Neither app updates itself, and nothing in GitHub reaches the Pi.
+- The desktop app checks GitHub for a new version and installs it after asking. On the phone, Obtainium watches the releases and installs each APK. Nothing in GitHub reaches the Pi.

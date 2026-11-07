@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+def lifeVersion = System.getenv("LIFE_VERSION")
+
+static int versionCodeOf(String version) {
+    def (major, minor, patch) = version.tokenize('.').collect { it as int }
+    return major * 10000 + minor * 100 + patch
+}
+
 android {
     namespace = "dk.ottes.life"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +14,8 @@ android {
         applicationId "dk.ottes.life"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode lifeVersion ? versionCodeOf(lifeVersion) : 1
+        versionName lifeVersion ?: "dev"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

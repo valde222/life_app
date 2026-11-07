@@ -26,6 +26,6 @@ flowchart TD
   settings --> calendars["Calendars"]
 ```
 
-- With no groups and no todos, Today first sends you through Setup: groups, then Setup: lists. This week links to Inbox, and Settings also links to Manage lists, Archive and Recently deleted and has Sign out; those arrows are left out to keep the map readable.
+- With no groups and no todos, Today first sends you through Setup: groups, then Setup: lists. This week links to Inbox, and Settings also links to Manage lists, Archive, Recently deleted and Error log and has Sign out; those arrows are left out to keep the map readable.
 - Sheets aren't screens: Capture opens from the + button, and Pick for today from Today.
 - An expired login sends any screen to Sign-in. The bottom nav also shows on This week, a list, Archive and Recently deleted. It's hidden on Settings, Calendars, Manage lists, List settings, Repeating and the detail screens.

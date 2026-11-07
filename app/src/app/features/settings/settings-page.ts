@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CalendarSettings } from '../../core/calendar/calendar-settings';
 import { AllRecords } from '../../core/data/all-records';
+import { loggedErrors } from '../../core/logging/log';
+import { APP_VERSION } from '../../core/platform/version';
 import { Session } from '../../core/session/session';
 import { Sync } from '../../core/sync/sync';
 import { Clock } from '../../core/time/clock';
@@ -16,6 +18,13 @@ export function syncedLabel(last: Date | null, now: Date, online: boolean): stri
   }
   const minutes = Math.floor((now.getTime() - last.getTime()) / 60_000);
   return minutes < 1 ? 'Synced just now' : `Synced ${minutes} min ago`;
+}
+
+export function signOutLabel(waiting: number, confirming: boolean): string {
+  if (!confirming) {
+    return 'Sign out';
+  }
+  return `Sign out and lose ${waiting} ${waiting === 1 ? 'change' : 'changes'}`;
 }
 
 @Component({
@@ -39,12 +48,23 @@ export class SettingsPage {
     syncedLabel(this.sync.lastSynced(), this.clock.now(), this.sync.online()),
   );
   protected readonly deletedCount = computed(() => this.all.deletedOn(this.clock.today()).length);
+  protected readonly version = APP_VERSION;
+  protected readonly errorCount = loggedErrors().length;
 
   protected syncNow() {
     void this.sync.sync();
   }
 
+  protected readonly confirmingSignOut = signal(false);
+  protected readonly signOutText = computed(() =>
+    signOutLabel(this.sync.waiting(), this.confirmingSignOut()),
+  );
+
   protected async signOut() {
+    if (this.sync.waiting() > 0 && !this.confirmingSignOut()) {
+      this.confirmingSignOut.set(true);
+      return;
+    }
     await this.session.signOut();
     location.assign('/sign-in');
   }

@@ -74,6 +74,7 @@ for (const [size, options] of Object.entries(SIZES)) {
         '/archive/deleted',
         '/settings',
         '/settings/calendars',
+        '/settings/errors',
       ];
       for (const route of routes) {
         await page.goto(route);

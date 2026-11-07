@@ -10,8 +10,10 @@ Production runs on the Raspberry Pi (arm64) from `docker-compose.yml`: PocketBas
 
 ## First deploy
 
-1. Clone the repo on the Pi, `cp .env.example .env`, `chmod 600 .env`, fill it in. Passwords must be at least 16 characters (`openssl rand -base64 24`); PocketBase won't start otherwise.
-2. On your PC, not the Pi, make the backup key: `age-keygen -o life-backup.key`. Put the `age1…` public key in `BACKUP_AGE_RECIPIENT`. Keep `life-backup.key` in your password manager; without it the backups can't be read.
+The full list of manual steps, GitHub and phone included, is [`docs/deploy-checklist.md`](../docs/deploy-checklist.md). The Pi part:
+
+1. Clone the repo on the Pi and check out the release tag (`git checkout v1.0.0`). `cp .env.example .env`, `chmod 600 .env`, fill it in. Passwords must be at least 16 characters (`openssl rand -base64 24`); PocketBase won't start otherwise.
+2. On your PC, not the Pi, make the backup key. In WSL: `sudo apt install age`, then `age-keygen -o life-backup.key`. Put the `age1…` public key in `BACKUP_AGE_RECIPIENT`. Keep `life-backup.key` in your password manager; without it the backups can't be read.
 3. Give the data folders to the containers' user:
    ```sh
    set -a; . ./.env; set +a
@@ -21,7 +23,7 @@ Production runs on the Raspberry Pi (arm64) from `docker-compose.yml`: PocketBas
 4. `docker compose up -d --build`
 5. For public HTTPS: create a Tailscale auth key, put it in `TS_AUTHKEY`, enable Funnel for the tailnet, then `docker compose --profile tunnel up -d`.
 6. Check from outside: `https://life.<tailnet>.ts.net/api/health` must answer `200` and `https://life.<tailnet>.ts.net/_/` must not show the dashboard.
-7. In each app, set the server address on the sign-in screen to the Funnel address.
+7. Install the apps (below) and set the server address on each sign-in screen to the Funnel address.
 
 What else to do on the Pi yourself is in [`docs/security.md`](../docs/security.md).
 
@@ -34,9 +36,26 @@ ssh -L 8090:127.0.0.1:8090 <pi>
 # then http://localhost:8090/_/
 ```
 
-## Update and roll back
+## Install the apps
 
-`git checkout <tag> && docker compose up -d --build`. Migrations run on start. Before rolling back across a schema change, restore the backup taken before the update.
+- **Phone:** install [Obtainium](https://github.com/ImranR98/Obtainium) and add the repo's GitHub URL as an app. It installs the APK from the newest release and offers each new one; Android keeps the app's data because every release is signed with the same key. See the [Android README](../app/android/README.md).
+- **Desktop:** run `Life_<version>_x64-setup.exe` from the newest release once. After that the app updates itself, asking first. See the [desktop README](../desktop/README.md).
+
+## Release and update
+
+1. On your PC: merge to `main`, then `git tag vX.Y.Z && git push origin main vX.Y.Z`. The release workflow builds the APK and the installer (about 15 minutes); check it's green under Actions.
+2. On the Pi, if the server changed (anything in `pocketbase/`, `deploy/` or `docker-compose.yml`):
+   ```sh
+   docker compose exec backup sh /backup.sh
+   git fetch --tags && git checkout vX.Y.Z
+   docker compose up -d --build
+   ```
+   The first line takes a backup now, so a rollback has something from just before the update. Migrations run on start.
+3. The apps: the desktop asks within six hours or at its next start; Obtainium on the phone shows the update.
+
+When a release adds a migration, update the Pi before installing the apps: the new apps may use fields or collections the old server doesn't have.
+
+To roll back the server: `git checkout <previous tag> && docker compose up -d --build`. If the release you're leaving ran a migration, restore the backup taken in step 2 first (below). The apps don't roll back: Android won't install a lower version over a higher one without uninstalling, which throws away unsynced changes. Revert the change and release it as the next patch version instead.
 
 ## Restore a backup
 

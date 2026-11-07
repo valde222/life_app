@@ -32,4 +32,4 @@ sequenceDiagram
   end
 ```
 
-- Sign-out is different: Settings › Sign out stops sync, clears the token and deletes the whole local database, then reloads at `/sign-in`.
+- Sign-out is different: Settings › Sign out stops sync, clears the token and deletes the whole local database, then reloads at `/sign-in`. With changes still waiting, the first press only turns the button into "Sign out and lose N changes"; the second signs out.
