@@ -103,4 +103,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Ready for daily use (`release/daily-use`, `v1.0.0`)
 
-- [ ] Guarded sign-out, error log, versions from the tag, desktop updater, update docs and the deploy checklist (`docs/plans/daily-use.md`)
+- [x] Guarded sign-out, error log, versions from the tag, desktop updater, update docs and the deploy checklist (`docs/plans/daily-use.md`)
