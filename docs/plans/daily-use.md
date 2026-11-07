@@ -22,7 +22,7 @@ What the app needs before Valdemar deploys it and relies on it: no silent loss o
 
 ## Steps
 
-- [ ] Sign out asks again when changes are waiting
+- [x] Sign out asks again when changes are waiting
 - [ ] Error log: kept on the device, uncaught errors included, shown in Settings
 - [ ] Version from the tag: web, Android, desktop; shown in Settings; release workflow checks the tag
 - [ ] Desktop updater: plugin, check on start and every six hours, dialog and tray item, signed `latest.json` in the release
