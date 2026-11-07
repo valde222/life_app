@@ -100,3 +100,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Diagrams and README review (`docs/diagrams`, pull request)
 
 - [x] Diagrams of how the app works, from the code; every README checked against the code; render check in CI (`docs/plans/diagrams.md`)
+
+## Ready for daily use (`release/daily-use`, `v1.0.0`)
+
+- [ ] Guarded sign-out, error log, versions from the tag, desktop updater, update docs and the deploy checklist (`docs/plans/daily-use.md`)
