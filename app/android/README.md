@@ -23,7 +23,11 @@ Tests: `cmd.exe /c "gradlew.bat app:testDebugUnitTest"`, after a `cap sync`.
 
 ## Run in production
 
-Pushing a `v*` tag builds a signed release APK and attaches it to a GitHub release ([CI/CD](../../docs/diagrams/10-ci-cd.md)); install it on the phone by hand. Set the server address to the Funnel address on the sign-in screen.
+Pushing a `vMAJOR.MINOR.PATCH` tag builds a signed release APK, `life-vX.Y.Z.apk`, and attaches it to a GitHub release ([CI/CD](../../docs/diagrams/10-ci-cd.md)). Set the server address to the Funnel address on the sign-in screen.
+
+**Updates.** Install [Obtainium](https://github.com/ImranR98/Obtainium) on the phone and add the repo's GitHub URL. It checks the releases in the background, notifies you of a new one and installs it over the old app with one tap. Android keeps the app's data, including unsynced changes, as long as every APK is signed with the same key. So:
+- Never install a debug build (`assembleDebug`, above) on the phone you use: it's signed with a different key, and going back to a release build means uninstalling, which deletes the local copy.
+- Releases only go up. Android refuses a lower `versionCode` without an uninstall.
 
 To set up signing once, on your PC:
 
