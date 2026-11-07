@@ -9,7 +9,7 @@ flowchart LR
   pr --> codeql
   main(["Push to main"]) --> codeql
   week(["Mondays 05:17 UTC"]) --> codeql
-  tag(["Tag v*"]) --> release
+  tag(["Tag vMAJOR.MINOR.PATCH"]) --> release
 
   subgraph ci["CI: pass or fail"]
     test["test<br/>unit, build, PocketBase attack tests,<br/>backup round trip, end-to-end"]
@@ -24,7 +24,7 @@ flowchart LR
   codeql["CodeQL<br/>JS and TS, Java, Rust, Actions"] --> alerts[/"Code scanning alerts"/]
 
   subgraph release["Release"]
-    web["web<br/>Angular build"] --> windows["windows<br/>cargo tauri build"]
+    web["web<br/>version from the tag, Angular build"] --> windows["windows<br/>cargo tauri build"]
     web --> apk["android<br/>signed, verified APK"]
   end
   windows --> gh[/"GitHub Release:<br/>NSIS .exe and life-tag.apk"/]
@@ -32,5 +32,5 @@ flowchart LR
 ```
 
 - A push to a tag runs CI too, because CI's `push` has no filter. Release doesn't wait for it.
-- The build plan says a release follows every phase tag; the code does it for any `v*` tag. A release fails if the Android signing secrets are missing.
+- Only a `vMAJOR.MINOR.PATCH` tag starts a release; MINOR and PATCH stay under 100. The version goes into the web build (Settings › Version), the APK's `versionName` and `versionCode`, and the desktop installer. A release fails if the Android signing secrets are missing.
 - Nothing deploys to the Pi. Dependabot opens weekly pull requests for npm, Cargo, Gradle, Docker and Actions.

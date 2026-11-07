@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { CalendarSettings } from '../../core/calendar/calendar-settings';
 import { AllRecords } from '../../core/data/all-records';
 import { loggedErrors } from '../../core/logging/log';
+import { APP_VERSION } from '../../core/platform/version';
 import { Session } from '../../core/session/session';
 import { Sync } from '../../core/sync/sync';
 import { Clock } from '../../core/time/clock';
@@ -47,6 +48,7 @@ export class SettingsPage {
     syncedLabel(this.sync.lastSynced(), this.clock.now(), this.sync.online()),
   );
   protected readonly deletedCount = computed(() => this.all.deletedOn(this.clock.today()).length);
+  protected readonly version = APP_VERSION;
   protected readonly errorCount = loggedErrors().length;
 
   protected syncNow() {

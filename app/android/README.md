@@ -39,6 +39,7 @@ Then add `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS` (`life`) and `ANDROID_
 | Setting | Where | Use |
 | --- | --- | --- |
 | `LIFE_DEV_SERVER=1` | At `cap sync`, read by `../capacitor.config.ts` | Lets the app reach a plain-HTTP dev PocketBase |
+| `LIFE_VERSION` | Environment, read by `app/build.gradle`; the release workflow sets it from the tag | `versionName`, and `versionCode` as `MAJOR*10000 + MINOR*100 + PATCH`, so each release installs over the last. Without it: `dev` and `1` |
 | `LIFE_KEYSTORE_FILE`, `LIFE_KEYSTORE_PASSWORD`, `LIFE_KEY_ALIAS`, `LIFE_KEY_PASSWORD` | Environment, read by `app/build.gradle`; the release workflow sets them from the secrets | Sign a release build. Without them it comes out unsigned |
 | `sdk.dir` | `local.properties`, not committed: `sdk.dir=C\:\\Users\\<you>\\AppData\\Local\\Android\\Sdk` | Points Gradle at the SDK |
 | Cleartext HTTP | `app/src/*/res/xml/network_security_config.xml` | Never in release builds. Debug builds allow it only to `localhost`, `127.0.0.1` and the emulator's `10.0.2.2` |
