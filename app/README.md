@@ -37,3 +37,7 @@ In production the app runs inside the shells, which package the web files:
 ## Talks to
 
 PocketBase over HTTPS: REST for reads and writes, server-sent events for live updates. On Android it runs inside [Capacitor](android/README.md), on desktop inside [Tauri](../desktop/README.md).
+
+## Debugging
+
+`logError` (`src/app/core/logging/log.ts`) writes to the console and keeps the last 100 errors on the device, uncaught ones included. On the phone or desktop, read them in Settings › Error log and Copy them out. A change the server refused is logged there with PocketBase's response, which names the field.

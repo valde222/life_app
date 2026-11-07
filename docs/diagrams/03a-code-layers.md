@@ -10,13 +10,13 @@ flowchart TD
   core["core"]
   domain["domain"]
   core -- 31 --> domain
-  features -- 90 --> core
+  features -- 92 --> core
   features -- 64 --> domain
-  features -- 103 --> shared
+  features -- 104 --> shared
   shared -- 14 --> core
   shared -- 17 --> domain
   shell -- 13 --> core
-  shell -- 27 --> features
+  shell -- 28 --> features
   shell -- 10 --> shared
 ```
 

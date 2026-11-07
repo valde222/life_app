@@ -84,6 +84,11 @@ export const routes: Routes = [
           import('../features/settings/calendars-page').then((m) => m.CalendarsPage),
       },
       {
+        path: 'settings/errors',
+        loadComponent: () =>
+          import('../features/settings/error-log-page').then((m) => m.ErrorLogPage),
+      },
+      {
         path: 'note/:id',
         loadComponent: () => import('../features/notes/note-editor').then((m) => m.NoteEditor),
       },

@@ -23,7 +23,7 @@ What the app needs before Valdemar deploys it and relies on it: no silent loss o
 ## Steps
 
 - [x] Sign out asks again when changes are waiting
-- [ ] Error log: kept on the device, uncaught errors included, shown in Settings
+- [x] Error log: kept on the device, uncaught errors included, shown in Settings
 - [ ] Version from the tag: web, Android, desktop; shown in Settings; release workflow checks the tag
 - [ ] Desktop updater: plugin, check on start and every six hours, dialog and tray item, signed `latest.json` in the release
 - [ ] Docs: deploy README (update with a backup first, `age` on the PC, installing the apps), Android README (Obtainium), desktop README (updates), diagrams
