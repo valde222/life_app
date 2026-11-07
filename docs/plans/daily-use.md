@@ -27,5 +27,5 @@ What the app needs before Valdemar deploys it and relies on it: no silent loss o
 - [x] Version from the tag: web, Android, desktop; shown in Settings; release workflow checks the tag
 - [x] Desktop updater: plugin, check on start and every six hours, dialog, signed `latest.json` in the release
 - [x] Docs: deploy README (update with a backup first, `age` on the PC, installing the apps), Android README (Obtainium), desktop README (updates), diagrams
-- [ ] `docs/deploy-checklist.md`: every manual step before and after the first deploy
+- [x] `docs/deploy-checklist.md`: every manual step before and after the first deploy
 - [ ] Tests, lint, clippy pass; merge to `main`; tag `v1.0.0`

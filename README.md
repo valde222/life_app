@@ -26,7 +26,7 @@ The seed data matches the design canvas, dated around the day it first ran. `./s
 
 ## Run in production
 
-See the [deployment README](deploy/README.md).
+Start with the [deploy checklist](docs/deploy-checklist.md): every manual step, from GitHub and the Pi to both apps. The [deployment README](deploy/README.md) has the server details and how releases and updates work.
 
 ## Config
 
