@@ -73,7 +73,7 @@ jobs:
         env:
           LIFE_VERSION: ${{ needs.web.outputs.version }}
         run: |
-          installer=$(ls *-setup.exe)
+          installer=$(basename ./*-setup.exe)
           jq -n --arg version "$LIFE_VERSION" --arg signature "$(cat "$installer.sig")" \
             --arg url "https://github.com/$GITHUB_REPOSITORY/releases/download/$GITHUB_REF_NAME/$installer" \
             '{version: $version, pub_date: (now | todate), platforms: {"windows-x86_64": {signature: $signature, url: $url}}}' > latest.json
