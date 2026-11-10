@@ -22,6 +22,6 @@ The phone edits a todo offline yesterday; the desktop edits it today. When the p
 
 - [x] Plan
 - [x] Server: the hook saves every update; the API test says so
-- [ ] App: `applyRemote` keeps a local copy only while it has an unsent change; unit tests
+- [x] App: `applyRemote` keeps a local copy only while it has an unsent change; unit tests
 - [ ] Docs: conflict diagram, data model diagram, PocketBase README, build plan, bug sweep report, deploy checklist (v1.1.1, update test on 1.1.2)
 - [ ] Tests and lint pass; merge to `main`; tag `v1.1.1`

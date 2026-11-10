@@ -93,9 +93,9 @@ describe('PocketBaseSync', () => {
     expect(sync.lastSynced()).toBeInstanceOf(Date);
   });
 
-  it('sends queued changes and keeps the newer local edit over an older remote one', async () => {
+  it('sends queued changes, and an unsent local edit wins over what the pull brings', async () => {
     const saved = await TestBed.inject(Repository).save('todos', { title: 'local' });
-    server.remote.set('todos', [{ ...saved, title: 'older remote', changed_at: 0 }]);
+    server.remote.set('todos', [{ ...saved, title: 'remote', changed_at: Date.now() + 1000 }]);
 
     await sync.sync();
 

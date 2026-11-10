@@ -7,13 +7,6 @@ const SERVER_OWNED_FIELDS: Partial<Record<CollectionName, string[]>> = {
   notes: ['photos', 'files', 'file_names'],
 };
 
-export function isAtLeastAsNew(
-  remote: { changed_at: number },
-  local: { changed_at: number } | undefined,
-) {
-  return !local || remote.changed_at >= local.changed_at;
-}
-
 export function withoutServerFields<T extends object>(record: T): T {
   return omitFields(record, SERVER_ONLY_FIELDS);
 }
@@ -24,16 +17,21 @@ export async function applyRemote<C extends CollectionName>(
   records: Collections[C][],
 ): Promise<void> {
   const table = store.records(collection);
-  await store.transaction('rw', table, async () => {
+  await store.transaction('rw', table, store.outbox, async () => {
     for (const remote of records) {
       const local = await table.get(remote.id);
-      if (isAtLeastAsNew(remote, local)) {
-        await table.put(withoutServerFields(remote));
-      } else if (local) {
+      const ownVersion = local?.changed_at === remote.changed_at;
+      if (local && !ownVersion && (await isQueued(store, collection, local.id))) {
         await table.put({ ...local, ...serverOwned(collection, remote) });
+      } else {
+        await table.put(withoutServerFields(remote));
       }
     }
   });
+}
+
+async function isQueued(store: LocalStore, collection: CollectionName, id: string) {
+  return (await store.outbox.where('key').equals(`${collection}/${id}`).count()) > 0;
 }
 
 function serverOwned<C extends CollectionName>(
