@@ -111,4 +111,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Sync conflict rule (`fix/sync-conflict-rule`, `v1.1.1`)
 
-- [ ] The change that reaches the server last wins (Offline and sync 4; `docs/plans/sync-conflict-rule.md`)
+- [x] The change that reaches the server last wins (Offline and sync 4; `docs/plans/sync-conflict-rule.md`)
