@@ -108,3 +108,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Files on notes (`feat/note-files`, `v1.1.0`)
 
 - [x] A note holds files of any type up to 50 MB; tapping one opens it in another app (R31; T17; `docs/plans/note-files.md`)
+
+## Sync conflict rule (`fix/sync-conflict-rule`, `v1.1.1`)
+
+- [x] The change that reaches the server last wins (Offline and sync 4; `docs/plans/sync-conflict-rule.md`)

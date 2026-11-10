@@ -170,7 +170,7 @@ The app works against PocketBase when online and keeps working on a local copy w
 1. **Local copy.** Each device keeps a copy of all records in local storage: SQLite on Android (Capacitor community SQLite), IndexedDB or SQLite on desktop. Screens read from the local copy, never straight from the network.
 2. **Writes.** A change is written to the local copy at once and added to an outbox. The outbox sends changes to PocketBase in order whenever there's a connection.
 3. **Reads.** On start and on reconnect, the app pulls every record with `updated` later than its last pull. While online, PocketBase's live updates keep the copy current.
-4. **Conflicts.** If the same record changed on two devices, the change with the later `updated` time wins.
+4. **Conflicts.** If the same record changed on two devices, the change with the later `updated` time wins: the one that reaches the server last, whatever the devices' clocks say. A device keeps its own copy only while its change is still waiting to be sent.
 5. **Deletes.** Records are soft-deleted (`deleted_at`) so other devices learn about them; Recently deleted purges them after 30 days.
 6. **Photos.** A photo taken offline is kept locally and uploaded with its note when the outbox runs. Thumbnails come from PocketBase.
 7. **Status.** When offline, Today shows "Offline, N waiting" (the Offline screen). Nothing else changes.
