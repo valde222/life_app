@@ -58,6 +58,7 @@ export interface Note extends SyncedRecord {
   list: string;
   inbox: boolean;
   photos: string[];
+  files: string[];
   todos: string[];
   links: string[];
   archived_at: string;
@@ -95,6 +96,8 @@ export interface Collections {
 }
 
 export type CollectionName = keyof Collections;
+
+export type NoteFileField = 'photos' | 'files';
 
 export type Draft<C extends CollectionName> = Partial<Collections[C]>;
 
@@ -140,6 +143,7 @@ export const EMPTY_RECORDS: { [C in CollectionName]: Collections[C] } = {
     list: '',
     inbox: false,
     photos: [],
+    files: [],
     todos: [],
     links: [],
     archived_at: '',

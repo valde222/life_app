@@ -7,7 +7,7 @@ import { COLLECTIONS_IN_DEPENDENCY_ORDER, CollectionName } from '../../domain/mo
 import { Server, toSendError } from '../server/server';
 import { applyRemote } from './merge';
 import { drainOutbox, SendError } from './outbox';
-import { drainPhotos } from './photo-uploads';
+import { drainFileUploads } from './file-uploads';
 import { logError } from '../logging/log';
 import { Sync } from './sync';
 
@@ -78,7 +78,7 @@ export class PocketBaseSync implements Sync {
     await drainOutbox(this.store, this.server, (collection, saved) =>
       applyRemote(this.store, collection, [saved]),
     );
-    await drainPhotos(this.store, this.server);
+    await drainFileUploads(this.store, this.server);
   }
 
   private run(work: () => Promise<void>): Promise<void> {

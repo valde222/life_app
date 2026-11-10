@@ -9,8 +9,8 @@ flowchart TD
   shared["shared"]
   core["core"]
   domain["domain"]
-  core -- 31 --> domain
-  features -- 92 --> core
+  core -- 34 --> domain
+  features -- 93 --> core
   features -- 64 --> domain
   features -- 104 --> shared
   shared -- 14 --> core

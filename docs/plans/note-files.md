@@ -23,7 +23,7 @@ Sharing a file from another Android app into Life (R3 covers text, links and pho
 ## Steps
 
 - [x] PocketBase: `files` field on notes (any type, 50 MB, 99 per note, protected); access tests cover it; a 45 MB upload works through the body limit
-- [ ] App data: `Note.files`, the upload queue takes a field (`photos` or `files`), file names without the suffix, the 50 MB check
+- [x] App data: `Note.files`, the upload queue takes a field (`photos` or `files`), file names without the suffix, the 50 MB check
 - [ ] Note editor: + File, the Files section, remove with confirm; T17 end-to-end in the browser
 - [ ] Android `FileOpener` plugin, with unit tests for its URL and name checks
 - [ ] Desktop `open_file` command, its capability, with tests for its URL and name checks

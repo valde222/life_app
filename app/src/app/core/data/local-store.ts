@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
-import { CollectionName, Collections } from '../../domain/models';
+import { CollectionName, Collections, NoteFileField } from '../../domain/models';
 
 export interface OutboxEntry {
   seq: number;
@@ -13,18 +13,22 @@ export interface OutboxEntry {
 
 export type NewOutboxEntry = Omit<OutboxEntry, 'seq'>;
 
-export interface PendingPhoto {
+export interface PendingUpload {
   id: string;
   note: string;
+  field?: NoteFileField;
   file: Blob;
   name: string;
 }
 
-export interface PhotoRemoval {
+export interface PendingRemoval {
   id: string;
   note: string;
+  field?: NoteFileField;
   filename: string;
 }
+
+export const fieldOf = (entry: { field?: NoteFileField }): NoteFileField => entry.field ?? 'photos';
 
 const OWNER_KEY = 'owner';
 
@@ -37,8 +41,9 @@ export interface MetaEntry {
 export class LocalStore extends Dexie {
   outbox!: Table<OutboxEntry, number, NewOutboxEntry>;
   meta!: Table<MetaEntry, string>;
-  pendingPhotos!: Table<PendingPhoto, string>;
-  photoRemovals!: Table<PhotoRemoval, string>;
+  // Named from when only photos were queued; renaming them would drop queues not yet sent.
+  pendingPhotos!: Table<PendingUpload, string>;
+  photoRemovals!: Table<PendingRemoval, string>;
 
   constructor() {
     super('life');

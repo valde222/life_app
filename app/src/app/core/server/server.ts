@@ -3,7 +3,7 @@ import PocketBase, { ClientResponseError, getTokenPayload } from 'pocketbase';
 import { CollectionName, Collections } from '../../domain/models';
 import { RemoteWriter, SendError } from '../sync/outbox';
 import { Page, RemoteChange, RemoteReader } from '../sync/remote-reader';
-import { PhotoWriter } from '../sync/photo-uploads';
+import { FileRemoval, FileUpload, FileWriter } from '../sync/file-uploads';
 import { Note } from '../../domain/models';
 import { omitFields } from '../../domain/records';
 
@@ -20,7 +20,7 @@ export class SignInError extends Error {
   }
 }
 
-export interface PhotoAccess {
+export interface FileAccess {
   token: string;
   thumb?: string;
 }
@@ -35,11 +35,12 @@ const READ_ONLY_FIELDS = [
   'collectionName',
   'expand',
   'photos',
+  'files',
   'owner',
 ];
 
 @Injectable({ providedIn: 'root' })
-export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
+export class Server implements RemoteReader, RemoteWriter, FileWriter {
   readonly url = signal(localStorage.getItem(SERVER_URL_KEY) ?? DEFAULT_SERVER_URL);
   private pb = new PocketBase(this.url());
   readonly signedIn = signal(this.pb.authStore.isValid);
@@ -155,15 +156,15 @@ export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
     }
   }
 
-  async addPhoto(note: string, file: Blob, name: string): Promise<Note> {
+  async addFile({ note, field, file, name }: FileUpload): Promise<Note> {
     const form = new FormData();
-    form.append('photos+', file, name);
+    form.append(`${field}+`, file, name);
     return this.send(() => this.pb.collection('notes').update<Note>(note, form));
   }
 
-  async removePhoto(note: string, filename: string): Promise<Note> {
+  async removeFile({ note, field, filename }: FileRemoval): Promise<Note> {
     return this.send(() =>
-      this.pb.collection('notes').update<Note>(note, { 'photos-': [filename] }),
+      this.pb.collection('notes').update<Note>(note, { [`${field}-`]: [filename] }),
     );
   }
 
@@ -171,7 +172,7 @@ export class Server implements RemoteReader, RemoteWriter, PhotoWriter {
     return this.pb.files.getToken({ requestKey: null });
   }
 
-  photoUrl(note: Note, filename: string, access: PhotoAccess): string {
+  fileUrl(note: Note, filename: string, access: FileAccess): string {
     return this.pb.files.getURL({ ...note, collectionName: 'notes' }, filename, {
       token: access.token,
       ...(access.thumb ? { thumb: access.thumb } : {}),
