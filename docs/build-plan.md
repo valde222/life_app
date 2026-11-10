@@ -81,6 +81,7 @@ Each app keeps its own copy and talks to PocketBase over HTTPS; how the Pi gets 
 | 19 | `tokens.json` also names the values the screens use between the original steps: spacing half-steps (`space-half` 2px to `space-4-5` 18px), `radius-hairline`, font sizes (`text-10` to `text-44`), three translucent fills on the accent and two small shadows. Styles use only tokens for colour, spacing, radius and font size, checked by `npm run lint` | The screens' markup uses 2, 6, 10, 14 and 18px and a handful of literal colours; naming them keeps every screen pixel-identical while making the token file the only source of values | Rounding the screens to the old steps (visible changes); leaving literals in the styles |
 | 20 | Releases are tagged `vMAJOR.MINOR.PATCH` from `v1.0.0`; the tag sets the version of the web build, the APK (`versionCode` `MAJOR*10000 + MINOR*100 + PATCH`) and the installer. Only such tags start a release | Each release installs over the last, Settings shows what's installed, and the desktop updater needs a semver | Phase-name tags (`v0.N-name`), which say nothing to Android or the updater |
 | 21 | The desktop app updates itself with Tauri's updater, run from Rust: a signed `latest.json` on the newest GitHub release, a native dialog, a passive install. The phone updates through Obtainium watching the same releases | Updating without hunting for files; the main window keeps no IPC; Android won't install silently anyway, and Obtainium already checks, downloads and prompts | An in-app update screen (IPC in the main window); an in-app APK downloader; installing by hand from GitHub |
+| 22 | A note's files open in another app through a small native piece in each shell: a `FileOpener` Capacitor plugin on Android, an `open_file` Rust command on the desktop. Both download the file themselves, refuse anything but HTTPS (or HTTP from localhost), keep it in their own temp folder and cap it at 50 MB; the desktop marks it as downloaded from the internet. The main window gets IPC for that one command. Original names live in a `file_names` map that a PocketBase hook fills in | Any file type should open where it's usually read; PocketBase's stored names lose capitals, spaces and Danish letters | Saving a copy to Downloads and opening it by hand; viewing files inside the app (only images and PDFs would work); a third-party file-opener plugin |
 
 ## Data model
 
@@ -97,7 +98,7 @@ Arrows point from one to many. A todo or note with no list sits in the Inbox.
 | `todos` | title, list → lists (empty = Inbox), inbox (bool), date, time, time\_end, is\_event (bool), repeat\_mode (none, rough, schedule), repeat\_every\_days, repeat\_every\_weeks, repeat\_weekdays, reminder, done\_at, archived\_at, deleted\_at | Event = `is_event`. Repeating item = `repeat_mode` not none |
 | `steps` | todo → todos, text, done (bool), order | Only on todos that aren't events |
 | `completions` | todo → todos, done\_on (date) | History of a repeating item: Done on, days since |
-| `notes` | title, body (markdown), list → lists (empty = none), inbox (bool), photos (file, many, thumbnails), todos → todos (many), archived\_at, deleted\_at | A quick note is a note with `inbox` on. Links to todos work both ways through the `todos` field and its back-relation |
+| `notes` | title, body (markdown), list → lists (empty = none), inbox (bool), photos (file, many, thumbnails), files (file, many, any type, 50 MB each), file\_names (json: stored name → original name, filled in by the server), todos → todos (many), archived\_at, deleted\_at | A quick note is a note with `inbox` on. Links to todos work both ways through the `todos` field and its back-relation |
 | `calendar_events` | calendar, external\_id, title, start, end, all\_day, synced\_at | Written only by the phone, from its calendars. Read-only in the app |
 | `settings` | one record: enabled calendars | Settings → Calendars |
 
@@ -149,6 +150,7 @@ Each rule is written so a test can check it. Numbers are stable: tests and pull 
 2. **R23** "+ New list" inside a group creates the list in that group without asking.
 3. **R24** A note can hold photos from the camera or files. Photos open full size.
 4. **R25** Linking a todo and a note shows the link on both.
+5. **R31** A note can hold files of any type, up to 50 MB each, shown by their original names. Tapping one opens it in another app: on the phone the app for that type, on the desktop the default Windows app. Removing one takes a second press.
 
 ### Archive, done and delete
 
@@ -210,6 +212,7 @@ The click-through walkthroughs from the planning doc, rewritten so they can be a
 | T14 | The Personal calendar is enabled in Settings | The phone syncs | Its events show on the phone and desktop with an Event label and can't be edited | R13, R14 | 4 |
 | T15 | A note was deleted 3 days ago | Open Archive → Recently deleted | It shows "27 days left"; Restore brings it back; Empty now removes everything | R27 | 5 |
 | T16 | Desktop app running in the background | Press Ctrl+Space anywhere | The capture window opens; Save puts the item in the Inbox | R1, R2 | 6 |
+| T17 | A note "Flat" | + File → pick "Lejekontrakt Æblegrød.pdf" and "notes.txt"; open notes.txt; remove it | Both show by their original names and reach the other device; notes.txt opens with its contents; after Remove › Remove it is gone on both devices and the server | R31 | v1.1 |
 
 ## Open questions
 

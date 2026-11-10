@@ -17,7 +17,7 @@ sequenceDiagram
   else The earlier change reaches the server first
     A->>PB: PATCH, changed_at 100
     PB-->>B: Live update or pull: record at 100
-    B->>B: Older than local 200, so kept (photos still taken from the server)
+    B->>B: Older than local 200, so kept (photos, files and file names still taken from the server)
     B->>PB: PATCH, changed_at 200
     PB-->>A: Live update: record at 200 replaces 100
   else An older PATCH arrives after the pull

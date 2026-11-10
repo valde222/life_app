@@ -14,7 +14,7 @@ flowchart LR
   end
   subgraph pi["Raspberry Pi, Docker Compose"]
     tunnel["tunnel<br/>Tailscale Funnel"]
-    pb["pocketbase :8090<br/>SQLite and photos"]
+    pb["pocketbase :8090<br/>SQLite, photos and files"]
     backup["backup<br/>daily after 03:00"]
   end
   target[("BACKUP_TARGET<br/>age-encrypted zips")]
