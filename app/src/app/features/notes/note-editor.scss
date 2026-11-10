@@ -243,6 +243,47 @@
   color: var(--ink-2);
 }
 
+.file {
+  min-height: 56px;
+  padding-right: var(--space-2);
+  display: flex;
+  align-items: center;
+}
+
+.file-open {
+  flex: 1;
+  min-width: 0;
+  min-height: 56px;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-4);
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: left;
+  color: var(--ink);
+
+  app-icon {
+    color: var(--ink-2);
+  }
+}
+
+.file-name {
+  font-size: var(--text-16);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.file-remove {
+  height: 36px;
+  padding: 0 var(--space-3);
+  border: 0;
+  background: transparent;
+  font-size: var(--text-15);
+  font-weight: 600;
+  color: var(--overdue-icon);
+}
+
 .delete {
   align-self: flex-end;
   margin-top: var(--space-6);

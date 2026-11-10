@@ -33,6 +33,7 @@ flowchart LR
   features_lists --> core_platform
   features_lists --> core_toasts
   features_notes --> core_logging
+  features_notes --> core_platform
   features_notes --> core_toasts
   features_repeating --> core_toasts
   features_search --> core_toasts

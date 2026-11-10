@@ -6,6 +6,7 @@
       >
       <span class="bar-actions">
         <button type="button" class="bar-action" (click)="photos.add()">+ Photo</button>
+        <button type="button" class="bar-action" (click)="filePicker.click()">+ File</button>
         <button type="button" class="bar-action" (click)="addLink()">+ Link…</button>
       </span>
     </header>
@@ -18,6 +19,14 @@
   }
 
   <main class="body">
+    <input
+      #filePicker
+      class="visually-hidden"
+      type="file"
+      multiple
+      aria-label="Choose files"
+      (change)="files.picked($event)"
+    />
     <input
       class="card title"
       aria-label="Title"
@@ -75,6 +84,9 @@
           <button type="button" class="tool" (click)="photos.add()">
             <app-icon name="image" [size]="14" [stroke]="2.2" />Photo
           </button>
+          <button type="button" class="tool" (click)="filePicker.click()">
+            <app-icon name="file" [size]="14" [stroke]="2.2" />File
+          </button>
         </div>
         <textarea
           #bodyField
@@ -115,6 +127,43 @@
           >
             <img [src]="photo.thumb" alt="" />
           </button>
+        }
+      </div>
+    }
+
+    @if (files.shown().length) {
+      <h2 class="eyebrow section">Files</h2>
+      <div class="stack">
+        @for (file of files.shown(); track file.key) {
+          <div class="card file">
+            <button
+              type="button"
+              class="file-open"
+              [disabled]="!file.filename"
+              [attr.aria-label]="'Open ' + file.name"
+              (click)="files.open(file)"
+            >
+              <app-icon name="file" [size]="18" [stroke]="2" />
+              <span class="from-text">
+                <span class="file-name">{{ file.name }}</span>
+                @if (file.pendingId) {
+                  <span class="from-kind">Waiting to upload</span>
+                }
+              </span>
+            </button>
+            @if (files.removing() === file.key) {
+              <button type="button" class="file-remove" (click)="files.remove(file)">Remove</button>
+            } @else {
+              <button
+                type="button"
+                class="unlink"
+                [attr.aria-label]="'Remove ' + file.name"
+                (click)="files.remove(file)"
+              >
+                <app-icon name="close" [size]="12" [stroke]="2.2" />
+              </button>
+            }
+          </div>
         }
       </div>
     }

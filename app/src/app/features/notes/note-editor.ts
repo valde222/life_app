@@ -25,6 +25,7 @@ import { ListLabel } from '../../shared/ui/list-label';
 import { listColourStyle } from '../../shared/ui/list-colours';
 import { renderMarkdown } from '../../shared/markdown/markdown';
 import { NotePhotos } from './note-photos';
+import { NoteFileList } from './note-file-list';
 import { Toasts } from '../../core/toasts/toasts';
 import { Pickers } from '../../shared/pickers/pickers';
 import { backLabel } from '../../domain/back-labels';
@@ -92,6 +93,7 @@ export class NoteEditor {
     this.sanitizer.bypassSecurityTrustHtml(renderMarkdown(this.body())),
   );
   protected readonly photos = new NotePhotos(this.note, this.noteId);
+  protected readonly files = new NoteFileList(this.note, this.noteId);
 
   protected readonly connections = computed(() =>
     noteConnections(this.note(), this.noteId(), {
@@ -210,6 +212,7 @@ export class NoteEditor {
   protected async cancel() {
     if (this.mode() === 'new') {
       await this.photos.discardPending(this.draft());
+      await this.files.discardPending(this.draft());
     }
     this.location.back();
   }
