@@ -42,7 +42,7 @@ Severity: **data loss**, **crash** (or the app closing), **wrong behaviour**, **
    - The rule says the change with the later `updated` time wins.
    - The code compares `changed_at`, the device's own time of the change. A change made offline yesterday therefore loses to one made today, even if it reaches the server later.
    - With `updated`, the last device to sync would win instead.
-   - I left the code as it is. Which do you want?
+   - **Answered:** the build plan stands; the later `updated` wins. Changed in `fix/sync-conflict-rule` ([plan](../plans/sync-conflict-rule.md)), released as `v1.1.1`.
 2. **The done/total pill (R11)**
    - "Counts today's items" includes events, from the app and the calendar, but events can never be ticked.
    - So a day with an event never reaches "3 / 3 done", even though "All done" does appear.

@@ -1,32 +1,26 @@
 # Sync: conflicts
 
-What happens when both devices changed the same record while offline: the later `changed_at` wins the whole record, with no prompt.
+What happens when both devices changed the same record: the change that reaches the server last wins the whole record, with no prompt (Offline and sync 4). The device's clock doesn't matter.
 
 ```mermaid
 sequenceDiagram
-  participant A as Phone (changed_at 100)
+  participant A as Phone (changed offline)
   participant PB as PocketBase
-  participant B as Desktop (changed_at 200)
+  participant B as Desktop (changed later, online)
 
-  alt The later change reaches the server first
-    B->>PB: PATCH, changed_at 200
-    A->>PB: Reconnect: pull
-    PB-->>A: Record at 200, not older than local 100
-    A->>A: Local copy replaced by 200, outbox entry stays
-    A->>PB: PATCH the local copy, now 200: no change in effect
-  else The earlier change reaches the server first
-    A->>PB: PATCH, changed_at 100
-    PB-->>B: Live update or pull: record at 100
-    B->>B: Older than local 200, so kept (photos, files and file names still taken from the server)
-    B->>PB: PATCH, changed_at 200
-    PB-->>A: Live update: record at 200 replaces 100
-  else An older PATCH arrives after the pull
-    A->>PB: PATCH, changed_at 100, stored is 200
-    PB-->>A: sync.pb.js ignores it and answers 200 with the stored record
-    A->>A: Stored record replaces the local copy
-  end
+  B->>PB: PATCH the desktop's version
+  PB-->>B: Saved, its own version comes back: local copy takes the server times
+  A->>PB: Reconnect: pull
+  PB-->>A: The desktop's version
+  A->>A: Unsent change in the outbox, so the local copy stays (photos, files and file names taken from the server)
+  A->>PB: PATCH the phone's version
+  PB->>PB: Saved: every update is, so the last to arrive wins
+  PB-->>B: Live update: the phone's version
+  B->>B: Nothing unsent here, so it replaces the local copy
 ```
 
-- The build plan (Offline and sync 4) says the later `updated` wins. The code uses `changed_at`, set by the device's clock, so a wrong clock can lose or win a conflict.
-- The whole record wins; fields are not merged. Photos are the exception: they only ever come from the server.
+- A device keeps its local copy over the server's only while it has an unsent change to that record: that change reaches the server later, so it will win there too.
+- A record coming back with the device's own `changed_at` is its own write echoed; it replaces the local copy and brings `created` and `updated`.
+- If the record changes again while it's being sent, the outbox keeps the entry (its `changed_at` moved on) and sends it once more.
+- The whole record wins; fields are not merged. Photos and files are the exception: they only ever come from the server.
 - The build plan's open question stands: the SyncConflict screen isn't built.

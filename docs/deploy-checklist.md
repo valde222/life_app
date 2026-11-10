@@ -6,7 +6,7 @@ Everything secret goes into your password manager as you make it. None of it goe
 
 ## 1. Before you start
 
-- [ ] **Decide the sync conflict rule.** When both devices change the same item, the change made later on its device's clock wins, even if it reaches the server second. The build plan says the later server time wins instead. Keep the code as it is, or ask for the change. This is question 1 in the [bug sweep report](bugs/bug-sweep-report.md#questions-about-the-rules). Questions 2 to 6 there are smaller and can wait.
+- [x] **Decide the sync conflict rule.** Decided: the change that reaches the server last wins, as the build plan says ([conflicts](diagrams/05b-sync-conflict.md)). Questions 2 to 6 in the [bug sweep report](bugs/bug-sweep-report.md#questions-about-the-rules) are smaller and can wait.
 - [ ] **Accounts:** GitHub and Tailscale, both with two-factor sign-in on.
 - [ ] **Tools on your PC.** In WSL: `sudo apt install age`. For `keytool`, use Android Studio's, at `"C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe"`.
 
@@ -35,9 +35,9 @@ Everything secret goes into your password manager as you make it. None of it goe
 - [ ] Settings › Secrets and variables › Actions: add the six secrets from step 2.
 - [ ] Settings › Code security: turn on secret scanning, push protection, Dependabot alerts and CodeQL code scanning.
 - [ ] Settings › Rules: protect `main` from force pushes and deletion. Don't require pull requests unless you mean to work through them; merges are pushed straight to `main`.
-- [ ] Push the newest release tag only: `git push origin v1.1.0`. (`v1.0.0` exists too but was never released; the old `v0.N-name` tags don't start a release.)
-- [ ] The Release run is green, and the `v1.1.0` release has three files: `life-v1.1.0.apk`, `Life_1.1.0_x64-setup.exe` and `latest.json`.
-- [ ] `https://github.com/<you>/life-app/releases/latest/download/latest.json` opens in a private browser window and says `"version": "1.1.0"`.
+- [ ] Push the newest release tag only: `git push origin v1.1.1`. (`v1.0.0` and `v1.1.0` exist too but were never released; the old `v0.N-name` tags don't start a release.)
+- [ ] The Release run is green, and the `v1.1.1` release has three files: `life-v1.1.1.apk`, `Life_1.1.1_x64-setup.exe` and `latest.json`.
+- [ ] `https://github.com/<you>/life-app/releases/latest/download/latest.json` opens in a private browser window and says `"version": "1.1.1"`.
 
 ## 4. Prepare the Pi
 
@@ -54,7 +54,7 @@ Everything secret goes into your password manager as you make it. None of it goe
 
 Follow the [first deploy](../deploy/README.md#first-deploy) in the deployment README, steps 1 to 6:
 
-- [ ] Clone, `git checkout v1.1.0`, `.env` filled in, `chmod 600 .env`.
+- [ ] Clone, `git checkout v1.1.1`, `.env` filled in, `chmod 600 .env`.
 - [ ] Data folders owned by `10001:10001`.
 - [ ] `docker compose up -d --build` (the first build on a Pi takes a few minutes).
 - [ ] `TS_AUTHKEY` set, then `docker compose --profile tunnel up -d`.
@@ -75,21 +75,22 @@ Follow the [first deploy](../deploy/README.md#first-deploy) in the deployment RE
 - [ ] In Obtainium: Add app, paste `https://github.com/<you>/life-app`, install. In Obtainium's settings, leave background update checks on, and set Android's battery setting for Obtainium to Unrestricted so the checks run.
 - [ ] Open Life. On the sign-in screen, the server is `https://life.<tailnet>.ts.net`, with the email and password from `.env`.
 - [ ] Allow notifications when asked (reminders), and calendar access in Settings › Calendars if you want your calendars in the app.
-- [ ] Settings › Version says `1.1.0`.
+- [ ] Settings › Version says `1.1.1`.
 
 ## 8. Desktop
 
-- [ ] Download `Life_1.1.0_x64-setup.exe` from the release and run it. Windows SmartScreen will warn about an unknown publisher, because the installer has no paid code-signing certificate: click More info › Run anyway. Updates later don't show this.
+- [ ] Download `Life_1.1.1_x64-setup.exe` from the release and run it. Windows SmartScreen will warn about an unknown publisher, because the installer has no paid code-signing certificate: click More info › Run anyway. Updates later don't show this.
 - [ ] Sign in with the same server, email and password.
 - [ ] To start with Windows: Win+R, `shell:startup`, and put a shortcut to `%LOCALAPPDATA%\Life\Life.exe` there.
 - [ ] Ctrl+Space opens the capture window. If another app already uses that shortcut, Life can't take it.
-- [ ] Settings › Version says `1.1.0`.
+- [ ] Settings › Version says `1.1.1`.
 
 ## 9. Check on the real devices
 
 The bug sweep couldn't test these without a phone and a desktop in hand.
 
 - [ ] **Sync:** with the phone in flight mode, add a todo. It says "Offline, 1 waiting". Turn flight mode off, and the todo shows up on the desktop within seconds.
+- [ ] **Conflict:** with the phone in flight mode, rename a todo on the phone, then rename the same todo on the desktop. Turn flight mode off: the phone's name shows on both, because it reached the server last.
 - [ ] **Android:** back closes a sheet, then goes back a screen, and doesn't quit with a sheet open. Send the app to the background and come back; force-stop it and reopen; rotate the phone. Share a link and a photo into Life while it's closed: both land in the Inbox. Deny camera or files permission once while adding a photo: the app keeps working and the note keeps what you typed. Deny calendar access: Settings › Calendars offers "Allow calendar access".
 - [ ] **Desktop:** Ctrl+Space works while Life is minimised and while it's only in the tray. Closing the window keeps it in the tray, and Tray › Quit ends it. The window opens at a sensible size.
 - [ ] **Sign out guard:** in flight mode, add something, then press Settings › Sign out once. It asks again ("Sign out and lose 1 change"). Don't press it again: go back, turn flight mode off and let it sync.
@@ -101,10 +102,10 @@ The bug sweep couldn't test these without a phone and a desktop in hand.
 
 Do this in the first week, while it's cheap to fix. Afterwards, every update works the same way.
 
-- [ ] Make a small visible change, merge it to `main`, then `git tag v1.1.1 && git push origin main v1.1.1`. Wait for the release to go green.
+- [ ] Make a small visible change, merge it to `main`, then `git tag v1.1.2 && git push origin main v1.1.2`. Wait for the release to go green.
 - [ ] Before updating, put the phone in flight mode and add a todo, so there's something unsynced.
-- [ ] **Desktop:** quit Life from the tray and start it again. Within a minute it asks to install 1.1.1. Install and restart: it reopens on 1.1.1 (Settings › Version), still signed in, with everything there.
-- [ ] **Phone:** in Obtainium, check for updates and install 1.1.1. Life opens on 1.1.1, still signed in, with the unsynced todo still waiting. Turn flight mode off, and it syncs.
+- [ ] **Desktop:** quit Life from the tray and start it again. Within a minute it asks to install 1.1.2. Install and restart: it reopens on 1.1.2 (Settings › Version), still signed in, with everything there.
+- [ ] **Phone:** in Obtainium, check for updates and install 1.1.2. Life opens on 1.1.2, still signed in, with the unsynced todo still waiting. Turn flight mode off, and it syncs.
 
 ## 11. From then on
 

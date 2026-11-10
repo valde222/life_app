@@ -12,7 +12,7 @@ Production runs on the Raspberry Pi (arm64) from `docker-compose.yml`: PocketBas
 
 The full list of manual steps, GitHub and phone included, is [`docs/deploy-checklist.md`](../docs/deploy-checklist.md). The Pi part:
 
-1. Clone the repo on the Pi and check out the release tag (`git checkout v1.1.0`). `cp .env.example .env`, `chmod 600 .env`, fill it in. Passwords must be at least 16 characters (`openssl rand -base64 24`); PocketBase won't start otherwise.
+1. Clone the repo on the Pi and check out the release tag (`git checkout v1.1.1`). `cp .env.example .env`, `chmod 600 .env`, fill it in. Passwords must be at least 16 characters (`openssl rand -base64 24`); PocketBase won't start otherwise.
 2. On your PC, not the Pi, make the backup key. In WSL: `sudo apt install age`, then `age-keygen -o life-backup.key`. Put the `age1…` public key in `BACKUP_AGE_RECIPIENT`. Keep `life-backup.key` in your password manager; without it the backups can't be read.
 3. Give the data folders to the containers' user:
    ```sh
