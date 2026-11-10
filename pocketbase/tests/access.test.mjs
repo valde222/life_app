@@ -41,7 +41,7 @@ async function call(method, path, { token, body, headers = {} } = {}) {
     try {
       json = JSON.parse(text);
     } catch {}
-    return { status: response.status, body: json, text };
+    return { status: response.status, body: json, text, headers: response.headers };
   }
 }
 
@@ -403,6 +403,57 @@ function tinyPng() {
     'base64',
   );
 }
+
+describe('files', () => {
+  const MB = 1024 * 1024;
+  let fileNote;
+
+  const upload = (name, type, content) => {
+    const form = new FormData();
+    form.append('files+', new Blob([content], { type }), name);
+    return call('PATCH', `/api/collections/notes/records/${fileNote.id}`, { token: ownerToken, body: form });
+  };
+  const fileUrl = (name, token) => `/api/files/notes/${fileNote.id}/${name}${token ? `?token=${token}` : ''}`;
+  const fileToken = async (token) => (await call('POST', '/api/files/token', { token })).body.token;
+
+  before(async () => {
+    const created = await call('POST', '/api/collections/notes/records', {
+      token: ownerToken,
+      body: { id: newId(), title: 'File note', changed_at: Date.now() },
+    });
+    assert.equal(created.status, 200, created.text);
+    fileNote = created.body;
+  });
+
+  test('any type of file is accepted, and only the owner can fetch it', async () => {
+    const added = await upload('minutes.docx', 'application/octet-stream', 'not really a docx');
+    assert.equal(added.status, 200, added.text);
+    const name = added.body.files.at(-1);
+
+    assert.equal((await call('GET', fileUrl(name, await fileToken(ownerToken)))).status, 200, 'owner');
+    assert.notEqual((await call('GET', fileUrl(name))).status, 200, 'no token');
+    assert.notEqual((await call('GET', fileUrl(name, await fileToken(otherToken)))).status, 200, 'another account');
+  });
+
+  test('an uploaded web page is never shown as a page on the server’s address', async () => {
+    const added = await upload('evil.html', 'text/html', '<script>alert(1)</script>');
+    assert.equal(added.status, 200, added.text);
+    const served = await call('GET', fileUrl(added.body.files.at(-1), await fileToken(ownerToken)));
+    const disposition = served.headers.get('content-disposition') ?? '';
+    const policy = served.headers.get('content-security-policy') ?? '';
+    assert.ok(
+      disposition.startsWith('attachment') || policy.includes('sandbox'),
+      `served as a download or sandboxed: ${disposition} / ${policy}`,
+    );
+  });
+
+  test('a 45 MB file fits, a file over 50 MB is refused', async () => {
+    const fits = await upload('scan.pdf', 'application/pdf', Buffer.alloc(45 * MB));
+    assert.equal(fits.status, 200, `45 MB: ${fits.text.slice(0, 200)}`);
+    const tooBig = await upload('video.mp4', 'video/mp4', Buffer.alloc(50 * MB + 1));
+    assert.ok(tooBig.status >= 400, `over 50 MB is refused (${tooBig.status})`);
+  });
+});
 
 describe('schema', () => {
   const owned = "@request.auth.collectionName = 'users' && owner = @request.auth.id";

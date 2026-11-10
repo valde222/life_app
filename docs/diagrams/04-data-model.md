@@ -67,6 +67,7 @@ erDiagram
     relation list FK
     bool inbox
     file photos "many, protected"
+    file files "many, any type, 50 MB each, protected"
     relation todos FK "many"
     relation links FK "many, to notes"
     date archived_at
