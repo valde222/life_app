@@ -29,20 +29,13 @@ before(async () => {
   token = auth.body.token;
 });
 
-test('an update with an older changed_at leaves the record as it was', async () => {
+test('every update is saved, even with an older changed_at: the last to arrive wins', async () => {
   const id = newId();
-  await call('POST', '/api/collections/todos/records', { id, title: 'newer', changed_at: 200 });
-  const stale = await call('PATCH', `/api/collections/todos/records/${id}`, { title: 'older', changed_at: 100 });
-  assert.equal(stale.body.title, 'newer');
+  await call('POST', '/api/collections/todos/records', { id, title: 'changed later on its device', changed_at: 200 });
+  const update = await call('PATCH', `/api/collections/todos/records/${id}`, { title: 'arrived last', changed_at: 100 });
+  assert.equal(update.body.title, 'arrived last');
   const stored = await call('GET', `/api/collections/todos/records/${id}`);
-  assert.equal(stored.body.title, 'newer');
-});
-
-test('an update with a later changed_at is saved', async () => {
-  const id = newId();
-  await call('POST', '/api/collections/todos/records', { id, title: 'first', changed_at: 100 });
-  const update = await call('PATCH', `/api/collections/todos/records/${id}`, { title: 'second', changed_at: 200 });
-  assert.equal(update.body.title, 'second');
+  assert.equal(stored.body.title, 'arrived last');
 });
 
 test('nobody can sign up', async () => {
