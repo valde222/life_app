@@ -1,6 +1,6 @@
 # Android shell
 
-Capacitor 8 wrapping the Angular app as the Android app `dk.ottes.life`. It also receives shares from other apps, imports the phone's calendars and shows reminders as notifications. See the [native parts](../../docs/diagrams/03g-android-native.md).
+Capacitor 8 wrapping the Angular app as the Android app `dk.ottes.life`. It also receives shares from other apps, imports the phone's calendars, shows reminders as notifications, and hands a note's files to other apps to open. See the [native parts](../../docs/diagrams/03g-android-native.md).
 
 ## Run in development
 
@@ -53,4 +53,4 @@ Then add `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS` (`life`) and `ANDROID_
 
 ## Talks to
 
-PocketBase, at the address chosen on the sign-in screen; the phone's calendars, read-only; and other apps, which share into it.
+PocketBase, at the address chosen on the sign-in screen; the phone's calendars, read-only; other apps, which share into it; and the apps that open a note's files, through the FileProvider.
