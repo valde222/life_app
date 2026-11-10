@@ -13,8 +13,12 @@ flowchart LR
   tray --> windows
   lib --> windows
   windows -- "main and capture webviews" --> angular["Angular app<br/>core/platform/desktop-shell.ts"]
+  angular -- "invoke open_file: url, name" --> files["files.rs: open_file<br/>download to temp, mark, open<br/>plugin: opener"]
+  lib --> files
+  files -- "HTTPS: the note's file" --> pb[/"PocketBase"/]
 ```
 
-- There are no custom commands: the only IPC is the capture window hiding itself (`capabilities/default.json`). `error.rs` holds `AppError`, used by `lib`, `hotkey` and `tray`.
+- IPC is two calls, each granted to one window: the capture window may hide itself (`capabilities/default.json`), and the main window may call `open_file` (`capabilities/open-files.json`, generated as `allow-open-file` from `build.rs`). `error.rs` holds `AppError`, used by `lib`, `hotkey` and `tray`.
 - Closing a window hides it; only Tray › Quit ends the app.
-- `updater.rs` runs in release builds only. It reads `latest.json` from the newest GitHub release, asks in a native dialog, and on "Install and restart" checks the installer against the public key in `tauri.conf.json`, runs it passively and restarts. All of it is in Rust, so the main window still has no IPC.
+- `updater.rs` runs in release builds only. It reads `latest.json` from the newest GitHub release, asks in a native dialog, and on "Install and restart" checks the installer against the public key in `tauri.conf.json`, runs it passively and restarts. All of it is in Rust, with no IPC.
+- `files.rs` downloads a note's file to `%TEMP%\life-files\<time>\<name>` (folders older than a day are cleared), marks it as downloaded from the internet and opens it with the default app. The opened file is a copy; editing it doesn't change the note.

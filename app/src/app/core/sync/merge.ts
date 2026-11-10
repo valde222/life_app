@@ -3,7 +3,9 @@ import { CollectionName, Collections } from '../../domain/models';
 import { omitFields } from '../../domain/records';
 
 const SERVER_ONLY_FIELDS = ['collectionId', 'collectionName', 'expand'];
-const SERVER_OWNED_FIELDS: Partial<Record<CollectionName, string[]>> = { notes: ['photos'] };
+const SERVER_OWNED_FIELDS: Partial<Record<CollectionName, string[]>> = {
+  notes: ['photos', 'files', 'file_names'],
+};
 
 export function isAtLeastAsNew(
   remote: { changed_at: number },

@@ -1,4 +1,5 @@
 mod error;
+mod files;
 mod hotkey;
 mod tray;
 mod updater;
@@ -17,6 +18,8 @@ pub fn run() -> Result<(), AppError> {
         .plugin(hotkey::plugin()?)
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_opener::init())
+        .invoke_handler(tauri::generate_handler![files::open_file])
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(

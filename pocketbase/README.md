@@ -1,6 +1,6 @@
 # PocketBase
 
-The backend: one PocketBase (pinned in the `Dockerfile`) holding the one account, the eight collections and the photos. See the [data model](../docs/diagrams/04-data-model.md).
+The backend: one PocketBase (pinned in the `Dockerfile`) holding the one account, the eight collections, and the photos and files on notes. See the [data model](../docs/diagrams/04-data-model.md).
 
 The schema only changes through `pb_migrations/`, applied on start. The hooks in `pb_hooks/` create the account from the environment, stamp each record's owner, ignore updates older than the stored `changed_at` ([conflicts](../docs/diagrams/05b-sync-conflict.md)), purge records deleted more than 30 days ago at 04:15, set rate limits, and refuse superusers that come through a proxy. What protects the data is in [`docs/security.md`](../docs/security.md).
 

@@ -104,3 +104,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Ready for daily use (`release/daily-use`, `v1.0.0`)
 
 - [x] Guarded sign-out, error log, versions from the tag, desktop updater, update docs and the deploy checklist (`docs/plans/daily-use.md`)
+
+## Files on notes (`feat/note-files`, `v1.1.0`)
+
+- [x] A note holds files of any type up to 50 MB; tapping one opens it in another app (R31; T17; `docs/plans/note-files.md`)

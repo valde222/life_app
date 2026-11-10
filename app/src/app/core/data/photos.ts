@@ -2,9 +2,9 @@ import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { liveQuery } from 'dexie';
 import { from } from 'rxjs';
-import { newId, orderedId } from '../../domain/ids';
-import { LocalStore, PendingPhoto } from './local-store';
+import { fieldOf, LocalStore, PendingUpload } from './local-store';
 import { Note } from '../../domain/models';
+import { queueRemoval, queueUploads } from './file-queue';
 import { Server } from '../server/server';
 import { Sync } from '../sync/sync';
 
@@ -26,11 +26,10 @@ export class Photos {
   private readonly sync = inject(Sync);
   private readonly token = signal('');
   private tokenFetchedAt = 0;
-  private queued = 0;
   private readonly objectUrls = new Map<string, string>();
 
   private readonly pending = toSignal(from(liveQuery(() => this.store.pendingPhotos.toArray())), {
-    initialValue: [] as PendingPhoto[],
+    initialValue: [] as PendingUpload[],
   });
 
   constructor() {
@@ -38,14 +37,7 @@ export class Photos {
   }
 
   async add(note: string, files: Iterable<File>) {
-    for (const file of files) {
-      await this.store.pendingPhotos.add({
-        id: orderedId(Date.now(), this.queued++),
-        note,
-        file,
-        name: file.name || 'photo.jpg',
-      });
-    }
+    await queueUploads(this.store, { note, field: 'photos', fallbackName: 'photo.jpg' }, files);
     void this.sync.push();
   }
 
@@ -53,10 +45,7 @@ export class Photos {
     if (photo.pendingId) {
       await this.store.pendingPhotos.delete(photo.pendingId);
     } else if (photo.filename) {
-      await this.store
-        .records('notes')
-        .update(note.id, { photos: note.photos.filter((name) => name !== photo.filename) });
-      await this.store.photoRemovals.add({ id: newId(), note: note.id, filename: photo.filename });
+      await queueRemoval(this.store, note, { field: 'photos', filename: photo.filename });
       void this.sync.push();
     }
   }
@@ -72,11 +61,11 @@ export class Photos {
       const uploaded = (current.photos ?? []).map((filename) => ({
         key: filename,
         filename,
-        thumb: this.server.photoUrl(current, filename, { token, thumb: THUMB }),
-        full: this.server.photoUrl(current, filename, { token }),
+        thumb: this.server.fileUrl(current, filename, { token, thumb: THUMB }),
+        full: this.server.fileUrl(current, filename, { token }),
       }));
       const waiting = this.pending()
-        .filter((photo) => photo.note === current.id)
+        .filter((photo) => photo.note === current.id && fieldOf(photo) === 'photos')
         .map((photo) => {
           const url = this.objectUrl(photo);
           return { key: photo.id, pendingId: photo.id, thumb: url, full: url };
@@ -97,7 +86,7 @@ export class Photos {
     }
   }
 
-  private objectUrl(photo: PendingPhoto) {
+  private objectUrl(photo: PendingUpload) {
     let url = this.objectUrls.get(photo.id);
     if (!url) {
       url = URL.createObjectURL(photo.file);

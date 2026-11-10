@@ -20,6 +20,7 @@ flowchart TD
   end
   core_calendar --> core_data
   core_calendar --> core_logging
+  core_data --> core_platform
   core_data --> core_server
   core_data --> core_sync
   core_data --> core_time

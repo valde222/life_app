@@ -14,6 +14,7 @@ const ICONS = {
   close: '<path d="M6 6l12 12M18 6L6 18"/>',
   code: '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/>',
   edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  file: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',
   folder: '<path d="M3 7h6l2 2h10v10H3z"/>',
   image:
     '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/>',

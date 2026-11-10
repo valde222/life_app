@@ -35,9 +35,9 @@ Everything secret goes into your password manager as you make it. None of it goe
 - [ ] Settings › Secrets and variables › Actions: add the six secrets from step 2.
 - [ ] Settings › Code security: turn on secret scanning, push protection, Dependabot alerts and CodeQL code scanning.
 - [ ] Settings › Rules: protect `main` from force pushes and deletion. Don't require pull requests unless you mean to work through them; merges are pushed straight to `main`.
-- [ ] Push the release tag: `git push origin v1.0.0`. The old `v0.N-name` tags don't start a release, so pushing them too with `git push origin --tags` is harmless.
-- [ ] The Release run is green, and the `v1.0.0` release has three files: `life-v1.0.0.apk`, `Life_1.0.0_x64-setup.exe` and `latest.json`.
-- [ ] `https://github.com/<you>/life-app/releases/latest/download/latest.json` opens in a private browser window and says `"version": "1.0.0"`.
+- [ ] Push the newest release tag only: `git push origin v1.1.0`. (`v1.0.0` exists too but was never released; the old `v0.N-name` tags don't start a release.)
+- [ ] The Release run is green, and the `v1.1.0` release has three files: `life-v1.1.0.apk`, `Life_1.1.0_x64-setup.exe` and `latest.json`.
+- [ ] `https://github.com/<you>/life-app/releases/latest/download/latest.json` opens in a private browser window and says `"version": "1.1.0"`.
 
 ## 4. Prepare the Pi
 
@@ -54,7 +54,7 @@ Everything secret goes into your password manager as you make it. None of it goe
 
 Follow the [first deploy](../deploy/README.md#first-deploy) in the deployment README, steps 1 to 6:
 
-- [ ] Clone, `git checkout v1.0.0`, `.env` filled in, `chmod 600 .env`.
+- [ ] Clone, `git checkout v1.1.0`, `.env` filled in, `chmod 600 .env`.
 - [ ] Data folders owned by `10001:10001`.
 - [ ] `docker compose up -d --build` (the first build on a Pi takes a few minutes).
 - [ ] `TS_AUTHKEY` set, then `docker compose --profile tunnel up -d`.
@@ -75,15 +75,15 @@ Follow the [first deploy](../deploy/README.md#first-deploy) in the deployment RE
 - [ ] In Obtainium: Add app, paste `https://github.com/<you>/life-app`, install. In Obtainium's settings, leave background update checks on, and set Android's battery setting for Obtainium to Unrestricted so the checks run.
 - [ ] Open Life. On the sign-in screen, the server is `https://life.<tailnet>.ts.net`, with the email and password from `.env`.
 - [ ] Allow notifications when asked (reminders), and calendar access in Settings › Calendars if you want your calendars in the app.
-- [ ] Settings › Version says `1.0.0`.
+- [ ] Settings › Version says `1.1.0`.
 
 ## 8. Desktop
 
-- [ ] Download `Life_1.0.0_x64-setup.exe` from the release and run it. Windows SmartScreen will warn about an unknown publisher, because the installer has no paid code-signing certificate: click More info › Run anyway. Updates later don't show this.
+- [ ] Download `Life_1.1.0_x64-setup.exe` from the release and run it. Windows SmartScreen will warn about an unknown publisher, because the installer has no paid code-signing certificate: click More info › Run anyway. Updates later don't show this.
 - [ ] Sign in with the same server, email and password.
 - [ ] To start with Windows: Win+R, `shell:startup`, and put a shortcut to `%LOCALAPPDATA%\Life\Life.exe` there.
 - [ ] Ctrl+Space opens the capture window. If another app already uses that shortcut, Life can't take it.
-- [ ] Settings › Version says `1.0.0`.
+- [ ] Settings › Version says `1.1.0`.
 
 ## 9. Check on the real devices
 
@@ -93,16 +93,18 @@ The bug sweep couldn't test these without a phone and a desktop in hand.
 - [ ] **Android:** back closes a sheet, then goes back a screen, and doesn't quit with a sheet open. Send the app to the background and come back; force-stop it and reopen; rotate the phone. Share a link and a photo into Life while it's closed: both land in the Inbox. Deny camera or files permission once while adding a photo: the app keeps working and the note keeps what you typed. Deny calendar access: Settings › Calendars offers "Allow calendar access".
 - [ ] **Desktop:** Ctrl+Space works while Life is minimised and while it's only in the tray. Closing the window keeps it in the tray, and Tray › Quit ends it. The window opens at a sensible size.
 - [ ] **Sign out guard:** in flight mode, add something, then press Settings › Sign out once. It asks again ("Sign out and lose 1 change"). Don't press it again: go back, turn flight mode off and let it sync.
+- [ ] **Files on the phone:** on a note, + File › pick a PDF and a Word or Excel file. Both show by their names, then tap each: it opens in your PDF viewer and in Word or Excel. A type no app on the phone handles says "No app here opens …".
+- [ ] **Files on the desktop:** the same files show on the PC. Clicking one opens it in its Windows app; an Office file opens in Protected View, which is expected (it's marked as downloaded).
 - [ ] **Error log:** Settings › Error log is empty, or holds only errors from the flight-mode test.
 
 ## 10. Prove the update path once
 
 Do this in the first week, while it's cheap to fix. Afterwards, every update works the same way.
 
-- [ ] Make a small visible change, merge it to `main`, then `git tag v1.0.1 && git push origin main v1.0.1`. Wait for the release to go green.
+- [ ] Make a small visible change, merge it to `main`, then `git tag v1.1.1 && git push origin main v1.1.1`. Wait for the release to go green.
 - [ ] Before updating, put the phone in flight mode and add a todo, so there's something unsynced.
-- [ ] **Desktop:** quit Life from the tray and start it again. Within a minute it asks to install 1.0.1. Install and restart: it reopens on 1.0.1 (Settings › Version), still signed in, with everything there.
-- [ ] **Phone:** in Obtainium, check for updates and install 1.0.1. Life opens on 1.0.1, still signed in, with the unsynced todo still waiting. Turn flight mode off, and it syncs.
+- [ ] **Desktop:** quit Life from the tray and start it again. Within a minute it asks to install 1.1.1. Install and restart: it reopens on 1.1.1 (Settings › Version), still signed in, with everything there.
+- [ ] **Phone:** in Obtainium, check for updates and install 1.1.1. Life opens on 1.1.1, still signed in, with the unsynced todo still waiting. Turn flight mode off, and it syncs.
 
 ## 11. From then on
 

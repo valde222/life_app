@@ -7,6 +7,7 @@ interface TauriWindow {
 
 interface TauriGlobal {
   window: { getCurrentWindow(): TauriWindow };
+  core: { invoke(command: string, args: Record<string, unknown>): Promise<unknown> };
 }
 
 const CAPTURE_WINDOW = 'capture';
@@ -23,5 +24,9 @@ export class DesktopShell {
 
   async hideWindow() {
     await this.tauri?.window.getCurrentWindow().hide();
+  }
+
+  async openFile(url: string, name: string) {
+    await this.tauri?.core.invoke('open_file', { url, name });
   }
 }

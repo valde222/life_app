@@ -10,19 +10,30 @@ const todo = (fields: Partial<Todo>): Todo => ({
 });
 
 describe('merge', () => {
-  it('always takes the server photo list, even when the local note is newer', async () => {
+  it('always takes the server photo and file lists, even when the local note is newer', async () => {
     const store = TestBed.inject(LocalStore);
     await store.open();
     const note = { ...EMPTY_RECORDS.notes, id: 'note00000000001' };
-    await store.records('notes').put({ ...note, title: 'local', changed_at: 200, photos: [] });
+    await store
+      .records('notes')
+      .put({ ...note, title: 'local', changed_at: 200, photos: [], files: [] });
 
     await applyRemote(store, 'notes', [
-      { ...note, title: 'remote', changed_at: 100, photos: ['a.jpg'] },
+      {
+        ...note,
+        title: 'remote',
+        changed_at: 100,
+        photos: ['a.jpg'],
+        files: ['b.pdf'],
+        file_names: { 'b.pdf': 'Bólig.pdf' },
+      },
     ]);
 
     expect(await store.records('notes').get(note.id)).toMatchObject({
       title: 'local',
       photos: ['a.jpg'],
+      files: ['b.pdf'],
+      file_names: { 'b.pdf': 'Bólig.pdf' },
     });
   });
 
