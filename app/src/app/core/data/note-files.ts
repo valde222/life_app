@@ -60,7 +60,7 @@ export class NoteFiles {
       }
       const uploaded = (current.files ?? []).map((filename) => ({
         key: filename,
-        name: displayName(filename),
+        name: current.file_names?.[filename] ?? displayName(filename),
         filename,
       }));
       const waiting = this.pending()

@@ -11,10 +11,12 @@ migrate(
         protected: true,
       }),
     );
+    notes.fields.add(new JSONField({ name: "file_names" }));
     app.save(notes);
   },
   (app) => {
     const notes = app.findCollectionByNameOrId("notes");
+    notes.fields.removeByName("file_names");
     notes.fields.removeByName("files");
     app.save(notes);
   },

@@ -435,6 +435,17 @@ describe('files', () => {
     assert.notEqual((await call('GET', fileUrl(name, await fileToken(otherToken)))).status, 200, 'another account');
   });
 
+  test('each file keeps its original name, which PocketBase’s stored name loses', async () => {
+    const first = await upload('Lejekontrakt (underskrevet) Æblegrød.pdf', 'application/pdf', 'x');
+    const second = await upload('Budget 2026.xlsx', 'application/octet-stream', 'x');
+    assert.equal(second.status, 200, second.text);
+    const [stored1, stored2] = [first.body.files.at(-1), second.body.files.at(-1)];
+
+    assert.notEqual(stored1, 'Lejekontrakt (underskrevet) Æblegrød.pdf');
+    assert.equal(second.body.file_names[stored1], 'Lejekontrakt (underskrevet) Æblegrød.pdf');
+    assert.equal(second.body.file_names[stored2], 'Budget 2026.xlsx');
+  });
+
   test('an uploaded web page is never shown as a page on the server’s address', async () => {
     const added = await upload('evil.html', 'text/html', '<script>alert(1)</script>');
     assert.equal(added.status, 200, added.text);

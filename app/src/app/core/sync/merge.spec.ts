@@ -19,13 +19,21 @@ describe('merge', () => {
       .put({ ...note, title: 'local', changed_at: 200, photos: [], files: [] });
 
     await applyRemote(store, 'notes', [
-      { ...note, title: 'remote', changed_at: 100, photos: ['a.jpg'], files: ['b.pdf'] },
+      {
+        ...note,
+        title: 'remote',
+        changed_at: 100,
+        photos: ['a.jpg'],
+        files: ['b.pdf'],
+        file_names: { 'b.pdf': 'Bólig.pdf' },
+      },
     ]);
 
     expect(await store.records('notes').get(note.id)).toMatchObject({
       title: 'local',
       photos: ['a.jpg'],
       files: ['b.pdf'],
+      file_names: { 'b.pdf': 'Bólig.pdf' },
     });
   });
 

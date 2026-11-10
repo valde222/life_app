@@ -36,6 +36,7 @@ const READ_ONLY_FIELDS = [
   'expand',
   'photos',
   'files',
+  'file_names',
   'owner',
 ];
 

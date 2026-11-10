@@ -7,7 +7,7 @@ Decided with Valdemar: any file type; open in another app rather than save a cop
 ## Behaviour
 
 - **Adding:** "+ File" in the note's top bar, and File in the editing toolbar, open the system file picker (several files at once). A file over 50 MB isn't queued; a toast says "\<name> is over 50 MB". Files queue and upload like photos: offline they wait, and a new note's files upload once the note itself is on the server.
-- **Showing:** a Files section under the photos lists each file by its name, without the random suffix PocketBase adds (`report_k3j2h1g9f0.pdf` shows as `report.pdf`). A file still waiting to upload says "Waiting to upload" and can't be opened yet.
+- **Showing:** a Files section under the photos lists each file by its original name. PocketBase stores "Lejekontrakt Æblegrød.pdf" as `lejekontrakt_blegr_d_k3j2h1g9f0.pdf`, so a hook (`pb_hooks/file_names.pb.js`) records each upload's original name in the note's `file_names` map; a file without an entry shows its stored name without the suffix. A file still waiting to upload says "Waiting to upload" and can't be opened yet.
 - **Opening:** tapping a file fetches it with a short-lived file token and hands it to the shell:
   - Android: a `FileOpener` plugin downloads it into the app's cache (`cache/opened/`) and starts `ACTION_VIEW` through the existing FileProvider. With no app for the type, a toast says so.
   - Desktop: a Rust command `open_file` downloads it to `%TEMP%\life-files\<time>\<name>`, marks it as downloaded from the internet (`Zone.Identifier`, as browsers do, so Windows warns before running a program or opens Office files in Protected View), and opens it with the default app.
@@ -24,7 +24,7 @@ Sharing a file from another Android app into Life (R3 covers text, links and pho
 
 - [x] PocketBase: `files` field on notes (any type, 50 MB, 99 per note, protected); access tests cover it; a 45 MB upload works through the body limit
 - [x] App data: `Note.files`, the upload queue takes a field (`photos` or `files`), file names without the suffix, the 50 MB check
-- [ ] Note editor: + File, the Files section, remove with confirm; T17 end-to-end in the browser
+- [x] Note editor: + File, the Files section, remove with confirm; T17 end-to-end in the browser
 - [ ] Android `FileOpener` plugin, with unit tests for its URL and name checks
 - [ ] Desktop `open_file` command, its capability, with tests for its URL and name checks
 - [ ] Docs: build plan (R31, T17, data model, decision 22), READMEs, diagrams, security

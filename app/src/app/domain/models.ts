@@ -59,6 +59,7 @@ export interface Note extends SyncedRecord {
   inbox: boolean;
   photos: string[];
   files: string[];
+  file_names: Record<string, string>;
   todos: string[];
   links: string[];
   archived_at: string;
@@ -144,6 +145,7 @@ export const EMPTY_RECORDS: { [C in CollectionName]: Collections[C] } = {
     inbox: false,
     photos: [],
     files: [],
+    file_names: {},
     todos: [],
     links: [],
     archived_at: '',
