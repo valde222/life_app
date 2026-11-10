@@ -107,4 +107,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## Files on notes (`feat/note-files`, `v1.1.0`)
 
-- [ ] A note holds files of any type up to 50 MB; tapping one opens it in another app (R31; T17; `docs/plans/note-files.md`)
+- [x] A note holds files of any type up to 50 MB; tapping one opens it in another app (R31; T17; `docs/plans/note-files.md`)

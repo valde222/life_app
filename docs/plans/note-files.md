@@ -28,4 +28,4 @@ Sharing a file from another Android app into Life (R3 covers text, links and pho
 - [x] Android `FileOpener` plugin, with unit tests for its URL and name checks
 - [x] Desktop `open_file` command, its capability, with tests for its URL and name checks
 - [x] Docs: build plan (R31, T17, data model, decision 22), READMEs, diagrams, security
-- [ ] Tests, lint, clippy and the visual check pass; merge to `main`; tag `v1.1.0`
+- [x] Tests, lint, clippy and the visual check pass; merge to `main`; tag `v1.1.0`
