@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "capture",
-  "description": "The capture window may hide itself after saving. The main window needs no IPC",
+  "description": "The capture window may hide itself after saving, and nothing else",
   "windows": ["capture"],
   "permissions": ["core:window:allow-hide"]
 }

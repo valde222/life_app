@@ -23,7 +23,7 @@ Life holds personal notes, photos and work data for one person, on a PocketBase 
 **Nothing the apps receive can run code.**
 - Note markdown goes through a tokenizer that escapes every piece of text. A fuzz test checks that no input produces a tag or attribute outside a short allowlist.
 - Both shells enforce a Content Security Policy: scripts only from the app, no inline scripts or handlers, network only over HTTPS (or plain HTTP to this machine). An end-to-end test checks it blocks injected scripts and nothing the app does.
-- On the desktop, JavaScript can make exactly one native call: the capture window may hide itself. Everything else (tray, windows, webviews, shortcuts) is refused. This was checked in the built app.
+- On the desktop, JavaScript can make exactly two native calls: the capture window may hide itself, and the main window may ask Life to open a note's file (`open_file`). Everything else (tray, windows, webviews, shortcuts, the opener and updater plugins) is refused. `open_file` only downloads over HTTPS (or HTTP from `localhost`), keeps the file inside its own temp folder whatever the name, caps it at 50 MB, and marks it as downloaded from the internet, so Windows asks before running a program and Office opens documents in Protected View. The Android plugin makes the same checks.
 - On Android, the share target reads images only from other apps' `content://` providers. Shared text is capped.
 
 **Traffic and data at rest on devices.**
@@ -70,7 +70,7 @@ Severity: **High**, someone else could read or change data, or run code in the a
 | I1 | Info | The sign-in token lives in WebView storage, readable by script in the app. An offline-first client can't use an HttpOnly cookie; S1, S6 and S7 are what keep script out | Accepted |
 | I2 | Info | No MFA. PocketBase's MFA needs a second factor by email (OTP), which needs SMTP set up. Rate limits and a 16+ character password stand in | Your call (see below) |
 | I3 | Info | RustSec advisories in `glib`, `zbus_names`, `zvariant`, `zvariant_derive` and `proc-macro-error`: Tauri's Linux backend, not compiled into the Windows build. Listed with reasons in `desktop/src-tauri/osv-scanner.toml` | Accepted |
-| I4 | Info | `withGlobalTauri` exposes `window.__TAURI__`; with S7 fixed it can reach one command in one window | Accepted |
+| I4 | Info | `withGlobalTauri` exposes `window.__TAURI__`; with S7 fixed it can reach one command in each window (hide in the capture window, `open_file` in the main window) | Accepted |
 | I5 | Info | Capacitor's template FileProvider shares broad paths, but isn't exported and the app never grants URIs from it; `config.xml`'s `access origin="*"` is a Cordova leftover Capacitor ignores | Accepted |
 | I6 | Info | Gradle has no lockfile; the 50 release libraries were resolved and checked against OSV by hand (none affected), and Dependabot watches them | Accepted |
 | I7 | Info | The Tailscale container runs as root (tailscaled needs it); it has `no-new-privileges` and userspace networking | Accepted |

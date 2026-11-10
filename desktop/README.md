@@ -1,6 +1,6 @@
 # Desktop shell
 
-Tauri 2 wrapping the Angular app as the Windows app "Life": a tray icon keeps it running when the window is closed, and Ctrl+Space anywhere opens a small capture window. See the [Tauri modules](../docs/diagrams/03f-tauri-modules.md).
+Tauri 2 wrapping the Angular app as the Windows app "Life": a tray icon keeps it running when the window is closed, Ctrl+Space anywhere opens a small capture window, and a note's files open in their default Windows app. See the [Tauri modules](../docs/diagrams/03f-tauri-modules.md).
 
 ## Run in development
 
@@ -45,9 +45,9 @@ Put the public key in `plugins.updater.pubkey` in `src-tauri/tauri.conf.json`, a
 | App id, window size | `src-tauri/tauri.conf.json` |
 | Icons | Generated from `docs/brand/icon.svg` with `cargo tauri icon` |
 | Content Security Policy | `app.security.csp` in `src-tauri/tauri.conf.json`, the same policy as `app/src/index.html` |
-| IPC permissions | `src-tauri/capabilities/default.json` |
+| IPC permissions | `src-tauri/capabilities/`: `default.json` (the capture window hides itself) and `open-files.json` (the main window opens a note's file). App commands need a permission, declared in `build.rs` |
 | Server address | Sign-in screen, kept on the device |
 
 ## Talks to
 
-PocketBase, at the address chosen on the sign-in screen; GitHub Releases, for updates.
+PocketBase, at the address chosen on the sign-in screen, also to download a note's file when you open it; GitHub Releases, for updates; the default Windows app for each file type.

@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "open-files",
+  "description": "The main window may open a note's file through Life's own open_file command, and nothing else",
+  "windows": ["main"],
+  "permissions": ["allow-open-file"]
+}

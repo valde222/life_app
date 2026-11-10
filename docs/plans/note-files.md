@@ -26,6 +26,6 @@ Sharing a file from another Android app into Life (R3 covers text, links and pho
 - [x] App data: `Note.files`, the upload queue takes a field (`photos` or `files`), file names without the suffix, the 50 MB check
 - [x] Note editor: + File, the Files section, remove with confirm; T17 end-to-end in the browser
 - [x] Android `FileOpener` plugin, with unit tests for its URL and name checks
-- [ ] Desktop `open_file` command, its capability, with tests for its URL and name checks
+- [x] Desktop `open_file` command, its capability, with tests for its URL and name checks
 - [ ] Docs: build plan (R31, T17, data model, decision 22), READMEs, diagrams, security
 - [ ] Tests, lint, clippy and the visual check pass; merge to `main`; tag `v1.1.0`
