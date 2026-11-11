@@ -115,4 +115,4 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 
 ## CI green on GitHub (`fix/ci-green`)
 
-- [ ] End-to-end tests wait for the capture box before typing; Dependabot groups CodeQL and skips majors that need a framework update (`docs/plans/ci-green.md`)
+- [x] End-to-end tests wait for the capture box before typing; Dependabot groups CodeQL and skips majors that need a framework update (`docs/plans/ci-green.md`)

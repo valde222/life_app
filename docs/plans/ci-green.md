@@ -13,5 +13,5 @@ The first runs on GitHub: `main` passed, and every red run was on a Dependabot p
 
 - [x] Plan
 - [x] `typeInCapture` helper; the five tests use it; end-to-end tests pass
-- [ ] Dependabot: group CodeQL, ignore TypeScript and Gradle wrapper majors
-- [ ] Merge to `main`
+- [x] Dependabot: group CodeQL, ignore TypeScript and Gradle wrapper majors
+- [x] Merge to `main`

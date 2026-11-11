@@ -41,7 +41,7 @@ Life holds personal notes, photos and work data for one person, on a PocketBase 
 **Supply chain.**
 - CI runs with read-only tokens and actions pinned to commit SHAs.
 - It runs gitleaks over the whole history, `npm audit` and OSV-Scanner on every push, and CodeQL on TypeScript, Java, Rust and the workflows.
-- Dependabot watches npm, Cargo, Gradle, Docker, Compose and Actions.
+- Dependabot watches npm, Cargo, Gradle, Docker, Compose and Actions. It skips TypeScript and Gradle wrapper major versions, which wait for Angular and Capacitor to move, and updates CodeQL's steps together.
 - npm doesn't run dependencies' install scripts.
 
 ## Findings
