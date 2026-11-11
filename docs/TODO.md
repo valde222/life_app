@@ -112,3 +112,7 @@ The overall checklist, in build order. Each line names the rules (R…) and test
 ## Sync conflict rule (`fix/sync-conflict-rule`, `v1.1.1`)
 
 - [x] The change that reaches the server last wins (Offline and sync 4; `docs/plans/sync-conflict-rule.md`)
+
+## CI green on GitHub (`fix/ci-green`)
+
+- [ ] End-to-end tests wait for the capture box before typing; Dependabot groups CodeQL and skips majors that need a framework update (`docs/plans/ci-green.md`)
