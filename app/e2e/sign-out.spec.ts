@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { freshAccount, signIn, unique } from './support';
+import { freshAccount, signIn, unique, typeInCapture } from './support';
 
 test('signing out with changes still waiting asks again before throwing them away', async ({
   page,
@@ -9,7 +9,7 @@ test('signing out with changes still waiting asks again before throwing them awa
 
   await page.route('**/api/**', (route) => route.abort('internetdisconnected'));
   await page.getByRole('button', { name: 'Capture' }).click();
-  await page.keyboard.type(unique('Not sent yet'));
+  await typeInCapture(page, unique('Not sent yet'));
   await page.getByRole('button', { name: 'Save' }).click();
   await expect(page.getByText('Offline, 1 waiting')).toBeVisible();
 

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { freshAccount, localDate, signIn } from './support';
+import { freshAccount, localDate, signIn, typeInCapture } from './support';
 
 test.use({ viewport: { width: 1280, height: 800 }, isMobile: false, hasTouch: false });
 
@@ -11,7 +11,7 @@ test('T16: Ctrl+Space opens capture and Save puts the item in the Inbox (R1, R2;
   await expect(page.getByRole('button', { name: /Capture/ }).first()).toContainText('Ctrl Space');
 
   await page.keyboard.press('Control+Space');
-  await page.keyboard.type('Email Mads about the rollback plan');
+  await typeInCapture(page, 'Email Mads about the rollback plan');
   await page.keyboard.press('Enter');
 
   await expect(page.getByLabel('1 in the inbox')).toBeVisible();
