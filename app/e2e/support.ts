@@ -123,6 +123,11 @@ export async function signIn(page: Page) {
   await expect(page.getByRole('heading', { name: 'Today.' })).toBeVisible();
 }
 
+export async function typeInCapture(page: Page, text: string) {
+  await expect(page.getByLabel("What's on your mind")).toBeFocused();
+  await page.keyboard.type(text);
+}
+
 export function unique(title: string) {
   return `${title} ${Date.now().toString(36)}`;
 }

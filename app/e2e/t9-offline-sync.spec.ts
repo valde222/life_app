@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { freshAccount, signIn, unique } from './support';
+import { freshAccount, signIn, unique, typeInCapture } from './support';
 
 test('T9: a todo made offline on the phone shows up on the desktop after reconnecting', async ({
   browser,
@@ -15,7 +15,7 @@ test('T9: a todo made offline on the phone shows up on the desktop after reconne
 
   await phone.setOffline(true);
   await phonePage.getByRole('button', { name: 'Capture' }).click();
-  await phonePage.keyboard.type(`${title} today`);
+  await typeInCapture(phonePage, `${title} today`);
   await phonePage.getByRole('button', { name: 'Save' }).click();
 
   await expect(phonePage.getByText(title)).toBeVisible();

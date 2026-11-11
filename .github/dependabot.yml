@@ -6,12 +6,20 @@ updates:
     groups:
       angular: { patterns: ["@angular/*"] }
       capacitor: { patterns: ["@capacitor/*"] }
+    ignore:
+      # Angular pins TypeScript's major version; a new one comes with the Angular update that allows it.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: cargo
     directory: /desktop/src-tauri
     schedule: { interval: weekly }
   - package-ecosystem: gradle
     directory: /app/android
     schedule: { interval: weekly }
+    ignore:
+      # Gradle 9 breaks the Capacitor Android build; move with Capacitor's template.
+      - dependency-name: gradle-wrapper
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: docker
     directory: /pocketbase
     schedule: { interval: weekly }
@@ -24,3 +32,6 @@ updates:
   - package-ecosystem: github-actions
     directories: [/, /.github/actions/*]
     schedule: { interval: weekly }
+    groups:
+      # CodeQL refuses to run when its init and analyze steps differ in version.
+      codeql: { patterns: ["github/codeql-action/*", "github/codeql-action"] }
