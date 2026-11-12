@@ -20,7 +20,7 @@ services:
       retries: 30
 
   seed:
-    image: node:22-alpine
+    image: node:25-alpine
     depends_on:
       pocketbase:
         condition: service_healthy
@@ -34,7 +34,7 @@ services:
     restart: "no"
 
   app:
-    image: node:22-alpine
+    image: node:25-alpine
     working_dir: /repo/app
     environment:
       CHOKIDAR_USEPOLLING: "true"
